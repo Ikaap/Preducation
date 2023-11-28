@@ -26,5 +26,16 @@
         <item name="colorOnErrorContainer">@color/app_color_on_error_container</item>
     </style>
 
+<!--    <style name="CurvedDialog" parent="Theme.AppCompat.Dialog">-->
+<!--        <item name="android:windowBackground">@android:color/transparent</item>-->
+<!--        <item name="android:windowIsFloating">true</item>-->
+<!--        <item name="android:windowContentOverlay">@null</item>-->
+<!--        <item name="android:windowFrame">@null</item>-->
+<!--        <item name="android:windowNoTitle">true</item>-->
+<!--        <item name="android:windowIsTranslucent">true</item>-->
+<!--        <item name="android:background">@android:color/transparent</item>-->
+<!--    </style>-->
+
+
     <style name="Theme.Preducation" parent="Base.Theme.Preducation" />
 </resources>
