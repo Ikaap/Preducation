@@ -26,5 +26,10 @@
         <item name="colorOnErrorContainer">@color/app_color_on_error_container</item>
     </style>
 
+    <style name="parent">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
     <style name="Theme.Preducation" parent="Base.Theme.Preducation" />
 </resources>
