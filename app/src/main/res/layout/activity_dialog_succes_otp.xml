@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/layout_dialog_checkout"
+    style="@style/parent"
+    app:cardCornerRadius="@dimen/card_dialog"
+    android:elevation="5dp"
+    android:layout_gravity="center"
+    android:layout_marginHorizontal="34dp"
+    android:layout_marginTop="@dimen/card_dialog"
+    android:layout_marginBottom="@dimen/card_dialog"
+    android:background="#F7F4F2">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:layout_marginBottom="36dp">
+
+        <ImageView
+            android:id="@+id/iv_dialog_otp_success"
+            android:layout_width="210dp"
+            android:layout_height="150dp"
+            android:src="@drawable/img_dialog_otp_success"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/congratulations"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Congratulation"
+            android:layout_marginTop="24dp"
+            android:textAlignment="center"
+            android:textColor="@color/app_color_secondary"
+            android:fontFamily="@font/poppins_medium"
+            android:textSize="20dp"
+            app:layout_constraintTop_toBottomOf="@id/iv_dialog_otp_success"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
+        <TextView
+            android:id="@+id/tv_yourAccountisReadytoUse"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/your_account_is_ready_to_use_you_will_be_redirected_to_the_home_page_in_a_few_seconds"
+            android:textAlignment="center"
+            android:layout_marginTop="12dp"
+            android:layout_marginBottom="30dp"
+            android:textSize="14sp"
+            android:fontFamily="@font/poppins_medium"
+            android:textColor="@color/app_color_on_tertiary"
+            app:layout_constraintTop_toBottomOf="@id/congratulations"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
+        <ImageView
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_marginTop="30dp"
+            android:background="@drawable/bg_ellipse_orange"
+            android:padding="10dp"
+            android:src="@drawable/ic_arrow_right_white"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_yourAccountisReadytoUse"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+</androidx.cardview.widget.CardView>
