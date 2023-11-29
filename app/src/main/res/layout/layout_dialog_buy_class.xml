@@ -2,85 +2,56 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/cv_doalog_buy_class"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".presentation.feature.detailclass.DetailClassActivity">
+    android:layout_height="wrap_content"
+    android:background="@drawable/bg_dialog_buy_class"
+    android:padding="16dp">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/cl_youtube_player"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/black"
+    <TextView
+        android:id="@+id/tv_enroll_course"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="18dp"
+        android:fontFamily="@font/montserrat_bold"
+        android:text="@string/text_enroll_this_course"
+        android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent" />
 
-        <ImageView
-            android:id="@+id/iv_back"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:layout_marginStart="36dp"
-            android:layout_marginTop="30dp"
-            android:elevation="1dp"
-            android:src="@drawable/ic_arrow_left_white"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView
-            android:id="@+id/youtube_player_view"
-            android:layout_width="match_parent"
-            android:layout_height="200dp"
-            app:autoPlay="false"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <ImageView
-            android:id="@+id/iv_play_video"
-            android:layout_width="54dp"
-            android:layout_height="54dp"
-            android:background="@drawable/bg_ellipse_orange"
-            android:padding="14dp"
-            android:src="@drawable/ic_video"
-            android:visibility="visible"
-            app:layout_constraintBottom_toBottomOf="@id/youtube_player_view"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <View
-            android:id="@+id/view_background"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_marginTop="60dp"
-            android:background="@color/app_color_on_primary"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/youtube_player_view" />
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cv_course"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="14dp"
+        android:layout_marginTop="24dp"
+        android:elevation="4dp"
+        app:cardCornerRadius="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_enroll_course">
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/cl_data_course"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_marginHorizontal="16dp"
-            android:layout_marginTop="16dp"
-            android:background="@drawable/bg_data_detail_class"
-            android:backgroundTint="@color/white"
-            android:elevation="1dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/youtube_player_view">
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:id="@+id/iv_banner_course"
+                android:layout_width="wrap_content"
+                android:layout_height="125dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:src="@tools:sample/avatars" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/cl_data_detail_course"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="16dp"
-                android:layout_marginTop="38dp"
+                android:layout_marginHorizontal="10dp"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintStart_toEndOf="@id/iv_banner_course"
                 app:layout_constraintTop_toTopOf="parent">
 
                 <TextView
@@ -118,7 +89,7 @@
                     android:id="@+id/tv_name_course"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="6dp"
+                    android:layout_marginTop="4dp"
                     android:fontFamily="@font/montserrat_bold"
                     android:textColor="@color/app_color_secondary"
                     android:textSize="14sp"
@@ -128,9 +99,10 @@
                     tools:text="Intro Basic of User Interaction Design" />
 
                 <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/cl_sub_data_detail_course"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="6dp"
+                    android:layout_marginTop="2dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/tv_name_course">
@@ -140,7 +112,7 @@
                         android:layout_width="6dp"
                         android:layout_height="6dp"
                         android:src="@drawable/ic_ellipse"
-                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintBottom_toTopOf="@id/iv_ellipse_level"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
@@ -152,7 +124,7 @@
                         android:fontFamily="@font/montserrat"
                         android:textColor="@color/app_color_on_primary_container"
                         android:textSize="12sp"
-                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintBottom_toTopOf="@id/tv_level_course"
                         app:layout_constraintStart_toEndOf="@id/iv_ellipse_modul"
                         app:layout_constraintTop_toTopOf="parent"
                         tools:text="19 Modul" />
@@ -161,9 +133,9 @@
                         android:id="@+id/iv_ellipse_hour"
                         android:layout_width="6dp"
                         android:layout_height="6dp"
-                        android:layout_marginStart="6dp"
+                        android:layout_marginStart="24dp"
                         android:src="@drawable/ic_ellipse"
-                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintBottom_toTopOf="@id/tv_level_course"
                         app:layout_constraintStart_toEndOf="@id/tv_total_modul_course"
                         app:layout_constraintTop_toTopOf="parent" />
 
@@ -175,7 +147,7 @@
                         android:fontFamily="@font/montserrat"
                         android:textColor="@color/app_color_on_primary_container"
                         android:textSize="12sp"
-                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintBottom_toTopOf="@id/tv_level_course"
                         app:layout_constraintStart_toEndOf="@id/iv_ellipse_hour"
                         app:layout_constraintTop_toTopOf="parent"
                         tools:text="60 Hour" />
@@ -184,72 +156,110 @@
                         android:id="@+id/iv_ellipse_level"
                         android:layout_width="6dp"
                         android:layout_height="6dp"
-                        android:layout_marginStart="6dp"
+                        android:layout_marginTop="8dp"
                         android:src="@drawable/ic_ellipse"
                         app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintStart_toEndOf="@id/tv_total_hour_course"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/iv_ellipse_modul" />
 
                     <TextView
                         android:id="@+id/tv_level_course"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="4dp"
+                        android:layout_marginTop="2dp"
                         android:fontFamily="@font/montserrat"
                         android:textColor="@color/app_color_on_primary_container"
                         android:textSize="12sp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toEndOf="@id/iv_ellipse_level"
-                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/tv_total_modul_course"
                         tools:text="Advanced Level" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/cl_button_section_class"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="24dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/cl_data_detail_course">
-
-                <com.google.android.material.tabs.TabLayout
-                    android:id="@+id/tab_layout"
-                    android:layout_width="0dp"
-                    android:layout_height="52dp"
-                    android:background="@color/app_color_tertiary_container"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:tabSelectedTextColor="@color/app_color_primary"
-                    app:tabTextColor="@color/app_color_primary" />
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_marginTop="24dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/cl_button_section_class">
-
-                <androidx.viewpager2.widget.ViewPager2
-                    android:id="@+id/view_pager"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                <TextView
+                    android:id="@+id/tv_price_course"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="2dp"
+                    android:fontFamily="@font/montserrat_bold"
+                    android:textColor="@color/app_color_primary"
+                    android:textSize="12sp"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toBottomOf="@id/cl_sub_data_detail_course"
+                    tools:text="Rp. 199.000" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.cardview.widget.CardView>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cl_button_cancel"
+        android:layout_width="120dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="34dp"
+        android:layout_marginBottom="50dp"
+        android:background="@drawable/bg_button_cancel"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/cl_button_enroll"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/cv_course">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/montserrat_bold"
+            android:text="@string/text_cancel"
+            android:textColor="@color/app_color_secondary"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cl_button_enroll"
+        android:layout_width="190dp"
+        android:layout_height="50dp"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginTop="34dp"
+        android:layout_marginBottom="50dp"
+        android:background="@drawable/bg_button_primary"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/cl_button_cancel"
+        app:layout_constraintTop_toBottomOf="@id/cv_course">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/montserrat_bold"
+            android:text="@string/text_yes_enroll"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/iv_next"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/iv_next"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginEnd="8dp"
+            android:background="@drawable/bg_ellipse_white"
+            android:padding="10dp"
+            android:src="@drawable/ic_arrow_right_orange"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -3,6 +3,8 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
 
+    <color name="stroke_radio_checked">#E8F1FF</color>
+
     <color name="app_color_primary">#EB5437</color>
     <color name="app_color_on_primary">#F7F4F2</color>
     <color name="app_color_primary_container">#FF6B00</color>
