@@ -1,10 +1,11 @@
-package com.kelompoksatuandsatu.preducation
+package com.kelompoksatuandsatu.preducation.presentation.feature.otp
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+import com.kelompoksatuandsatu.preducation.R
 import com.otpview.OTPListener
 import com.otpview.OTPTextView
+import io.github.muddz.styleabletoast.StyleableToast
 
 class OtpActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -18,7 +19,11 @@ class OtpActivity : AppCompatActivity() {
             }
 
             override fun onOTPComplete(otp: String) {
-                Toast.makeText(this@OtpActivity, "The OTP is $otp", Toast.LENGTH_SHORT).show()
+                StyleableToast.makeText(
+                    this@OtpActivity,
+                    "    Registrasi Berhasil    ",
+                    R.style.failedinputotp
+                ).show()
             }
         }
     }

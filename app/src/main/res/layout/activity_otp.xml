@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/app_color_on_primary"
-    tools:context=".OtpActivity">
+    tools:context=".presentation.feature.otp.OtpActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/header_input_otp"
@@ -37,7 +37,7 @@
             app:layout_constraintLeft_toRightOf="@+id/ic_arrow_left"
             app:layout_constraintTop_toTopOf="parent"
             android:textColor="@color/app_color_secondary"
-            tools:text="@string/input_otp" />
+            android:text="@string/input_otp" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -60,7 +60,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:text="@string/the_otp_code_number_has_been_sent_to_cimut_gmail_com" />
+            android:text="@string/the_otp_code_number_has_been_sent_to_cimut_gmail_com" />
 
         <com.otpview.OTPTextView
             android:id="@+id/otp_view"
@@ -97,7 +97,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/otp_view"
-            tools:text="@string/resend_otp_code" />
+            android:text="@string/resend_otp_code" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
