@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:background="#F7F4F2"
+    android:layout_height="match_parent"
+    tools:context="com.kelompoksatuandsatu.preducation.presentation.feature.main.RegisterActivity">
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".presentation.feature.main.RegisterActivity">
+        <LinearLayout
+            android:id="@+id/registerLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:padding="24dp">
+            <!-- Logo -->
+            <ImageView
+                android:id="@+id/logo"
+                android:layout_width="164dp"
+                android:layout_height="164dp"
+                android:src="@drawable/img_logo"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginBottom="24dp"/>
+
+            <!-- Register Text -->
+            <TextView
+                android:id="@+id/registerText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Getting Started.!"
+                android:textSize="24dp"
+                android:layout_marginBottom="14dp"
+                android:fontFamily="@font/jost_bold"/>
+
+            <!-- Name Input -->
+            <LinearLayout
+                android:id="@+id/formNameLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginVertical="16dp">
+                <TextView
+                    android:id="@+id/nameText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Name"
+                    android:textSize="18dp"
+                    android:fontFamily="@font/jost_regular"/>
+                <EditText
+                    android:id="@+id/nameInput"
+                    android:layout_width="match_parent"
+                    android:layout_height="52dp"
+                    android:paddingHorizontal="14dp"
+                    android:layout_marginTop="16dp"
+                    android:inputType="text"
+                    android:hint="Full Name"
+                    android:background="@drawable/input_drawable"/>
+            </LinearLayout>
+
+            <!-- Email Input -->
+            <LinearLayout
+                android:id="@+id/formEmailLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginVertical="16dp">
+                <TextView
+                    android:id="@+id/emailText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Email"
+                    android:textSize="18dp"
+                    android:fontFamily="@font/jost_regular"/>
+                <EditText
+                    android:id="@+id/emailInput"
+                    android:layout_width="match_parent"
+                    android:layout_height="52dp"
+                    android:paddingHorizontal="14dp"
+                    android:layout_marginTop="16dp"
+                    android:inputType="textEmailAddress"
+                    android:hint="nellearn@gmail.com"
+                    android:background="@drawable/input_drawable"/>
+            </LinearLayout>
+
+            <!-- Phone Number Input -->
+            <LinearLayout
+                android:id="@+id/formPhoneNumberLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginVertical="16dp">
+                <TextView
+                    android:id="@+id/phoneNumberText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Phone Number"
+                    android:textSize="18dp"
+                    android:fontFamily="@font/jost_regular"/>
+                <EditText
+                    android:id="@+id/phoneNumberInput"
+                    android:layout_width="match_parent"
+                    android:layout_height="52dp"
+                    android:paddingHorizontal="14dp"
+                    android:layout_marginTop="16dp"
+                    android:inputType="text"
+                    android:hint="+62"
+                    android:background="@drawable/input_drawable"/>
+            </LinearLayout>
+
+            <!-- Password Input -->
+            <LinearLayout
+                android:id="@+id/formPasswordLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginVertical="16dp">
+                <TextView
+                    android:id="@+id/passwordText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Create a Password"
+                    android:textSize="18dp"
+                    android:fontFamily="@font/jost_regular"/>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/input_drawable"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="16dp">
+                    <EditText
+                        android:id="@+id/passwordInput"
+                        android:layout_width="304dp"
+                        android:layout_height="52dp"
+                        android:paddingHorizontal="14dp"
+                        android:inputType="textPassword"
+                        android:drawablePadding="10dp"
+                        android:hint="Buat Password"
+                        android:background="@null"/>
+                    <Button
+                        android:id="@+id/showHidePasswordButton"
+                        android:layout_width="52dp"
+                        android:layout_height="52dp"
+                        android:background="@android:color/transparent"
+                        android:drawableEnd="@drawable/show_password"/>
+                </LinearLayout>
+            </LinearLayout>
+
+            <!-- Register Button -->
+            <Button
+                android:id="@+id/registerButton"
+                android:layout_width="match_parent"
+                android:layout_height="52dp"
+                android:layout_marginTop="32dp"
+                android:text="Sign Up"
+                android:textColor="#FFFFFF"
+                android:fontFamily="@font/jost_bold"
+                android:textSize="16dp"
+                android:background="@drawable/bg_button_primary"
+                android:drawableRight="@drawable/eclipse_right_drawable"
+                android:paddingLeft="76dp"/>
+
+            <!-- Login Text -->
+            <LinearLayout
+                android:id="@+id/loginTextLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:orientation="horizontal"
+                android:gravity="center_horizontal">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Already have an Account ?"
+                    android:fontFamily="@font/jost_medium"
+                    android:textSize="16dp"/>
+                <TextView
+                    android:id="@+id/loginText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/jost_semibold"
+                    android:textSize="16dp"
+                    android:textColor="#EB5437"/>
+            </LinearLayout>
+
+            <!-- Error / Success Message Box -->
+            <LinearLayout
+                android:id="@+id/errorMessageBox"
+                android:layout_width="match_parent"
+                android:layout_height="52dp"
+                android:background="@drawable/bg_error_message"
+                android:gravity="center"
+                android:layout_marginTop="24dp"
+                android:visibility="gone">
+                <TextView
+                    android:id="@+id/errorMessage"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Password min 8 character"
+                    android:textColor="#FFFFFF"
+                    android:textSize="16dp"
+                    android:fontFamily="@font/jost_medium"/>
+            </LinearLayout>
+        </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>
