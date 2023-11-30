@@ -7,7 +7,9 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.kelompoksatuandsatu.preducation.databinding.FragmentCurriculcumBinding
+import com.kelompoksatuandsatu.preducation.databinding.LayoutDialogBuyClassBinding
 import com.kelompoksatuandsatu.preducation.model.ItemSectionDataCurriculcum
 import com.kelompoksatuandsatu.preducation.model.ItemSectionHeaderCurriculcum
 import com.kelompoksatuandsatu.preducation.model.SectionedCurriculcumData
@@ -38,8 +40,29 @@ class CurriculcumFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         setData()
+        setOnClickListener()
+    }
+    private fun setOnClickListener() {
+        binding.clButtonEnrollClass.setOnClickListener {
+            setBottomSheet()
+        }
     }
 
+    private fun setBottomSheet() {
+        val bottomDialog = BottomSheetDialog(requireContext())
+        val binding = LayoutDialogBuyClassBinding.inflate(layoutInflater)
+        bottomDialog.apply {
+            setContentView(binding.root)
+            show()
+        }
+        binding.clButtonCancel.setOnClickListener {
+            bottomDialog.dismiss()
+        }
+
+        binding.clButtonEnroll.setOnClickListener {
+            // TODO Intent to payment activity
+        }
+    }
     private fun setData() {
         binding.rvDataCurriculcum.apply {
             layoutManager = LinearLayoutManager(requireContext())
