@@ -53,8 +53,8 @@
 
                 <ImageView
                     android:id="@+id/iv_rating"
-                    android:layout_width="16dp"
-                    android:layout_height="16dp"
+                    android:layout_width="14dp"
+                    android:layout_height="14dp"
                     android:layout_gravity="center"
                     android:layout_marginEnd="6dp"
                     android:contentDescription="@string/iv_rating"
@@ -65,6 +65,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/montserrat_bold"
+                    android:gravity="center"
                     android:textSize="12sp"
                     tools:text="@string/tv_rating_popular_course" />
             </LinearLayout>
