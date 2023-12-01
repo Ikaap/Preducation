@@ -1,8 +1,103 @@
 <resources>
     <string name="app_name">Preducation</string>
+
     <string name="input_otp">Input OTP</string>
     <string name="the_otp_code_number_has_been_sent_to_cimut_gmail_com">The OTP code number has been sent to \ncimut@gmail.com</string>
     <string name="resend_otp_code">Resend OTP Code</string>
     <string name="your_account_is_ready_to_use_you_will_be_redirected_to_the_home_page_in_a_few_seconds">Your Account is Ready to Use. \nYou will be redirected to the \nHome Page in a Few Seconds.</string>
     <string name="congratulation">Congratulation</string>
+
+
+    <string name="text_password_min_8_character">Password min 8 character</string>
+    <string name="text_already_have_an_account">Already have an Account ?</string>
+    <string name="text_login_here">Login Here</string>
+    <string name="text_sign_up">Sign Up</string>
+    <string name="text_create_a_password">Create a Password</string>
+    <string name="text_phone_number">Phone Number</string>
+    <string name="text_email">Email</string>
+    <string name="text_name">Name</string>
+    <string name="text_getting_started">Getting Started.!</string>
+
+    <string name="text_login">Login</string>
+    <string name="text_email">Email</string>
+    <string name="text_password">Password</string>
+    <string name="text_forgot_password">Forgot Password</string>
+    <string name="text_sign_in">Sign In</string>
+    <string name="text_don_t_have_an_account_yet">Don\'t have an account yet ?</string>
+    <string name="text_enter_without_logging_in">Enter Without Logging In</string>
+    <string name="text_sorry_wrong_password">Sorry, wrong password</string>
+    <string name="text_register_here">Register Here</string>
+
+
+    <string name="text_about">About</string>
+    <string name="text_curriculcum">Curriculcum</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="text_join_group_telegram">Join Group Telegram</string>
+    <string name="text_about_class">About Class</string>
+    <string name="text_this_class_is_intended_for">This Class Is Intended For</string>
+    <string name="text_enroll_course">Enroll Course</string>
+    <string name="text_enroll_this_course">Enroll this Course ?</string>
+    <string name="text_yes_enroll">Yes, enroll</string>
+    <string name="text_cancel">Cancel</string>
+    <string name="text_next">Next</string>
+    <string name="text_other_classes">Other Classes</string>
+
+    <string name="text_payment_details">Payment Details</string>
+    <string name="text_price">Price</string>
+    <string name="text_ppn_11">PPN 11%</string>
+    <string name="text_total_payment">Total Payment</string>
+    <string name="text_bank_transfer">Bank Transfer</string>
+    <string name="text_credit_card">Credit Card</string>
+    <string name="text_card_number">Card Number</string>
+    <string name="text_card_holder_name">Card Holder Name</string>
+    <string name="text_cvv">CVV</string>
+    <string name="text_expiry_date">Expiry Date</string>
+    <string name="text_enroll_course">Enroll Course</string>
+    <string name="text_congratulations">Congratulations</string>
+    <string name="text_your_payment_is_successfully_purchase_a_new_course">Your Payment is Successfully. Purchase a New Course</string>
+    <string name="text_start_study">Start Study</string>
+    <string name="text_back_to_home">Back to Home</string>
+
+    <string name="desc_search">image view search</string>
+    <string name="text_search">text view search</string>
+    <string name="tv_search">Search for...</string>
+    <string name="text_title_category">Categories</string>
+    <string name="text_to_see_all">See All</string>
+    <string name="desc_iv_category_course">desc image view category course</string>
+    <string name="text_popular_course">Popular Courses</string>
+    <string name="desc_iv_popular_course">iv_popular_course</string>
+    <string name="tv_category_popular">Data Science</string>
+    <string name="tv_rating_popular_course">4.7</string>
+    <string name="desc_ic_arrow_left">ic_arrow_left</string>
+    <string name="tv_header_see_all_popular_course">Popular Course</string>
+    <string name="text_header_name">Hi, Ronald A.Martin</string>
+    <string name="text_header_greeting">What would you like to learn today ?\nSearch Below.</string>
+    <string name="tv_title_course">Belajar data cleaning dan sorting\ndengan Phyton</string>
+    <string name="tv_level_course">Advanced Level</string>
+    <string name="tv_module_course">19 Module</string>
+    <string name="tv_duration_course">60 Hours</string>
+    <string name="tv_price_course">Rp 249.000</string>
+    <string name="desc_dialog_icon">iv_dialog_non_login</string>
+    <string name="dialog_title">Sorry</string>
+    <string name="dialog_message">You have to make an account for access\nthis feature</string>
+    <string name="dialog_sign_up_button">Sign Up</string>
+    <string name="iv_arrow_right">iv_arrow_right</string>
+    <string name="popular_course_not_found">Popular course not found!</string>
+    <string name="iv_level_course">iv_level_course</string>
+    <string name="iv_module_course">iv_module_course</string>
+    <string name="iv_rating">iv_rating</string>
+    <string name="iv_time_course">iv_time_course</string>
+    <string name="tv_sign_up">Sign Up</string>
+
+    <string name="desc_iv_logo_app">iv_logo_app</string>
+    <string name="tv_reset_password">Reset Password</string>
+    <string name="tv_title_email">Email</string>
+    <string name="tv_send_email">Send</string>
+    <string name="desc_arrow_right">arrow_right</string>
+    <string name="text_error_email_empty">Email should not be empty</string>
+    <string name="text_error_email_invalid">Enter a valid format email</string>
+    <string name="reset_password_successful">Reset Password Successful</string>
+    <string name="invalid_or_expired_link">Invalid or expired link</string>
+
 </resources>
