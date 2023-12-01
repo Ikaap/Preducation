@@ -45,7 +45,7 @@
             android:name="com.kelompoksatuandsatu.preducation.presentation.feature.login.LoginActivity"
             android:exported="true" />
         <activity
-            android:name=".presentation.feature.main.MainActivity"
+            android:name=".presentation.feature.register.RegisterActivity"
             android:exported="true">
            <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -53,6 +53,10 @@
             </intent-filter>
 
         </activity>
+
+        <activity
+            android:name=".presentation.feature.main.MainActivity"
+            android:exported="true"/>
     </application>
 
 </manifest>
