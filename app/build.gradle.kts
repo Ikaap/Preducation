@@ -81,6 +81,12 @@ dependencies {
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
 
+    // otp
+    implementation("com.github.appsfeature:otp-view:1.0")
+
+    // otp toast
+    implementation("io.github.muddz:styleabletoast:2.4.0")
+
     // coil
     implementation("io.coil-kt:coil:2.4.0")
     // rv
@@ -127,4 +133,14 @@ dependencies {
     // glide
     implementation("com.github.bumptech.glide:glide:4.12.0")
     annotationProcessor("com.github.bumptech.glide:compiler:4.12.0")
+
+    // youtube player
+    implementation("com.pierfrancescosoffritti.androidyoutubeplayer:core:12.1.0")
+
+    // groupie
+    implementation("com.github.lisawray.groupie:groupie:2.10.1")
+    implementation("com.github.lisawray.groupie:groupie-viewbinding:2.10.1")
+    // toast
+    implementation("io.github.muddz:styleabletoast:2.4.0")
+
 }
