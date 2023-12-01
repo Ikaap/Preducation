@@ -26,12 +26,13 @@
         <item name="colorOnErrorContainer">@color/app_color_on_error_container</item>
     </style>
 
+
     <style name="parent">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
     </style>
 
-    <style name="successinputotp">
+    <style name="successtoast">
         <item name="stTextBold">true</item>
         <item name="stColorBackground">@color/app_color_on_secondary_container</item>
         <item name="stTextSize">14sp</item>
@@ -41,7 +42,8 @@
         <item name="stStrokeWidth">25dp</item>
     </style>
 
-    <style name="failedinputotp">
+
+    <style name="failedtoast">
         <item name="stTextBold">true</item>
         <item name="stColorBackground">@color/app_color_error</item>
         <item name="stTextSize">14sp</item>
