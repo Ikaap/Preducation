@@ -1,3 +1,12 @@
 <resources>
     <string name="app_name">Preducation</string>
+    <string name="text_password_min_8_character">Password min 8 character</string>
+    <string name="text_already_have_an_account">Already have an Account ?</string>
+    <string name="text_login_here">Login Here</string>
+    <string name="text_sign_up">Sign Up</string>
+    <string name="text_create_a_password">Create a Password</string>
+    <string name="text_phone_number">Phone Number</string>
+    <string name="text_email">Email</string>
+    <string name="text_name">Name</string>
+    <string name="text_getting_started">Getting Started.!</string>
 </resources>
