@@ -5,8 +5,10 @@ import androidx.appcompat.app.AppCompatActivity
 import com.kelompoksatuandsatu.preducation.R
 
 class MainActivity : AppCompatActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.fragment_progress_class)
+        setContentView(R.layout.activity_main)
+
     }
 }
