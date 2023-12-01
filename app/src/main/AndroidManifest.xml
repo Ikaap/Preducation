@@ -42,12 +42,16 @@
             android:exported="false">
         </activity>
         <activity
+            android:name="com.kelompoksatuandsatu.preducation.presentation.feature.login.LoginActivity"
+            android:exported="true" />
+        <activity
             android:name=".presentation.feature.main.MainActivity"
             android:exported="true">
-          <intent-filter>
+           <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
         </activity>
     </application>
 
