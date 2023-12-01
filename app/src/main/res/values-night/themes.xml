@@ -24,4 +24,9 @@
         <item name="colorErrorContainer">@color/app_color_error_container</item>
         <item name="colorOnErrorContainer">@color/app_color_on_error_container</item>
     </style>
+
+    <style name="parent">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
 </resources>
