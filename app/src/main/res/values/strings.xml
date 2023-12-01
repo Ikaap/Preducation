@@ -1,3 +1,27 @@
 <resources>
     <string name="app_name">Preducation</string>
+    <string name="text_create_new_password">Create New Password</string>
+    <string name="iv_back">back</string>
+    <string name="text_create_your_new_password">Create Your New Password</string>
+    <string name="text_old_password">Old Password</string>
+    <string name="text_new_password">New Password</string>
+    <string name="text_continue">Continue</string>
+    <string name="text_edit_profile">Edit Profile</string>
+    <string name="text_add_user">Add User</string>
+    <string name="text_long_name">Long Name</string>
+    <string name="text_email">Email</string>
+    <string name="text_nomor_telepon">Nomor Telepon</string>
+    <string name="text_62">+62</string>
+    <string name="text_negara">Negara</string>
+    <string name="text_masukkan_negara">Masukkan Negara</string>
+    <string name="text_kota">Kota</string>
+    <string name="text_masukkan_kota">Masukkan Kota</string>
+    <string name="text_update">Update</string>
+    <string name="text_transactions">Transactions</string>
+    <string name="text_profile">Profile</string>
+    <string name="text_name_james">James S. Hernandez</string>
+    <string name="text_email_james">hernandex.redial@gmail.ac.in</string>
+    <string name="text_change_password">Change Password</string>
+    <string name="text_payment_history">Payment History</string>
+    <string name="text_logout">Logout</string>
 </resources>
