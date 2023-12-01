@@ -3,6 +3,9 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
 
+    <color name="background_method_payment_bank">#3C3C3C</color>
+    <color name="background_method_payment_card">#6148FF</color>
+
     <color name="app_color_primary">#EB5437</color>
     <color name="app_color_on_primary">#F7F4F2</color>
     <color name="app_color_primary_container">#FF6B00</color>

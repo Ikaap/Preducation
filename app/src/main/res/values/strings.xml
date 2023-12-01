@@ -1,6 +1,22 @@
 <resources>
     <string name="app_name">Preducation</string>
 
+    <string name="text_payment_details">Payment Details</string>
+    <string name="text_price">Price</string>
+    <string name="text_ppn_11">PPN 11%</string>
+    <string name="text_total_payment">Total Payment</string>
+    <string name="text_bank_transfer">Bank Transfer</string>
+    <string name="text_credit_card">Credit Card</string>
+    <string name="text_card_number">Card Number</string>
+    <string name="text_card_holder_name">Card Holder Name</string>
+    <string name="text_cvv">CVV</string>
+    <string name="text_expiry_date">Expiry Date</string>
+    <string name="text_enroll_course">Enroll Course</string>
+    <string name="text_congratulations">Congratulations</string>
+    <string name="text_your_payment_is_successfully_purchase_a_new_course">Your Payment is Successfully. Purchase a New Course</string>
+    <string name="text_start_study">Start Study</string>
+    <string name="text_back_to_home">Back to Home</string>
+
     <string name="desc_search">image view search</string>
     <string name="text_search">text view search</string>
     <string name="tv_search">Search for...</string>
