@@ -87,6 +87,9 @@ dependencies {
     // otp toast
     implementation("io.github.muddz:styleabletoast:2.4.0")
 
+    // progressbar
+    implementation("com.github.MackHartley:RoundedProgressBar:3.0.0")
+
     // coil
     implementation("io.coil-kt:coil:2.4.0")
     // rv
