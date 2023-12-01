@@ -2,7 +2,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
-
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
@@ -16,14 +15,25 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Preducation"
         android:usesCleartextTraffic="true"
-        tools:targetApi="31">
+        tools:targetApi="31" >
         <activity
+            android:name=".presentation.feature.home.adapter.ResetPasswordActivity"
+            android:exported="false" />
+        <activity
+            android:name=".presentation.feature.payment.PaymentActivity"
+            android:exported="false"/>
+        <activity
+            android:name=".presentation.feature.detailclass.DetailClassActivity"
+            android:configChanges="orientation|screenSize|keyboardHidden|smallestScreenSize|screenLayout"
+            android:exported="false" />
+         <activity
             android:name=".presentation.feature.main.MainActivity"
             android:exported="true">
-            <intent-filter>
+          <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
         </activity>
     </application>
 

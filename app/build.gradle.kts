@@ -123,4 +123,15 @@ dependencies {
     testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.7.2")
     testImplementation("app.cash.turbine:turbine:1.0.0")
     testImplementation("androidx.arch.core:core-testing:2.2.0")
+
+
+    // youtube player
+    implementation("com.pierfrancescosoffritti.androidyoutubeplayer:core:12.1.0")
+
+    // groupie
+    implementation("com.github.lisawray.groupie:groupie:2.10.1")
+    implementation("com.github.lisawray.groupie:groupie-viewbinding:2.10.1")
+    // toast
+    implementation("io.github.muddz:styleabletoast:2.4.0")
+
 }
