@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name">Preducation</string>
+
     <string name="text_payment_details">Payment Details</string>
     <string name="text_price">Price</string>
     <string name="text_ppn_11">PPN 11%</string>
@@ -15,4 +16,46 @@
     <string name="text_your_payment_is_successfully_purchase_a_new_course">Your Payment is Successfully. Purchase a New Course</string>
     <string name="text_start_study">Start Study</string>
     <string name="text_back_to_home">Back to Home</string>
+
+    <string name="desc_search">image view search</string>
+    <string name="text_search">text view search</string>
+    <string name="tv_search">Search for...</string>
+    <string name="text_title_category">Categories</string>
+    <string name="text_to_see_all">See All</string>
+    <string name="desc_iv_category_course">desc image view category course</string>
+    <string name="text_popular_course">Popular Courses</string>
+    <string name="desc_iv_popular_course">iv_popular_course</string>
+    <string name="tv_category_popular">Data Science</string>
+    <string name="tv_rating_popular_course">4.7</string>
+    <string name="desc_ic_arrow_left">ic_arrow_left</string>
+    <string name="tv_header_see_all_popular_course">Popular Course</string>
+    <string name="text_header_name">Hi, Ronald A.Martin</string>
+    <string name="text_header_greeting">What would you like to learn today ?\nSearch Below.</string>
+    <string name="tv_title_course">Belajar data cleaning dan sorting\ndengan Phyton</string>
+    <string name="tv_level_course">Advanced Level</string>
+    <string name="tv_module_course">19 Module</string>
+    <string name="tv_duration_course">60 Hours</string>
+    <string name="tv_price_course">Rp 249.000</string>
+    <string name="desc_dialog_icon">iv_dialog_non_login</string>
+    <string name="dialog_title">Sorry</string>
+    <string name="dialog_message">You have to make an account for access\nthis feature</string>
+    <string name="dialog_sign_up_button">Sign Up</string>
+    <string name="iv_arrow_right">iv_arrow_right</string>
+    <string name="popular_course_not_found">Popular course not found!</string>
+    <string name="iv_level_course">iv_level_course</string>
+    <string name="iv_module_course">iv_module_course</string>
+    <string name="iv_rating">iv_rating</string>
+    <string name="iv_time_course">iv_time_course</string>
+    <string name="tv_sign_up">Sign Up</string>
+
+    <string name="desc_iv_logo_app">iv_logo_app</string>
+    <string name="tv_reset_password">Reset Password</string>
+    <string name="tv_title_email">Email</string>
+    <string name="tv_send_email">Send</string>
+    <string name="desc_arrow_right">arrow_right</string>
+    <string name="text_error_email_empty">Email should not be empty</string>
+    <string name="text_error_email_invalid">Enter a valid format email</string>
+    <string name="reset_password_successful">Reset Password Successful</string>
+    <string name="invalid_or_expired_link">Invalid or expired link</string>
+
 </resources>
