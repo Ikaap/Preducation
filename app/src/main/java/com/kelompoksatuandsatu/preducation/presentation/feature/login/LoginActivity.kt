@@ -1,4 +1,4 @@
-package com.kelompoksatuandsatu.preducation.presentation.feature.main
+package com.kelompoksatuandsatu.preducation.presentation.feature.login
 
 import android.os.Bundle
 import android.text.SpannableString
