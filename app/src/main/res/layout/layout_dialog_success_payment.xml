@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:padding="24dp"
-    android:background="@drawable/bg_dialog_success_payment">
+    android:background="@drawable/bg_button_white">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/cl_dialog_success"

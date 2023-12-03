@@ -22,7 +22,7 @@ class OtpActivity : AppCompatActivity() {
                 StyleableToast.makeText(
                     this@OtpActivity,
                     "    Registrasi Berhasil    ",
-                    R.style.failedinputotp
+                    R.style.failedtoast
                 ).show()
             }
         }
