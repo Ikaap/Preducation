@@ -1,6 +1,8 @@
 package com.kelompoksatuandsatu.preducation.presentation.feature.payment
 
 import android.app.AlertDialog
+import android.content.Context
+import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
@@ -51,6 +53,9 @@ class PaymentActivity : AppCompatActivity() {
         binding.clButtonPayment.setOnClickListener {
             showSuccessDialog()
         }
+        binding.ivBack.setOnClickListener {
+            onBackPressed()
+        }
     }
 
     private fun showSuccessDialog() {
@@ -61,5 +66,12 @@ class PaymentActivity : AppCompatActivity() {
             setView(binding.root)
             window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         }.show()
+    }
+
+    companion object {
+        fun startActivity(context: Context) {
+            val intent = Intent(context, PaymentActivity::class.java)
+            context.startActivity(intent)
+        }
     }
 }

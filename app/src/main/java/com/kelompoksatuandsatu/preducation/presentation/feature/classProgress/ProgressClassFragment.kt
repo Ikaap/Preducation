@@ -1,32 +1,46 @@
 package com.kelompoksatuandsatu.preducation.presentation.feature.classProgress
 
+import android.app.AlertDialog
+import android.content.Intent
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import com.kelompoksatuandsatu.preducation.R
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.kelompoksatuandsatu.preducation.data.local.dummy.DummyCategoryCourseDataSource
+import com.kelompoksatuandsatu.preducation.data.local.dummy.DummyCategoryCourseDataSourceImpl
+import com.kelompoksatuandsatu.preducation.data.local.dummy.DummyCategoryPopularDataSource
+import com.kelompoksatuandsatu.preducation.data.local.dummy.DummyCategoryPopularDataSourceImpl
+import com.kelompoksatuandsatu.preducation.data.local.dummy.DummyPopularCourseDataSource
+import com.kelompoksatuandsatu.preducation.data.local.dummy.DummyPopularCourseDataSourceImpl
+import com.kelompoksatuandsatu.preducation.databinding.DialogNonLoginBinding
+import com.kelompoksatuandsatu.preducation.databinding.FragmentProgressClassBinding
+import com.kelompoksatuandsatu.preducation.model.CategoryCourse
+import com.kelompoksatuandsatu.preducation.model.CategoryPopular
+import com.kelompoksatuandsatu.preducation.model.Course
+import com.kelompoksatuandsatu.preducation.presentation.common.adapter.AdapterLayoutMenu
+import com.kelompoksatuandsatu.preducation.presentation.common.adapter.CategoryCourseListAdapter
+import com.kelompoksatuandsatu.preducation.presentation.common.adapter.CategoryCourseRoundedListAdapter
+import com.kelompoksatuandsatu.preducation.presentation.common.adapter.CourseCardListAdapter
+import com.kelompoksatuandsatu.preducation.presentation.feature.register.RegisterActivity
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Use the [ProgressClassFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class ProgressClassFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
+    private lateinit var binding: FragmentProgressClassBinding
+
+    private val categoryCourseAdapter: CategoryCourseListAdapter by lazy {
+        CategoryCourseListAdapter {
+            showSuccessDialog()
+        }
+    }
+
+    private val progressCourseAdapter: CourseCardListAdapter by lazy {
+        CourseCardListAdapter(AdapterLayoutMenu.CLASS) {
+            showSuccessDialog()
         }
     }
 
@@ -36,26 +50,72 @@ class ProgressClassFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_progress_class, container, false)
+        binding = FragmentProgressClassBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment ProgressClassFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            ProgressClassFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
-            }
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        super.onViewCreated(view, savedInstanceState)
+        showCategoryCourse()
+        showCourse()
+        showCategoryProgress()
+        binding.rvProgressCourse.setOnClickListener {
+            showSuccessDialog()
+        }
+    }
+
+    private fun showSuccessDialog() {
+        val binding: DialogNonLoginBinding = DialogNonLoginBinding.inflate(layoutInflater)
+        val dialog = AlertDialog.Builder(requireContext(), 0).create()
+
+        dialog.apply {
+            setView(binding.root)
+            window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        }.show()
+
+        binding.clSignUp.setOnClickListener {
+            val intent = Intent(requireContext(), RegisterActivity::class.java)
+            startActivity(intent)
+        }
+    }
+
+    private fun showCategoryProgress() {
+        val categoryPopularAdapter = CategoryCourseRoundedListAdapter()
+        binding.rvCategoryProgress.adapter = categoryPopularAdapter
+        binding.rvCategoryProgress.layoutManager = LinearLayoutManager(
+            requireContext(),
+            LinearLayoutManager.HORIZONTAL,
+            false
+        )
+        val dummyCategoryPopularDataSource: DummyCategoryPopularDataSource =
+            DummyCategoryPopularDataSourceImpl()
+        val categoryPopularList: List<CategoryPopular> =
+            dummyCategoryPopularDataSource.getCategoryProgress()
+        categoryPopularAdapter.setData(categoryPopularList)
+    }
+
+    private fun showCourse() {
+        binding.rvProgressCourse.adapter = progressCourseAdapter
+        binding.rvProgressCourse.layoutManager = LinearLayoutManager(
+            requireContext(),
+            LinearLayoutManager.HORIZONTAL,
+            false
+        )
+        val dummyPopularDataSource: DummyPopularCourseDataSource =
+            DummyPopularCourseDataSourceImpl()
+        val popularCourseList: List<Course> =
+            dummyPopularDataSource.getPopularCourse()
+        progressCourseAdapter.setData(popularCourseList)
+    }
+
+    private fun showCategoryCourse() {
+        binding.rvCategoryCourse.adapter = categoryCourseAdapter
+        binding.rvCategoryCourse.layoutManager = GridLayoutManager(requireContext(), 4)
+        val dummyCategoryCourseDataSource: DummyCategoryCourseDataSource =
+            DummyCategoryCourseDataSourceImpl()
+        val categoryCourseList: List<CategoryCourse> =
+            dummyCategoryCourseDataSource.getCategoryCourse()
+        categoryCourseAdapter.setData(categoryCourseList)
     }
 }

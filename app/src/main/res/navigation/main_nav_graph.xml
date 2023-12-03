@@ -3,10 +3,28 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main_nav_graph"
-    app:startDestination="@id/homeFragment2">
+    app:startDestination="@id/navigation_home">
+
     <fragment
-        android:id="@+id/homeFragment2"
+        android:id="@+id/navigation_home"
         android:name="com.kelompoksatuandsatu.preducation.presentation.feature.home.HomeFragment"
         android:label="fragment_home"
         tools:layout="@layout/fragment_home" />
+    <fragment
+        android:id="@+id/navigation_notification"
+        android:name="com.kelompoksatuandsatu.preducation.presentation.feature.notifications.NotificationFragment"
+        android:label="NotificationFragment" />
+    <fragment
+        android:id="@+id/navigation_class"
+        android:name="com.kelompoksatuandsatu.preducation.presentation.feature.classProgress.ProgressClassFragment"
+        android:label="ProgressClassFragment" />
+    <fragment
+        android:id="@+id/navigation_course"
+        android:name="com.kelompoksatuandsatu.preducation.presentation.feature.course.CourseFragment"
+        android:label="fragment_course"
+        tools:layout="@layout/fragment_course" />
+    <fragment
+        android:id="@+id/navigation_profile"
+        android:name="com.kelompoksatuandsatu.preducation.presentation.feature.profile.ProfileFragment"
+        android:label="ProfileFragment" />
 </navigation>

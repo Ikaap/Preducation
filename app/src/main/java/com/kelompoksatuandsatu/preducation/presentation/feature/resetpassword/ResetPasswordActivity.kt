@@ -47,7 +47,7 @@ class ResetPasswordActivity : AppCompatActivity() {
             StyleableToast.makeText(
                 this,
                 getString(R.string.reset_password_successful),
-                R.style.successsendemail
+                R.style.successtoast
             ).show()
             true
         }

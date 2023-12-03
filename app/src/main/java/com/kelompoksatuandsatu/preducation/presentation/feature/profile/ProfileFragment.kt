@@ -9,6 +9,10 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.kelompoksatuandsatu.preducation.databinding.FragmentProfileBinding
+import com.kelompoksatuandsatu.preducation.presentation.feature.changepassword.ChangePasswordActivity
+import com.kelompoksatuandsatu.preducation.presentation.feature.editprofile.EditProfileActivity
+import com.kelompoksatuandsatu.preducation.presentation.feature.historypayment.TransactionActivity
+import com.kelompoksatuandsatu.preducation.presentation.feature.login.LoginActivity
 
 class ProfileFragment : Fragment() {
 
@@ -37,21 +41,21 @@ class ProfileFragment : Fragment() {
             startImageUpload()
         }
 
-        binding.tvEditProfile.setOnClickListener {
+        binding.clEditProfile.setOnClickListener {
             // Handle edit profile click
             startActivity(Intent(requireContext(), EditProfileActivity::class.java))
         }
 
-        binding.tvChangePassword.setOnClickListener {
+        binding.clChangePassword.setOnClickListener {
             startActivity(Intent(requireContext(), ChangePasswordActivity::class.java))
         }
 
-        binding.tvPaymentHistory.setOnClickListener {
+        binding.clPaymentHistory.setOnClickListener {
             // Handle payment history click
             startActivity(Intent(requireContext(), TransactionActivity::class.java))
         }
 
-        binding.tvLogout.setOnClickListener {
+        binding.clLogout.setOnClickListener {
             performLogout()
         }
     }
@@ -85,7 +89,7 @@ class ProfileFragment : Fragment() {
     }
 
     private fun performLogout() {
-        val intent = Intent(requireContext(), TransactionActivity::class.java)
+        val intent = Intent(requireContext(), LoginActivity::class.java)
         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
         startActivity(intent)
         requireActivity().finish()

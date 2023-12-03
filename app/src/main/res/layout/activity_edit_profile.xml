@@ -1,297 +1,294 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/app_color_on_primary"
     android:padding="16dp">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/cl_header"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:paddingHorizontal="10dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        android:orientation="vertical"
+        android:paddingHorizontal="16dp">
 
-        <ImageView
-            android:id="@+id/iv_back"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:src="@drawable/ic_arrow_left_dark_blue"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:layout_width="wrap_content"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/cl_header"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:fontFamily="@font/montserrat_medium"
-            android:text="@string/text_edit_profile"
-            android:textColor="@color/app_color_secondary"
-            android:textSize="22sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@id/iv_back"
-            app:layout_constraintTop_toTopOf="parent" />
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/cl_data_user"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="28dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/cl_header">
-
-        <androidx.cardview.widget.CardView
-            android:id="@+id/cv_profile_pict"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:background="@drawable/bg_photo_green"
-            app:cardCornerRadius="360dp"
+            android:layout_marginTop="8dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
             <ImageView
-                android:id="@+id/iv_user_photo"
+                android:id="@+id/iv_back"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/ic_arrow_left_dark_blue"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@drawable/bg_photo_green"
-                android:elevation="4dp"
-                android:scaleType="centerCrop"
-                tools:src="@tools:sample/avatars" />
+                android:layout_marginStart="16dp"
+                android:fontFamily="@font/montserrat_medium"
+                android:text="@string/text_edit_profile"
+                android:textColor="@color/app_color_secondary"
+                android:textSize="22sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@id/iv_back"
+                app:layout_constraintTop_toTopOf="parent" />
 
-        </androidx.cardview.widget.CardView>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <ImageView
-            android:id="@+id/iv_add_photo_user"
-            android:layout_width="28dp"
-            android:layout_height="28dp"
-            android:background="@drawable/bg_photo_green"
-            android:contentDescription="@string/text_add_user"
-            android:elevation="2dp"
-            android:padding="6dp"
-            android:src="@drawable/ic_user_photo"
-            app:layout_constraintBottom_toBottomOf="@id/cv_profile_pict"
-            app:layout_constraintEnd_toEndOf="@id/cv_profile_pict" />
-
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <RelativeLayout
-        android:id="@+id/rl_layout_form"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/cl_data_user">
-
-        <TextView
-            android:id="@+id/tv_name"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/cl_data_user"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="20dp"
-            android:layout_marginTop="10dp"
-            android:fontFamily="@font/montserrat_semibold"
-            android:text="Nama"
-            android:textSize="16sp" />
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/tilName"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/tv_name"
-            android:layout_marginHorizontal="20dp"
-            android:layout_marginTop="8dp"
-            android:visibility="gone"
-            app:errorEnabled="true"
-            app:passwordToggleTint="@color/app_color_primary"
-            tools:visibility="visible">
-
-            <EditText
-                android:id="@+id/et_long_name"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/bg_edit_text_secondary_transparent"
-                android:hint="@string/text_long_name"
-                android:inputType="textLongMessage" />
-
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <TextView
-            android:id="@+id/tv_email"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/tilName"
-            android:layout_marginHorizontal="20dp"
-            android:fontFamily="@font/montserrat_semibold"
-            android:text="@string/text_email"
-            android:textSize="16sp" />
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/tilEmail"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/tv_email"
-            android:layout_marginHorizontal="20dp"
-            android:layout_marginTop="8dp"
-            android:visibility="gone"
-            app:errorEnabled="true"
-            app:passwordToggleTint="@color/app_color_primary"
-            tools:visibility="visible">
-
-            <EditText
-                android:id="@+id/et_email"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/bg_edit_text_secondary_transparent"
-                android:hint="@string/text_email"
-                android:inputType="textEmailAddress" />
-
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <TextView
-            android:id="@+id/tv_phone_number"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/tilEmail"
-            android:layout_marginHorizontal="20dp"
-            android:fontFamily="@font/montserrat_semibold"
-            android:text="@string/text_nomor_telepon"
-            android:textSize="16sp" />
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/tilPhoneNumber"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/tv_phone_number"
-            android:layout_marginHorizontal="20dp"
-            android:layout_marginTop="8dp"
-            android:visibility="gone"
-            app:errorEnabled="true"
-            app:passwordToggleTint="@color/app_color_primary"
-            tools:visibility="visible">
-
-            <EditText
-                android:id="@+id/et_phone_number"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/bg_edit_text_secondary_transparent"
-                android:hint="@string/text_62"
-                android:inputType="textNoSuggestions"
-                tools:ignore="TextFields" />
-
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <TextView
-            android:id="@+id/tv_country"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/tilPhoneNumber"
-            android:layout_marginHorizontal="20dp"
-            android:fontFamily="@font/montserrat_semibold"
-            android:text="@string/text_negara"
-            android:textSize="16sp" />
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/tilCountry"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/tv_country"
-            android:layout_marginHorizontal="20dp"
-            android:layout_marginTop="8dp"
-            android:visibility="gone"
-            app:errorEnabled="true"
-            app:passwordToggleTint="@color/app_color_primary"
-            tools:visibility="visible">
-
-            <EditText
-                android:id="@+id/et_country"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/bg_edit_text_secondary_transparent"
-                android:hint="@string/text_masukkan_negara"
-                android:inputType="textNoSuggestions" />
-
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <TextView
-            android:id="@+id/tv_city"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/tilCountry"
-            android:layout_marginHorizontal="20dp"
-            android:fontFamily="@font/montserrat_semibold"
-            android:text="@string/text_kota"
-            android:textSize="16sp" />
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/tilCity"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/tv_city"
-            android:layout_marginHorizontal="20dp"
-            android:layout_marginTop="8dp"
-            android:visibility="gone"
-            app:errorEnabled="true"
-            app:passwordToggleTint="@color/app_color_primary"
-            tools:visibility="visible">
-
-            <EditText
-                android:id="@+id/et_city"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/bg_edit_text_secondary_transparent"
-                android:hint="@string/text_masukkan_kota"
-                android:inputType="textNoSuggestions" />
-
-        </com.google.android.material.textfield.TextInputLayout>
-
-    </RelativeLayout>
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/cl_button_payment"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_marginHorizontal="6dp"
-        android:layout_marginBottom="20dp"
-        android:background="@drawable/bg_button_primary"
-        app:layout_constraintTop_toBottomOf="@id/rl_layout_form"
-        tools:ignore="NotSibling">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/montserrat_bold"
-            android:text="@string/text_update"
-            android:textColor="@color/white"
-            android:textSize="16sp"
-            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginTop="28dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toBottomOf="@id/cl_header">
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cv_profile_pict"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:background="@drawable/bg_photo_green"
+                app:cardCornerRadius="360dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <ImageView
+                    android:id="@+id/iv_user_photo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/bg_photo_green"
+                    android:elevation="4dp"
+                    android:scaleType="centerCrop"
+                    tools:src="@tools:sample/avatars" />
+
+            </androidx.cardview.widget.CardView>
+
+            <ImageView
+                android:id="@+id/iv_add_photo_user"
+                android:layout_width="28dp"
+                android:layout_height="28dp"
+                android:background="@drawable/bg_photo_green"
+                android:contentDescription="@string/text_add_user"
+                android:elevation="2dp"
+                android:padding="6dp"
+                android:src="@drawable/ic_user_photo"
+                app:layout_constraintBottom_toBottomOf="@id/cv_profile_pict"
+                app:layout_constraintEnd_toEndOf="@id/cv_profile_pict" />
 
 
-        <ImageView
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_marginEnd="8dp"
-            android:background="@drawable/bg_ellipse_white"
-            android:padding="10dp"
-            android:src="@drawable/ic_arrow_right_orange"
-            app:layout_constraintBottom_toBottomOf="parent"
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <RelativeLayout
+            android:id="@+id/rl_layout_form"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/cl_data_user">
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            <TextView
+                android:id="@+id/tv_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:fontFamily="@font/poppins"
+                android:text="@string/text_name"
+                android:textSize="16sp" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/tilName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tv_name"
+                android:layout_marginTop="8dp"
+                app:errorEnabled="true"
+                app:hintEnabled="false"
+                app:passwordToggleTint="@color/app_color_primary"
+                tools:visibility="visible">
+
+                <EditText
+                    android:id="@+id/et_long_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/bg_edit_text_secondary_transparent"
+                    android:hint="@string/text_long_name"
+                    android:inputType="textLongMessage" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <TextView
+                android:id="@+id/tv_email"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tilName"
+                android:fontFamily="@font/poppins"
+                android:text="@string/text_email"
+                android:textSize="16sp" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/tilEmail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tv_email"
+                android:layout_marginTop="8dp"
+                app:errorEnabled="true"
+                app:hintEnabled="false"
+                app:passwordToggleTint="@color/app_color_primary"
+                tools:visibility="visible">
+
+                <EditText
+                    android:id="@+id/et_email"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/bg_edit_text_secondary_transparent"
+                    android:hint="@string/text_email"
+                    android:inputType="textEmailAddress" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <TextView
+                android:id="@+id/tv_phone_number"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tilEmail"
+                android:fontFamily="@font/poppins"
+                android:text="@string/text_nomor_telepon"
+                android:textSize="16sp" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/tilPhoneNumber"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tv_phone_number"
+                android:layout_marginTop="8dp"
+                app:errorEnabled="true"
+                app:hintEnabled="false"
+                app:passwordToggleTint="@color/app_color_primary"
+                tools:visibility="visible">
+
+                <EditText
+                    android:id="@+id/et_phone_number"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/bg_edit_text_secondary_transparent"
+                    android:hint="@string/text_62"
+                    android:inputType="textNoSuggestions"
+                    tools:ignore="TextFields" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <TextView
+                android:id="@+id/tv_country"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tilPhoneNumber"
+                android:fontFamily="@font/poppins"
+                android:text="@string/text_negara"
+                android:textSize="16sp" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/tilCountry"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tv_country"
+                android:layout_marginTop="8dp"
+                app:errorEnabled="true"
+                app:hintEnabled="false"
+                app:passwordToggleTint="@color/app_color_primary"
+                tools:visibility="visible">
+
+                <EditText
+                    android:id="@+id/et_country"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/bg_edit_text_secondary_transparent"
+                    android:hint="@string/text_masukkan_negara"
+                    android:inputType="textNoSuggestions" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <TextView
+                android:id="@+id/tv_city"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tilCountry"
+                android:fontFamily="@font/poppins"
+                android:text="@string/text_kota"
+                android:textSize="16sp" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/tilCity"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tv_city"
+                android:layout_marginTop="8dp"
+                app:errorEnabled="true"
+                app:hintEnabled="false"
+                app:passwordToggleTint="@color/app_color_primary"
+                tools:visibility="visible">
+
+                <EditText
+                    android:id="@+id/et_city"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/bg_edit_text_secondary_transparent"
+                    android:hint="@string/text_masukkan_kota"
+                    android:inputType="textNoSuggestions" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+        </RelativeLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/cl_button_payment"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginHorizontal="6dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="20dp"
+            android:background="@drawable/bg_button_primary"
+            app:layout_constraintTop_toBottomOf="@id/rl_layout_form"
+            tools:ignore="NotSibling">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/montserrat_bold"
+                android:text="@string/text_update"
+                android:textColor="@color/white"
+                android:textSize="16sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+            <ImageView
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginEnd="8dp"
+                android:background="@drawable/bg_ellipse_white"
+                android:padding="10dp"
+                android:src="@drawable/ic_arrow_right_orange"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </LinearLayout>
+
+</androidx.core.widget.NestedScrollView>
