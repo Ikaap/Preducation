@@ -1,4 +1,4 @@
-package com.kelompoksatuandsatu.preducation.presentation.feature.profile
+package com.kelompoksatuandsatu.preducation.model
 
 data class PopularCourseItem(
     val category: String,
