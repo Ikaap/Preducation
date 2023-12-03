@@ -6,12 +6,12 @@
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cv_search"
-        android:layout_width="360dp"
-        android:layout_height="wrap_content"
+        android:layout_width="0dp"
+        android:layout_height="55dp"
         android:layout_marginHorizontal="10dp"
-        android:layout_marginVertical="22dp"
+        android:layout_marginVertical="8dp"
         app:cardCornerRadius="15dp"
-        app:cardElevation="8dp"
+        app:cardElevation="4dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -38,7 +38,7 @@
             <androidx.cardview.widget.CardView
                 android:layout_width="38dp"
                 android:layout_height="38dp"
-                android:layout_marginEnd="12dp"
+                android:layout_marginEnd="8dp"
                 app:cardBackgroundColor="@color/app_color_primary"
                 app:cardCornerRadius="10dp"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -47,14 +47,16 @@
 
                 <ImageView
                     android:id="@+id/iv_search"
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
+                    android:layout_width="22dp"
+                    android:layout_height="22dp"
                     android:layout_gravity="center"
                     android:layout_margin="20dp"
                     android:src="@drawable/ic_search" />
 
             </androidx.cardview.widget.CardView>
+
         </androidx.constraintlayout.widget.ConstraintLayout>
+
     </androidx.cardview.widget.CardView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

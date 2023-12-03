@@ -1,6 +1,7 @@
 package com.kelompoksatuandsatu.preducation.presentation.feature.home
 
 import android.app.AlertDialog
+import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
@@ -19,10 +20,13 @@ import com.kelompoksatuandsatu.preducation.databinding.DialogNonLoginBinding
 import com.kelompoksatuandsatu.preducation.databinding.FragmentHomeBinding
 import com.kelompoksatuandsatu.preducation.model.CategoryCourse
 import com.kelompoksatuandsatu.preducation.model.CategoryPopular
-import com.kelompoksatuandsatu.preducation.model.PopularCourse
-import com.kelompoksatuandsatu.preducation.presentation.feature.home.adapter.CategoryCourseListAdapter
-import com.kelompoksatuandsatu.preducation.presentation.feature.home.adapter.CategoryPopularListAdapter
-import com.kelompoksatuandsatu.preducation.presentation.feature.home.adapter.PopularCourseListAdapter
+import com.kelompoksatuandsatu.preducation.model.Course
+import com.kelompoksatuandsatu.preducation.presentation.common.adapter.AdapterLayoutMenu
+import com.kelompoksatuandsatu.preducation.presentation.common.adapter.CategoryCourseListAdapter
+import com.kelompoksatuandsatu.preducation.presentation.common.adapter.CategoryCourseRoundedListAdapter
+import com.kelompoksatuandsatu.preducation.presentation.common.adapter.CourseCardListAdapter
+import com.kelompoksatuandsatu.preducation.presentation.feature.detailclass.DetailClassActivity
+import com.kelompoksatuandsatu.preducation.presentation.feature.register.RegisterActivity
 
 class HomeFragment : Fragment() {
     private lateinit var binding: FragmentHomeBinding
@@ -33,10 +37,15 @@ class HomeFragment : Fragment() {
         }
     }
 
-    private val popularCourseAdapter: PopularCourseListAdapter by lazy {
-        PopularCourseListAdapter {
+    private val popularCourseAdapter: CourseCardListAdapter by lazy {
+        CourseCardListAdapter(AdapterLayoutMenu.HOME) {
             showSuccessDialog()
+            navigateToDetail(it)
         }
+    }
+
+    private fun navigateToDetail(course: Course) {
+        DetailClassActivity.startActivity(requireContext(), course)
     }
 
     override fun onCreateView(
@@ -50,11 +59,20 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         showCategoryCourse()
         showPopularCourse()
         showCategoryPopular()
+
         binding.rvPopularCourse.setOnClickListener {
             showSuccessDialog()
+        }
+
+        binding.tvNavToSeeAllTitleCategory.setOnClickListener {
+            SeeAllPopularCoursesActivity.startActivity(requireContext())
+        }
+        binding.ivToSeeAll.setOnClickListener {
+            SeeAllPopularCoursesActivity.startActivity(requireContext())
         }
     }
 
@@ -66,10 +84,15 @@ class HomeFragment : Fragment() {
             setView(binding.root)
             window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         }.show()
+
+        binding.clSignUp.setOnClickListener {
+            val intent = Intent(requireContext(), RegisterActivity::class.java)
+            startActivity(intent)
+        }
     }
 
     private fun showCategoryPopular() {
-        val categoryPopularAdapter = CategoryPopularListAdapter()
+        val categoryPopularAdapter = CategoryCourseRoundedListAdapter()
         binding.rvCategoryPopular.adapter = categoryPopularAdapter
         binding.rvCategoryPopular.layoutManager = LinearLayoutManager(
             requireContext(),
@@ -92,7 +115,7 @@ class HomeFragment : Fragment() {
         )
         val dummyPopularDataSource: DummyPopularCourseDataSource =
             DummyPopularCourseDataSourceImpl()
-        val popularCourseList: List<PopularCourse> =
+        val popularCourseList: List<Course> =
             dummyPopularDataSource.getPopularCourse()
         popularCourseAdapter.setData(popularCourseList)
     }

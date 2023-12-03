@@ -8,6 +8,8 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.kelompoksatuandsatu.preducation.R
 import com.kelompoksatuandsatu.preducation.databinding.FragmentNotificationBinding
+import com.kelompoksatuandsatu.preducation.model.NotificationItem
+import com.kelompoksatuandsatu.preducation.presentation.feature.notifications.adapter.NotificationAdapter
 
 class NotificationFragment : Fragment() {
 

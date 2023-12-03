@@ -15,6 +15,7 @@ import com.kelompoksatuandsatu.preducation.model.ItemSectionHeaderCurriculcum
 import com.kelompoksatuandsatu.preducation.model.SectionedCurriculcumData
 import com.kelompoksatuandsatu.preducation.presentation.feature.detailclass.viewitems.DataItem
 import com.kelompoksatuandsatu.preducation.presentation.feature.detailclass.viewitems.HeaderItem
+import com.kelompoksatuandsatu.preducation.presentation.feature.payment.PaymentActivity
 import com.xwray.groupie.GroupieAdapter
 import com.xwray.groupie.Section
 
@@ -61,6 +62,7 @@ class CurriculcumFragment : Fragment() {
 
         binding.clButtonEnroll.setOnClickListener {
             // TODO Intent to payment activity
+            PaymentActivity.startActivity(requireContext())
         }
     }
     private fun setData() {
