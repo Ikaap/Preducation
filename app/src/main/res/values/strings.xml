@@ -33,8 +33,6 @@
     <string name="congratulation">Congratulation</string>
 
     <string name="search">Search</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="class_in_progress">Class in Progress</string>
     <string name="see_all">SEE ALL</string>
     <string name="all">All</string>
@@ -56,12 +54,10 @@
     <string name="text_sign_up">Sign Up</string>
     <string name="text_create_a_password">Create a Password</string>
     <string name="text_phone_number">Phone Number</string>
-    <string name="text_email">Email</string>
     <string name="text_name">Name</string>
     <string name="text_getting_started">Getting Started.!</string>
 
     <string name="text_login">Login</string>
-    <string name="text_email">Email</string>
     <string name="text_password">Password</string>
     <string name="text_forgot_password">Forgot Password</string>
     <string name="text_sign_in">Sign In</string>
@@ -94,7 +90,6 @@
     <string name="text_card_holder_name">Card Holder Name</string>
     <string name="text_cvv">CVV</string>
     <string name="text_expiry_date">Expiry Date</string>
-    <string name="text_enroll_course">Enroll Course</string>
     <string name="text_congratulations">Congratulations</string>
     <string name="text_your_payment_is_successfully_purchase_a_new_course">Your Payment is Successfully. Purchase a New Course</string>
     <string name="text_start_study">Start Study</string>
@@ -140,5 +135,18 @@
     <string name="text_error_email_invalid">Enter a valid format email</string>
     <string name="reset_password_successful">Reset Password Successful</string>
     <string name="invalid_or_expired_link">Invalid or expired link</string>
+    <string name="text_home">Home</string>
+    <string name="text_notification">Notification</string>
+    <string name="text_class">Class</string>
+    <string name="text_course">Course</string>
+    <string name="text_preducation">Preducation</string>
+    <string name="text_online_learning">Online Learning</string>
+    <string name="text_notifications">Notifications</string>
+    <string name="text_premium">Premium</string>
+    <string name="text_freemium">Freemium</string>
+    <string name="text_filter">Filter</string>
+    <string name="text_today">Today</string>
+    <string name="text_clear">Clear</string>
+    <string name="text_sort">Sort</string>
 
 </resources>

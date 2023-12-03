@@ -5,21 +5,22 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/app_color_on_primary"
+    android:padding="16dp"
     tools:context=".presentation.feature.otp.OtpActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/header_input_otp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
+        android:layout_marginTop="25dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
             android:id="@+id/ic_arrow_left"
-            android:layout_width="28dp"
-            android:layout_height="28dp"
-            android:layout_marginStart="29dp"
-            android:layout_marginTop="25dp"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_marginStart="16dp"
             android:src="@drawable/ic_arrow_left_dark_blue"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -29,15 +30,14 @@
             android:id="@+id/tv_input_otp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
-            android:layout_marginTop="25dp"
+            android:layout_marginStart="20dp"
             android:fontFamily="@font/montserrat_semibold"
+            android:text="@string/input_otp"
+            android:textColor="@color/app_color_secondary"
             android:textSize="21sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toRightOf="@+id/ic_arrow_left"
-            app:layout_constraintTop_toTopOf="parent"
-            android:textColor="@color/app_color_secondary"
-            android:text="@string/input_otp" />
+            app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -56,11 +56,12 @@
             android:layout_height="wrap_content"
             android:fontFamily="@font/poppins_medium"
             android:gravity="center"
+            android:text="@string/the_otp_code_number_has_been_sent_to_cimut_gmail_com"
             android:textColor="@color/app_color_secondary"
+            android:textSize="14sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:text="@string/the_otp_code_number_has_been_sent_to_cimut_gmail_com" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <com.otpview.OTPTextView
             android:id="@+id/otp_view"
@@ -93,14 +94,13 @@
             android:layout_marginTop="100dp"
             android:fontFamily="@font/poppins_bold"
             android:gravity="center"
+            android:text="@string/resend_otp_code"
             android:textColor="@color/app_color_primary"
+            android:textSize="14sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/otp_view"
-            android:text="@string/resend_otp_code" />
-
+            app:layout_constraintTop_toBottomOf="@id/otp_view" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

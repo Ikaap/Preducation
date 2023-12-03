@@ -1,14 +1,14 @@
 package com.kelompoksatuandsatu.preducation.data.local.dummy
 
-import com.kelompoksatuandsatu.preducation.model.PopularCourse
+import com.kelompoksatuandsatu.preducation.model.Course
 
 interface DummyPopularCourseDataSource {
-    fun getPopularCourse(): List<PopularCourse>
+    fun getPopularCourse(): List<Course>
 }
 
 class DummyPopularCourseDataSourceImpl() : DummyPopularCourseDataSource {
-    override fun getPopularCourse(): List<PopularCourse> = listOf(
-        PopularCourse(
+    override fun getPopularCourse(): List<Course> = listOf(
+        Course(
             imgUrlPopularCourse = "https://raw.githubusercontent.com/NindaNuraisyah/AssetFinalProject/master/app/src/main/res/drawable/img_uiux_design.png",
             nameCategoryPopular = "Data Science",
             ratingCourse = "4.7",
@@ -16,9 +16,12 @@ class DummyPopularCourseDataSourceImpl() : DummyPopularCourseDataSource {
             levelCourse = "Adanvanced Level",
             durationCourse = "60 menit",
             moduleCourse = "19 Modul",
-            priceCourse = 249000
+            priceCourse = 249000,
+            progress = 40,
+            type = "Freemium",
+            statusPayment = "Waiting"
         ),
-        PopularCourse(
+        Course(
             imgUrlPopularCourse = "https://raw.githubusercontent.com/NindaNuraisyah/AssetFinalProject/master/app/src/main/res/drawable/img_product_management.png",
             nameCategoryPopular = "Data Science",
             ratingCourse = "4.5",
@@ -26,9 +29,12 @@ class DummyPopularCourseDataSourceImpl() : DummyPopularCourseDataSource {
             levelCourse = "Beginner Level",
             durationCourse = "45 menit",
             moduleCourse = "8 Modul",
-            priceCourse = 199000
+            priceCourse = 199000,
+            progress = 40,
+            type = "Premium",
+            statusPayment = "Paid"
         ),
-        PopularCourse(
+        Course(
             imgUrlPopularCourse = "https://raw.githubusercontent.com/NindaNuraisyah/AssetFinalProject/master/app/src/main/res/drawable/img_web_development.png",
             nameCategoryPopular = "Data Science",
             ratingCourse = "4.3",
@@ -36,9 +42,12 @@ class DummyPopularCourseDataSourceImpl() : DummyPopularCourseDataSource {
             levelCourse = "Adanvanced Level",
             durationCourse = "120 menit",
             moduleCourse = "20 Modul",
-            priceCourse = 185000
+            priceCourse = 185000,
+            progress = 40,
+            type = "Freemium",
+            statusPayment = "Paid"
         ),
-        PopularCourse(
+        Course(
             imgUrlPopularCourse = "https://raw.githubusercontent.com/NindaNuraisyah/AssetFinalProject/master/app/src/main/res/drawable/img_android_development.png",
             nameCategoryPopular = "Data Science",
             ratingCourse = "4.6",
@@ -46,7 +55,10 @@ class DummyPopularCourseDataSourceImpl() : DummyPopularCourseDataSource {
             levelCourse = "Adanvanced Level",
             durationCourse = "90 menit",
             moduleCourse = "6 Modul",
-            priceCourse = 239000
+            priceCourse = 239000,
+            progress = 40,
+            type = "Premium",
+            statusPayment = "Paid"
         )
     )
 }

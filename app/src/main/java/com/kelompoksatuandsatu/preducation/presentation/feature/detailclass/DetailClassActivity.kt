@@ -1,6 +1,8 @@
 package com.kelompoksatuandsatu.preducation.presentation.feature.detailclass
 
 import android.annotation.SuppressLint
+import android.content.Context
+import android.content.Intent
 import android.content.pm.ActivityInfo
 import android.content.res.Configuration
 import android.os.Bundle
@@ -15,6 +17,7 @@ import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayout
 import com.kelompoksatuandsatu.preducation.R
 import com.kelompoksatuandsatu.preducation.databinding.ActivityDetailClassBinding
+import com.kelompoksatuandsatu.preducation.model.Course
 import com.kelompoksatuandsatu.preducation.presentation.feature.detailclass.adapter.ViewPagerAdapter
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.PlayerConstants
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer
@@ -44,7 +47,6 @@ class DetailClassActivity : AppCompatActivity() {
             }
         }
     }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
@@ -52,6 +54,11 @@ class DetailClassActivity : AppCompatActivity() {
         setOnClickListener()
         setYoutubeFullScreen()
         setLayoutViewPager()
+        showDetailClass()
+    }
+
+    private fun showDetailClass() {
+        // TODO get data course
     }
 
     private fun setOnClickListener() {
@@ -238,6 +245,15 @@ class DetailClassActivity : AppCompatActivity() {
                     tabLayout.selectTab(tabLayout.getTabAt(position))
                 }
             })
+        }
+    }
+
+    companion object {
+        const val EXTRA_MENU = "EXTRA_MENU"
+        fun startActivity(context: Context, couser: Course) {
+            val intent = Intent(context, DetailClassActivity::class.java)
+            intent.putExtra(EXTRA_MENU, couser)
+            context.startActivity(intent)
         }
     }
 }

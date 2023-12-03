@@ -1,5 +1,6 @@
 package com.kelompoksatuandsatu.preducation.presentation.feature.login
 
+import android.content.Intent
 import android.os.Bundle
 import android.text.SpannableString
 import android.text.method.PasswordTransformationMethod
@@ -7,18 +8,28 @@ import android.text.style.UnderlineSpan
 import android.widget.Button
 import android.widget.EditText
 import android.widget.LinearLayout
-import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.constraintlayout.widget.ConstraintLayout
 import com.kelompoksatuandsatu.preducation.R
+import com.kelompoksatuandsatu.preducation.databinding.ActivityLoginBinding
+import com.kelompoksatuandsatu.preducation.presentation.feature.main.MainActivity
+import com.kelompoksatuandsatu.preducation.presentation.feature.register.RegisterActivity
+import com.kelompoksatuandsatu.preducation.presentation.feature.resetpassword.ResetPasswordActivity
 
 class LoginActivity : AppCompatActivity() {
+
+    private val binding: ActivityLoginBinding by lazy {
+        ActivityLoginBinding.inflate(layoutInflater)
+    }
+
     private lateinit var passwordInput: EditText
     private lateinit var showHideButtonPassword: Button
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_login)
+        setContentView(binding.root)
 
-        val registerTextView = findViewById<TextView>(R.id.registerText)
+//        val registerTextView = findViewById<TextView>(R.id.registerText)
+        val registerTextView = binding.registerText
         val registerString = " Register Here"
         val registerSpannable = SpannableString(registerString)
         registerSpannable.setSpan(
@@ -38,9 +49,23 @@ class LoginActivity : AppCompatActivity() {
         }
 
         // Show Message Box
-        val loginButton = findViewById<Button>(R.id.loginButton)
+        val loginButton = findViewById<ConstraintLayout>(R.id.cl_button_sign_in)
         loginButton.setOnClickListener {
             showErrorMessageBox()
+        }
+
+        registerTextView.setOnClickListener {
+            val intent = Intent(this, RegisterActivity::class.java)
+            startActivity(intent)
+        }
+
+        binding.forgotPasswordText.setOnClickListener {
+            val intent = Intent(this, ResetPasswordActivity::class.java)
+            startActivity(intent)
+        }
+        binding.tvWithoutLogin.setOnClickListener {
+            val intent = Intent(this, MainActivity::class.java)
+            startActivity(intent)
         }
     }
 
