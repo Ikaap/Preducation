@@ -27,7 +27,6 @@ class NotificationAdapter : ListAdapter<NotificationItem, NotificationAdapter.No
 
         fun bind(notification: NotificationItem) {
 //            binding.tvDayNotification.text = notification.day
-            binding.ivNotificationImg.setImageResource(notification.image)
             binding.tvNotificationName.text = notification.name
             binding.tvNotificationDesc1.text = notification.description1
         }
