@@ -7,6 +7,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.DELETE
 import retrofit2.http.GET
+import retrofit2.http.Path
 import retrofit2.http.Query
 import java.util.concurrent.TimeUnit
 
@@ -36,18 +37,18 @@ interface PreducationService {
 
     // detail
     @GET("api/v1/courses/{id}")
-    suspend fun getCourseById(@Query("id") id: String? = null) // : DetailCourseResponse
+    suspend fun getCourseById(@Path("id") id: String? = null) // : DetailCourseResponse
     // @POST("api/v1/progress")
     // suspend fun getCourseById(@Query("id") id: String? = null, @Body progressRequest: ProgressRequest) // : ProgressResponse
 
     // profile
     @GET("api/v1/users/{id}")
-    suspend fun getUserById(@Query("id") id: String? = null) // : UserResponseResponse
+    suspend fun getUserById(@Path("id") id: String? = null) // : UserResponseResponse
 
     // @PATCH("api/v1/users/{id}")
-    // suspend fun updateUserById(@Query("id") id: String? = null, @Body userRequest: UserRequest) //:UserResponseResponse
+    // suspend fun updateUserById(@Path("id") id: String? = null, @Body userRequest: UserRequest) //:UserResponseResponse
     // @PATCH("api/v1/users/update-password/{id}")
-    // suspend fun updateUserPassword(@Query("id") id: String? = null, @Body changePasswordRequest: ChangePasswordRequest) //:ChangePasswordResponse
+    // suspend fun updateUserPassword(@Path("id") id: String? = null, @Body changePasswordRequest: ChangePasswordRequest) //:ChangePasswordResponse
     @GET("api/v1/payments")
     suspend fun getHistoryPayment() // : HistoryPaymentResponse
 
