@@ -45,10 +45,10 @@ android {
     flavorDimensions += "env"
     productFlavors {
         create("production") {
-            buildConfigField("String", "BASE_URL", "\"https://696853c9-d6f6-480a-939e-2f9923c18544.mock.pstmn.io\"")
+            buildConfigField("String", "BASE_URL", "\"https://preducation.up.railway.app/\"")
         }
         create("integration") {
-            buildConfigField("String", "BASE_URL", "\"https://696853c9-d6f6-480a-939e-2f9923c18544.mock.pstmn.io\"")
+            buildConfigField("String", "BASE_URL", "\"https://preducation.up.railway.app/\"")
         }
     }
 }

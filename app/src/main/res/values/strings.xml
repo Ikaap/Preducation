@@ -148,5 +148,6 @@
     <string name="text_today">Today</string>
     <string name="text_clear">Clear</string>
     <string name="text_sort">Sort</string>
+    <string name="text_class_topic">Class Topic</string>
 
 </resources>
