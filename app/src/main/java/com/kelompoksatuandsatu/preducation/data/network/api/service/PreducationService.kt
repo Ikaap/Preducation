@@ -2,6 +2,8 @@ package com.kelompoksatuandsatu.preducation.data.network.api.service
 
 import com.chuckerteam.chucker.api.ChuckerInterceptor
 import com.kelompoksatuandsatu.preducation.BuildConfig
+import com.kelompoksatuandsatu.preducation.data.network.api.model.category.categoryclass.CategoriesClassResponse
+import com.kelompoksatuandsatu.preducation.data.network.api.model.course.CourseResponse
 import com.kelompoksatuandsatu.preducation.data.network.api.model.ResetPasswordRequest
 import com.kelompoksatuandsatu.preducation.data.network.api.model.ResetPasswordResponse
 import com.kelompoksatuandsatu.preducation.data.network.api.interceptor.AuthInterceptor
