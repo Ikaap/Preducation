@@ -10,16 +10,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.kelompoksatuandsatu.preducation.data.local.dummy.DummyCategoryCourseDataSource
-import com.kelompoksatuandsatu.preducation.data.local.dummy.DummyCategoryCourseDataSourceImpl
-import com.kelompoksatuandsatu.preducation.data.local.dummy.DummyCategoryPopularDataSource
-import com.kelompoksatuandsatu.preducation.data.local.dummy.DummyCategoryPopularDataSourceImpl
-import com.kelompoksatuandsatu.preducation.data.local.dummy.DummyPopularCourseDataSource
-import com.kelompoksatuandsatu.preducation.data.local.dummy.DummyPopularCourseDataSourceImpl
 import com.kelompoksatuandsatu.preducation.databinding.DialogNonLoginBinding
 import com.kelompoksatuandsatu.preducation.databinding.FragmentHomeBinding
-import com.kelompoksatuandsatu.preducation.model.CategoryCourse
-import com.kelompoksatuandsatu.preducation.model.CategoryPopular
 import com.kelompoksatuandsatu.preducation.model.Course
 import com.kelompoksatuandsatu.preducation.presentation.common.adapter.AdapterLayoutMenu
 import com.kelompoksatuandsatu.preducation.presentation.common.adapter.CategoryCourseListAdapter
@@ -27,6 +19,8 @@ import com.kelompoksatuandsatu.preducation.presentation.common.adapter.CategoryC
 import com.kelompoksatuandsatu.preducation.presentation.common.adapter.CourseCardListAdapter
 import com.kelompoksatuandsatu.preducation.presentation.feature.detailclass.DetailClassActivity
 import com.kelompoksatuandsatu.preducation.presentation.feature.register.RegisterActivity
+import com.kelompoksatuandsatu.preducation.utils.proceedWhen
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class HomeFragment : Fragment() {
     private lateinit var binding: FragmentHomeBinding
@@ -37,12 +31,20 @@ class HomeFragment : Fragment() {
         }
     }
 
+    private val categoryCoursePopularAdapter: CategoryCourseRoundedListAdapter by lazy {
+        CategoryCourseRoundedListAdapter {
+            viewModel.getCourse(it.name)
+        }
+    }
+
     private val popularCourseAdapter: CourseCardListAdapter by lazy {
         CourseCardListAdapter(AdapterLayoutMenu.HOME) {
             showSuccessDialog()
             navigateToDetail(it)
         }
     }
+
+    private val viewModel: HomeViewModel by viewModel()
 
     private fun navigateToDetail(course: Course) {
         DetailClassActivity.startActivity(requireContext(), course)
@@ -60,10 +62,11 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        showCategoryCourse()
-        showPopularCourse()
-        showCategoryPopular()
-
+        setOnClickListener()
+        getData()
+        observeData()
+    }
+    private fun setOnClickListener() {
         binding.rvPopularCourse.setOnClickListener {
             showSuccessDialog()
         }
@@ -73,6 +76,67 @@ class HomeFragment : Fragment() {
         }
         binding.ivToSeeAll.setOnClickListener {
             SeeAllPopularCoursesActivity.startActivity(requireContext())
+        }
+    }
+    private fun getData() {
+        viewModel.getCategoriesClass()
+        viewModel.getCategoriesClassPopular()
+        viewModel.getCourse()
+    }
+
+    private fun observeData() {
+        viewModel.categoriesClass.observe(viewLifecycleOwner) {
+            it.proceedWhen(
+                doOnSuccess = {
+                    binding.rvCategoryCourse.apply {
+                        binding.rvCategoryCourse.layoutManager = LinearLayoutManager(
+                            requireContext(),
+                            LinearLayoutManager.HORIZONTAL,
+                            false
+                        )
+                        adapter = categoryCourseAdapter
+                    }
+                    it.payload?.let { data ->
+                        categoryCourseAdapter.setData(data)
+                    }
+                }
+            )
+        }
+
+        viewModel.categoriesClassPopular.observe(viewLifecycleOwner) {
+            it.proceedWhen(
+                doOnSuccess = {
+                    binding.rvCategoryPopular.apply {
+                        binding.rvCategoryPopular.layoutManager = LinearLayoutManager(
+                            requireContext(),
+                            LinearLayoutManager.HORIZONTAL,
+                            false
+                        )
+                        adapter = categoryCoursePopularAdapter
+                    }
+                    it.payload?.let { data ->
+                        categoryCoursePopularAdapter.setData(data)
+                    }
+                }
+            )
+        }
+
+        viewModel.course.observe(viewLifecycleOwner) {
+            it.proceedWhen(
+                doOnSuccess = {
+                    binding.rvPopularCourse.apply {
+                        binding.rvPopularCourse.layoutManager = LinearLayoutManager(
+                            requireContext(),
+                            LinearLayoutManager.HORIZONTAL,
+                            false
+                        )
+                        adapter = popularCourseAdapter
+                    }
+                    it.payload?.let { data ->
+                        popularCourseAdapter.setData(data)
+                    }
+                }
+            )
         }
     }
 
@@ -89,48 +153,5 @@ class HomeFragment : Fragment() {
             val intent = Intent(requireContext(), RegisterActivity::class.java)
             startActivity(intent)
         }
-    }
-
-    private fun showCategoryPopular() {
-        val categoryPopularAdapter = CategoryCourseRoundedListAdapter()
-        binding.rvCategoryPopular.adapter = categoryPopularAdapter
-        binding.rvCategoryPopular.layoutManager = LinearLayoutManager(
-            requireContext(),
-            LinearLayoutManager.HORIZONTAL,
-            false
-        )
-        val dummyCategoryPopularDataSource: DummyCategoryPopularDataSource =
-            DummyCategoryPopularDataSourceImpl()
-        val categoryPopularList: List<CategoryPopular> =
-            dummyCategoryPopularDataSource.getCategoryPopular()
-        categoryPopularAdapter.setData(categoryPopularList)
-    }
-
-    private fun showPopularCourse() {
-        binding.rvPopularCourse.adapter = popularCourseAdapter
-        binding.rvPopularCourse.layoutManager = LinearLayoutManager(
-            requireContext(),
-            LinearLayoutManager.HORIZONTAL,
-            false
-        )
-        val dummyPopularDataSource: DummyPopularCourseDataSource =
-            DummyPopularCourseDataSourceImpl()
-        val popularCourseList: List<Course> =
-            dummyPopularDataSource.getPopularCourse()
-        popularCourseAdapter.setData(popularCourseList)
-    }
-
-    private fun showCategoryCourse() {
-        binding.rvCategoryCourse.adapter = categoryCourseAdapter
-        binding.rvCategoryCourse.layoutManager = LinearLayoutManager(
-            requireContext(),
-            LinearLayoutManager.HORIZONTAL,
-            false
-        )
-        val dummyCategoryCourseDataSource: DummyCategoryCourseDataSource =
-            DummyCategoryCourseDataSourceImpl()
-        val categoryCourseList: List<CategoryCourse> =
-            dummyCategoryCourseDataSource.getCategoryCourse()
-        categoryCourseAdapter.setData(categoryCourseList)
     }
 }
