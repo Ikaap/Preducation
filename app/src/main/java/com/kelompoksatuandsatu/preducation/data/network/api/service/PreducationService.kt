@@ -33,7 +33,7 @@ interface PreducationService {
     suspend fun getCategoriesProgress() : CategoriesProgressResponse
     // get all categories progress class
     @GET("api/v1/progress")
-    suspend fun getCourseUserProgress(@Query("progressClass") progressClass: String? = null) : CourseProgressResponse
+    suspend fun getCourseUserProgress(@Query("progressClass") progressClass: String? = null) // : CourseProgressResponse
 
     // course
     // get all categories type class

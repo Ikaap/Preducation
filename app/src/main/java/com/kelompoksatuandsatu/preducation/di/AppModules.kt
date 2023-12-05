@@ -19,8 +19,6 @@ import org.koin.dsl.module
 object AppModules {
 
     private val localModule = module {
-        single { AppDatabase.getInstance(androidContext()) }
-        single { get<AppDatabase>() }
         single { androidContext().appDataStore }
         single<PreferenceDataStoreHelper> { PreferenceDataStoreHelperImpl(get()) }
     }
@@ -39,6 +37,8 @@ object AppModules {
     }
 
     private val viewModelModule = module {
+        viewModelOf(com.kelompoksatuandsatu.preducation.presentation.feature.home::HomeViewModel)
+        viewModelOf(com.kelompoksatuandsatu.preducation.presentation.feature.home::SeeAllViewModel)
         viewModelOf(::ProgressClassViewModel)
     }
 
