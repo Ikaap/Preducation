@@ -2,6 +2,8 @@ package com.kelompoksatuandsatu.preducation.data.network.api.service
 
 import com.chuckerteam.chucker.api.ChuckerInterceptor
 import com.kelompoksatuandsatu.preducation.BuildConfig
+import com.kelompoksatuandsatu.preducation.data.network.api.model.category.categoryclass.CategoriesClassResponse
+import com.kelompoksatuandsatu.preducation.data.network.api.model.course.CourseResponse
 import com.kelompoksatuandsatu.preducation.data.network.api.model.ResetPasswordRequest
 import com.kelompoksatuandsatu.preducation.data.network.api.model.ResetPasswordResponse
 import okhttp3.OkHttpClient
@@ -19,10 +21,10 @@ interface PreducationService {
 
     // home & see all
     @GET("api/v1/categories")
-    suspend fun getCategoriesClass() // : CategoriesClassResponse
+    suspend fun getCategoriesClass(): CategoriesClassResponse
 
     @GET("api/v1/courses")
-    suspend fun getCourseHome(@Query("category") category: String? = null) // : CourseResponse
+    suspend fun getCourseHome(@Query("category") category: String? = null): CourseResponse
 
     // notification
     @GET("api/v1/notifications")
