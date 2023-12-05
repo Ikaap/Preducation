@@ -250,9 +250,9 @@ class DetailClassActivity : AppCompatActivity() {
 
     companion object {
         const val EXTRA_MENU = "EXTRA_MENU"
-        fun startActivity(context: Context, couser: Course) {
+        fun startActivity(context: Context, course: Course) {
             val intent = Intent(context, DetailClassActivity::class.java)
-            intent.putExtra(EXTRA_MENU, couser)
+//            intent.putExtra(EXTRA_MENU, course)
             context.startActivity(intent)
         }
     }

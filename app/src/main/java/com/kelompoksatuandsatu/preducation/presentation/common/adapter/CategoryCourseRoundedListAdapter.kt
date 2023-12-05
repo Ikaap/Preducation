@@ -7,26 +7,24 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.kelompoksatuandsatu.preducation.core.ViewHolderBinder
 import com.kelompoksatuandsatu.preducation.databinding.ItemCategoryRoundedBinding
-import com.kelompoksatuandsatu.preducation.model.CategoryPopular
+import com.kelompoksatuandsatu.preducation.model.CategoryClass
 
-class CategoryCourseRoundedListAdapter() : RecyclerView.Adapter<LinearCategoryPopularItemViewHolder>() {
+class CategoryCourseRoundedListAdapter(
+    private val itemClick: (CategoryClass) -> Unit
+) : RecyclerView.Adapter<CategoryCourseRoundedListAdapter.LinearCategoryPopularItemViewHolder>() {
+
     private val dataDiffer = AsyncListDiffer(
         this,
-        object : DiffUtil.ItemCallback<CategoryPopular>() {
-            override fun areItemsTheSame(oldItem: CategoryPopular, newItem: CategoryPopular): Boolean {
+        object : DiffUtil.ItemCallback<CategoryClass>() {
+            override fun areItemsTheSame(oldItem: CategoryClass, newItem: CategoryClass): Boolean {
                 return oldItem.id == newItem.id
             }
 
-            override fun areContentsTheSame(oldItem: CategoryPopular, newItem: CategoryPopular): Boolean {
+            override fun areContentsTheSame(oldItem: CategoryClass, newItem: CategoryClass): Boolean {
                 return oldItem.id == newItem.id
             }
         }
     )
-
-    fun setData(data: List<CategoryPopular>) {
-        dataDiffer.submitList(data)
-        notifyItemChanged(0, data.size)
-    }
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
@@ -37,7 +35,9 @@ class CategoryCourseRoundedListAdapter() : RecyclerView.Adapter<LinearCategoryPo
                 LayoutInflater.from(parent.context),
                 parent,
                 false
-            )
+            ),
+            itemClick
+
         )
     }
 
@@ -46,12 +46,19 @@ class CategoryCourseRoundedListAdapter() : RecyclerView.Adapter<LinearCategoryPo
     override fun onBindViewHolder(holder: LinearCategoryPopularItemViewHolder, position: Int) {
         holder.bind(dataDiffer.currentList[position])
     }
-}
 
-class LinearCategoryPopularItemViewHolder(
-    private val binding: ItemCategoryRoundedBinding
-) : RecyclerView.ViewHolder(binding.root), ViewHolderBinder<CategoryPopular> {
-    override fun bind(item: CategoryPopular) {
-        binding.tvCategoryPopular.text = item.nameCategoryPopular
+    fun setData(data: List<CategoryClass>) {
+        dataDiffer.submitList(data)
+        notifyItemChanged(0, data.size)
+    }
+
+    class LinearCategoryPopularItemViewHolder(
+        private val binding: ItemCategoryRoundedBinding,
+        val itemClick: (CategoryClass) -> Unit
+    ) : RecyclerView.ViewHolder(binding.root), ViewHolderBinder<CategoryClass> {
+        override fun bind(item: CategoryClass) {
+            binding.tvCategoryPopular.text = item.name
+            itemView.setOnClickListener { itemClick(item) }
+        }
     }
 }

@@ -5,12 +5,9 @@ import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.recyclerview.widget.LinearLayoutManager
-import com.kelompoksatuandsatu.preducation.data.local.dummy.DummyPopularCourseDataSource
-import com.kelompoksatuandsatu.preducation.data.local.dummy.DummyPopularCourseDataSourceImpl
+// import com.kelompoksatuandsatu.preducation.data.local.dummy.DummyPopularCourseDataSourceImpl
 import com.kelompoksatuandsatu.preducation.databinding.ActivityTransactionBinding
 import com.kelompoksatuandsatu.preducation.databinding.DialogNonLoginBinding
-import com.kelompoksatuandsatu.preducation.model.Course
 import com.kelompoksatuandsatu.preducation.presentation.common.adapter.AdapterLayoutMenu
 import com.kelompoksatuandsatu.preducation.presentation.common.adapter.CourseLinearListAdapter
 
@@ -37,17 +34,17 @@ class TransactionActivity : AppCompatActivity() {
     }
 
     private fun showCourse() {
-        binding.rvHistory.adapter = courseAdapter
-        binding.rvHistory.layoutManager = LinearLayoutManager(
-            this,
-            LinearLayoutManager.VERTICAL,
-            false
-        )
-        val dummyPopularDataSource: DummyPopularCourseDataSource =
-            DummyPopularCourseDataSourceImpl()
-        val popularCourseList: List<Course> =
-            dummyPopularDataSource.getPopularCourse()
-        courseAdapter.setData(popularCourseList)
+//        binding.rvHistory.adapter = courseAdapter
+//        binding.rvHistory.layoutManager = LinearLayoutManager(
+//            this,
+//            LinearLayoutManager.VERTICAL,
+//            false
+//        )
+//        val dummyPopularDataSource: DummyPopularCourseDataSource =
+//            DummyPopularCourseDataSourceImpl()
+//        val popularCourseList: List<Course> =
+//            dummyPopularDataSource.getPopularCourse()
+//        courseAdapter.setData(popularCourseList)
     }
 
     private fun showSuccessDialog() {
