@@ -8,12 +8,13 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.kelompoksatuandsatu.preducation.R
 import com.kelompoksatuandsatu.preducation.databinding.DialogNonLoginBinding
 import com.kelompoksatuandsatu.preducation.databinding.FragmentHomeBinding
-import com.kelompoksatuandsatu.preducation.model.CourseViewParam
+import com.kelompoksatuandsatu.preducation.model.Course
 import com.kelompoksatuandsatu.preducation.presentation.common.adapter.AdapterLayoutMenu
 import com.kelompoksatuandsatu.preducation.presentation.common.adapter.CategoryCourseListAdapter
 import com.kelompoksatuandsatu.preducation.presentation.common.adapter.CategoryCourseRoundedListAdapter
@@ -47,7 +48,7 @@ class HomeFragment : Fragment() {
 
     private val viewModel: HomeViewModel by viewModel()
 
-    private fun navigateToDetail(course: CourseViewParam) {
+    private fun navigateToDetail(course: Course) {
         DetailClassActivity.startActivity(requireContext(), course)
     }
 
@@ -67,6 +68,7 @@ class HomeFragment : Fragment() {
         getData()
         observeData()
     }
+
     private fun setOnClickListener() {
         binding.rvPopularCourse.setOnClickListener {
             showSuccessDialog()
@@ -79,6 +81,7 @@ class HomeFragment : Fragment() {
             SeeAllPopularCoursesActivity.startActivity(requireContext())
         }
     }
+
     private fun getData() {
         viewModel.getCategoriesClass()
         viewModel.getCategoriesClassPopular()
@@ -89,17 +92,31 @@ class HomeFragment : Fragment() {
         viewModel.categoriesClass.observe(viewLifecycleOwner) {
             it.proceedWhen(
                 doOnSuccess = {
+                    binding.layoutStateCategoryCourse.root.isVisible = false
+                    binding.layoutStateCategoryCourse.pbLoading.isVisible = false
+                    binding.layoutStateCategoryCourse.tvError.isVisible = false
                     binding.rvCategoryCourse.apply {
-                        binding.rvCategoryCourse.layoutManager = LinearLayoutManager(
-                            requireContext(),
-                            LinearLayoutManager.HORIZONTAL,
-                            false
-                        )
-                        adapter = categoryCourseAdapter
+                        binding.rvCategoryCourse.apply {
+                            isVisible = true
+                            adapter = categoryCourseAdapter
+                        }
                     }
                     it.payload?.let { data ->
                         categoryCourseAdapter.setData(data)
                     }
+                },
+                doOnLoading = {
+                    binding.layoutStateCategoryCourse.root.isVisible = true
+                    binding.layoutStateCategoryCourse.pbLoading.isVisible = true
+                    binding.layoutStateCategoryCourse.tvError.isVisible = false
+                    binding.rvCategoryCourse.isVisible = false
+                },
+                doOnError = {
+                    binding.layoutStateCategoryCourse.root.isVisible = true
+                    binding.layoutStateCategoryCourse.pbLoading.isVisible = false
+                    binding.layoutStateCategoryCourse.tvError.isVisible = true
+                    binding.layoutStateCategoryCourse.tvError.text = it.exception?.message.orEmpty()
+                    binding.rvCategoryCourse.isVisible = false
                 }
             )
         }
@@ -122,27 +139,43 @@ class HomeFragment : Fragment() {
             )
         }
 
-        viewModel.coursePopular.observe(viewLifecycleOwner) {
+        viewModel.course.observe(viewLifecycleOwner) {
             it.proceedWhen(
                 doOnSuccess = {
+                    binding.layoutStatePopularCourse.root.isVisible = false
+                    binding.layoutStatePopularCourse.pbLoading.isVisible = false
+                    binding.layoutStatePopularCourse.tvError.isVisible = false
                     binding.rvPopularCourse.apply {
-                        binding.rvPopularCourse.layoutManager = LinearLayoutManager(
-                            requireContext(),
-                            LinearLayoutManager.HORIZONTAL,
-                            false
-                        )
+                        binding.rvPopularCourse.apply {
+                            isVisible = true
+                            adapter = popularCourseAdapter
+                        }
                         adapter = popularCourseAdapter
                     }
                     it.payload?.let { data ->
                         popularCourseAdapter.setData(data)
                     }
                 },
-                doOnEmpty = {
-                    Toast.makeText(requireContext(), "data ksoong", Toast.LENGTH_SHORT).show()
+                doOnLoading = {
+                    binding.layoutStatePopularCourse.root.isVisible = true
+                    binding.layoutStatePopularCourse.pbLoading.isVisible = true
+                    binding.layoutStatePopularCourse.tvError.isVisible = false
+                    binding.rvPopularCourse.isVisible = false
                 },
-                doOnError = { e ->
-                    binding.tvError.text = it.exception?.message
-//                    Toast.makeText(requireContext(), it.exception?.message, Toast.LENGTH_LONG).show()
+                doOnError = {
+                    binding.layoutStatePopularCourse.root.isVisible = true
+                    binding.layoutStatePopularCourse.pbLoading.isVisible = false
+                    binding.layoutStatePopularCourse.tvError.isVisible = true
+                    binding.layoutStatePopularCourse.tvError.text = it.exception?.message.orEmpty()
+                    binding.rvPopularCourse.isVisible = false
+                },
+                doOnEmpty = {
+                    binding.layoutStatePopularCourse.root.isVisible = true
+                    binding.layoutStatePopularCourse.pbLoading.isVisible = false
+                    binding.layoutStatePopularCourse.tvError.isVisible = true
+                    binding.layoutStatePopularCourse.tvError.text =
+                        resources.getString(R.string.popular_course_not_found)
+                    binding.rvPopularCourse.isVisible = false
                 }
             )
         }
