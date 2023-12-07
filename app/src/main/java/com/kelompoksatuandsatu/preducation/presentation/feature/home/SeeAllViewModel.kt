@@ -6,7 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kelompoksatuandsatu.preducation.data.repository.CourseRepository
 import com.kelompoksatuandsatu.preducation.model.CategoryClass
-import com.kelompoksatuandsatu.preducation.model.Course
+import com.kelompoksatuandsatu.preducation.model.CourseViewParam
 import com.kelompoksatuandsatu.preducation.utils.ResultWrapper
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -18,9 +18,9 @@ class SeeAllViewModel(
     val categoriesClassPopular: LiveData<ResultWrapper<List<CategoryClass>>>
         get() = _categoriesClassPopular
 
-    private val _course = MutableLiveData<ResultWrapper<List<Course>>>()
-    val course: LiveData<ResultWrapper<List<Course>>>
-        get() = _course
+    private val _courseViewParam = MutableLiveData<ResultWrapper<List<CourseViewParam>>>()
+    val courseViewParam: LiveData<ResultWrapper<List<CourseViewParam>>>
+        get() = _courseViewParam
 
     fun getCategoriesClassPopular() {
         viewModelScope.launch(Dispatchers.IO) {
@@ -33,7 +33,7 @@ class SeeAllViewModel(
     fun getCourse(category: String? = null) {
         viewModelScope.launch(Dispatchers.IO) {
             courseRepo.getCourseHome(if (category == "All") null else category?.lowercase()).collect {
-                _course.postValue(it)
+                _courseViewParam.postValue(it)
             }
         }
     }

@@ -2,16 +2,20 @@ package com.kelompoksatuandsatu.preducation.data.repository
 
 import com.kelompoksatuandsatu.preducation.data.network.api.datasource.CourseDataSource
 import com.kelompoksatuandsatu.preducation.data.network.api.model.category.categoryclass.toCategoryClassList
+import com.kelompoksatuandsatu.preducation.data.network.api.model.course.detailcourse.toDetailCourse
 import com.kelompoksatuandsatu.preducation.data.network.api.model.course.toCourseList
 import com.kelompoksatuandsatu.preducation.model.CategoryClass
-import com.kelompoksatuandsatu.preducation.model.Course
+import com.kelompoksatuandsatu.preducation.model.CourseViewParam
+import com.kelompoksatuandsatu.preducation.model.DetailCourseViewParam
 import com.kelompoksatuandsatu.preducation.utils.ResultWrapper
 import com.kelompoksatuandsatu.preducation.utils.proceedFlow
 import kotlinx.coroutines.flow.Flow
 
 interface CourseRepository {
     fun getCategoriesClass(): Flow<ResultWrapper<List<CategoryClass>>>
-    fun getCourseHome(category: String? = null): Flow<ResultWrapper<List<Course>>>
+    fun getCourseHome(category: String? = null): Flow<ResultWrapper<List<CourseViewParam>>>
+
+    fun getCourseById(id: String? = null): Flow<ResultWrapper<DetailCourseViewParam>>
 }
 
 class CourseRepositoryImpl(private val apiDataSource: CourseDataSource) : CourseRepository {
@@ -21,9 +25,15 @@ class CourseRepositoryImpl(private val apiDataSource: CourseDataSource) : Course
         }
     }
 
-    override fun getCourseHome(category: String?): Flow<ResultWrapper<List<Course>>> {
+    override fun getCourseHome(category: String?): Flow<ResultWrapper<List<CourseViewParam>>> {
         return proceedFlow {
             apiDataSource.getCourseHome(category).data?.toCourseList() ?: emptyList()
+        }
+    }
+
+    override fun getCourseById(id: String?): Flow<ResultWrapper<DetailCourseViewParam>> {
+        return proceedFlow {
+            apiDataSource.getCourseById(id).data?.toDetailCourse()!!
         }
     }
 }

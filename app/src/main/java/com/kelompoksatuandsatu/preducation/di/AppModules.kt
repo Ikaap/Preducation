@@ -6,6 +6,7 @@ import com.kelompoksatuandsatu.preducation.data.network.api.datasource.CourseDat
 import com.kelompoksatuandsatu.preducation.data.network.api.service.PreducationService
 import com.kelompoksatuandsatu.preducation.data.repository.CourseRepository
 import com.kelompoksatuandsatu.preducation.data.repository.CourseRepositoryImpl
+import com.kelompoksatuandsatu.preducation.presentation.feature.detailclass.DetailClassViewModel
 import com.kelompoksatuandsatu.preducation.presentation.feature.home.HomeViewModel
 import com.kelompoksatuandsatu.preducation.presentation.feature.home.SeeAllViewModel
 import org.koin.android.ext.koin.androidContext
@@ -30,6 +31,7 @@ object AppModules {
     private val viewModelModule = module {
         viewModelOf(::HomeViewModel)
         viewModelOf(::SeeAllViewModel)
+        viewModelOf(::DetailClassViewModel)
     }
 
     val modules: List<Module> = listOf(

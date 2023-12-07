@@ -1,9 +1,9 @@
 package com.kelompoksatuandsatu.preducation.data.local.dummy
 
-import com.kelompoksatuandsatu.preducation.model.Course
+import com.kelompoksatuandsatu.preducation.model.CourseViewParam
 
 interface DummyPopularCourseDataSource {
-    fun getPopularCourse(): List<Course>
+    fun getPopularCourse(): List<CourseViewParam>
 }
 
 // class DummyPopularCourseDataSourceImpl() : DummyPopularCourseDataSource {
