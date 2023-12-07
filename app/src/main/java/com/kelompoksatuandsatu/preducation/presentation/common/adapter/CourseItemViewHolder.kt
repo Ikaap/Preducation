@@ -6,15 +6,15 @@ import coil.load
 import com.kelompoksatuandsatu.preducation.core.ViewHolderBinder
 import com.kelompoksatuandsatu.preducation.databinding.ItemCourseCardBinding
 import com.kelompoksatuandsatu.preducation.databinding.ItemLinearCourseBinding
-import com.kelompoksatuandsatu.preducation.model.Course
+import com.kelompoksatuandsatu.preducation.model.CourseViewParam
 import com.kelompoksatuandsatu.preducation.utils.toCurrencyFormat
 
 class HomeCourseItemViewHolder(
     private val binding: ItemCourseCardBinding,
-    private val itemClick: (Course) -> Unit
-) : RecyclerView.ViewHolder(binding.root), ViewHolderBinder<Course> {
+    private val itemClick: (CourseViewParam) -> Unit
+) : RecyclerView.ViewHolder(binding.root), ViewHolderBinder<CourseViewParam> {
 
-    override fun bind(item: Course) {
+    override fun bind(item: CourseViewParam) {
         with(item) {
             binding.ivPopularCourse.load(item.thumbnail) {
                 crossfade(true)
@@ -35,10 +35,10 @@ class HomeCourseItemViewHolder(
 
 class ClassCourseItemViewHolder(
     private val binding: ItemCourseCardBinding,
-    private val itemClick: (Course) -> Unit
-) : RecyclerView.ViewHolder(binding.root), ViewHolderBinder<Course> {
+    private val itemClick: (CourseViewParam) -> Unit
+) : RecyclerView.ViewHolder(binding.root), ViewHolderBinder<CourseViewParam> {
 
-    override fun bind(item: Course) {
+    override fun bind(item: CourseViewParam) {
         with(item) {
             binding.ivPopularCourse.load(item.thumbnail) {
                 crossfade(true)
@@ -59,10 +59,10 @@ class ClassCourseItemViewHolder(
 
 class HomeCourseLinearItemViewHolder(
     private val binding: ItemLinearCourseBinding,
-    private val itemClick: (Course) -> Unit
-) : RecyclerView.ViewHolder(binding.root), ViewHolderBinder<Course> {
+    private val itemClick: (CourseViewParam) -> Unit
+) : RecyclerView.ViewHolder(binding.root), ViewHolderBinder<CourseViewParam> {
 
-    override fun bind(item: Course) {
+    override fun bind(item: CourseViewParam) {
         with(item) {
             binding.ivPopularCourse.load(item.thumbnail) {
                 crossfade(true)
@@ -84,10 +84,10 @@ class HomeCourseLinearItemViewHolder(
 
 class CourseLinearItemViewHolder(
     private val binding: ItemLinearCourseBinding,
-    private val itemClick: (Course) -> Unit
-) : RecyclerView.ViewHolder(binding.root), ViewHolderBinder<Course> {
+    private val itemClick: (CourseViewParam) -> Unit
+) : RecyclerView.ViewHolder(binding.root), ViewHolderBinder<CourseViewParam> {
 
-    override fun bind(item: Course) {
+    override fun bind(item: CourseViewParam) {
         with(item) {
             binding.ivPopularCourse.load(item.thumbnail) {
                 crossfade(true)
@@ -115,10 +115,10 @@ class CourseLinearItemViewHolder(
 
 class HistoryPaymentItemViewHolder(
     private val binding: ItemLinearCourseBinding,
-    private val itemClick: (Course) -> Unit
-) : RecyclerView.ViewHolder(binding.root), ViewHolderBinder<Course> {
+    private val itemClick: (CourseViewParam) -> Unit
+) : RecyclerView.ViewHolder(binding.root), ViewHolderBinder<CourseViewParam> {
 
-    override fun bind(item: Course) {
+    override fun bind(item: CourseViewParam) {
         with(item) {
             binding.ivPopularCourse.load(item.thumbnail) {
                 crossfade(true)

@@ -1,13 +1,15 @@
-package com.kelompoksatuandsatu.preducation.data.network.api.model.course
+package com.kelompoksatuandsatu.preducation.data.network.api.model.course.detailcourse
 
 import androidx.annotation.Keep
 import com.google.gson.annotations.SerializedName
-import com.kelompoksatuandsatu.preducation.model.CourseViewParam
+import com.kelompoksatuandsatu.preducation.model.DetailCourseViewParam
 
 @Keep
 data class Data(
     @SerializedName("category")
     val category: Category?,
+    @SerializedName("chapters")
+    val chapters: List<Chapter>?,
     @SerializedName("classCode")
     val classCode: String?,
     @SerializedName("createdAt")
@@ -27,23 +29,24 @@ data class Data(
     @SerializedName("sold")
     val sold: Int?,
     @SerializedName("targetAudience")
-    val targetAudience: List<String?>?,
-    @SerializedName("thumbnail")
-    val thumbnail: String?,
+    val targetAudience: List<String>?,
     @SerializedName("title")
     val title: String?,
     @SerializedName("totalDuration")
-    val totalDuration: Double?,
+    val totalDuration: Int?,
     @SerializedName("totalModule")
     val totalModule: Int?,
     @SerializedName("totalRating")
-    val totalRating: Double?,
+    val totalRating: Int?,
     @SerializedName("typeClass")
-    val typeClass: String?
+    val typeClass: String?,
+    @SerializedName("updatedAt")
+    val updatedAt: String?
 )
 
-fun Data.toCourse() = CourseViewParam(
+fun Data.toDetailCourse() = DetailCourseViewParam(
     category = this.category,
+    chapters = this.chapters.orEmpty(),
     classCode = this.classCode.orEmpty(),
     createdAt = this.createdAt.orEmpty(),
     createdBy = this.createdBy,
@@ -54,12 +57,10 @@ fun Data.toCourse() = CourseViewParam(
     price = this.price ?: 0,
     sold = this.sold ?: 0,
     targetAudience = this.targetAudience.orEmpty(),
-    thumbnail = this.thumbnail.orEmpty(),
     title = this.title.orEmpty(),
-    totalDuration = this.totalDuration ?: 0.0,
+    totalDuration = this.totalDuration ?: 0,
     totalModule = this.totalModule ?: 0,
-    totalRating = this.totalRating ?: 0.0,
-    typeClass = this.typeClass.orEmpty()
+    totalRating = this.totalRating ?: 0,
+    typeClass = this.typeClass.orEmpty(),
+    updatedAt = this.updatedAt.orEmpty()
 )
-
-fun Collection<Data>.toCourseList() = this.map { it.toCourse() }

@@ -17,13 +17,15 @@ import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayout
 import com.kelompoksatuandsatu.preducation.R
 import com.kelompoksatuandsatu.preducation.databinding.ActivityDetailClassBinding
-import com.kelompoksatuandsatu.preducation.model.Course
+import com.kelompoksatuandsatu.preducation.model.CourseViewParam
 import com.kelompoksatuandsatu.preducation.presentation.feature.detailclass.adapter.ViewPagerAdapter
+import com.kelompoksatuandsatu.preducation.utils.proceedWhen
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.PlayerConstants
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.AbstractYouTubePlayerListener
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.FullscreenListener
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.options.IFramePlayerOptions
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class DetailClassActivity : AppCompatActivity() {
 
@@ -47,6 +49,11 @@ class DetailClassActivity : AppCompatActivity() {
             }
         }
     }
+
+    private val viewModel: DetailClassViewModel by viewModel()
+
+    var videoId: String = ""
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
@@ -55,15 +62,36 @@ class DetailClassActivity : AppCompatActivity() {
         setYoutubeFullScreen()
         setLayoutViewPager()
         showDetailClass()
+        observeData()
+    }
+    private fun showDetailClass() {
+        val idCourse = intent.getStringExtra("EXTRA_COURSE_ID")
+        idCourse?.let {
+            viewModel.getCourseById(it)
+        }
     }
 
-    private fun showDetailClass() {
-        // TODO get data course
+    private fun observeData() {
+        viewModel.detailCourse.observe(this) {
+            it.proceedWhen(
+                doOnSuccess = {
+                    it.payload?.let {
+                        videoId = it.id.toString()
+                        binding.tvCategoryCourse.text = it.category?.name
+                        binding.tvNameCourse.text = it.title
+                        binding.tvTotalModulCourse.text = it.totalModule.toString()
+                        binding.tvTotalHourCourse.text = it.totalDuration.toString() + "Mins"
+                        binding.tvLevelCourse.text = it.level
+                        binding.tvCourseRating.text = it.totalRating.toString()
+                    }
+                }
+            )
+        }
     }
 
     private fun setOnClickListener() {
         binding.ivBack.setOnClickListener {
-            // TODO Intent to class or course or home
+            onBackPressed()
         }
     }
 
@@ -109,7 +137,7 @@ class DetailClassActivity : AppCompatActivity() {
             override fun onReady(youTubePlayer: YouTubePlayer) {
                 super.onReady(youTubePlayer)
                 this@DetailClassActivity.youTubePlayer = youTubePlayer
-                val videoId = "LJY5M2eXDRM"
+//                val videoId = "LJY5M2eXDRM"
                 youTubePlayer.cueVideo(videoId, 0.0F)
                 binding.ivPlayVideo.setOnClickListener {
                     youTubePlayer.play()
@@ -249,10 +277,11 @@ class DetailClassActivity : AppCompatActivity() {
     }
 
     companion object {
-        const val EXTRA_MENU = "EXTRA_MENU"
-        fun startActivity(context: Context, course: Course) {
+        const val EXTRA_COURSE_ID = "EXTRA_COURSE_ID"
+        fun startActivity(context: Context, course: CourseViewParam) {
+            val id = course.id
             val intent = Intent(context, DetailClassActivity::class.java)
-//            intent.putExtra(EXTRA_MENU, course)
+            intent.putExtra(EXTRA_COURSE_ID, id)
             context.startActivity(intent)
         }
     }
