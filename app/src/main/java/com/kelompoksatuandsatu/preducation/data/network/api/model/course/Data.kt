@@ -2,7 +2,7 @@ package com.kelompoksatuandsatu.preducation.data.network.api.model.course
 
 import androidx.annotation.Keep
 import com.google.gson.annotations.SerializedName
-import com.kelompoksatuandsatu.preducation.model.Course
+import com.kelompoksatuandsatu.preducation.model.CourseViewParam
 
 @Keep
 data class Data(
@@ -42,7 +42,7 @@ data class Data(
     val typeClass: String?
 )
 
-fun Data.toCourse() = Course(
+fun Data.toCourse() = CourseViewParam(
     category = this.category,
     classCode = this.classCode.orEmpty(),
     createdAt = this.createdAt.orEmpty(),
