@@ -19,7 +19,7 @@ import com.kelompoksatuandsatu.preducation.data.network.api.model.course.Created
 //    val statusPayment: String
 // ) : Parcelable
 
-data class Course(
+data class CourseViewParam(
     val category: Category?,
     val classCode: String?,
     val createdAt: String?,

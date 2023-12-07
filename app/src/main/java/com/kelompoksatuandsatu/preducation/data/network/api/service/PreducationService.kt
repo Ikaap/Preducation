@@ -2,9 +2,8 @@ package com.kelompoksatuandsatu.preducation.data.network.api.service
 
 import com.chuckerteam.chucker.api.ChuckerInterceptor
 import com.kelompoksatuandsatu.preducation.BuildConfig
-import com.kelompoksatuandsatu.preducation.data.network.api.model.categoriesclass.CategoriesClassResponse
-import com.kelompoksatuandsatu.preducation.data.network.api.model.categoriesprogress.CategoriesProgressResponse
-import com.kelompoksatuandsatu.preducation.data.network.api.model.courseprogress.CourseProgressResponse
+import com.kelompoksatuandsatu.preducation.data.network.api.model.category.categoryclass.CategoriesClassResponse
+import com.kelompoksatuandsatu.preducation.data.network.api.model.course.CourseResponse
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -42,9 +41,9 @@ interface PreducationService {
 
     // detail
     @GET("api/v1/courses/{id}")
-    suspend fun getCourseById(@Path("id") id: String? = null) // : DetailCourseResponse
-    // @POST("api/v1/progress")
-    // suspend fun getCourseById(@Query("id") id: String? = null, @Body progressRequest: ProgressRequest) // : ProgressResponse
+    suspend fun getCourseById(@Path("id") id: String? = null): DetailCourseResponse
+//     @POST("api/v1/progress")
+//     suspend fun getCourseById(@Query("id") id: String? = null, @Body progressRequest: ProgressRequest) // : ProgressResponse
 
     // profile
     @GET("api/v1/users/{id}")

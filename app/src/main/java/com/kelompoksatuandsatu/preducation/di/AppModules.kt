@@ -5,6 +5,7 @@ import com.kelompoksatuandsatu.preducation.data.local.database.AppDatabase
 import com.kelompoksatuandsatu.preducation.data.local.datastore.appDataStore
 import com.kelompoksatuandsatu.preducation.data.network.api.datasource.CourseApiDataSource
 import com.kelompoksatuandsatu.preducation.data.network.api.datasource.CourseDataSource
+import com.kelompoksatuandsatu.preducation.data.network.api.datasource.CourseDataSourceImpl
 import com.kelompoksatuandsatu.preducation.data.network.api.service.PreducationService
 import com.kelompoksatuandsatu.preducation.data.repository.CourseRepository
 import com.kelompoksatuandsatu.preducation.data.repository.CourseRepositoryImpl
@@ -37,9 +38,10 @@ object AppModules {
     }
 
     private val viewModelModule = module {
-        viewModelOf(com.kelompoksatuandsatu.preducation.presentation.feature.home::HomeViewModel)
-        viewModelOf(com.kelompoksatuandsatu.preducation.presentation.feature.home::SeeAllViewModel)
         viewModelOf(::ProgressClassViewModel)
+        viewModelOf(::HomeViewModel)
+        viewModelOf(::SeeAllViewModel)
+        viewModelOf(::DetailClassViewModel)
     }
 
     val modules: List<Module> = listOf(

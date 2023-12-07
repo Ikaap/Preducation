@@ -6,24 +6,24 @@ import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.kelompoksatuandsatu.preducation.databinding.ItemDescRecommededStudentsBinding
-import com.kelompoksatuandsatu.preducation.model.DescriptionRecommendedStudents
+import com.kelompoksatuandsatu.preducation.model.TargetAudience
 
 class DescriptionItemAdapter :
     RecyclerView.Adapter<DescriptionItemAdapter.DescriptionItemListViewHolder>() {
 
     private val dataDiffer = AsyncListDiffer(
         this,
-        object : DiffUtil.ItemCallback<DescriptionRecommendedStudents>() {
+        object : DiffUtil.ItemCallback<TargetAudience>() {
             override fun areItemsTheSame(
-                oldItem: DescriptionRecommendedStudents,
-                newItem: DescriptionRecommendedStudents
+                oldItem: TargetAudience,
+                newItem: TargetAudience
             ): Boolean {
                 return oldItem.desc == newItem.desc
             }
 
             override fun areContentsTheSame(
-                oldItem: DescriptionRecommendedStudents,
-                newItem: DescriptionRecommendedStudents
+                oldItem: TargetAudience,
+                newItem: TargetAudience
             ): Boolean {
                 return oldItem.hashCode() == newItem.hashCode()
             }
@@ -48,7 +48,7 @@ class DescriptionItemAdapter :
 
     override fun getItemCount(): Int = dataDiffer.currentList.size
 
-    fun setData(data: List<DescriptionRecommendedStudents>) {
+    fun setData(data: List<TargetAudience>) {
         dataDiffer.submitList(data)
     }
 
@@ -56,9 +56,9 @@ class DescriptionItemAdapter :
         private val binding: ItemDescRecommededStudentsBinding
     ) : RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(item: DescriptionRecommendedStudents) {
+        fun bind(item: TargetAudience) {
             with(binding) {
-                tvDescRecommendedStudents.text = item.desc
+                tvDescRecommendedStudents.text = item.desc.toString()
             }
         }
     }
