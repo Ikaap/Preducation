@@ -6,6 +6,7 @@ import com.kelompoksatuandsatu.preducation.data.network.api.model.category.categ
 import com.kelompoksatuandsatu.preducation.data.network.api.model.course.CourseResponse
 import com.kelompoksatuandsatu.preducation.data.network.api.model.ResetPasswordRequest
 import com.kelompoksatuandsatu.preducation.data.network.api.model.ResetPasswordResponse
+import com.kelompoksatuandsatu.preducation.data.network.api.model.course.detailcourse.DetailCourseResponse
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -43,9 +44,9 @@ interface PreducationService {
 
     // detail
     @GET("api/v1/courses/{id}")
-    suspend fun getCourseById(@Path("id") id: String? = null) // : DetailCourseResponse
-    // @POST("api/v1/progress")
-    // suspend fun getCourseById(@Query("id") id: String? = null, @Body progressRequest: ProgressRequest) // : ProgressResponse
+    suspend fun getCourseById(@Path("id") id: String? = null): DetailCourseResponse
+//     @POST("api/v1/progress")
+//     suspend fun getCourseById(@Query("id") id: String? = null, @Body progressRequest: ProgressRequest) // : ProgressResponse
 
     // profile
     @GET("api/v1/users/{id}")

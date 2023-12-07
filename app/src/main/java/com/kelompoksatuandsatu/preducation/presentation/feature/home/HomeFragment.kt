@@ -8,11 +8,12 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.kelompoksatuandsatu.preducation.databinding.DialogNonLoginBinding
 import com.kelompoksatuandsatu.preducation.databinding.FragmentHomeBinding
-import com.kelompoksatuandsatu.preducation.model.Course
+import com.kelompoksatuandsatu.preducation.model.CourseViewParam
 import com.kelompoksatuandsatu.preducation.presentation.common.adapter.AdapterLayoutMenu
 import com.kelompoksatuandsatu.preducation.presentation.common.adapter.CategoryCourseListAdapter
 import com.kelompoksatuandsatu.preducation.presentation.common.adapter.CategoryCourseRoundedListAdapter
@@ -46,7 +47,7 @@ class HomeFragment : Fragment() {
 
     private val viewModel: HomeViewModel by viewModel()
 
-    private fun navigateToDetail(course: Course) {
+    private fun navigateToDetail(course: CourseViewParam) {
         DetailClassActivity.startActivity(requireContext(), course)
     }
 
@@ -121,7 +122,7 @@ class HomeFragment : Fragment() {
             )
         }
 
-        viewModel.course.observe(viewLifecycleOwner) {
+        viewModel.coursePopular.observe(viewLifecycleOwner) {
             it.proceedWhen(
                 doOnSuccess = {
                     binding.rvPopularCourse.apply {
@@ -135,6 +136,13 @@ class HomeFragment : Fragment() {
                     it.payload?.let { data ->
                         popularCourseAdapter.setData(data)
                     }
+                },
+                doOnEmpty = {
+                    Toast.makeText(requireContext(), "data ksoong", Toast.LENGTH_SHORT).show()
+                },
+                doOnError = { e ->
+                    binding.tvError.text = it.exception?.message
+//                    Toast.makeText(requireContext(), it.exception?.message, Toast.LENGTH_LONG).show()
                 }
             )
         }

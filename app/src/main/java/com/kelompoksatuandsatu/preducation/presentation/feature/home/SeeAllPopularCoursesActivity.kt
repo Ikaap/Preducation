@@ -71,7 +71,7 @@ class SeeAllPopularCoursesActivity : AppCompatActivity() {
             )
         }
 
-        viewModel.course.observe(this) {
+        viewModel.courseViewParam.observe(this) {
             it.proceedWhen(
                 doOnSuccess = {
                     binding.rvCourse.apply {
