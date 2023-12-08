@@ -45,10 +45,10 @@ android {
     flavorDimensions += "env"
     productFlavors {
         create("production") {
-            buildConfigField("String", "BASE_URL", "\"https://preducation.up.railway.app/\"")
+            buildConfigField("String", "BASE_URL", "\"https://696853c9-d6f6-480a-939e-2f9923c18544.mock.pstmn.io\"")
         }
         create("integration") {
-            buildConfigField("String", "BASE_URL", "\"https://preducation.up.railway.app/\"")
+            buildConfigField("String", "BASE_URL", "\"https://696853c9-d6f6-480a-939e-2f9923c18544.mock.pstmn.io\"")
         }
     }
 }
@@ -124,19 +124,18 @@ dependencies {
     testImplementation("app.cash.turbine:turbine:1.0.0")
     testImplementation("androidx.arch.core:core-testing:2.2.0")
 
-    // glide
-    implementation("com.github.bumptech.glide:glide:4.12.0")
-    annotationProcessor("com.github.bumptech.glide:compiler:4.12.0")
-
     // youtube player
     implementation("com.pierfrancescosoffritti.androidyoutubeplayer:core:12.1.0")
 
     // groupie
     implementation("com.github.lisawray.groupie:groupie:2.10.1")
     implementation("com.github.lisawray.groupie:groupie-viewbinding:2.10.1")
-
     // toast
     implementation("io.github.muddz:styleabletoast:2.4.0")
+
+    // glide
+    implementation("com.github.bumptech.glide:glide:4.12.0")
+    annotationProcessor("com.github.bumptech.glide:compiler:4.12.0")
 
     // otp
     implementation("com.github.appsfeature:otp-view:1.0")

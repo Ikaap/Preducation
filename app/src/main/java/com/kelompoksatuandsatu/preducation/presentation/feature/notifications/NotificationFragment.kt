@@ -66,6 +66,7 @@ class NotificationFragment : Fragment() {
                 doOnSuccess = { data ->
                     binding.rvNotification.isVisible = true
                     binding.layoutStateNotification.root.isVisible = false
+                    binding.layoutStateNotification.pbLoading.isVisible = false
                     binding.layoutStateNotification.tvError.isVisible = false
 
                     data.payload?.let { notificationData ->
@@ -75,17 +76,20 @@ class NotificationFragment : Fragment() {
                 doOnLoading = {
                     binding.rvNotification.isVisible = false
                     binding.layoutStateNotification.root.isVisible = true
+                    binding.layoutStateNotification.pbLoading.isVisible = true
                     binding.layoutStateNotification.tvError.isVisible = false
                 },
                 doOnError = { error ->
                     binding.rvNotification.isVisible = false
                     binding.layoutStateNotification.root.isVisible = true
+                    binding.layoutStateNotification.pbLoading.isVisible = false
                     binding.layoutStateNotification.tvError.isVisible = true
                     binding.layoutStateNotification.tvError.text = error.exception?.message
                 },
                 doOnEmpty = {
                     binding.rvNotification.isVisible = false
                     binding.layoutStateNotification.root.isVisible = true
+                    binding.layoutStateNotification.pbLoading.isVisible = false
                     binding.layoutStateNotification.tvError.isVisible = true
                     binding.layoutStateNotification.tvError.text =
                         resources.getString(R.string.text_notification)

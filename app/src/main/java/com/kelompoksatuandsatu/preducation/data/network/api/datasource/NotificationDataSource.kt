@@ -1,7 +1,7 @@
 package com.kelompoksatuandsatu.preducation.data.network.api.datasource
 
-import com.kelompoksatuandsatu.preducation.data.network.api.model.notification.NotificationResponse
 import com.kelompoksatuandsatu.preducation.data.network.api.service.PreducationService
+import com.kelompoksatuandsatu.preducation.model.notification.NotificationResponse
 
 interface NotificationDataSource {
 
