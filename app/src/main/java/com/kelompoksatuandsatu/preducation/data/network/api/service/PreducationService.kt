@@ -2,6 +2,7 @@ package com.kelompoksatuandsatu.preducation.data.network.api.service
 
 import com.chuckerteam.chucker.api.ChuckerInterceptor
 import com.kelompoksatuandsatu.preducation.BuildConfig
+import com.kelompoksatuandsatu.preducation.model.notification.NotificationResponse
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -22,7 +23,7 @@ interface PreducationService {
 
     // notification
     @GET("api/v1/notifications")
-    suspend fun getUserNotification() // : UserNotificationResponse
+    suspend fun getUserNotifications(): NotificationResponse
 
     // class
     // get all categories class
