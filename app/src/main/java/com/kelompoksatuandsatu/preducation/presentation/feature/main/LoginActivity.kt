@@ -37,7 +37,7 @@ class LoginActivity : AppCompatActivity() {
         }
 
         // Show Message Box
-        val loginButton = findViewById<Button>(R.id.loginButton)
+        val loginButton = findViewById<Button>(R.id.cl_button_sign_in)
         loginButton.setOnClickListener {
             showErrorMessageBox()
         }

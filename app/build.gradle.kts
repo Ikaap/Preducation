@@ -140,6 +140,4 @@ dependencies {
     // groupie
     implementation("com.github.lisawray.groupie:groupie:2.10.1")
     implementation("com.github.lisawray.groupie:groupie-viewbinding:2.10.1")
-
-
 }
