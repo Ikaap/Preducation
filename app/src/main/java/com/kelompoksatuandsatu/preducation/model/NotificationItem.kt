@@ -1,4 +1,4 @@
-package com.kelompoksatuandsatu.preducation.model.notification
+package com.kelompoksatuandsatu.preducation.model
 
 data class NotificationItem(
     val _id: Int,

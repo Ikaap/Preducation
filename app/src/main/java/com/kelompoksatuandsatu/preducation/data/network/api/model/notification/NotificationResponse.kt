@@ -1,4 +1,4 @@
-package com.kelompoksatuandsatu.preducation.model.notification
+package com.kelompoksatuandsatu.preducation.data.network.api.model.notification
 
 import com.google.errorprone.annotations.Keep
 import com.google.gson.annotations.SerializedName

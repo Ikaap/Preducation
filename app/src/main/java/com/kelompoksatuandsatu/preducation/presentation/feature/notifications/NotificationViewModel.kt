@@ -5,7 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kelompoksatuandsatu.preducation.data.repository.NotificationRepository
-import com.kelompoksatuandsatu.preducation.model.notification.NotificationItem
+import com.kelompoksatuandsatu.preducation.model.NotificationItem
 import com.kelompoksatuandsatu.preducation.utils.ResultWrapper
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch

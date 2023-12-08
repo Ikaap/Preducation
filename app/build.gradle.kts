@@ -137,4 +137,7 @@ dependencies {
 
     // toast
     implementation("io.github.muddz:styleabletoast:2.4.0")
+
+    // otp
+    implementation("com.github.appsfeature:otp-view:1.0")
 }
