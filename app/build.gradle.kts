@@ -124,7 +124,6 @@ dependencies {
     testImplementation("app.cash.turbine:turbine:1.0.0")
     testImplementation("androidx.arch.core:core-testing:2.2.0")
 
-
     // youtube player
     implementation("com.pierfrancescosoffritti.androidyoutubeplayer:core:12.1.0")
 
@@ -134,8 +133,10 @@ dependencies {
     // toast
     implementation("io.github.muddz:styleabletoast:2.4.0")
 
-
     // glide
     implementation("com.github.bumptech.glide:glide:4.12.0")
     annotationProcessor("com.github.bumptech.glide:compiler:4.12.0")
+
+    // otp
+    implementation("com.github.appsfeature:otp-view:1.0")
 }
