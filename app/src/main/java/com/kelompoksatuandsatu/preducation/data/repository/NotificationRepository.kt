@@ -20,17 +20,3 @@ class NotificationRepositoryImpl(private val notificationDataSource: Notificatio
         }
     }
 }
-
-//    suspend fun markNotificationAsRead(id: String?): Flow<ResultWrapper<List<NotificationItem>>>
-//    suspend fun createNotificationForAllUsers(
-//        notification: NotificationItem,
-//        title: String,
-//        description: String
-//    ): Flow<ResultWrapper<List<NotificationItem>>>
-//
-//    suspend fun createNotificationForSpecificUser(
-//        notification: NotificationItem,
-//        title: String,
-//        description: String,
-//        userId: Int
-//    ): Flow<ResultWrapper<List<NotificationItem>>>
