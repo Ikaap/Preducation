@@ -53,11 +53,4 @@
         <item name="stStrokeWidth">25dp</item>
     </style>
 
-    <style name="Theme.Preducation" parent="Base.Theme.Preducation" />
-    <style name="Base.Theme.Login" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Customize your light theme here. -->
-        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
-    </style>
-
-    <style name="Theme.Login" parent="Base.Theme.Login" />
 </resources>

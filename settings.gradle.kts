@@ -18,3 +18,4 @@ dependencyResolutionManagement {
     rootProject.name = "Preducation"
     include(":app")
 }
+ 
