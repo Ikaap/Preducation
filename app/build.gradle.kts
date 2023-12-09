@@ -1,6 +1,7 @@
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
+<<<<<<< HEAD
     id("kotlin-parcelize")
     id("androidx.navigation.safeargs.kotlin")
     id("org.jlleitschuh.gradle.ktlint")
@@ -16,6 +17,18 @@ android {
         applicationId = "com.kelompoksatuandsatu.preducation"
         minSdk = 24
         targetSdk = 34
+=======
+}
+
+android {
+    namespace = "com.example.login"
+    compileSdk = 33
+
+    defaultConfig {
+        applicationId = "com.example.login"
+        minSdk = 24
+        targetSdk = 33
+>>>>>>> 7b6c0f8 (Initial Commit)
         versionCode = 1
         versionName = "1.0"
 
@@ -33,6 +46,7 @@ android {
     }
 
     compileOptions {
+<<<<<<< HEAD
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
     }
@@ -73,17 +87,29 @@ ktlint {
     filter {
         exclude("**/generated/**")
         include("**/kotlin/**")
+=======
+        sourceCompatibility = JavaVersion.VERSION_1_8
+        targetCompatibility = JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = "1.8"
+>>>>>>> 7b6c0f8 (Initial Commit)
     }
 }
 
 dependencies {
     implementation("androidx.core:core-ktx:1.9.0")
     implementation("androidx.appcompat:appcompat:1.6.1")
+<<<<<<< HEAD
     implementation("com.google.android.material:material:1.10.0")
+=======
+    implementation("com.google.android.material:material:1.9.0")
+>>>>>>> 7b6c0f8 (Initial Commit)
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
+<<<<<<< HEAD
 
     // otp
     implementation("com.github.appsfeature:otp-view:1.0")
@@ -152,3 +178,6 @@ dependencies {
     // shimmer
     implementation("com.facebook.shimmer:shimmer:0.5.0")
 }
+=======
+}
+>>>>>>> 7b6c0f8 (Initial Commit)
