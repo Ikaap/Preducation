@@ -1,4 +1,5 @@
 <resources>
+<<<<<<< HEAD
     <string name="app_name">Preducation</string>
 
     <string name="text_create_new_password">Create New Password</string>
@@ -150,4 +151,7 @@
     <string name="text_sort">Sort</string>
     <string name="text_class_topic">Class Topic</string>
 
+=======
+    <string name="app_name">Login</string>
+>>>>>>> 7b6c0f8 (Initial Commit)
 </resources>
