@@ -1,8 +1,7 @@
 package com.example.login
 
-import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import com.kelompoksatuandsatu.preducation.R
+import android.os.Bundle
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
