@@ -2,7 +2,6 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
-<<<<<<< HEAD
 
     <color name="stroke_radio_checked">#E8F1FF</color>
     <color name="color_shimmer">#D0D0D0</color>
@@ -32,6 +31,4 @@
     <color name="app_color_on_error">#FFFFFF</color>
     <color name="app_color_error_container">#FFE1E5</color>
     <color name="app_color_on_error_container">#BD1329</color>
-=======
->>>>>>> 7b6c0f8 (Initial Commit)
 </resources>
