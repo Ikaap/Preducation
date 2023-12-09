@@ -10,7 +10,6 @@ dependencyResolutionManagement {
     repositories {
         google()
         mavenCentral()
-<<<<<<< HEAD
         maven {
             url = uri("https://jitpack.io")
         }
@@ -19,11 +18,3 @@ dependencyResolutionManagement {
     rootProject.name = "Preducation"
     include(":app")
 }
- 
-=======
-    }
-}
-
-rootProject.name = "Login"
-include(":app")
->>>>>>> 7b6c0f8 (Initial Commit)
