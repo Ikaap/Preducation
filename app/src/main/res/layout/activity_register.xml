@@ -197,24 +197,7 @@
 <!--                android:background="@drawable/bg_edit_text_secondary_transparent"-->
 <!--                android:orientation="horizontal">-->
 
-<!--                <EditText-->
-<!--                    android:id="@+id/passwordInput"-->
-<!--                    android:layout_width="292dp"-->
-<!--                    android:layout_height="52dp"-->
-<!--                    android:background="@null"-->
-<!--                    android:drawablePadding="10dp"-->
-<!--                    android:hint="Buat Password"-->
-<!--                    android:inputType="textPassword"-->
-<!--                    android:paddingHorizontal="14dp" />-->
-
-<!--                <Button-->
-<!--                    android:id="@+id/showHidePasswordButton"-->
-<!--                    android:layout_width="52dp"-->
-<!--                    android:layout_height="52dp"-->
-<!--                    android:background="@android:color/transparent"-->
-<!--                    android:drawableEnd="@drawable/img_show_password" />-->
-
-<!--            </LinearLayout>-->
+            </LinearLayout>
 
         </LinearLayout>
 
@@ -283,7 +266,5 @@
                 android:textColor="@color/app_color_primary"
                 android:textSize="16sp" />
         </LinearLayout>
-
-    </LinearLayout>
 
 </androidx.core.widget.NestedScrollView>
