@@ -197,7 +197,7 @@
 <!--                android:background="@drawable/bg_edit_text_secondary_transparent"-->
 <!--                android:orientation="horizontal">-->
 
-            </LinearLayout>
+<!--            </LinearLayout>-->
 
         </LinearLayout>
 
