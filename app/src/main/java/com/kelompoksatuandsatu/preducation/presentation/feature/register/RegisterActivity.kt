@@ -6,13 +6,10 @@ import android.os.Bundle
 import android.text.SpannableString
 import android.text.method.PasswordTransformationMethod
 import android.text.style.UnderlineSpan
-import android.widget.Button
-import android.widget.EditText
 import android.widget.LinearLayout
 import androidx.appcompat.app.AppCompatActivity
-import androidx.constraintlayout.widget.ConstraintLayout
-import com.kelompoksatuandsatu.preducation.R
 import com.kelompoksatuandsatu.preducation.databinding.ActivityRegisterBinding
+import com.kelompoksatuandsatu.preducation.model.Register
 import com.kelompoksatuandsatu.preducation.presentation.feature.login.LoginActivity
 
 class RegisterActivity : AppCompatActivity() {
@@ -21,17 +18,29 @@ class RegisterActivity : AppCompatActivity() {
         ActivityRegisterBinding.inflate(layoutInflater)
     }
 
-    private lateinit var passwordInput: EditText
-    private lateinit var showHideButtonPassword: Button
+    private lateinit var registerModel: Register
 
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
-//        val loginTextView = findViewById<TextView>(R.id.loginText)
+        registerModel = Register(
+            registerTitle = "Getting Started.!",
+            nameLabel = "Name",
+            emailLabel = "Email",
+            phoneLabel = "Phone Number",
+            passwordLabel = "Create a Password",
+            buttonLabel = "Sign Up",
+            loginTitle = "Already have an account?",
+            loginText = "Login Here"
+        )
+
+        binding.lifecycleOwner = this
+        binding.registerModel = registerModel
+
         val loginTextView = binding.loginText
-        val loginString = " Login Here"
+        val loginString = registerModel.loginText
         val loginSpannable = SpannableString(loginString)
         loginSpannable.setSpan(
             UnderlineSpan(),
@@ -42,16 +51,12 @@ class RegisterActivity : AppCompatActivity() {
         loginTextView.text = loginSpannable
 
         // Show & Hide Password
-        passwordInput = findViewById(R.id.passwordInput)
-        showHideButtonPassword = findViewById(R.id.showHidePasswordButton)
-
-        showHideButtonPassword.setOnClickListener {
+        binding.showHidePasswordButton.setOnClickListener {
             togglePasswordVisibility()
         }
 
         // Show Message Box
-        val registerButton = findViewById<ConstraintLayout>(R.id.cl_button_sign_up)
-        registerButton.setOnClickListener {
+        binding.signUpButton.setOnClickListener {
             showErrorMessageBox()
         }
 
@@ -62,15 +67,14 @@ class RegisterActivity : AppCompatActivity() {
     }
 
     private fun togglePasswordVisibility() {
-        if (passwordInput.transformationMethod == PasswordTransformationMethod.getInstance()) {
-            passwordInput.transformationMethod = null
+        if (binding.passwordInput.transformationMethod == PasswordTransformationMethod.getInstance()) {
+            binding.passwordInput.transformationMethod = null
         } else {
-            passwordInput.transformationMethod = PasswordTransformationMethod.getInstance()
+            binding.passwordInput.transformationMethod = PasswordTransformationMethod.getInstance()
         }
     }
 
     private fun showErrorMessageBox() {
-        val errorMessageBox = findViewById<LinearLayout>(R.id.errorMessageBox)
-        errorMessageBox.visibility = LinearLayout.VISIBLE
+        binding.errorMessageBox.visibility = LinearLayout.VISIBLE
     }
 }
