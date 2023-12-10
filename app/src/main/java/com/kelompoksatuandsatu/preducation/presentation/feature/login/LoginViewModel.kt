@@ -1,10 +1,15 @@
 package com.kelompoksatuandsatu.preducation.presentation.feature.login
 
+<<<<<<< HEAD
+=======
+import android.util.Log
+>>>>>>> 5b6f05c (add post login and register)
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kelompoksatuandsatu.preducation.data.repository.UserRepository
+import com.kelompoksatuandsatu.preducation.model.auth.LoginToken
 import com.kelompoksatuandsatu.preducation.model.auth.UserLogin
 import com.kelompoksatuandsatu.preducation.utils.ResultWrapper
 import kotlinx.coroutines.Dispatchers
@@ -19,6 +24,7 @@ class LoginViewModel(private val repo: UserRepository) : ViewModel() {
     fun userLogin(request: UserLogin) {
         viewModelScope.launch(Dispatchers.IO) {
             repo.userLogin(request).collect {
+                Log.e("Login Token : ", "${it.payload?.accessToken}")
                 _loginResult.postValue(it)
             }
         }
