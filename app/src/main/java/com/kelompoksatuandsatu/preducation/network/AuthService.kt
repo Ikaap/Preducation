@@ -1,11 +1,6 @@
 package com.kelompoksatuandsatu.preducation.network
 
-<<<<<<< HEAD
-import com.kelompoksatuandsatu.preducation.model.LoginResponse
-import com.kelompoksatuandsatu.preducation.model.RegisterResponse
-=======
 import com.kelompoksatuandsatu.preducation.model.APIResponse
->>>>>>> eba8e9e (Consume auths Login API)
 import retrofit2.Call
 import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
