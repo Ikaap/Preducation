@@ -9,13 +9,13 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
+import coil.load
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.kelompoksatuandsatu.preducation.databinding.FragmentCurriculcumBinding
 import com.kelompoksatuandsatu.preducation.databinding.LayoutDialogBuyClassBinding
 import com.kelompoksatuandsatu.preducation.model.ItemSectionDataCurriculcum
 import com.kelompoksatuandsatu.preducation.model.ItemSectionHeaderCurriculcum
 import com.kelompoksatuandsatu.preducation.model.SectionedCurriculcumData
-import com.kelompoksatuandsatu.preducation.model.detailcourse.DetailCourseViewParam
 import com.kelompoksatuandsatu.preducation.presentation.feature.detailclass.viewitems.DataItem
 import com.kelompoksatuandsatu.preducation.presentation.feature.detailclass.viewitems.HeaderItem
 import com.kelompoksatuandsatu.preducation.presentation.feature.payment.PaymentActivity
@@ -78,6 +78,7 @@ class CurriculcumFragment : Fragment() {
                                         "Item clicked : title = ${data.title} -> url = ${data.videoUrl}",
                                         Toast.LENGTH_SHORT
                                     ).show()
+                                    viewModel.postIndexVideo(it)
                                 }
                             }
                             if (dataSection != null) {
@@ -109,7 +110,7 @@ class CurriculcumFragment : Fragment() {
             it.proceedWhen(
                 doOnSuccess = {
                     it.payload?.let {
-//                        binding.ivBannerCourse = it.
+                        binding.ivBannerCourse.load(it.thumbnail)
                         binding.tvCategoryCourse.text = it.category?.name
                         binding.tvNameCourse.text = it.title
                         binding.tvTotalModulCourse.text = it.totalModule.toString() + " Module"

@@ -5,11 +5,15 @@ import com.kelompoksatuandsatu.preducation.BuildConfig
 import com.kelompoksatuandsatu.preducation.data.network.api.model.category.categoryclass.CategoriesClassResponse
 import com.kelompoksatuandsatu.preducation.data.network.api.model.course.CourseResponse
 import com.kelompoksatuandsatu.preducation.data.network.api.model.course.detailcourse.DetailCourseResponse
+import com.kelompoksatuandsatu.preducation.data.network.api.model.course.detailcourse.progress.ProgressCourseRequest
+import com.kelompoksatuandsatu.preducation.data.network.api.model.course.detailcourse.progress.ProgressCourseResponse
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import retrofit2.http.Body
 import retrofit2.http.DELETE
 import retrofit2.http.GET
+import retrofit2.http.POST
 import retrofit2.http.Path
 import retrofit2.http.Query
 import java.util.concurrent.TimeUnit
@@ -41,8 +45,9 @@ interface PreducationService {
     // detail
     @GET("api/v1/courses/{id}")
     suspend fun getCourseById(@Path("id") id: String? = null): DetailCourseResponse
-//     @POST("api/v1/progress")
-//     suspend fun getCourseById(@Query("id") id: String? = null, @Body progressRequest: ProgressRequest) // : ProgressResponse
+
+    @POST("api/v1/progress")
+    suspend fun postIndexCourseById(@Query("id") id: String? = null, @Body progressRequest: ProgressCourseRequest): ProgressCourseResponse
 
     // profile
     @GET("api/v1/users/{id}")
