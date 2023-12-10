@@ -5,11 +5,8 @@ import android.os.Bundle
 import android.text.SpannableString
 import android.text.method.PasswordTransformationMethod
 import android.text.style.UnderlineSpan
-import android.widget.Button
-import android.widget.EditText
 import android.widget.LinearLayout
 import androidx.appcompat.app.AppCompatActivity
-import com.kelompoksatuandsatu.preducation.R
 import com.kelompoksatuandsatu.preducation.databinding.ActivityLoginBinding
 import com.kelompoksatuandsatu.preducation.model.Login
 import com.kelompoksatuandsatu.preducation.presentation.feature.main.MainActivity
@@ -23,9 +20,6 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private lateinit var loginModel: Login
-
-    private lateinit var passwordInput: EditText
-    private lateinit var showHideButtonPassword: Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -57,10 +51,7 @@ class LoginActivity : AppCompatActivity() {
         registerTextView.text = registerSpannable
 
         // Show & Hide Password
-        passwordInput = findViewById(R.id.passwordInput)
-        showHideButtonPassword = findViewById(R.id.showHidePasswordButton)
-
-        showHideButtonPassword.setOnClickListener {
+        binding.showHidePasswordButton.setOnClickListener {
             togglePasswordVisibility()
         }
 
@@ -85,15 +76,14 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun togglePasswordVisibility() {
-        if (passwordInput.transformationMethod == PasswordTransformationMethod.getInstance()) {
-            passwordInput.transformationMethod = null
+        if (binding.passwordInput.transformationMethod == PasswordTransformationMethod.getInstance()) {
+            binding.passwordInput.transformationMethod = null
         } else {
-            passwordInput.transformationMethod = PasswordTransformationMethod.getInstance()
+            binding.passwordInput.transformationMethod = PasswordTransformationMethod.getInstance()
         }
     }
 
     private fun showErrorMessageBox() {
-        val errorMessageBox = findViewById<LinearLayout>(R.id.errorMessageBox)
-        errorMessageBox.visibility = LinearLayout.VISIBLE
+        binding.errorMessageBox.visibility = LinearLayout.VISIBLE
     }
 }
