@@ -1,16 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
-
-    <data>
-        <variable
-            name="registerModel"
-            type="com.kelompoksatuandsatu.preducation.model.Register"/>
-    </data>
-
-<androidx.core.widget.NestedScrollView
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/app_color_on_primary"
@@ -40,7 +31,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="14dp"
             android:fontFamily="@font/montserrat_bold"
-            android:text="@{registerModel.registerTitle}"
+            android:text="@string/text_getting_started"
             android:textSize="24sp" />
 
         <!-- Name Input -->
@@ -56,18 +47,30 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/poppins"
-                android:text="@{registerModel.nameLabel}"
+                android:text="@string/text_name"
                 android:textSize="16sp" />
 
-            <EditText
-                android:id="@+id/nameInput"
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/tilName"
                 android:layout_width="match_parent"
-                android:layout_height="52dp"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:background="@drawable/bg_edit_text_secondary_transparent"
-                android:hint="Full Name"
-                android:inputType="text"
-                android:paddingHorizontal="14dp" />
+                app:errorEnabled="true"
+                app:hintEnabled="false"
+                tools:visibility="visible">
+
+                <EditText
+                    android:id="@+id/et_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="52dp"
+                    android:layout_marginTop="8dp"
+                    android:background="@drawable/bg_edit_text_secondary_transparent"
+                    android:hint="Full Name"
+                    android:inputType="text"
+                    android:paddingHorizontal="14dp" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
         </LinearLayout>
 
         <!-- Email Input -->
@@ -75,7 +78,7 @@
             android:id="@+id/formEmailLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="8dp"
             android:orientation="vertical">
 
             <TextView
@@ -83,18 +86,30 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/poppins"
-                android:text="@{registerModel.emailLabel}"
+                android:text="@string/text_email"
                 android:textSize="16sp" />
 
-            <EditText
-                android:id="@+id/emailInput"
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/tilEmail"
                 android:layout_width="match_parent"
-                android:layout_height="52dp"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:background="@drawable/bg_edit_text_secondary_transparent"
-                android:hint="nellearn@gmail.com"
-                android:inputType="textEmailAddress"
-                android:paddingHorizontal="14dp" />
+                app:errorEnabled="true"
+                app:hintEnabled="false"
+                tools:visibility="visible">
+
+                <EditText
+                    android:id="@+id/et_email"
+                    android:layout_width="match_parent"
+                    android:layout_height="52dp"
+                    android:layout_marginTop="8dp"
+                    android:background="@drawable/bg_edit_text_secondary_transparent"
+                    android:hint="nellearn@gmail.com"
+                    android:inputType="textEmailAddress"
+                    android:paddingHorizontal="14dp"/>
+
+            </com.google.android.material.textfield.TextInputLayout>
+
         </LinearLayout>
 
         <!-- Phone Number Input -->
@@ -102,7 +117,7 @@
             android:id="@+id/formPhoneNumberLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="8dp"
             android:orientation="vertical">
 
             <TextView
@@ -110,18 +125,31 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/poppins"
-                android:text="@{registerModel.phoneLabel}"
+                android:text="@string/text_phone_number"
                 android:textSize="16sp" />
 
-            <EditText
-                android:id="@+id/phoneNumberInput"
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/tilPhoneNumber"
                 android:layout_width="match_parent"
-                android:layout_height="52dp"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:background="@drawable/bg_edit_text_secondary_transparent"
-                android:hint="+62"
-                android:inputType="number"
-                android:paddingHorizontal="14dp" />
+                app:errorEnabled="true"
+                app:hintEnabled="false"
+                tools:visibility="visible">
+
+                <EditText
+                    android:id="@+id/et_phone_number"
+                    android:layout_width="match_parent"
+                    android:layout_height="52dp"
+                    android:layout_marginTop="8dp"
+                    android:background="@drawable/bg_edit_text_secondary_transparent"
+                    android:hint="08xxxxx"
+                    android:inputType="number"
+                    android:paddingHorizontal="14dp"
+                    tools:ignore="TextFields" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
         </LinearLayout>
 
         <!-- Password Input -->
@@ -129,7 +157,7 @@
             android:id="@+id/formPasswordLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="4dp"
             android:orientation="vertical">
 
             <TextView
@@ -137,33 +165,56 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/poppins"
-                android:text="@{registerModel.passwordLabel}"
+                android:text="@string/text_password"
                 android:textSize="16sp" />
 
-            <LinearLayout
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/tilPassword"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:background="@drawable/bg_edit_text_secondary_transparent"
-                android:orientation="horizontal">
+                app:errorEnabled="true"
+                app:passwordToggleEnabled="true"
+                app:hintEnabled="false"
+                tools:visibility="visible">
 
                 <EditText
-                    android:id="@+id/passwordInput"
-                    android:layout_width="292dp"                    android:layout_height="52dp"
-                    android:background="@null"
-                    android:drawablePadding="10dp"
-                    android:hint="Buat Password"
-                    android:inputType="textPassword"
-                    android:paddingHorizontal="14dp" />
-
-                <Button
-                    android:id="@+id/showHidePasswordButton"
-                    android:layout_width="52dp"
+                    android:id="@+id/et_password"
+                    android:layout_width="match_parent"
                     android:layout_height="52dp"
-                    android:background="@android:color/transparent"
-                    android:drawableEnd="@drawable/img_show_password" />
+                    android:layout_marginTop="8dp"
+                    android:background="@drawable/bg_edit_text_secondary_transparent"
+                    android:hint="Create Password"
+                    android:inputType="textPassword"
+                    android:paddingHorizontal="14dp"/>
 
-            </LinearLayout>
+            </com.google.android.material.textfield.TextInputLayout>
+
+<!--            <LinearLayout-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginTop="8dp"-->
+<!--                android:background="@drawable/bg_edit_text_secondary_transparent"-->
+<!--                android:orientation="horizontal">-->
+
+<!--                <EditText-->
+<!--                    android:id="@+id/passwordInput"-->
+<!--                    android:layout_width="292dp"-->
+<!--                    android:layout_height="52dp"-->
+<!--                    android:background="@null"-->
+<!--                    android:drawablePadding="10dp"-->
+<!--                    android:hint="Buat Password"-->
+<!--                    android:inputType="textPassword"-->
+<!--                    android:paddingHorizontal="14dp" />-->
+
+<!--                <Button-->
+<!--                    android:id="@+id/showHidePasswordButton"-->
+<!--                    android:layout_width="52dp"-->
+<!--                    android:layout_height="52dp"-->
+<!--                    android:background="@android:color/transparent"-->
+<!--                    android:drawableEnd="@drawable/img_show_password" />-->
+
+<!--            </LinearLayout>-->
 
         </LinearLayout>
 
@@ -183,7 +234,7 @@
                 android:fontFamily="@font/montserrat_bold"
                 android:gravity="center"
                 android:padding="8dp"
-                android:text="@{registerModel.buttonLabel}"
+                android:text="@string/text_sign_up"
                 android:textColor="@color/white"
                 android:textSize="16sp"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -220,7 +271,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/montserrat_medium"
-                android:text="@{registerModel.loginTitle}"
+                android:text="@string/text_already_have_an_account"
                 android:textSize="16sp" />
 
             <TextView
@@ -233,28 +284,6 @@
                 android:textSize="16sp" />
         </LinearLayout>
 
-        <!-- Error / Success Message Box -->
-<!--        <LinearLayout-->
-<!--            android:id="@+id/errorMessageBox"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="52dp"-->
-<!--            android:layout_marginTop="24dp"-->
-<!--            android:background="@drawable/bg_error_message"-->
-<!--            android:gravity="center"-->
-<!--            android:visibility="gone">-->
-
-<!--            <TextView-->
-<!--                android:id="@+id/errorMessage"-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:fontFamily="@font/poppins_medium"-->
-<!--                android:text="@string/text_password_min_8_character"-->
-<!--                android:textColor="@color/white"-->
-<!--                android:textSize="16sp" />-->
-
-<!--        </LinearLayout>-->
-
     </LinearLayout>
 
 </androidx.core.widget.NestedScrollView>
-</layout>
