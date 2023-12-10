@@ -1,15 +1,15 @@
-package com.kelompoksatuandsatu.preducation.model
+package com.kelompoksatuandsatu.preducation.model.detailcourse
 
-import com.kelompoksatuandsatu.preducation.data.network.api.model.course.detailcourse.Category
-import com.kelompoksatuandsatu.preducation.data.network.api.model.course.detailcourse.Chapter
-import com.kelompoksatuandsatu.preducation.data.network.api.model.course.detailcourse.CreatedBy
+import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
 
+@Parcelize
 data class DetailCourseViewParam(
-    val category: Category?,
-    val chapters: List<Chapter>,
+    val category: CategoryDetailCourse?,
+    val chapters: List<ChapterViewParam>?,
     val classCode: String?,
     val createdAt: String?,
-    val createdBy: CreatedBy?,
+//    val createdBy: CreatedBy?,
     val description: String?,
     val id: String?,
     val isActive: Boolean?,
@@ -23,8 +23,7 @@ data class DetailCourseViewParam(
     val totalRating: Int?,
     val typeClass: String?,
     val updatedAt: String?
-)
-
+) : Parcelable
 fun DetailCourseViewParam.toTargetAudience() = TargetAudience(
     desc = this.targetAudience.orEmpty()
 )

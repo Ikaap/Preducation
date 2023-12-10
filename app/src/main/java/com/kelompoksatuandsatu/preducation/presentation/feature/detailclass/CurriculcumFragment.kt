@@ -1,11 +1,13 @@
 package com.kelompoksatuandsatu.preducation.presentation.feature.detailclass
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.kelompoksatuandsatu.preducation.databinding.FragmentCurriculcumBinding
@@ -13,13 +15,14 @@ import com.kelompoksatuandsatu.preducation.databinding.LayoutDialogBuyClassBindi
 import com.kelompoksatuandsatu.preducation.model.ItemSectionDataCurriculcum
 import com.kelompoksatuandsatu.preducation.model.ItemSectionHeaderCurriculcum
 import com.kelompoksatuandsatu.preducation.model.SectionedCurriculcumData
+import com.kelompoksatuandsatu.preducation.model.detailcourse.DetailCourseViewParam
 import com.kelompoksatuandsatu.preducation.presentation.feature.detailclass.viewitems.DataItem
 import com.kelompoksatuandsatu.preducation.presentation.feature.detailclass.viewitems.HeaderItem
 import com.kelompoksatuandsatu.preducation.presentation.feature.payment.PaymentActivity
 import com.kelompoksatuandsatu.preducation.utils.proceedWhen
+import com.kelompoksatuandsatu.preducation.utils.toCurrencyFormat
 import com.xwray.groupie.GroupieAdapter
 import com.xwray.groupie.Section
-import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class CurriculcumFragment : Fragment() {
 
@@ -29,7 +32,7 @@ class CurriculcumFragment : Fragment() {
         GroupieAdapter()
     }
 
-    private val viewModel: DetailClassViewModel by viewModel()
+    private val viewModel: DetailClassViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -44,7 +47,6 @@ class CurriculcumFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        setData()
         observeData()
         setOnClickListener()
     }
@@ -58,7 +60,7 @@ class CurriculcumFragment : Fragment() {
                         adapter = adapterGroupie
                     }
                     it.payload?.let {
-                        val section = it.chapters.map {
+                        val section = it.chapters?.map {
                             val section = Section()
                             section.setHeader(
                                 HeaderItem(it) { data ->
@@ -83,7 +85,9 @@ class CurriculcumFragment : Fragment() {
                             }
                             section
                         }
-                        adapterGroupie.addAll(section)
+                        if (section != null) {
+                            adapterGroupie.addAll(section)
+                        }
                     }
                 }
             )
@@ -99,6 +103,25 @@ class CurriculcumFragment : Fragment() {
     private fun setBottomSheet() {
         val bottomDialog = BottomSheetDialog(requireContext())
         val binding = LayoutDialogBuyClassBinding.inflate(layoutInflater)
+
+        // set data item course
+        viewModel.detailCourse.observe(viewLifecycleOwner) {
+            it.proceedWhen(
+                doOnSuccess = {
+                    it.payload?.let {
+//                        binding.ivBannerCourse = it.
+                        binding.tvCategoryCourse.text = it.category?.name
+                        binding.tvNameCourse.text = it.title
+                        binding.tvTotalModulCourse.text = it.totalModule.toString() + " Module"
+                        binding.tvTotalHourCourse.text = it.totalDuration.toString() + " Mins"
+                        binding.tvLevelCourse.text = it.level + " Level"
+                        binding.tvCourseRating.text = it.totalRating.toString()
+                        binding.tvPriceCourse.text = it.price?.toCurrencyFormat()
+                    }
+                }
+            )
+        }
+
         bottomDialog.apply {
             setContentView(binding.root)
             show()
@@ -106,10 +129,14 @@ class CurriculcumFragment : Fragment() {
         binding.clButtonCancel.setOnClickListener {
             bottomDialog.dismiss()
         }
-
         binding.clButtonEnroll.setOnClickListener {
-            // TODO Intent to payment activity
-            PaymentActivity.startActivity(requireContext())
+            val data = viewModel.detailCourse.value?.payload
+
+            val intent = Intent(requireContext(), PaymentActivity::class.java)
+            data?.let {
+                intent.putExtra("EXTRA_DETAIL_COURSE", it)
+            }
+            requireContext().startActivity(intent)
         }
     }
 
