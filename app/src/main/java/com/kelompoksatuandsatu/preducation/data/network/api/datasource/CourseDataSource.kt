@@ -6,13 +6,13 @@ import com.kelompoksatuandsatu.preducation.data.network.api.model.course.detailc
 import com.kelompoksatuandsatu.preducation.data.network.api.model.course.detailcourse.progress.ProgressCourseResponse
 import com.kelompoksatuandsatu.preducation.data.network.api.model.payment.PaymentCourseRequest
 import com.kelompoksatuandsatu.preducation.data.network.api.model.payment.PaymentCourseResponse
+import com.kelompoksatuandsatu.preducation.data.network.api.model.course.detailcourse.progress.ProgressCourseRequest
+import com.kelompoksatuandsatu.preducation.data.network.api.model.course.detailcourse.progress.ProgressCourseResponse
 import com.kelompoksatuandsatu.preducation.data.network.api.service.PreducationService
 
 interface CourseDataSource {
     suspend fun getCategoriesClass(): CategoriesClassResponse
     suspend fun getCourseHome(category: String? = null): CourseResponse
-    suspend fun getCourseById(id: String? = null): DetailCourseResponse
-
     suspend fun paymentCourse(paymentCourseRequest: PaymentCourseRequest): PaymentCourseResponse
     suspend fun getCourseById(id: String): DetailCourseResponse
 

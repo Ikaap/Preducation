@@ -29,6 +29,8 @@ interface CourseRepository {
     ): Flow<ResultWrapper<Boolean>>
 
     suspend fun paymentCourse(item: DetailCourseViewParam): Flow<ResultWrapper<PaymentResponseViewParam>>
+
+    suspend fun postIndexCourseById(id: String? = null, request: VideoViewParam): Flow<ResultWrapper<Boolean>>
 }
 
 class CourseRepositoryImpl(
@@ -72,6 +74,16 @@ class CourseRepositoryImpl(
         return proceedFlow {
 //            val indexReq = ProgressCourseRequest(request.index)
             apiDataSource.postIndexCourseById(id, request).success == true
+        }
+    }
+
+    override suspend fun postIndexCourseById(
+        id: String?,
+        request: VideoViewParam
+    ): Flow<ResultWrapper<Boolean>> {
+        return proceedFlow {
+            val indexReq = ProgressCourseRequest(request.index)
+            apiDataSource.postIndexCourseById(id, indexReq).success == true
         }
     }
 
