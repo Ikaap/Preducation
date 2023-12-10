@@ -3,15 +3,15 @@ package com.kelompoksatuandsatu.preducation.presentation.feature.detailclass.vie
 import android.view.View
 import androidx.core.view.isGone
 import com.kelompoksatuandsatu.preducation.R
-import com.kelompoksatuandsatu.preducation.data.network.api.model.course.detailcourse.Chapter
-import com.kelompoksatuandsatu.preducation.data.network.api.model.course.detailcourse.Video
 import com.kelompoksatuandsatu.preducation.databinding.ItemSectionDataCurriculcumBinding
 import com.kelompoksatuandsatu.preducation.databinding.ItemSectionHeaderCurriculcumBinding
+import com.kelompoksatuandsatu.preducation.model.detailcourse.ChapterViewParam
+import com.kelompoksatuandsatu.preducation.model.detailcourse.VideoViewParam
 import com.xwray.groupie.viewbinding.BindableItem
 
 class HeaderItem(
-    private val data: Chapter,
-    private val onHeaderClick: (Chapter) -> Unit
+    private val data: ChapterViewParam,
+    private val onHeaderClick: (ChapterViewParam) -> Unit
 ) :
     BindableItem<ItemSectionHeaderCurriculcumBinding>() {
     override fun bind(viewBinding: ItemSectionHeaderCurriculcumBinding, position: Int) {
@@ -27,8 +27,8 @@ class HeaderItem(
 }
 
 class DataItem(
-    private val itemData: Video,
-    private val onItemClick: (item: Video) -> Unit
+    private val itemData: VideoViewParam,
+    private val onItemClick: (item: VideoViewParam) -> Unit
 ) :
     BindableItem<ItemSectionDataCurriculcumBinding>() {
     override fun bind(viewBinding: ItemSectionDataCurriculcumBinding, position: Int) {

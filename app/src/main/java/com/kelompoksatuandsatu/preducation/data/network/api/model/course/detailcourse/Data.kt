@@ -2,7 +2,7 @@ package com.kelompoksatuandsatu.preducation.data.network.api.model.course.detail
 
 import androidx.annotation.Keep
 import com.google.gson.annotations.SerializedName
-import com.kelompoksatuandsatu.preducation.model.DetailCourseViewParam
+import com.kelompoksatuandsatu.preducation.model.detailcourse.DetailCourseViewParam
 
 @Keep
 data class Data(
@@ -45,11 +45,11 @@ data class Data(
 )
 
 fun Data.toDetailCourse() = DetailCourseViewParam(
-    category = this.category,
-    chapters = this.chapters.orEmpty(),
+    category = this.category?.toCategory(),
+    chapters = this.chapters?.toChapterList(),
     classCode = this.classCode.orEmpty(),
     createdAt = this.createdAt.orEmpty(),
-    createdBy = this.createdBy,
+//    createdBy = this.createdBy,
     description = this.description.orEmpty(),
     id = this.id.orEmpty(),
     isActive = this.isActive ?: false,

@@ -5,12 +5,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.kelompoksatuandsatu.preducation.databinding.FragmentAboutBinding
-import com.kelompoksatuandsatu.preducation.model.toTargetAudience
+import com.kelompoksatuandsatu.preducation.model.detailcourse.toTargetAudience
 import com.kelompoksatuandsatu.preducation.presentation.feature.detailclass.adapter.DescriptionItemAdapter
 import com.kelompoksatuandsatu.preducation.utils.proceedWhen
-import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class AboutFragment : Fragment() {
 
@@ -20,7 +20,7 @@ class AboutFragment : Fragment() {
         DescriptionItemAdapter()
     }
 
-    private val viewModel: DetailClassViewModel by viewModel()
+    private val viewModel: DetailClassViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
