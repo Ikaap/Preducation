@@ -15,7 +15,6 @@ import com.kelompoksatuandsatu.preducation.databinding.LayoutDialogBuyClassBindi
 import com.kelompoksatuandsatu.preducation.model.ItemSectionDataCurriculcum
 import com.kelompoksatuandsatu.preducation.model.ItemSectionHeaderCurriculcum
 import com.kelompoksatuandsatu.preducation.model.SectionedCurriculcumData
-import com.kelompoksatuandsatu.preducation.model.detailcourse.DetailCourseViewParam
 import com.kelompoksatuandsatu.preducation.presentation.feature.detailclass.viewitems.DataItem
 import com.kelompoksatuandsatu.preducation.presentation.feature.detailclass.viewitems.HeaderItem
 import com.kelompoksatuandsatu.preducation.presentation.feature.payment.PaymentActivity

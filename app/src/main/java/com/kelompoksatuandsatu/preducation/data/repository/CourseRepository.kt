@@ -4,8 +4,11 @@ import com.kelompoksatuandsatu.preducation.data.network.api.datasource.CourseDat
 import com.kelompoksatuandsatu.preducation.data.network.api.model.category.categoryclass.toCategoryClassList
 import com.kelompoksatuandsatu.preducation.data.network.api.model.course.detailcourse.toDetailCourse
 import com.kelompoksatuandsatu.preducation.data.network.api.model.course.toCourseList
+import com.kelompoksatuandsatu.preducation.data.network.api.model.payment.PaymentCourseRequest
+import com.kelompoksatuandsatu.preducation.data.network.api.model.payment.toPaymentResponse
 import com.kelompoksatuandsatu.preducation.model.CategoryClass
 import com.kelompoksatuandsatu.preducation.model.CourseViewParam
+import com.kelompoksatuandsatu.preducation.model.PaymentResponseViewParam
 import com.kelompoksatuandsatu.preducation.model.detailcourse.DetailCourseViewParam
 import com.kelompoksatuandsatu.preducation.utils.ResultWrapper
 import com.kelompoksatuandsatu.preducation.utils.proceedFlow
@@ -16,6 +19,8 @@ interface CourseRepository {
     fun getCourseHome(category: String? = null): Flow<ResultWrapper<List<CourseViewParam>>>
 
     fun getCourseById(id: String? = null): Flow<ResultWrapper<DetailCourseViewParam>>
+
+    suspend fun paymentCourse(item: DetailCourseViewParam): Flow<ResultWrapper<PaymentResponseViewParam>>
 }
 
 class CourseRepositoryImpl(private val apiDataSource: CourseDataSource) : CourseRepository {
@@ -34,6 +39,14 @@ class CourseRepositoryImpl(private val apiDataSource: CourseDataSource) : Course
     override fun getCourseById(id: String?): Flow<ResultWrapper<DetailCourseViewParam>> {
         return proceedFlow {
             apiDataSource.getCourseById(id).data?.toDetailCourse()!!
+        }
+    }
+
+    override suspend fun paymentCourse(item: DetailCourseViewParam): Flow<ResultWrapper<PaymentResponseViewParam>> {
+        return proceedFlow {
+            val paymentItemRequest = PaymentCourseRequest(item.id, item.title, item.price)
+
+            apiDataSource.paymentCourse(paymentItemRequest).data?.toPaymentResponse()!!
         }
     }
 }

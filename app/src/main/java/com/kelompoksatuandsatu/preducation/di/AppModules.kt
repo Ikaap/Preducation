@@ -9,7 +9,9 @@ import com.kelompoksatuandsatu.preducation.data.repository.CourseRepositoryImpl
 import com.kelompoksatuandsatu.preducation.presentation.feature.detailclass.DetailClassViewModel
 import com.kelompoksatuandsatu.preducation.presentation.feature.home.HomeViewModel
 import com.kelompoksatuandsatu.preducation.presentation.feature.home.SeeAllViewModel
+import com.kelompoksatuandsatu.preducation.presentation.feature.payment.PaymentViewModel
 import org.koin.android.ext.koin.androidContext
+import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.androidx.viewmodel.dsl.viewModelOf
 import org.koin.core.module.Module
 import org.koin.dsl.module
@@ -32,6 +34,7 @@ object AppModules {
         viewModelOf(::HomeViewModel)
         viewModelOf(::SeeAllViewModel)
         viewModelOf(::DetailClassViewModel)
+        viewModel { param -> PaymentViewModel(param.get(), get()) }
     }
 
     val modules: List<Module> = listOf(
