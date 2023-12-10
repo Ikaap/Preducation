@@ -3,8 +3,6 @@ package com.kelompoksatuandsatu.preducation.data.network.api.datasource
 import com.kelompoksatuandsatu.preducation.data.network.api.model.category.categoryclass.CategoriesClassResponse
 import com.kelompoksatuandsatu.preducation.data.network.api.model.course.CourseResponse
 import com.kelompoksatuandsatu.preducation.data.network.api.model.course.detailcourse.DetailCourseResponse
-import com.kelompoksatuandsatu.preducation.data.network.api.model.payment.PaymentCourseRequest
-import com.kelompoksatuandsatu.preducation.data.network.api.model.payment.PaymentCourseResponse
 import com.kelompoksatuandsatu.preducation.data.network.api.service.PreducationService
 
 interface CourseDataSource {
@@ -13,6 +11,8 @@ interface CourseDataSource {
     suspend fun getCourseById(id: String? = null): DetailCourseResponse
 
     suspend fun paymentCourse(paymentCourseRequest: PaymentCourseRequest): PaymentCourseResponse
+
+    suspend fun postIndexCourseById(id: String? = null, progressRequest: ProgressCourseRequest): ProgressCourseResponse
 }
 class CourseDataSourceImpl(private val service: PreducationService) : CourseDataSource {
     override suspend fun getCategoriesClass(): CategoriesClassResponse {
@@ -29,5 +29,12 @@ class CourseDataSourceImpl(private val service: PreducationService) : CourseData
 
     override suspend fun paymentCourse(paymentCourseRequest: PaymentCourseRequest): PaymentCourseResponse {
         return service.paymentCourse(paymentCourseRequest)
+    }
+
+    override suspend fun postIndexCourseById(
+        id: String?,
+        progressRequest: ProgressCourseRequest
+    ): ProgressCourseResponse {
+        return service.postIndexCourseById(id, progressRequest)
     }
 }

@@ -4,11 +4,8 @@ import com.kelompoksatuandsatu.preducation.data.network.api.datasource.CourseDat
 import com.kelompoksatuandsatu.preducation.data.network.api.model.category.categoryclass.toCategoryClassList
 import com.kelompoksatuandsatu.preducation.data.network.api.model.course.detailcourse.toDetailCourse
 import com.kelompoksatuandsatu.preducation.data.network.api.model.course.toCourseList
-import com.kelompoksatuandsatu.preducation.data.network.api.model.payment.PaymentCourseRequest
-import com.kelompoksatuandsatu.preducation.data.network.api.model.payment.toPaymentResponse
 import com.kelompoksatuandsatu.preducation.model.CategoryClass
 import com.kelompoksatuandsatu.preducation.model.CourseViewParam
-import com.kelompoksatuandsatu.preducation.model.PaymentResponseViewParam
 import com.kelompoksatuandsatu.preducation.model.detailcourse.DetailCourseViewParam
 import com.kelompoksatuandsatu.preducation.utils.ResultWrapper
 import com.kelompoksatuandsatu.preducation.utils.proceedFlow
@@ -21,6 +18,8 @@ interface CourseRepository {
     fun getCourseById(id: String? = null): Flow<ResultWrapper<DetailCourseViewParam>>
 
     suspend fun paymentCourse(item: DetailCourseViewParam): Flow<ResultWrapper<PaymentResponseViewParam>>
+
+    suspend fun postIndexCourseById(id: String? = null, request: VideoViewParam): Flow<ResultWrapper<Boolean>>
 }
 
 class CourseRepositoryImpl(private val apiDataSource: CourseDataSource) : CourseRepository {
@@ -47,6 +46,16 @@ class CourseRepositoryImpl(private val apiDataSource: CourseDataSource) : Course
             val paymentItemRequest = PaymentCourseRequest(item.id, item.title, item.price)
 
             apiDataSource.paymentCourse(paymentItemRequest).data?.toPaymentResponse()!!
+        }
+    }
+
+    override suspend fun postIndexCourseById(
+        id: String?,
+        request: VideoViewParam
+    ): Flow<ResultWrapper<Boolean>> {
+        return proceedFlow {
+            val indexReq = ProgressCourseRequest(request.index)
+            apiDataSource.postIndexCourseById(id, indexReq).success == true
         }
     }
 }
