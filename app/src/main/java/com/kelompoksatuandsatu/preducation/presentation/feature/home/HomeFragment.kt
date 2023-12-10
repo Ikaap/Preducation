@@ -8,6 +8,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.widget.SearchView
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -26,6 +27,21 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class HomeFragment : Fragment() {
     private lateinit var binding: FragmentHomeBinding
+
+    private val searchView: SearchView by lazy {
+        binding.clSearchBar.findViewById(R.id.sv_search)
+    }
+
+    private val searchQueryListener = object : SearchView.OnQueryTextListener {
+        override fun onQueryTextSubmit(query: String?): Boolean {
+            return false
+        }
+
+        override fun onQueryTextChange(newText: String?): Boolean {
+            popularCourseAdapter.filter(newText)
+            return false
+        }
+    }
 
     private val categoryCourseAdapter: CategoryCourseListAdapter by lazy {
         CategoryCourseListAdapter { selectedCategory ->
@@ -71,6 +87,7 @@ class HomeFragment : Fragment() {
         setOnClickListener()
         getData()
         observeData()
+        searchView.setOnQueryTextListener(searchQueryListener)
     }
 
     private fun setOnClickListener() {

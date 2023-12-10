@@ -8,30 +8,31 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.kelompoksatuandsatu.preducation.core.ViewHolderBinder
 import com.kelompoksatuandsatu.preducation.databinding.ItemCourseCardBinding
-import com.kelompoksatuandsatu.preducation.model.CourseViewParam
+import com.kelompoksatuandsatu.preducation.model.Course
+import java.util.Locale
 
 class CourseCardListAdapter(
     var adapterLayoutMenu: AdapterLayoutMenu,
-    private val itemClick: (CourseViewParam) -> Unit
+    private val itemClick: (Course) -> Unit
 ) :
     RecyclerView.Adapter<ViewHolder>() {
     private val dataDiffer = AsyncListDiffer(
         this,
-        object : DiffUtil.ItemCallback<CourseViewParam>() {
-            override fun areItemsTheSame(oldItem: CourseViewParam, newItem: CourseViewParam): Boolean {
+        object : DiffUtil.ItemCallback<Course>() {
+            override fun areItemsTheSame(oldItem: Course, newItem: Course): Boolean {
                 return oldItem.id == newItem.id
             }
 
             override fun areContentsTheSame(
-                oldItem: CourseViewParam,
-                newItem: CourseViewParam
+                oldItem: Course,
+                newItem: Course
             ): Boolean {
                 return oldItem.id == newItem.id
             }
         }
     )
 
-    fun setData(data: List<CourseViewParam>) {
+    fun setData(data: List<Course>) {
         dataDiffer.submitList(data)
         notifyItemChanged(0, data.size)
     }
@@ -70,6 +71,18 @@ class CourseCardListAdapter(
     override fun getItemCount(): Int = dataDiffer.currentList.size
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        (holder as ViewHolderBinder<CourseViewParam>).bind(dataDiffer.currentList[position])
+        (holder as ViewHolderBinder<Course>).bind(dataDiffer.currentList[position])
+    }
+
+    fun filter(query: CharSequence?) {
+        val filteredList = if (query.isNullOrBlank()) {
+            dataDiffer.currentList
+        } else {
+            dataDiffer.currentList.filter { course ->
+                course.title?.toLowerCase(Locale.getDefault())
+                    ?.contains(query.toString().toLowerCase(Locale.getDefault())) == true
+            }
+        }
+        dataDiffer.submitList(filteredList)
     }
 }
