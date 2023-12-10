@@ -33,7 +33,7 @@ data class Data(
     @SerializedName("title")
     val title: String?,
     @SerializedName("totalDuration")
-    val totalDuration: Int?,
+    val totalDuration: Double?,
     @SerializedName("totalModule")
     val totalModule: Int?,
     @SerializedName("totalRating")
@@ -56,7 +56,7 @@ fun Data.toCourse() = Course(
     targetAudience = this.targetAudience.orEmpty(),
     thumbnail = this.thumbnail.orEmpty(),
     title = this.title.orEmpty(),
-    totalDuration = this.totalDuration ?: 0,
+    totalDuration = this.totalDuration ?: 0.0,
     totalModule = this.totalModule ?: 0,
     totalRating = this.totalRating ?: 0.0,
     typeClass = this.typeClass.orEmpty()

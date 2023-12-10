@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.kelompoksatuandsatu.preducation.core.ViewHolderBinder
 import com.kelompoksatuandsatu.preducation.databinding.ItemCourseCardBinding
 import com.kelompoksatuandsatu.preducation.model.Course
+import java.util.Locale
 
 class CourseCardListAdapter(
     var adapterLayoutMenu: AdapterLayoutMenu,
@@ -71,5 +72,17 @@ class CourseCardListAdapter(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         (holder as ViewHolderBinder<Course>).bind(dataDiffer.currentList[position])
+    }
+
+    fun filter(query: CharSequence?) {
+        val filteredList = if (query.isNullOrBlank()) {
+            dataDiffer.currentList
+        } else {
+            dataDiffer.currentList.filter { course ->
+                course.title?.toLowerCase(Locale.getDefault())
+                    ?.contains(query.toString().toLowerCase(Locale.getDefault())) == true
+            }
+        }
+        dataDiffer.submitList(filteredList)
     }
 }
