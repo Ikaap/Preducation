@@ -92,6 +92,7 @@ class HomeFragment : Fragment() {
 
     private fun setOnClickListener() {
         binding.rvPopularCourse.setOnClickListener {
+
             showSuccessDialog()
         }
 
