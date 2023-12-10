@@ -2,6 +2,10 @@ package com.kelompoksatuandsatu.preducation.data.network.api.service
 
 import com.chuckerteam.chucker.api.ChuckerInterceptor
 import com.kelompoksatuandsatu.preducation.BuildConfig
+import com.kelompoksatuandsatu.preducation.data.network.api.model.auth.login.LoginRequest
+import com.kelompoksatuandsatu.preducation.data.network.api.model.auth.login.LoginResponse
+import com.kelompoksatuandsatu.preducation.data.network.api.model.auth.register.RegisterRequest
+import com.kelompoksatuandsatu.preducation.data.network.api.model.auth.register.RegisterResponse
 import com.kelompoksatuandsatu.preducation.data.network.api.model.category.categoryclass.CategoriesClassResponse
 import com.kelompoksatuandsatu.preducation.data.network.api.model.course.CourseResponse
 import com.kelompoksatuandsatu.preducation.data.network.api.model.course.detailcourse.DetailCourseResponse
@@ -62,11 +66,13 @@ interface PreducationService {
     @GET("api/v1/payments")
     suspend fun getHistoryPayment() // : HistoryPaymentResponse
 
-    // auth
-    // @POST("api/v1/auths/register")
-    // suspend fun userRegister(@Body userRegisterRequest: UserRegisterRequest)//:UserRegisterResponse
-    // @POST("api/v1/auths/login")
-    // suspend fun userLogin(@Body userLoginRequest: UserLoginRequest)//:UserLoginResponse
+//     auth
+    @POST("api/v1/auths/register")
+    suspend fun userRegister(@Body userRegisterRequest: RegisterRequest): RegisterResponse
+
+    @POST("api/v1/auths/login")
+    suspend fun userLogin(@Body userLoginRequest: LoginRequest): LoginResponse
+
     @DELETE("api/v1/auths/logout")
     suspend fun userLogout() // :UserLogoutResponse
     // @POST("api/v1/auths/forgot-password")
