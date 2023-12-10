@@ -59,10 +59,16 @@ class DetailClassActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         setOnClickListener()
-        setYoutubeFullScreen()
-        setLayoutViewPager()
         showDetailClass()
         observeData()
+        setYoutubeFullScreen()
+        setLayoutViewPager()
+    }
+
+    private fun setOnClickListener() {
+        binding.ivBack.setOnClickListener {
+            onBackPressed()
+        }
     }
     private fun showDetailClass() {
         val idCourse = intent.getStringExtra("EXTRA_COURSE_ID")
@@ -86,12 +92,6 @@ class DetailClassActivity : AppCompatActivity() {
                     }
                 }
             )
-        }
-    }
-
-    private fun setOnClickListener() {
-        binding.ivBack.setOnClickListener {
-            onBackPressed()
         }
     }
 

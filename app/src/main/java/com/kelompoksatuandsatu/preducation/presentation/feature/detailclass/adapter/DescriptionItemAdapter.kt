@@ -6,7 +6,7 @@ import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.kelompoksatuandsatu.preducation.databinding.ItemDescRecommededStudentsBinding
-import com.kelompoksatuandsatu.preducation.model.TargetAudience
+import com.kelompoksatuandsatu.preducation.model.detailcourse.TargetAudience
 
 class DescriptionItemAdapter :
     RecyclerView.Adapter<DescriptionItemAdapter.DescriptionItemListViewHolder>() {
