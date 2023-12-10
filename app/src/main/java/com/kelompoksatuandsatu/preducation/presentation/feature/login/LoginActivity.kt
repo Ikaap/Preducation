@@ -5,21 +5,29 @@ import android.os.Bundle
 import android.text.SpannableString
 import android.text.method.PasswordTransformationMethod
 import android.text.style.UnderlineSpan
-import android.widget.LinearLayout
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.kelompoksatuandsatu.preducation.databinding.ActivityLoginBinding
+import com.kelompoksatuandsatu.preducation.model.APIResponse
 import com.kelompoksatuandsatu.preducation.model.Login
+import com.kelompoksatuandsatu.preducation.network.AuthService
 import com.kelompoksatuandsatu.preducation.presentation.feature.main.MainActivity
 import com.kelompoksatuandsatu.preducation.presentation.feature.register.RegisterActivity
 import com.kelompoksatuandsatu.preducation.presentation.feature.resetpassword.ResetPasswordActivity
+import org.json.JSONObject
+import org.koin.android.ext.android.inject
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class LoginActivity : AppCompatActivity() {
 
     private val binding: ActivityLoginBinding by lazy {
         ActivityLoginBinding.inflate(layoutInflater)
     }
-
     private lateinit var loginModel: Login
+
+    private val authService: AuthService by inject()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -57,7 +65,18 @@ class LoginActivity : AppCompatActivity() {
 
         // Show Message Box
         binding.signInButton.setOnClickListener {
-            showErrorMessageBox()
+            val email = binding.emailInput.text.toString()
+            val password = binding.passwordInput.text.toString()
+
+            if (isValidLoginInput(email, password)) {
+                if (isValidEmail(email)) {
+                    login(email, password)
+                } else {
+                    Toast.makeText(this, "Invalid email format!", Toast.LENGTH_SHORT).show()
+                }
+            } else {
+                Toast.makeText(this, "Email and Password is required!", Toast.LENGTH_SHORT).show()
+            }
         }
 
         registerTextView.setOnClickListener {
@@ -83,7 +102,41 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 
-    private fun showErrorMessageBox() {
-        binding.errorMessageBox.visibility = LinearLayout.VISIBLE
+    private fun isValidEmail(email: String): Boolean {
+        return email.contains("@") && email.contains(".")
+    }
+
+    private fun isValidLoginInput(email: String, password: String): Boolean {
+        return email.isNotEmpty() && password.isNotEmpty()
+    }
+
+    private fun login(email: String, password: String) {
+        val call = authService.login(email, password)
+
+        call.enqueue(object : Callback<APIResponse> {
+            override fun onResponse(call: Call<APIResponse>, response: Response<APIResponse>) {
+                val context = this@LoginActivity
+
+                if (response.isSuccessful) {
+                    val apiResponse = response.body()
+                    if (apiResponse?.success == true) {
+                        Toast.makeText(context, "Successfully login!", Toast.LENGTH_SHORT).show()
+                        val intent = Intent(context, MainActivity::class.java)
+                        startActivity(intent)
+                    } else {
+                        Toast.makeText(context, "Failed to login! Wrong Email or Password", Toast.LENGTH_SHORT).show()
+                    }
+                } else {
+                    val errorBody = response.errorBody()?.string()
+                    val jsonObject = JSONObject(errorBody)
+                    val message = jsonObject.getString("message")
+                    Toast.makeText(context, "Failed to login! $message", Toast.LENGTH_SHORT).show()
+                }
+            }
+
+            override fun onFailure(call: Call<APIResponse>, t: Throwable) {
+                Toast.makeText(applicationContext, "Failed to login! ${t.message}", Toast.LENGTH_SHORT).show()
+            }
+        })
     }
 }
