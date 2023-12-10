@@ -8,6 +8,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.widget.SearchView
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -27,6 +28,21 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 class HomeFragment : Fragment() {
     private lateinit var binding: FragmentHomeBinding
 
+    private val searchView: SearchView by lazy {
+        binding.clSearchBar.findViewById(R.id.sv_search)
+    }
+
+    private val searchQueryListener = object : SearchView.OnQueryTextListener {
+        override fun onQueryTextSubmit(query: String?): Boolean {
+            return false
+        }
+
+        override fun onQueryTextChange(newText: String?): Boolean {
+            popularCourseAdapter.filter(newText)
+            return false
+        }
+    }
+
     private val categoryCourseAdapter: CategoryCourseListAdapter by lazy {
         CategoryCourseListAdapter {
             showSuccessDialog()
@@ -34,7 +50,7 @@ class HomeFragment : Fragment() {
     }
 
     private val categoryCoursePopularAdapter: CategoryCourseRoundedListAdapter by lazy {
-        CategoryCourseRoundedListAdapter {
+        CategoryCourseRoundedListAdapter(viewModel) {
             viewModel.getCourse(it.name)
         }
     }
@@ -42,7 +58,6 @@ class HomeFragment : Fragment() {
     private val popularCourseAdapter: CourseCardListAdapter by lazy {
         CourseCardListAdapter(AdapterLayoutMenu.HOME) {
             showSuccessDialog()
-            navigateToDetail(it)
         }
     }
 
@@ -67,6 +82,7 @@ class HomeFragment : Fragment() {
         setOnClickListener()
         getData()
         observeData()
+        searchView.setOnQueryTextListener(searchQueryListener)
     }
 
     private fun setOnClickListener() {
@@ -77,6 +93,7 @@ class HomeFragment : Fragment() {
         binding.tvNavToSeeAllTitleCategory.setOnClickListener {
             SeeAllPopularCoursesActivity.startActivity(requireContext())
         }
+
         binding.ivToSeeAll.setOnClickListener {
             SeeAllPopularCoursesActivity.startActivity(requireContext())
         }
@@ -96,10 +113,8 @@ class HomeFragment : Fragment() {
                     binding.layoutStateCategoryCourse.pbLoading.isVisible = false
                     binding.layoutStateCategoryCourse.tvError.isVisible = false
                     binding.rvCategoryCourse.apply {
-                        binding.rvCategoryCourse.apply {
-                            isVisible = true
-                            adapter = categoryCourseAdapter
-                        }
+                        isVisible = true
+                        adapter = categoryCourseAdapter
                     }
                     it.payload?.let { data ->
                         categoryCourseAdapter.setData(data)
@@ -146,10 +161,7 @@ class HomeFragment : Fragment() {
                     binding.layoutStatePopularCourse.pbLoading.isVisible = false
                     binding.layoutStatePopularCourse.tvError.isVisible = false
                     binding.rvPopularCourse.apply {
-                        binding.rvPopularCourse.apply {
-                            isVisible = true
-                            adapter = popularCourseAdapter
-                        }
+                        isVisible = true
                         adapter = popularCourseAdapter
                     }
                     it.payload?.let { data ->

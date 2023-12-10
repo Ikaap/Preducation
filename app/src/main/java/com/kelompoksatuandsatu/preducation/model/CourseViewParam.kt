@@ -33,7 +33,7 @@ data class CourseViewParam(
     val targetAudience: List<String?>?,
     val thumbnail: String?,
     val title: String?,
-    val totalDuration: Int?,
+    val totalDuration: Double?,
     val totalModule: Int?,
     val totalRating: Double?,
     val typeClass: String?

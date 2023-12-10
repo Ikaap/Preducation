@@ -7,7 +7,9 @@ import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.kelompoksatuandsatu.preducation.R
 import com.kelompoksatuandsatu.preducation.databinding.ActivitySeeAllPopularCoursesBinding
 import com.kelompoksatuandsatu.preducation.databinding.DialogNonLoginBinding
 import com.kelompoksatuandsatu.preducation.presentation.common.adapter.AdapterLayoutMenu
@@ -22,10 +24,10 @@ class SeeAllPopularCoursesActivity : AppCompatActivity() {
         ActivitySeeAllPopularCoursesBinding.inflate(layoutInflater)
     }
 
-    private val viewModel: SeeAllViewModel by viewModel()
+    private val viewModel: HomeViewModel by viewModel()
 
     private val categoryCoursePopularAdapter: CategoryCourseRoundedListAdapter by lazy {
-        CategoryCourseRoundedListAdapter {
+        CategoryCourseRoundedListAdapter(viewModel) {
             viewModel.getCourse(it.name)
         }
     }
@@ -74,17 +76,37 @@ class SeeAllPopularCoursesActivity : AppCompatActivity() {
         viewModel.courseViewParam.observe(this) {
             it.proceedWhen(
                 doOnSuccess = {
+                    binding.layoutStateSeeallPopularCourse.root.isVisible = false
+                    binding.layoutStateSeeallPopularCourse.pbLoading.isVisible = false
+                    binding.layoutStateSeeallPopularCourse.tvError.isVisible = false
                     binding.rvCourse.apply {
-                        binding.rvCourse.layoutManager = LinearLayoutManager(
-                            this@SeeAllPopularCoursesActivity,
-                            LinearLayoutManager.VERTICAL,
-                            false
-                        )
+                        isVisible = true
                         adapter = courseAdapter
                     }
                     it.payload?.let { data ->
                         courseAdapter.setData(data)
                     }
+                },
+                doOnLoading = {
+                    binding.layoutStateSeeallPopularCourse.root.isVisible = true
+                    binding.layoutStateSeeallPopularCourse.pbLoading.isVisible = true
+                    binding.layoutStateSeeallPopularCourse.tvError.isVisible = false
+                    binding.rvCourse.isVisible = false
+                },
+                doOnError = {
+                    binding.layoutStateSeeallPopularCourse.root.isVisible = true
+                    binding.layoutStateSeeallPopularCourse.pbLoading.isVisible = false
+                    binding.layoutStateSeeallPopularCourse.tvError.isVisible = true
+                    binding.layoutStateSeeallPopularCourse.tvError.text = it.exception?.message.orEmpty()
+                    binding.rvCourse.isVisible = false
+                },
+                doOnEmpty = {
+                    binding.layoutStateSeeallPopularCourse.root.isVisible = true
+                    binding.layoutStateSeeallPopularCourse.pbLoading.isVisible = false
+                    binding.layoutStateSeeallPopularCourse.tvError.isVisible = true
+                    binding.layoutStateSeeallPopularCourse.tvError.text =
+                        resources.getString(R.string.popular_course_not_found)
+                    binding.rvCourse.isVisible = false
                 }
             )
         }
