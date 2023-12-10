@@ -10,3 +10,8 @@ data class Category(
     @SerializedName("name")
     val name: String?
 )
+
+fun Category.toCategory() = com.kelompoksatuandsatu.preducation.model.detailcourse.CategoryDetailCourse(
+    id = this.id.orEmpty(),
+    name = this.name.orEmpty()
+)

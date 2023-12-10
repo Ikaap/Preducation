@@ -1,5 +1,9 @@
 package com.kelompoksatuandsatu.preducation.model
 
+import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
+
+@Parcelize
 data class CategoryClass(
     val createdAt: String,
     val id: String,
@@ -7,4 +11,4 @@ data class CategoryClass(
     val isActive: Boolean,
     val name: String,
     val v: Int
-)
+) : Parcelable

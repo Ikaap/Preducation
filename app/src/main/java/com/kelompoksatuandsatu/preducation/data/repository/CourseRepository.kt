@@ -6,7 +6,7 @@ import com.kelompoksatuandsatu.preducation.data.network.api.model.course.detailc
 import com.kelompoksatuandsatu.preducation.data.network.api.model.course.toCourseList
 import com.kelompoksatuandsatu.preducation.model.CategoryClass
 import com.kelompoksatuandsatu.preducation.model.CourseViewParam
-import com.kelompoksatuandsatu.preducation.model.DetailCourseViewParam
+import com.kelompoksatuandsatu.preducation.model.detailcourse.DetailCourseViewParam
 import com.kelompoksatuandsatu.preducation.utils.ResultWrapper
 import com.kelompoksatuandsatu.preducation.utils.proceedFlow
 import kotlinx.coroutines.flow.Flow
