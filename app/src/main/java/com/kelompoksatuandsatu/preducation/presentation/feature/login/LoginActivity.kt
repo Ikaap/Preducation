@@ -3,140 +3,149 @@ package com.kelompoksatuandsatu.preducation.presentation.feature.login
 import android.content.Intent
 import android.os.Bundle
 import android.text.SpannableString
-import android.text.method.PasswordTransformationMethod
 import android.text.style.UnderlineSpan
-import android.widget.Toast
+import android.util.Log
+import android.util.Patterns
 import androidx.appcompat.app.AppCompatActivity
+import com.kelompoksatuandsatu.preducation.R
 import com.kelompoksatuandsatu.preducation.databinding.ActivityLoginBinding
-import com.kelompoksatuandsatu.preducation.model.Login
-import com.kelompoksatuandsatu.preducation.model.LoginResponse
-import com.kelompoksatuandsatu.preducation.network.AuthService
+import com.kelompoksatuandsatu.preducation.model.auth.UserLogin
 import com.kelompoksatuandsatu.preducation.presentation.feature.main.MainActivity
 import com.kelompoksatuandsatu.preducation.presentation.feature.register.RegisterActivity
-import com.kelompoksatuandsatu.preducation.presentation.feature.resetpassword.ResetPasswordActivity
-import org.json.JSONObject
-import org.koin.android.ext.android.inject
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+import com.kelompoksatuandsatu.preducation.utils.proceedWhen
+import io.github.muddz.styleabletoast.StyleableToast
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class LoginActivity : AppCompatActivity() {
 
     private val binding: ActivityLoginBinding by lazy {
         ActivityLoginBinding.inflate(layoutInflater)
     }
-    private lateinit var loginModel: Login
 
-    private val authService: AuthService by inject()
+    private val viewModel: LoginViewModel by viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
-        loginModel = Login(
-            loginTitle = "Login",
-            emailLabel = "Email",
-            passwordLabel = "Password",
-            forgotLabel = "Forgot Password",
-            buttonLabel = "Sign In",
-            registerTitle = "Don't have account yet?",
-            registerText = "Register Here",
-            withoutText = "Enter Without Logging In"
-        )
+        setClickListeners()
+        observeResult()
+    }
 
-        binding.lifecycleOwner = this
-        binding.loginModel = loginModel
+    private fun setClickListeners() {
+        binding.signInButton.setOnClickListener {
+            doLogin()
+        }
 
-        val registerTextView = binding.registerText
-        val registerString = loginModel.registerText
-        val registerSpannable = SpannableString(registerString)
-        registerSpannable.setSpan(
+        val regisTextView = binding.registerText
+        val regisString = getString(R.string.text_register_here)
+        val regisSpannable = SpannableString(regisString)
+        regisSpannable.setSpan(
             UnderlineSpan(),
             0,
-            registerString.length,
+            regisString.length,
             0
         )
-        registerTextView.text = registerSpannable
-
-        // Show & Hide Password
-        binding.showHidePasswordButton.setOnClickListener {
-            togglePasswordVisibility()
-        }
-
-        // Show Message Box
-        binding.signInButton.setOnClickListener {
-            val email = binding.emailInput.text.toString()
-            val password = binding.passwordInput.text.toString()
-
-            if (isValidLoginInput(email, password)) {
-                if (isValidEmail(email)) {
-                    login(email, password)
-                } else {
-                    Toast.makeText(this, "Invalid email format!", Toast.LENGTH_SHORT).show()
-                }
-            } else {
-                Toast.makeText(this, "Email and Password is required!", Toast.LENGTH_SHORT).show()
-            }
-        }
-
-        registerTextView.setOnClickListener {
+        regisTextView.text = regisSpannable
+        regisTextView.setOnClickListener {
             val intent = Intent(this, RegisterActivity::class.java)
             startActivity(intent)
         }
 
-        binding.forgotPasswordText.setOnClickListener {
-            val intent = Intent(this, ResetPasswordActivity::class.java)
-            startActivity(intent)
-        }
         binding.tvWithoutLogin.setOnClickListener {
             val intent = Intent(this, MainActivity::class.java)
             startActivity(intent)
         }
     }
 
-    private fun togglePasswordVisibility() {
-        if (binding.passwordInput.transformationMethod == PasswordTransformationMethod.getInstance()) {
-            binding.passwordInput.transformationMethod = null
-        } else {
-            binding.passwordInput.transformationMethod = PasswordTransformationMethod.getInstance()
+    private fun doLogin() {
+        if (isFormValid()) {
+            val email = binding.etEmail.text.toString().trim()
+            val password = binding.etPassword.text.toString().trim()
+
+            val userAuth = UserLogin(
+                email,
+                password
+            )
+
+            viewModel.userLogin(userAuth)
         }
     }
 
-    private fun isValidEmail(email: String): Boolean {
-        return email.contains("@") && email.contains(".")
+    private fun isFormValid(): Boolean {
+        val email = binding.etEmail.text.toString().trim()
+        val password = binding.etPassword.text.toString().trim()
+
+        return checkEmailValidation(email) &&
+            checkPasswordValidation(password)
     }
 
-    private fun isValidLoginInput(email: String, password: String): Boolean {
-        return email.isNotEmpty() && password.isNotEmpty()
+    private fun checkEmailValidation(email: String): Boolean {
+        return if (email.isEmpty()) {
+            binding.tilEmail.isErrorEnabled = true
+            binding.tilEmail.error = getString(R.string.text_error_email_empty)
+            binding.etEmail.setBackgroundResource(R.drawable.bg_edit_text_error)
+            false
+        } else if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+            binding.tilEmail.isErrorEnabled = true
+            binding.tilEmail.error = getString(R.string.text_error_email_invalid)
+            binding.etEmail.setBackgroundResource(R.drawable.bg_edit_text_error)
+            false
+        } else {
+            binding.tilEmail.isErrorEnabled = false
+            true
+        }
     }
 
-    private fun login(email: String, password: String) {
-        val call = authService.login(email, password)
+    private fun checkPasswordValidation(
+        password: String
+    ): Boolean {
+        return if (password.isEmpty()) {
+            binding.tilPassword.isErrorEnabled = true
+            binding.tilPassword.error = getString(R.string.text_sorry_wrong_password)
+            binding.etPassword.setBackgroundResource(R.drawable.bg_edit_text_error)
+            false
+        } else if (password.length < 8) {
+            binding.tilPassword.isErrorEnabled = true
+            binding.tilPassword.error = getString(R.string.text_password_min_8_character)
+            binding.etPassword.setBackgroundResource(R.drawable.bg_edit_text_error)
+            false
+        } else {
+            binding.tilPassword.isErrorEnabled = false
+            true
+        }
+    }
 
-        call.enqueue(object : Callback<LoginResponse> {
-            override fun onResponse(call: Call<LoginResponse>, response: Response<LoginResponse>) {
-                val context = this@LoginActivity
-
-                if (response.isSuccessful) {
-                    val apiResponse = response.body()
-                    if (apiResponse?.success == true) {
-                        Toast.makeText(context, "Successfully login!", Toast.LENGTH_SHORT).show()
-                        val intent = Intent(context, MainActivity::class.java)
-                        startActivity(intent)
-                    } else {
-                        Toast.makeText(context, "Failed to login! Wrong Email or Password", Toast.LENGTH_SHORT).show()
+    private fun observeResult() {
+        viewModel.loginResult.observe(this) {
+            it.proceedWhen(
+                doOnSuccess = {
+                    StyleableToast.makeText(
+                        this,
+                        getString(R.string.login_success),
+                        R.style.successtoast
+                    ).show()
+                    navigateToMain()
+                    it.payload?.let {
+                        Log.d("TOKEN", "token:  ${it.accessToken}")
                     }
-                } else {
-                    val errorBody = response.errorBody()?.string()
-                    val jsonObject = JSONObject(errorBody)
-                    val message = jsonObject.getString("message")
-                    Toast.makeText(context, "Failed to login! $message", Toast.LENGTH_SHORT).show()
+                },
+                doOnLoading = {
+                    // TODO set for loading state
+                },
+                doOnError = {
+                    StyleableToast.makeText(
+                        this,
+                        getString(R.string.login_failed) + it.exception?.message.orEmpty(),
+                        R.style.failedtoast
+                    ).show()
                 }
-            }
+            )
+        }
+    }
 
-            override fun onFailure(call: Call<LoginResponse>, t: Throwable) {
-                Toast.makeText(applicationContext, "Failed to login! ${t.message}", Toast.LENGTH_SHORT).show()
-            }
-        })
+    private fun navigateToMain() {
+        val intent = Intent(this, MainActivity::class.java)
+        startActivity(intent)
     }
 }
