@@ -104,7 +104,7 @@ class RegisterActivity : AppCompatActivity() {
         return email.isNotEmpty() && name.isNotEmpty() && phone.isNotEmpty() && password.isNotEmpty()
     }
 
-    private fun register(email: String, name: String, phone: String, password: String) {
+    private fun register(name: String, email: String, phone: String, password: String) {
         val call = authService.register(name, email, phone, password)
 
         call.enqueue(object : Callback<RegisterResponse> {
