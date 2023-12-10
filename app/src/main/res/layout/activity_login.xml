@@ -209,7 +209,7 @@
             android:layout_gravity="center"
             android:layout_marginTop="6dp"
             android:fontFamily="@font/montserrat_bold"
-            android:text="@{loginModel.withoutText}"
+            android:text="@string/text_enter_without_logging_in"
             android:textSize="16sp" />
 
         <!-- Error Message Box -->
