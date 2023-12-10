@@ -8,8 +8,8 @@ import android.text.style.UnderlineSpan
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.kelompoksatuandsatu.preducation.databinding.ActivityLoginBinding
-import com.kelompoksatuandsatu.preducation.model.APIResponse
 import com.kelompoksatuandsatu.preducation.model.Login
+import com.kelompoksatuandsatu.preducation.model.LoginResponse
 import com.kelompoksatuandsatu.preducation.network.AuthService
 import com.kelompoksatuandsatu.preducation.presentation.feature.main.MainActivity
 import com.kelompoksatuandsatu.preducation.presentation.feature.register.RegisterActivity
@@ -113,8 +113,8 @@ class LoginActivity : AppCompatActivity() {
     private fun login(email: String, password: String) {
         val call = authService.login(email, password)
 
-        call.enqueue(object : Callback<APIResponse> {
-            override fun onResponse(call: Call<APIResponse>, response: Response<APIResponse>) {
+        call.enqueue(object : Callback<LoginResponse> {
+            override fun onResponse(call: Call<LoginResponse>, response: Response<LoginResponse>) {
                 val context = this@LoginActivity
 
                 if (response.isSuccessful) {
@@ -134,7 +134,7 @@ class LoginActivity : AppCompatActivity() {
                 }
             }
 
-            override fun onFailure(call: Call<APIResponse>, t: Throwable) {
+            override fun onFailure(call: Call<LoginResponse>, t: Throwable) {
                 Toast.makeText(applicationContext, "Failed to login! ${t.message}", Toast.LENGTH_SHORT).show()
             }
         })
