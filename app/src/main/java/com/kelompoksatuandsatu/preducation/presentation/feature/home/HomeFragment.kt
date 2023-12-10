@@ -15,7 +15,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.kelompoksatuandsatu.preducation.R
 import com.kelompoksatuandsatu.preducation.databinding.DialogNonLoginBinding
 import com.kelompoksatuandsatu.preducation.databinding.FragmentHomeBinding
-import com.kelompoksatuandsatu.preducation.model.CourseViewParam
+import com.kelompoksatuandsatu.preducation.model.Course
 import com.kelompoksatuandsatu.preducation.presentation.common.adapter.AdapterLayoutMenu
 import com.kelompoksatuandsatu.preducation.presentation.common.adapter.CategoryCourseListAdapter
 import com.kelompoksatuandsatu.preducation.presentation.common.adapter.CategoryCourseRoundedListAdapter
