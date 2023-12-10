@@ -22,7 +22,8 @@ data class DetailCourseViewParam(
     val totalModule: Int?,
     val totalRating: Int?,
     val typeClass: String?,
-    val updatedAt: String?
+    val updatedAt: String?,
+    val thumbnail: String?
 ) : Parcelable
 fun DetailCourseViewParam.toTargetAudience() = TargetAudience(
     desc = this.targetAudience.orEmpty()
