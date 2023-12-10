@@ -14,6 +14,8 @@ import com.kelompoksatuandsatu.preducation.data.network.api.model.payment.Paymen
 import com.kelompoksatuandsatu.preducation.data.network.api.model.payment.PaymentCourseResponse
 import com.kelompoksatuandsatu.preducation.data.network.api.model.course.detailcourse.progress.ProgressCourseRequest
 import com.kelompoksatuandsatu.preducation.data.network.api.model.course.detailcourse.progress.ProgressCourseResponse
+import com.kelompoksatuandsatu.preducation.data.network.api.model.payment.PaymentCourseRequest
+import com.kelompoksatuandsatu.preducation.data.network.api.model.payment.PaymentCourseResponse
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory

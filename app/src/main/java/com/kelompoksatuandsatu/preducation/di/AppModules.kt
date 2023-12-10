@@ -27,6 +27,7 @@ import com.kelompoksatuandsatu.preducation.presentation.feature.login.LoginViewM
 import com.kelompoksatuandsatu.preducation.presentation.feature.register.RegisterViewModel
 import com.kelompoksatuandsatu.preducation.utils.PreferenceDataStoreHelper
 import com.kelompoksatuandsatu.preducation.utils.PreferenceDataStoreHelperImpl
+import com.kelompoksatuandsatu.preducation.presentation.feature.payment.PaymentViewModel
 import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.androidx.viewmodel.dsl.viewModelOf
@@ -65,6 +66,7 @@ object AppModules {
         viewModel { param -> PaymentViewModel(param.get(), get()) }
         viewModelOf(::RegisterViewModel)
         viewModelOf(::LoginViewModel)
+        viewModel { param -> PaymentViewModel(param.get(), get()) }
     }
 
     val modules: List<Module> = listOf(
