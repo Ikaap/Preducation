@@ -9,9 +9,9 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.LinearLayout
 import androidx.appcompat.app.AppCompatActivity
-import androidx.constraintlayout.widget.ConstraintLayout
 import com.kelompoksatuandsatu.preducation.R
 import com.kelompoksatuandsatu.preducation.databinding.ActivityLoginBinding
+import com.kelompoksatuandsatu.preducation.model.Login
 import com.kelompoksatuandsatu.preducation.presentation.feature.main.MainActivity
 import com.kelompoksatuandsatu.preducation.presentation.feature.register.RegisterActivity
 import com.kelompoksatuandsatu.preducation.presentation.feature.resetpassword.ResetPasswordActivity
@@ -22,15 +22,31 @@ class LoginActivity : AppCompatActivity() {
         ActivityLoginBinding.inflate(layoutInflater)
     }
 
+    private lateinit var loginModel: Login
+
     private lateinit var passwordInput: EditText
     private lateinit var showHideButtonPassword: Button
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
-//        val registerTextView = findViewById<TextView>(R.id.registerText)
+        loginModel = Login(
+            loginTitle = "Login",
+            emailLabel = "Email",
+            passwordLabel = "Password",
+            forgotLabel = "Forgot Password",
+            buttonLabel = "Sign In",
+            registerTitle = "Don't have account yet?",
+            registerText = "Register Here",
+            withoutText = "Enter Without Logging In"
+        )
+
+        binding.lifecycleOwner = this
+        binding.loginModel = loginModel
+
         val registerTextView = binding.registerText
-        val registerString = " Register Here"
+        val registerString = loginModel.registerText
         val registerSpannable = SpannableString(registerString)
         registerSpannable.setSpan(
             UnderlineSpan(),
@@ -49,8 +65,7 @@ class LoginActivity : AppCompatActivity() {
         }
 
         // Show Message Box
-        val loginButton = findViewById<ConstraintLayout>(R.id.cl_button_sign_in)
-        loginButton.setOnClickListener {
+        binding.signInButton.setOnClickListener {
             showErrorMessageBox()
         }
 
