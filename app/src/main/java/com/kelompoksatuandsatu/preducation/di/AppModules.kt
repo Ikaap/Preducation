@@ -1,17 +1,14 @@
 package com.kelompoksatuandsatu.preducation.di
 
 import com.chuckerteam.chucker.api.ChuckerInterceptor
-import com.kelompoksatuandsatu.preducation.data.local.database.AppDatabase
-import com.kelompoksatuandsatu.preducation.data.local.datastore.appDataStore
-import com.kelompoksatuandsatu.preducation.data.network.api.datasource.CourseApiDataSource
 import com.kelompoksatuandsatu.preducation.data.network.api.datasource.CourseDataSource
 import com.kelompoksatuandsatu.preducation.data.network.api.datasource.CourseDataSourceImpl
 import com.kelompoksatuandsatu.preducation.data.network.api.service.PreducationService
 import com.kelompoksatuandsatu.preducation.data.repository.CourseRepository
 import com.kelompoksatuandsatu.preducation.data.repository.CourseRepositoryImpl
-import com.kelompoksatuandsatu.preducation.presentation.feature.classProgress.ProgressClassViewModel
-import com.kelompoksatuandsatu.preducation.utils.PreferenceDataStoreHelper
-import com.kelompoksatuandsatu.preducation.utils.PreferenceDataStoreHelperImpl
+import com.kelompoksatuandsatu.preducation.presentation.feature.detailclass.DetailClassViewModel
+import com.kelompoksatuandsatu.preducation.presentation.feature.home.HomeViewModel
+import com.kelompoksatuandsatu.preducation.presentation.feature.home.SeeAllViewModel
 import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModelOf
 import org.koin.core.module.Module
@@ -30,11 +27,15 @@ object AppModules {
     }
 
     private val dataSourceModule = module {
-        single<CourseDataSource> { CourseApiDataSource(get()) }
+        single<CourseDataSource> { CourseDataSourceImpl(get()) }
+        single<UserDataSource> { UserDataSourceImpl(get()) }
+
     }
 
     private val repositoryModule = module {
         single<CourseRepository> { CourseRepositoryImpl(get()) }
+        single<UserRepository> { UserRepositoryImpl(get()) }
+
     }
 
     private val viewModelModule = module {
@@ -42,6 +43,8 @@ object AppModules {
         viewModelOf(::HomeViewModel)
         viewModelOf(::SeeAllViewModel)
         viewModelOf(::DetailClassViewModel)
+        viewModelOf(::RegisterViewModel)
+        viewModelOf(::LoginViewModel)
     }
 
     val modules: List<Module> = listOf(
