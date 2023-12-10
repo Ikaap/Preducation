@@ -151,8 +151,4 @@ dependencies {
 
     // toast
     implementation("io.github.muddz:styleabletoast:2.4.0")
-
-    // shimmer
-    implementation ("com.ethanhua:skeleton:1.1.2")
-    implementation ("io.supercharge:shimmerlayout:2.1.0")
 }

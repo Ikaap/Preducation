@@ -158,7 +158,7 @@
                     android:textAlignment="center"
                     android:textColor="@color/app_color_primary"
                     android:textSize="12sp"
-                    app:layout_constraintBottom_toTopOf="@id/sl_category_popular"
+                    app:layout_constraintBottom_toTopOf="@id/rv_category_popular"
                     app:layout_constraintEnd_toStartOf="@id/iv_to_see_all"
                     app:layout_constraintTop_toTopOf="parent" />
 
@@ -168,17 +168,10 @@
                     android:layout_height="12dp"
                     android:contentDescription="@string/iv_arrow_right"
                     android:src="@drawable/ic_see_all"
-                    app:layout_constraintBottom_toTopOf="@id/sl_category_popular"
+                    app:layout_constraintBottom_toTopOf="@id/rv_category_popular"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
-                <io.supercharge.shimmerlayout.ShimmerLayout
-                    android:id="@+id/sl_category_popular"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/tv_title_popular_course">
 
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/rv_category_popular"
@@ -186,15 +179,16 @@
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
                         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                        tools:listitem="@layout/item_category_rounded" />
-
-                </io.supercharge.shimmerlayout.ShimmerLayout>
+                        tools:listitem="@layout/item_category_rounded"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/tv_title_popular_course"/>
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    app:layout_constraintTop_toBottomOf="@id/sl_category_popular">
+                    app:layout_constraintTop_toBottomOf="@id/rv_category_popular">
 
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/rv_popular_course"
