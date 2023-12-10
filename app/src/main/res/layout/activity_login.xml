@@ -1,16 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
-
-    <data>
-        <variable
-            name="loginModel"
-            type="com.kelompoksatuandsatu.preducation.model.Login"/>
-    </data>
-
-<androidx.core.widget.NestedScrollView
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/app_color_on_primary"
@@ -40,7 +31,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="14dp"
             android:fontFamily="@font/montserrat_bold"
-            android:text="@{loginModel.loginTitle}"
+            android:text="@string/text_login"
             android:textSize="24sp" />
 
         <!-- Email Input -->
@@ -56,7 +47,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/poppins"
-                android:text="@{loginModel.emailLabel}"
+                android:text="@string/text_email"
                 android:textSize="16sp" />
 
             <com.google.android.material.textfield.TextInputLayout
@@ -77,8 +68,6 @@
                     android:hint="email@gmail.com"
                     android:inputType="textEmailAddress"
                     android:paddingHorizontal="14dp" />
-
-            </com.google.android.material.textfield.TextInputLayout>
 
         </LinearLayout>
 
@@ -101,7 +90,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:fontFamily="@font/poppins"
-                    android:text="@{loginModel.passwordLabel}"
+                    android:text="@string/text_password"
                     android:textSize="16sp" />
 
                 <Space
@@ -115,7 +104,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:fontFamily="@font/poppins"
-                    android:text="@{loginModel.forgotLabel}"
+                    android:text="@string/text_forgot_password"
                     android:textColor="@color/app_color_primary"
                     android:textSize="16sp" />
             </LinearLayout>
@@ -161,7 +150,7 @@
                 android:fontFamily="@font/montserrat_bold"
                 android:gravity="center"
                 android:padding="8dp"
-                android:text="@{loginModel.buttonLabel}"
+                android:text="@string/text_sign_in"
                 android:textColor="@color/white"
                 android:textSize="16sp"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -196,7 +185,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/montserrat_medium"
-                android:text="@{loginModel.registerTitle}"
+                android:text="@string/text_don_t_have_an_account_yet"
                 android:textSize="16sp" />
 
             <TextView
@@ -218,31 +207,30 @@
             android:layout_gravity="center"
             android:layout_marginTop="6dp"
             android:fontFamily="@font/montserrat_bold"
-            android:text="@{loginModel.withoutText}"
+            android:text="@string/text_enter_without_logging_in"
             android:textSize="16sp" />
 
         <!-- Error Message Box -->
-        <LinearLayout
-            android:id="@+id/errorMessageBox"
-            android:layout_width="match_parent"
-            android:layout_height="52dp"
-            android:layout_marginTop="24dp"
-            android:background="@drawable/bg_error_message"
-            android:gravity="center"
-            android:visibility="gone">
+<!--        <LinearLayout-->
+<!--            android:id="@+id/errorMessageBox"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="52dp"-->
+<!--            android:layout_marginTop="24dp"-->
+<!--            android:background="@drawable/bg_error_message"-->
+<!--            android:gravity="center"-->
+<!--            android:visibility="gone">-->
 
-            <TextView
-                android:id="@+id/errorMessage"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/poppins_medium"
-                android:text="@string/text_sorry_wrong_password"
-                android:textColor="@color/white"
-                android:textSize="16sp" />
+<!--            <TextView-->
+<!--                android:id="@+id/errorMessage"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:fontFamily="@font/poppins_medium"-->
+<!--                android:text="@string/text_sorry_wrong_password"-->
+<!--                android:textColor="@color/white"-->
+<!--                android:textSize="16sp" />-->
 
-        </LinearLayout>
+<!--        </LinearLayout>-->
 
     </LinearLayout>
 
 </androidx.core.widget.NestedScrollView>
-</layout>
