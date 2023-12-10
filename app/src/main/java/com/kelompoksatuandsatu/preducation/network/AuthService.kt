@@ -12,14 +12,5 @@ interface AuthService {
     fun login(
         @Field("identifier") identifier: String,
         @Field("password") password: String
-    ): Call<LoginResponse>
-
-    @FormUrlEncoded
-    @POST("/api/v1/auths/register")
-    fun register(
-        @Field("name") name: String,
-        @Field("email") email: String,
-        @Field("phone") phone: String,
-        @Field("password") password: String
-    ): Call<RegisterResponse>
+    ): Call<APIResponse>
 }
