@@ -2,11 +2,15 @@ package com.kelompoksatuandsatu.preducation.data.network.api.service
 
 import com.chuckerteam.chucker.api.ChuckerInterceptor
 import com.kelompoksatuandsatu.preducation.BuildConfig
+import com.kelompoksatuandsatu.preducation.data.network.api.model.ResetPasswordRequest
+import com.kelompoksatuandsatu.preducation.data.network.api.model.ResetPasswordResponse
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import retrofit2.http.Body
 import retrofit2.http.DELETE
 import retrofit2.http.GET
+import retrofit2.http.POST
 import retrofit2.http.Path
 import retrofit2.http.Query
 import java.util.concurrent.TimeUnit
@@ -67,6 +71,9 @@ interface PreducationService {
     // payment
     // @POST("api/v1/payments")
     // suspend fun paymentCourse(@Body paymentCourseRequest: PaymentCourseRequest)//:PaymentCourseResponse
+
+    @POST("resetPassword")
+    suspend fun createResetPassword(@Body resetPasswordRequest: ResetPasswordRequest): ResetPasswordResponse
 
     companion object {
         @JvmStatic
