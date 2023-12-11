@@ -73,11 +73,11 @@ class SeeAllPopularCoursesActivity : AppCompatActivity() {
             )
         }
 
-        viewModel.courseViewParam.observe(this) {
+        viewModel.coursePopular.observe(this) {
             it.proceedWhen(
                 doOnSuccess = {
                     binding.layoutStateSeeallPopularCourse.root.isVisible = false
-                    binding.layoutStateSeeallPopularCourse.pbLoading.isVisible = false
+//                    binding.layoutStateSeeallPopularCourse.pbLoading.isVisible = false
                     binding.layoutStateSeeallPopularCourse.tvError.isVisible = false
                     binding.rvCourse.apply {
                         isVisible = true
@@ -89,20 +89,20 @@ class SeeAllPopularCoursesActivity : AppCompatActivity() {
                 },
                 doOnLoading = {
                     binding.layoutStateSeeallPopularCourse.root.isVisible = true
-                    binding.layoutStateSeeallPopularCourse.pbLoading.isVisible = true
+//                    binding.layoutStateSeeallPopularCourse.pbLoading.isVisible = true
                     binding.layoutStateSeeallPopularCourse.tvError.isVisible = false
                     binding.rvCourse.isVisible = false
                 },
                 doOnError = {
                     binding.layoutStateSeeallPopularCourse.root.isVisible = true
-                    binding.layoutStateSeeallPopularCourse.pbLoading.isVisible = false
+//                    binding.layoutStateSeeallPopularCourse.pbLoading.isVisible = false
                     binding.layoutStateSeeallPopularCourse.tvError.isVisible = true
                     binding.layoutStateSeeallPopularCourse.tvError.text = it.exception?.message.orEmpty()
                     binding.rvCourse.isVisible = false
                 },
                 doOnEmpty = {
                     binding.layoutStateSeeallPopularCourse.root.isVisible = true
-                    binding.layoutStateSeeallPopularCourse.pbLoading.isVisible = false
+//                    binding.layoutStateSeeallPopularCourse.pbLoading.isVisible = false
                     binding.layoutStateSeeallPopularCourse.tvError.isVisible = true
                     binding.layoutStateSeeallPopularCourse.tvError.text =
                         resources.getString(R.string.popular_course_not_found)

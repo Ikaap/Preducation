@@ -1,5 +1,6 @@
 package com.kelompoksatuandsatu.preducation.data.repository
 
+import com.kelompoksatuandsatu.preducation.data.local.datastore.datasource.UserPreferenceDataSource
 import com.kelompoksatuandsatu.preducation.data.network.api.datasource.CourseDataSource
 import com.kelompoksatuandsatu.preducation.data.network.api.model.category.categoryclass.toCategoryClassList
 import com.kelompoksatuandsatu.preducation.data.network.api.model.course.detailcourse.toDetailCourse
@@ -15,14 +16,17 @@ interface CourseRepository {
     fun getCategoriesClass(): Flow<ResultWrapper<List<CategoryClass>>>
     fun getCourseHome(category: String? = null): Flow<ResultWrapper<List<CourseViewParam>>>
 
-    fun getCourseById(id: String? = null): Flow<ResultWrapper<DetailCourseViewParam>>
+    fun getCourseById(id: String? = null, token: String): Flow<ResultWrapper<DetailCourseViewParam>>
 
     suspend fun paymentCourse(item: DetailCourseViewParam): Flow<ResultWrapper<PaymentResponseViewParam>>
 
     suspend fun postIndexCourseById(id: String? = null, request: VideoViewParam): Flow<ResultWrapper<Boolean>>
 }
 
-class CourseRepositoryImpl(private val apiDataSource: CourseDataSource) : CourseRepository {
+class CourseRepositoryImpl(
+    private val apiDataSource: CourseDataSource,
+    private val userPreferenceDataSource: UserPreferenceDataSource
+) : CourseRepository {
     override fun getCategoriesClass(): Flow<ResultWrapper<List<CategoryClass>>> {
         return proceedFlow {
             apiDataSource.getCategoriesClass().data?.toCategoryClassList() ?: emptyList()
@@ -35,9 +39,9 @@ class CourseRepositoryImpl(private val apiDataSource: CourseDataSource) : Course
         }
     }
 
-    override fun getCourseById(id: String?): Flow<ResultWrapper<DetailCourseViewParam>> {
+    override fun getCourseById(id: String?, token: String): Flow<ResultWrapper<DetailCourseViewParam>> {
         return proceedFlow {
-            apiDataSource.getCourseById(id).data?.toDetailCourse()!!
+            apiDataSource.getCourseById(id, token).data?.toDetailCourse()!!
         }
     }
 

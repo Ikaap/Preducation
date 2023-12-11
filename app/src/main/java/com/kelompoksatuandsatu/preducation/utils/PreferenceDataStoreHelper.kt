@@ -15,7 +15,7 @@ interface PreferenceDataStoreHelper {
     suspend fun <T> getFirstPreference(key: Preferences.Key<T>, defaultValue: T): T
     suspend fun <T> putPreference(key: Preferences.Key<T>, value: T)
     suspend fun <T> removePreference(key: Preferences.Key<T>)
-    suspend fun <T> clearAllPreference()
+    suspend fun clearAllPreference()
 }
 
 class PreferenceDataStoreHelperImpl(private val dataStore: DataStore<Preferences>) :
@@ -56,7 +56,7 @@ class PreferenceDataStoreHelperImpl(private val dataStore: DataStore<Preferences
     }
 
     // This function clears the entire Preference Datastore.
-    override suspend fun <T> clearAllPreference() {
+    override suspend fun clearAllPreference() {
         dataStore.edit { preferences ->
             preferences.clear()
         }

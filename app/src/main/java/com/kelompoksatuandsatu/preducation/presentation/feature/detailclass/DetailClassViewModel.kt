@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.kelompoksatuandsatu.preducation.data.local.datastore.datasource.UserPreferenceDataSource
 import com.kelompoksatuandsatu.preducation.data.repository.CourseRepository
 import com.kelompoksatuandsatu.preducation.model.detailcourse.DetailCourseViewParam
 import com.kelompoksatuandsatu.preducation.model.detailcourse.VideoViewParam
@@ -13,7 +14,8 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 class DetailClassViewModel(
-    private val courseRepo: CourseRepository
+    private val courseRepo: CourseRepository,
+    private val userPreferenceDataSource: UserPreferenceDataSource
 ) : ViewModel() {
 //    private val courseList = courseRepo.getCourseHome().asLiveData(Dispatchers.IO)
 
@@ -25,26 +27,13 @@ class DetailClassViewModel(
     val progressVideo: LiveData<ResultWrapper<Boolean>>
         get() = _progressVideo
 
-    fun getCourseById(courseId: String? = null) {
+    fun getCourseById(courseId: String? = null, token: String) {
         viewModelScope.launch(Dispatchers.IO) {
-//            val courseId = courseList.value?.payload?.first()?.id
-            courseRepo.getCourseById(courseId).collect {
+            courseRepo.getCourseById(courseId, token).collect {
                 _detailCourse.postValue(it)
             }
         }
     }
-
-//    fun postIndexCourseById(){
-//        viewModelScope.launch(Dispatchers.IO){
-//            val id = detailCourse.value?.payload?.id
-//            val req = detailCourse.value?.payload?.chapters?.get(0)?.videos?.get(0)?.index
-//            if (req != null) {
-//                courseRepo.postIndexCourseById(id, req).collect{
-//                    _progressVideo.postValue(it)
-//                }
-//            }
-//        }
-//    }
 
     fun postIndexVideo(index: VideoViewParam) {
         viewModelScope.launch(Dispatchers.IO) {
