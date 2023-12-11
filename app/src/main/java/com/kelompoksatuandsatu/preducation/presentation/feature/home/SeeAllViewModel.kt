@@ -18,9 +18,9 @@ class SeeAllViewModel(
     val categoriesClassPopular: LiveData<ResultWrapper<List<CategoryClass>>>
         get() = _categoriesClassPopular
 
-    private val _courseViewParam = MutableLiveData<ResultWrapper<List<CourseViewParam>>>()
-    val courseViewParam: LiveData<ResultWrapper<List<CourseViewParam>>>
-        get() = _courseViewParam
+    private val _coursePopular = MutableLiveData<ResultWrapper<List<CourseViewParam>>>()
+    val coursePopular: LiveData<ResultWrapper<List<CourseViewParam>>>
+        get() = _coursePopular
 
     fun getCategoriesClassPopular() {
         viewModelScope.launch(Dispatchers.IO) {
@@ -33,7 +33,7 @@ class SeeAllViewModel(
     fun getCourse(category: String? = null) {
         viewModelScope.launch(Dispatchers.IO) {
             courseRepo.getCourseHome(if (category == "All") null else category?.lowercase()).collect {
-                _courseViewParam.postValue(it)
+                _coursePopular.postValue(it)
             }
         }
     }
