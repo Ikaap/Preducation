@@ -19,24 +19,4 @@ class App : Application() {
             modules(AppModules.modules)
         }
     }
-
-//    companion object {
-//        fun createAuthService(): AuthService {
-//            val loggingInterceptor = HttpLoggingInterceptor().apply {
-//                level = HttpLoggingInterceptor.Level.BODY
-//            }
-//
-//            val okHttpClient = OkHttpClient.Builder()
-//                .addInterceptor(loggingInterceptor)
-//                .build()
-//
-//            val retrofit = Retrofit.Builder()
-//                .baseUrl("https://preducation.up.railway.app")
-//                .client(okHttpClient)
-//                .addConverterFactory(GsonConverterFactory.create())
-//                .build()
-//
-//            return retrofit.create(AuthService::class.java)
-//        }
-//    }
 }
