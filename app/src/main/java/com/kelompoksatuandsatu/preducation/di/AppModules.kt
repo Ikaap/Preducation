@@ -23,19 +23,19 @@ object AppModules {
 
     private val networkModule = module {
         single { ChuckerInterceptor(androidContext()) }
-        single { PreducationService.invoke(get()) }
+        single { PreducationService.invoke(get(),get()) }
+        single { AuthInterceptor(get()) }
     }
 
     private val dataSourceModule = module {
-        single<CourseDataSource> { CourseDataSourceImpl(get()) }
+        single<UserPreferenceDataSource> { UserPreferenceDataSourceImpl(get()) }
+        single<CourseDataSource> { CourseDataSourceImpl(get(), get()) }
         single<UserDataSource> { UserDataSourceImpl(get()) }
-
     }
 
     private val repositoryModule = module {
-        single<CourseRepository> { CourseRepositoryImpl(get()) }
-        single<UserRepository> { UserRepositoryImpl(get()) }
-
+        single<CourseRepository> { CourseRepositoryImpl(get(), get()) }
+        single<UserRepository> { UserRepositoryImpl(get(), get()) }
     }
 
     private val viewModelModule = module {

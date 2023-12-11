@@ -1,5 +1,6 @@
 package com.kelompoksatuandsatu.preducation.data.repository
 
+import com.kelompoksatuandsatu.preducation.data.local.datastore.datasource.UserPreferenceDataSource
 import com.kelompoksatuandsatu.preducation.data.network.api.datasource.UserDataSource
 import com.kelompoksatuandsatu.preducation.data.network.api.model.auth.login.LoginRequest
 import com.kelompoksatuandsatu.preducation.data.network.api.model.auth.login.toToken
@@ -10,26 +11,36 @@ import com.kelompoksatuandsatu.preducation.model.auth.UserLogin
 import com.kelompoksatuandsatu.preducation.utils.ResultWrapper
 import com.kelompoksatuandsatu.preducation.utils.proceedFlow
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.onEach
 
 interface UserRepository {
 
     suspend fun userRegister(request: UserAuth): Flow<ResultWrapper<String>>
 
-    suspend fun userLogin(request: UserLogin): Flow<ResultWrapper<LoginToken>>
+    suspend fun userLogin(request: UserLogin): Flow<ResultWrapper<Boolean>>
 }
 
-class UserRepositoryImpl(private val dataSource: UserDataSource) : UserRepository {
+class UserRepositoryImpl(
+    private val dataSource: UserDataSource,
+    private val userPreferenceDataSource: UserPreferenceDataSource
+) : UserRepository {
     override suspend fun userRegister(request: UserAuth): Flow<ResultWrapper<String>> {
         return proceedFlow {
-            val dataRequest = RegisterRequest(request.email, request.name, request.phone, request.password)
+            val dataRequest =
+                RegisterRequest(request.email, request.name, request.phone, request.password)
             dataSource.userRegister(dataRequest).message.toString()
         }
     }
 
-    override suspend fun userLogin(request: UserLogin): Flow<ResultWrapper<LoginToken>> {
+    override suspend fun userLogin(request: UserLogin): Flow<ResultWrapper<Boolean>> {
         return proceedFlow {
             val dataReq = LoginRequest(request.identifier, request.password)
-            dataSource.userLogin(dataReq).data.toToken()
+            val loginResult = dataSource.userLogin(dataReq)
+            if (loginResult.success) {
+                userPreferenceDataSource.saveUserToken(loginResult.data.accessToken)
+            }
+            loginResult.success
         }
     }
 }
