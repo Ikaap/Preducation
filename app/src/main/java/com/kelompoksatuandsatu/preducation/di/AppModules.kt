@@ -1,9 +1,6 @@
 package com.kelompoksatuandsatu.preducation.di
 
 import com.chuckerteam.chucker.api.ChuckerInterceptor
-import com.kelompoksatuandsatu.preducation.data.local.datastore.datasource.UserPreferenceDataSource
-import com.kelompoksatuandsatu.preducation.data.local.datastore.datasource.UserPreferenceDataSourceImpl
-import com.kelompoksatuandsatu.preducation.data.local.datastore.datasource.userDataStore
 import com.kelompoksatuandsatu.preducation.data.network.api.datasource.CourseDataSource
 import com.kelompoksatuandsatu.preducation.data.network.api.datasource.CourseDataSourceImpl
 import com.kelompoksatuandsatu.preducation.data.network.api.datasource.UserDataSource

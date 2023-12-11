@@ -30,7 +30,6 @@ interface CourseRepository {
 
     suspend fun paymentCourse(item: DetailCourseViewParam): Flow<ResultWrapper<PaymentResponseViewParam>>
 
-    suspend fun postIndexCourseById(id: String? = null, request: VideoViewParam): Flow<ResultWrapper<Boolean>>
 }
 
 class CourseRepositoryImpl(
