@@ -1,7 +1,9 @@
 package com.kelompoksatuandsatu.preducation.data.network.api.datasource
 
-import com.kelompoksatuandsatu.preducation.data.network.api.model.ResetPasswordRequest
-import com.kelompoksatuandsatu.preducation.data.network.api.model.ResetPasswordResponse
+import com.kelompoksatuandsatu.preducation.data.network.api.model.auth.login.LoginRequest
+import com.kelompoksatuandsatu.preducation.data.network.api.model.auth.login.LoginResponse
+import com.kelompoksatuandsatu.preducation.data.network.api.model.auth.register.RegisterRequest
+import com.kelompoksatuandsatu.preducation.data.network.api.model.auth.register.RegisterResponse
 import com.kelompoksatuandsatu.preducation.data.network.api.service.PreducationService
 
 interface UserDataSource {
@@ -24,4 +26,3 @@ class UserApiDataSource(private val service: PreducationService) : UserDataSourc
         return service.userLogin(userLoginRequest)
     }
 }
-
