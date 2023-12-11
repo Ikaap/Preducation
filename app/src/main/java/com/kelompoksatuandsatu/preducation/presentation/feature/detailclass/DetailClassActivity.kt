@@ -73,7 +73,7 @@ class DetailClassActivity : AppCompatActivity() {
     private fun showDetailClass() {
         val idCourse = intent.getStringExtra("EXTRA_COURSE_ID")
         idCourse?.let {
-            viewModel.getCourseById(it)
+//            viewModel.getCourseById(it)
         }
     }
 
