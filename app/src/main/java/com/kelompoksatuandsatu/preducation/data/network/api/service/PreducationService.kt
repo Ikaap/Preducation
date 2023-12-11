@@ -2,6 +2,8 @@ package com.kelompoksatuandsatu.preducation.data.network.api.service
 
 import com.chuckerteam.chucker.api.ChuckerInterceptor
 import com.kelompoksatuandsatu.preducation.BuildConfig
+import com.kelompoksatuandsatu.preducation.data.network.api.model.ResetPasswordRequest
+import com.kelompoksatuandsatu.preducation.data.network.api.model.ResetPasswordResponse
 import com.kelompoksatuandsatu.preducation.data.network.api.interceptor.AuthInterceptor
 import com.kelompoksatuandsatu.preducation.data.network.api.model.auth.login.LoginRequest
 import com.kelompoksatuandsatu.preducation.data.network.api.model.auth.login.LoginResponse
@@ -93,6 +95,9 @@ interface PreducationService {
     // payment
     @POST("api/v1/payments")
     suspend fun paymentCourse(@Body paymentCourseRequest: PaymentCourseRequest): PaymentCourseResponse
+
+    @POST("resetPassword")
+    suspend fun createResetPassword(@Body resetPasswordRequest: ResetPasswordRequest): ResetPasswordResponse
 
     companion object {
         @JvmStatic

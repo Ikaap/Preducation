@@ -10,14 +10,19 @@ interface UserDataSource {
     suspend fun userRegister(userRegisterRequest: RegisterRequest): RegisterResponse
 
     suspend fun userLogin(userLoginRequest: LoginRequest): LoginResponse
+
+    suspend fun createResetPassword(resetPasswordRequest: ResetPasswordRequest): ResetPasswordResponse
+
 }
 
 class UserDataSourceImpl(private val service: PreducationService) : UserDataSource {
     override suspend fun userRegister(userRegisterRequest: RegisterRequest): RegisterResponse {
         return service.userRegister(userRegisterRequest)
     }
-
     override suspend fun userLogin(userLoginRequest: LoginRequest): LoginResponse {
         return service.userLogin(userLoginRequest)
+    }
+    override suspend fun createResetPassword(resetPasswordRequest: ResetPasswordRequest): ResetPasswordResponse {
+        return service.createResetPassword(resetPasswordRequest)
     }
 }

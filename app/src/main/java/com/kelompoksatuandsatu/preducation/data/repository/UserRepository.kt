@@ -15,6 +15,9 @@ interface UserRepository {
     suspend fun userRegister(request: UserAuth): Flow<ResultWrapper<String>>
 
     suspend fun userLogin(request: UserLogin): Flow<ResultWrapper<Boolean>>
+
+    suspend fun createResetPassword(resetPasswordRequest: ResetPasswordRequest): Flow<ResultWrapper<ResetPasswordResponse>>
+
 }
 
 class UserRepositoryImpl(
@@ -38,5 +41,8 @@ class UserRepositoryImpl(
             }
             loginResult.success
         }
+    }
+    override suspend fun createResetPassword(resetPasswordRequest: ResetPasswordRequest): Flow<ResultWrapper<ResetPasswordResponse>> {
+        return proceedFlow { dataSource.createResetPassword(resetPasswordRequest) }
     }
 }
