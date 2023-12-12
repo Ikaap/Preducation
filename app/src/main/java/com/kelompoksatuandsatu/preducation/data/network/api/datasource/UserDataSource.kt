@@ -20,6 +20,7 @@ interface UserDataSource {
 
     suspend fun userLogin(userLoginRequest: LoginRequest): LoginResponse
 
+    suspend fun getUserById(id: String? = null): UserResponse
     suspend fun userOtp(userOtpRequest: OtpRequest): OtpResponse
 
     suspend fun getUserById(): UserResponse
@@ -37,6 +38,8 @@ class UserDataSourceImpl(private val service: PreducationService) : UserDataSour
     override suspend fun userLogin(userLoginRequest: LoginRequest): LoginResponse {
         return service.userLogin(userLoginRequest)
     }
+    override suspend fun getUserById(id: String?): UserResponse {
+        return service.getUserById(id)
 
     override suspend fun userOtp(userOtpRequest: OtpRequest): OtpResponse {
         return service.getOtpToEmail(userOtpRequest)
