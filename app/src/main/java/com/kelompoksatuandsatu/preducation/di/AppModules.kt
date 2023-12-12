@@ -42,7 +42,7 @@ object AppModules {
 
     private val networkModule = module {
         single { ChuckerInterceptor(androidContext()) }
-        single { PreducationService.invoke(get(),get()) }
+        single { PreducationService.invoke(get(), get()) }
         single { AuthInterceptor(get()) }
     }
 
