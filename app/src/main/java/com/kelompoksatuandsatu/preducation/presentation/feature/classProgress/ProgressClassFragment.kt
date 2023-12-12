@@ -9,22 +9,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
-import com.kelompoksatuandsatu.preducation.data.local.dummy.DummyCategoryCourseDataSource
-import com.kelompoksatuandsatu.preducation.data.local.dummy.DummyCategoryCourseDataSourceImpl
-import com.kelompoksatuandsatu.preducation.data.local.dummy.DummyCategoryPopularDataSource
-import com.kelompoksatuandsatu.preducation.data.local.dummy.DummyCategoryPopularDataSourceImpl
-import com.kelompoksatuandsatu.preducation.data.local.dummy.DummyPopularCourseDataSource
-import com.kelompoksatuandsatu.preducation.data.local.dummy.DummyPopularCourseDataSourceImpl
 import com.kelompoksatuandsatu.preducation.databinding.DialogNonLoginBinding
 import com.kelompoksatuandsatu.preducation.databinding.FragmentProgressClassBinding
-import com.kelompoksatuandsatu.preducation.model.CategoryCourse
-import com.kelompoksatuandsatu.preducation.model.CategoryPopular
-import com.kelompoksatuandsatu.preducation.model.Course
 import com.kelompoksatuandsatu.preducation.presentation.common.adapter.AdapterLayoutMenu
 import com.kelompoksatuandsatu.preducation.presentation.common.adapter.CategoryCourseListAdapter
-import com.kelompoksatuandsatu.preducation.presentation.common.adapter.CategoryCourseRoundedListAdapter
 import com.kelompoksatuandsatu.preducation.presentation.common.adapter.CourseCardListAdapter
 import com.kelompoksatuandsatu.preducation.presentation.feature.register.RegisterActivity
 
@@ -81,41 +69,41 @@ class ProgressClassFragment : Fragment() {
     }
 
     private fun showCategoryProgress() {
-        val categoryPopularAdapter = CategoryCourseRoundedListAdapter()
-        binding.rvCategoryProgress.adapter = categoryPopularAdapter
-        binding.rvCategoryProgress.layoutManager = LinearLayoutManager(
-            requireContext(),
-            LinearLayoutManager.HORIZONTAL,
-            false
-        )
-        val dummyCategoryPopularDataSource: DummyCategoryPopularDataSource =
-            DummyCategoryPopularDataSourceImpl()
-        val categoryPopularList: List<CategoryPopular> =
-            dummyCategoryPopularDataSource.getCategoryProgress()
-        categoryPopularAdapter.setData(categoryPopularList)
+//        val categoryPopularAdapter = CategoryCourseRoundedListAdapter()
+//        binding.rvCategoryProgress.adapter = categoryPopularAdapter
+//        binding.rvCategoryProgress.layoutManager = LinearLayoutManager(
+//            requireContext(),
+//            LinearLayoutManager.HORIZONTAL,
+//            false
+//        )
+//        val dummyCategoryPopularDataSource: DummyCategoryPopularDataSource =
+//            DummyCategoryPopularDataSourceImpl()
+//        val categoryPopularList: List<CategoryPopular> =
+//            dummyCategoryPopularDataSource.getCategoryProgress()
+//        categoryPopularAdapter.setData(categoryPopularList)
     }
 
     private fun showCourse() {
-        binding.rvProgressCourse.adapter = progressCourseAdapter
-        binding.rvProgressCourse.layoutManager = LinearLayoutManager(
-            requireContext(),
-            LinearLayoutManager.HORIZONTAL,
-            false
-        )
-        val dummyPopularDataSource: DummyPopularCourseDataSource =
-            DummyPopularCourseDataSourceImpl()
-        val popularCourseList: List<Course> =
-            dummyPopularDataSource.getPopularCourse()
-        progressCourseAdapter.setData(popularCourseList)
+//        binding.rvProgressCourse.adapter = progressCourseAdapter
+//        binding.rvProgressCourse.layoutManager = LinearLayoutManager(
+//            requireContext(),
+//            LinearLayoutManager.HORIZONTAL,
+//            false
+//        )
+//        val dummyPopularDataSource: DummyPopularCourseDataSource =
+//            DummyPopularCourseDataSourceImpl()
+//        val popularCourseList: List<Course> =
+//            dummyPopularDataSource.getPopularCourse()
+//        progressCourseAdapter.setData(popularCourseList)
     }
 
     private fun showCategoryCourse() {
-        binding.rvCategoryCourse.adapter = categoryCourseAdapter
-        binding.rvCategoryCourse.layoutManager = GridLayoutManager(requireContext(), 4)
-        val dummyCategoryCourseDataSource: DummyCategoryCourseDataSource =
-            DummyCategoryCourseDataSourceImpl()
-        val categoryCourseList: List<CategoryCourse> =
-            dummyCategoryCourseDataSource.getCategoryCourse()
-        categoryCourseAdapter.setData(categoryCourseList)
+//        binding.rvCategoryCourse.adapter = categoryCourseAdapter
+//        binding.rvCategoryCourse.layoutManager = GridLayoutManager(requireContext(), 4)
+//        val dummyCategoryCourseDataSource: DummyCategoryCourseDataSource =
+//            DummyCategoryCourseDataSourceImpl()
+//        val categoryCourseList: List<CategoryCourse> =
+//            dummyCategoryCourseDataSource.getCategoryCourse()
+//        categoryCourseAdapter.setData(categoryCourseList)
     }
 }
