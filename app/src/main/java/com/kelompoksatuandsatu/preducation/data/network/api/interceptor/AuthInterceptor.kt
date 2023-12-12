@@ -5,13 +5,13 @@ import kotlinx.coroutines.runBlocking
 import okhttp3.Interceptor
 import okhttp3.Response
 
-class AuthInterceptor(private val preference : UserPreferenceDataSource): Interceptor {
+class AuthInterceptor(private val preference: UserPreferenceDataSource) : Interceptor {
 
     override fun intercept(chain: Interceptor.Chain): Response {
         var request = chain.request()
         runBlocking {
             val token = preference.getUserToken()
-            if(token.isNotEmpty()){
+            if (token.isNotEmpty()) {
                 request = request.newBuilder()
                     .addHeader("Authorization", "Bearer $token")
                     .build()
