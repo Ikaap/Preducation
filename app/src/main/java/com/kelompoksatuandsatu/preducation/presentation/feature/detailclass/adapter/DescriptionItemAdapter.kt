@@ -2,33 +2,12 @@ package com.kelompoksatuandsatu.preducation.presentation.feature.detailclass.ada
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.recyclerview.widget.AsyncListDiffer
-import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.kelompoksatuandsatu.preducation.databinding.ItemDescRecommededStudentsBinding
-import com.kelompoksatuandsatu.preducation.model.detailcourse.TargetAudience
 
-class DescriptionItemAdapter :
-    RecyclerView.Adapter<DescriptionItemAdapter.DescriptionItemListViewHolder>() {
-
-    private val dataDiffer = AsyncListDiffer(
-        this,
-        object : DiffUtil.ItemCallback<TargetAudience>() {
-            override fun areItemsTheSame(
-                oldItem: TargetAudience,
-                newItem: TargetAudience
-            ): Boolean {
-                return oldItem.desc == newItem.desc
-            }
-
-            override fun areContentsTheSame(
-                oldItem: TargetAudience,
-                newItem: TargetAudience
-            ): Boolean {
-                return oldItem.hashCode() == newItem.hashCode()
-            }
-        }
-    )
+class DescriptionItemAdapter(
+    private var targetAudienceList: List<String>
+) : RecyclerView.Adapter<DescriptionItemAdapter.DescriptionItemListViewHolder>() {
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
@@ -43,22 +22,23 @@ class DescriptionItemAdapter :
     }
 
     override fun onBindViewHolder(holder: DescriptionItemListViewHolder, position: Int) {
-        holder.bind(dataDiffer.currentList[position])
+        val item = targetAudienceList[position]
+        holder.bind(item)
     }
 
-    override fun getItemCount(): Int = dataDiffer.currentList.size
+    override fun getItemCount(): Int = targetAudienceList.size
 
-    fun setData(data: List<TargetAudience>) {
-        dataDiffer.submitList(data)
+    fun setData(data: List<String>) {
+        targetAudienceList = data
     }
 
     class DescriptionItemListViewHolder(
         private val binding: ItemDescRecommededStudentsBinding
     ) : RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(item: TargetAudience) {
+        fun bind(item: String) {
             with(binding) {
-                tvDescRecommendedStudents.text = item.desc.toString()
+                tvDescRecommendedStudents.text = item
             }
         }
     }

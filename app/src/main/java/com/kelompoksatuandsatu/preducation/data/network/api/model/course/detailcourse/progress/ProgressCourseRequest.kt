@@ -6,5 +6,5 @@ import com.google.gson.annotations.SerializedName
 @Keep
 data class ProgressCourseRequest(
     @SerializedName("indexProgress")
-    val indexProgress: Int?
+    val indexProgress: Int
 )
