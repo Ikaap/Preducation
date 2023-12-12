@@ -1,9 +1,5 @@
 package com.kelompoksatuandsatu.preducation.presentation.feature.login
 
-<<<<<<< HEAD
-=======
-import android.util.Log
->>>>>>> 5b6f05c (add post login and register)
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
