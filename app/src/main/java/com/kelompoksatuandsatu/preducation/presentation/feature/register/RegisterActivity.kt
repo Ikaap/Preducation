@@ -6,6 +6,7 @@ import android.text.SpannableString
 import android.text.style.UnderlineSpan
 import android.util.Patterns
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isVisible
 import com.kelompoksatuandsatu.preducation.R
 import com.kelompoksatuandsatu.preducation.databinding.ActivityRegisterBinding
 import com.kelompoksatuandsatu.preducation.model.auth.UserAuth
@@ -159,9 +160,13 @@ class RegisterActivity : AppCompatActivity() {
                     navigateToOtp()
                 },
                 doOnLoading = {
-                    // TODO set for loading state
+                    binding.pbLoading.isVisible = true
+                    binding.signUpButton.isVisible = false
                 },
                 doOnError = {
+                    binding.pbLoading.isVisible = false
+                    binding.signUpButton.isVisible = true
+                    binding.signUpButton.isEnabled = true
                     StyleableToast.makeText(
                         this,
                         getString(R.string.register_failed) + it.exception?.message.orEmpty(),
