@@ -107,7 +107,7 @@
                     android:background="@drawable/bg_edit_text_secondary_transparent"
                     android:hint="nellearn@gmail.com"
                     android:inputType="textEmailAddress"
-                    android:paddingHorizontal="14dp"/>
+                    android:paddingHorizontal="14dp" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -175,8 +175,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 app:errorEnabled="true"
-                app:passwordToggleEnabled="true"
                 app:hintEnabled="false"
+                app:passwordToggleEnabled="true"
                 tools:visibility="visible">
 
                 <EditText
