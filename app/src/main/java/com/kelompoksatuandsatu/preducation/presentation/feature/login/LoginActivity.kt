@@ -1,10 +1,12 @@
 package com.kelompoksatuandsatu.preducation.presentation.feature.login
 
+import android.content.Intent
 import android.os.Bundle
 import android.text.SpannableString
 import android.text.style.UnderlineSpan
 import android.util.Patterns
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isVisible
 import com.kelompoksatuandsatu.preducation.R
 import com.kelompoksatuandsatu.preducation.databinding.ActivityLoginBinding
 import com.kelompoksatuandsatu.preducation.model.auth.UserLogin
@@ -21,7 +23,6 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private val viewModel: LoginViewModel by viewModel()
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -127,12 +128,16 @@ class LoginActivity : AppCompatActivity() {
                     navigateToMain()
                 },
                 doOnLoading = {
-                    // TODO set for loading state
+                    binding.pbLoading.isVisible = true
+                    binding.signInButton.isVisible = false
                 },
                 doOnError = {
+                    binding.pbLoading.isVisible = false
+                    binding.signInButton.isVisible = true
+                    binding.signInButton.isEnabled = true
                     StyleableToast.makeText(
                         this,
-                        getString(R.string.login_failed) + it.exception?.message.orEmpty(),
+                        getString(R.string.login_failed) + "${it.exception?.message.orEmpty()}",
                         R.style.failedtoast
                     ).show()
                 }
@@ -144,6 +149,4 @@ class LoginActivity : AppCompatActivity() {
         val intent = Intent(this, MainActivity::class.java)
         startActivity(intent)
     }
-    }
-
 }
