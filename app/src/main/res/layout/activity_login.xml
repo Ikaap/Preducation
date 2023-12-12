@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.core.widget.NestedScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -32,7 +31,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="14dp"
             android:fontFamily="@font/montserrat_bold"
-            android:text="@{loginModel.loginTitle}"
+            android:text="@string/text_login"
             android:textSize="24sp" />
 
         <!-- Email Input -->
@@ -48,7 +47,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/poppins"
-                android:text="@{loginModel.emailLabel}"
+                android:text="@string/text_email"
                 android:textSize="16sp" />
 
             <com.google.android.material.textfield.TextInputLayout
@@ -69,8 +68,6 @@
                     android:hint="email@gmail.com"
                     android:inputType="textEmailAddress"
                     android:paddingHorizontal="14dp" />
-            </com.google.android.material.textfield.TextInputLayout>
-
             </com.google.android.material.textfield.TextInputLayout>
 
         </LinearLayout>
@@ -94,7 +91,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:fontFamily="@font/poppins"
-                    android:text="@{loginModel.passwordLabel}"
+                    android:text="@string/text_password"
                     android:textSize="16sp" />
 
                 <Space
@@ -108,7 +105,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:fontFamily="@font/poppins"
-                    android:text="@{loginModel.forgotLabel}"
+                    android:text="@string/text_forgot_password"
                     android:textColor="@color/app_color_primary"
                     android:textSize="16sp" />
             </LinearLayout>
@@ -139,43 +136,58 @@
         </LinearLayout>
 
         <!-- Login Button -->
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/signInButton"
+        <FrameLayout
+            android:id="@+id/fl_btn_loading_state"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:layout_marginHorizontal="6dp"
-            android:layout_marginTop="38dp"
-            android:background="@drawable/bg_button_primary">
+            android:layout_height="wrap_content"
+            android:layout_marginTop="38dp">
 
-            <TextView
-                android:id="@+id/tv_sign_in"
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/signInButton"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:visibility="visible"
+                android:layout_marginHorizontal="6dp"
+                android:background="@drawable/bg_button_primary">
+
+                <TextView
+                    android:id="@+id/tv_sign_in"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/montserrat_bold"
+                    android:gravity="center"
+                    android:padding="8dp"
+                    android:text="@string/text_sign_in"
+                    android:textColor="@color/white"
+                    android:textSize="16sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@id/iv_arrow_right"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <ImageView
+                    android:id="@+id/iv_arrow_right"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_marginEnd="8dp"
+                    android:background="@drawable/bg_ellipse_white"
+                    android:contentDescription="@string/desc_arrow_right"
+                    android:padding="10dp"
+                    android:src="@drawable/ic_arrow_right_orange"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <com.google.android.material.progressindicator.CircularProgressIndicator
+                android:id="@+id/pb_loading"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/montserrat_bold"
-                android:gravity="center"
-                android:padding="8dp"
-                android:text="@{loginModel.buttonLabel}"
-                android:textColor="@color/white"
-                android:textSize="16sp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@id/iv_arrow_right"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <ImageView
-                android:id="@+id/iv_arrow_right"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:layout_marginEnd="8dp"
-                android:background="@drawable/bg_ellipse_white"
-                android:contentDescription="@string/desc_arrow_right"
-                android:padding="10dp"
-                android:src="@drawable/ic_arrow_right_orange"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
+                android:layout_gravity="center"
+                android:indeterminate="true"
+                android:visibility="gone" />
+        </FrameLayout>
 
         <!-- Register Text -->
         <LinearLayout
@@ -189,7 +201,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/montserrat_medium"
-                android:text="@{loginModel.registerTitle}"
+                android:text="@string/text_don_t_have_an_account_yet"
                 android:textSize="16sp" />
 
             <TextView
@@ -211,7 +223,7 @@
             android:layout_gravity="center"
             android:layout_marginTop="6dp"
             android:fontFamily="@font/montserrat_bold"
-            android:text="@{loginModel.withoutText}"
+            android:text="@string/text_enter_without_logging_in"
             android:textSize="16sp" />
 
     </LinearLayout>
