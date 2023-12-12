@@ -21,6 +21,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.Body
 import retrofit2.http.DELETE
 import retrofit2.http.GET
+import retrofit2.http.Header
 import retrofit2.http.POST
 import retrofit2.http.Path
 import retrofit2.http.Query
@@ -74,7 +75,7 @@ interface PreducationService {
     @GET("api/v1/payments")
     suspend fun getHistoryPayment() // : HistoryPaymentResponse
 
-    //     auth
+//     auth
     @POST("api/v1/auths/register")
     suspend fun userRegister(@Body userRegisterRequest: RegisterRequest): RegisterResponse
 
