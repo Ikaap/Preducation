@@ -27,9 +27,9 @@ class DetailClassViewModel(
     val progressVideo: LiveData<ResultWrapper<Boolean>>
         get() = _progressVideo
 
-    fun getCourseById(courseId: String? = null, token: String) {
+    fun getCourseById(courseId: String? = null) {
         viewModelScope.launch(Dispatchers.IO) {
-            courseRepo.getCourseById(courseId, token).collect {
+            courseRepo.getCourseById(courseId).collect {
                 _detailCourse.postValue(it)
             }
         }

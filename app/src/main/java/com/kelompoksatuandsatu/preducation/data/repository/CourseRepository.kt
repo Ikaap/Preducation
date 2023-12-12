@@ -18,7 +18,7 @@ interface CourseRepository {
     fun getCategoriesClass(): Flow<ResultWrapper<List<CategoryClass>>>
     fun getCourseHome(category: String? = null): Flow<ResultWrapper<List<CourseViewParam>>>
 
-    fun getCourseById(id: String? = null, token: String): Flow<ResultWrapper<DetailCourseViewParam>>
+    fun getCourseById(id: String? = null): Flow<ResultWrapper<DetailCourseViewParam>>
 
     suspend fun postIndexCourseById(id: String? = null, request: VideoViewParam): Flow<ResultWrapper<Boolean>>
 }
@@ -39,9 +39,9 @@ class CourseRepositoryImpl(
         }
     }
 
-    override fun getCourseById(id: String?, token: String): Flow<ResultWrapper<DetailCourseViewParam>> {
+    override fun getCourseById(id: String?): Flow<ResultWrapper<DetailCourseViewParam>> {
         return proceedFlow {
-            apiDataSource.getCourseById(id, token).data?.toDetailCourse()!!
+            apiDataSource.getCourseById(id).data?.toDetailCourse()!!
         }
     }
 
