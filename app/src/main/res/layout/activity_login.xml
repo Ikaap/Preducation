@@ -1,16 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout
+<androidx.core.widget.NestedScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
-
-    <data>
-        <variable
-            name="loginModel"
-            type="com.kelompoksatuandsatu.preducation.model.Login"/>
-    </data>
-
-<androidx.core.widget.NestedScrollView
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/app_color_on_primary"
@@ -225,4 +217,3 @@
     </LinearLayout>
 
 </androidx.core.widget.NestedScrollView>
-</layout>
