@@ -19,6 +19,7 @@ import retrofit2.http.Body
 import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.POST
+import retrofit2.http.PATCH
 import retrofit2.http.Path
 import retrofit2.http.Query
 import java.util.concurrent.TimeUnit
@@ -27,10 +28,10 @@ interface PreducationService {
 
     // home & see all
     @GET("api/v1/categories")
-    suspend fun getCategoriesClass(): CategoriesClassResponse
+    suspend fun getCategoriesClass() // : CategoriesClassResponse
 
     @GET("api/v1/courses")
-    suspend fun getCourseHome(@Query("category") category: String? = null): CourseResponse
+    suspend fun getCourseHome(@Query("category") category: String? = null) // : CourseResponse
 
     // notification
     @GET("api/v1/notifications")
@@ -56,14 +57,16 @@ interface PreducationService {
 
     // profile
     @GET("api/v1/users/{id}")
-    suspend fun getUserById(@Path("id") id: String? = null) // : UserResponseResponse
+    suspend fun getUserById(@Path("id") id: String? = null): UserResponse
 
-    // @PATCH("api/v1/users/{id}")
-    // suspend fun updateUserById(@Path("id") id: String? = null, @Body userRequest: UserRequest) //:UserResponseResponse
-    // @PATCH("api/v1/users/update-password/{id}")
-    // suspend fun updateUserPassword(@Path("id") id: String? = null, @Body changePasswordRequest: ChangePasswordRequest) //:ChangePasswordResponse
+    @PATCH("api/v1/users/{id}")
+    suspend fun updateUserById(@Path("id") id: String? = null, @Body userRequest: UserRequest): UserResponse
+
+    @PATCH("api/v1/users/update-password/{id}")
+    suspend fun updateUserPassword(@Path("id") id: String? = null, @Body changePasswordRequest: ChangePasswordRequest): ChangePasswordResponse
+
     @GET("api/v1/payments")
-    suspend fun getHistoryPayment() // : HistoryPaymentResponse
+    suspend fun getHistoryPayment(): HistoryPaymentResponse
 
     //     auth
     @POST("api/v1/auths/register")
@@ -73,7 +76,8 @@ interface PreducationService {
     suspend fun userLogin(@Body userLoginRequest: LoginRequest): LoginResponse
 
     @DELETE("api/v1/auths/logout")
-    suspend fun userLogout() // :UserLogoutResponse
+    suspend fun logout(): UserLogoutResponse
+
     // @POST("api/v1/auths/forgot-password")
     // suspend fun userForgotPassword(@Body userForgotPassword: UserForgotPasswordRequest)//:UserForgotPasswordResponse
     // @POST("api/v1/auths/email-otp")

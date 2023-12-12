@@ -56,6 +56,9 @@ object AppModules {
         viewModelOf(::DetailClassViewModel)
         viewModelOf(::RegisterViewModel)
         viewModelOf(::LoginViewModel)
+        viewModelOf(com.kelompoksatuandsatu.preducation.presentation.feature.profile::ProfileViewModel)
+        viewModelOf(::EditProfileViewModel)
+        viewModelOf(::ChangePasswordViewModel)
     }
 
     val modules: List<Module> = listOf(

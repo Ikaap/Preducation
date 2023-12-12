@@ -149,6 +149,24 @@
     <string name="text_clear">Clear</string>
     <string name="text_sort">Sort</string>
     <string name="text_class_topic">Class Topic</string>
+
+    <string name="text_profile_update_success">Profile updated successfully</string>
+    <string name="text_change_profile_failed">Change Profile Failed</string>
+
+    <string name="text_logout_dialog">Do you want to logout ?</string>
+    <string name="text_yes">Yes</string>
+    <string name="text_no">No</string>
+    <string name="text_error_password_empty">Password should not be empty</string>
+    <string name="text_error_password_length">Password should be at least 8 characters long</string>
+    <string name="text_error_confirm_password_mismatch">Passwords do not match</string>
+
+    <string name="edit_profile_successful">Edit Profile Successful</string>
+    <string name="text_confirm_password">Confirm Password</string>
+    <string name="text_error_long_name_empty">Name should not be empty</string>
+    <string name="text_error_phone_number_empty">Phone Number should not be empty</string>
+    <string name="text_error_country_empty">Phone Number should not be empty</string>
+    <string name="text_error_city_empty">Phone Number should not be empty</string>
+
     <string name="text_error_name_cannot_empy">Name should not be empty</string>
     <string name="text_number_phone_empty">Phone number should not be empty</string>
     <string name="text_number_phone_invalid">Enter a valid format phone number</string>

@@ -1,5 +1,11 @@
 package com.kelompoksatuandsatu.preducation.data.repository
 
+import com.kelompoksatuandsatu.preducation.data.network.api.datasource.UserDataSource
+import com.kelompoksatuandsatu.preducation.data.network.api.model.changepassword.ChangePasswordRequest
+import com.kelompoksatuandsatu.preducation.data.network.api.model.changepassword.ChangePasswordResponse
+import com.kelompoksatuandsatu.preducation.data.network.api.model.logout.UserLogoutResponse
+import com.kelompoksatuandsatu.preducation.data.network.api.model.user.UserRequest
+import com.kelompoksatuandsatu.preducation.data.network.api.model.user.UserResponse
 import com.kelompoksatuandsatu.preducation.data.local.datastore.datasource.UserPreferenceDataSource
 import com.kelompoksatuandsatu.preducation.data.network.api.datasource.UserDataSource
 import com.kelompoksatuandsatu.preducation.data.network.api.model.auth.login.LoginRequest
@@ -10,17 +16,45 @@ import com.kelompoksatuandsatu.preducation.utils.ResultWrapper
 import com.kelompoksatuandsatu.preducation.utils.proceedFlow
 import kotlinx.coroutines.flow.Flow
 
+
 interface UserRepository {
+    suspend fun getUserById(): UserResponse
+
+    suspend fun updateUserById(id: String, userRequest: UserRequest): UserResponse
+    suspend fun updateUserPassword(
+        id: String,
+        passwordRequest: ChangePasswordRequest
+    ): ChangePasswordResponse
+
+    suspend fun performLogout(): UserLogoutResponse
 
     suspend fun userRegister(request: UserAuth): Flow<ResultWrapper<String>>
 
     suspend fun userLogin(request: UserLogin): Flow<ResultWrapper<Boolean>>
+
 }
 
-class UserRepositoryImpl(
-    private val dataSource: UserDataSource,
-    private val userPreferenceDataSource: UserPreferenceDataSource
-) : UserRepository {
+class UserRepositoryImpl(private val userDataSource: UserDataSource) : UserRepository {
+
+    override suspend fun getUserById(): UserResponse {
+        return userDataSource.getUserById()
+    }
+
+    override suspend fun updateUserById(id: String, userRequest: UserRequest): UserResponse {
+        return userDataSource.updateUserById(id, userRequest)
+    }
+
+    override suspend fun updateUserPassword(
+        id: String,
+        passwordRequest: ChangePasswordRequest
+    ): ChangePasswordResponse {
+        return userDataSource.updateUserPassword(id, passwordRequest)
+    }
+
+    override suspend fun performLogout(): UserLogoutResponse {
+        return userDataSource.performLogout()
+    }
+
     override suspend fun userRegister(request: UserAuth): Flow<ResultWrapper<String>> {
         return proceedFlow {
             val dataRequest =
