@@ -1,97 +1,146 @@
 package com.kelompoksatuandsatu.preducation.presentation.feature.changepassword
 
 import android.os.Bundle
-import android.text.TextUtils
 import android.widget.EditText
 import android.widget.ImageView
-import android.widget.Toast
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
-import com.google.android.material.textfield.TextInputLayout
+import androidx.fragment.app.commit
 import com.kelompoksatuandsatu.preducation.R
+import com.kelompoksatuandsatu.preducation.databinding.ActivityChangePasswordBinding
+import com.kelompoksatuandsatu.preducation.presentation.feature.profile.ProfileFragment
+import com.kelompoksatuandsatu.preducation.utils.AssetWrapper
+import io.github.muddz.styleabletoast.StyleableToast
+import org.koin.android.ext.android.inject
 
 class ChangePasswordActivity : AppCompatActivity() {
 
-    private lateinit var tilOld: TextInputLayout
-    private lateinit var tilNew: TextInputLayout
-    private lateinit var etOldPassword: EditText
-    private lateinit var etNewPassword: EditText
-    private lateinit var etConfirmPassword: EditText
-    private lateinit var btnContinue: ConstraintLayout
-    private lateinit var ivBack: ImageView
+    private val binding: ActivityChangePasswordBinding by lazy {
+        ActivityChangePasswordBinding.inflate(layoutInflater)
+    }
+
+//    private val viewModel: ChangePasswordViewModel by viewModels()
+
+    private val MIN_PASSWORD_LENGTH = 8
+
+    private val assetWrapper: AssetWrapper by inject()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_change_password)
+        setContentView(binding.root)
 
-        // Initialize views
-        tilOld = findViewById(R.id.tilOld)
-        tilNew = findViewById(R.id.tilNew)
-        etOldPassword = findViewById(R.id.et_old_password)
-        etNewPassword = findViewById(R.id.et_new_password)
-        btnContinue = findViewById(R.id.cl_button_continue)
-        ivBack = findViewById(R.id.iv_back)
-
-        ivBack.setOnClickListener {
+        val changePasswordTextView = findViewById<TextView>(R.id.tv_change_password)
+        val oldPasswordEditText = findViewById<EditText>(R.id.et_old_password)
+        val newPasswordEditText = findViewById<EditText>(R.id.et_new_password)
+        val confirmPasswordEditText = findViewById<EditText>(R.id.et_confirm_password)
+        val backButton = findViewById<ImageView>(R.id.iv_back)
+        backButton.setOnClickListener {
             onBackPressed()
         }
 
-        btnContinue.setOnClickListener {
-            handleChangePassword()
+        val continueButton = findViewById<ConstraintLayout>(R.id.cl_button_continue)
+        continueButton.setOnClickListener {
+            saveChangesAndNavigateNext()
+        }
+        changePasswordTextView.setOnClickListener {
+            val oldPassword = oldPasswordEditText.text.toString()
+            val newPassword = newPasswordEditText.text.toString()
+            val confirmPassword = confirmPasswordEditText.text.toString()
+            validateOldPassword(oldPassword)
+            validateNewPassword(newPassword)
+            validateConfirmPassword(newPassword, confirmPassword)
         }
     }
 
-    private fun handleChangePassword() {
-        // Reset errors
-        tilOld.error = null
-        tilNew.error = null
-
-        // Get entered passwords
-        val oldPassword = etOldPassword.text.toString().trim()
-        val newPassword = etNewPassword.text.toString().trim()
-        val confirmPassword = etConfirmPassword.text.toString().trim()
-
-        // Validate old password
-        if (TextUtils.isEmpty(oldPassword)) {
-            tilOld.error = "Enter your old password"
-            return
+    private fun saveChangesAndNavigateNext() {
+        val profileFragment = ProfileFragment()
+        supportFragmentManager.commit {
+            replace(R.id.cl_button_continue, profileFragment)
         }
-
-        // TODO: Check if the old password is correct (You need to implement this logic)
-        if (!isOldPasswordCorrect(oldPassword)) {
-            tilOld.error = "Incorrect old password"
-            return
-        }
-
-        // Validate new password
-        if (TextUtils.isEmpty(newPassword)) {
-            tilNew.error = "Enter your new password"
-            return
-        }
-
-        // Check if new password meets criteria (e.g., minimum length)
-        if (newPassword.length < 8) {
-            tilNew.error = "Password must be at least 8 characters long"
-            return
-        }
-
-        // Validate if new passwords match
-        if (newPassword != confirmPassword) {
-            tilNew.error = "Passwords do not match"
-            return
-        }
-
-        // TODO: Implement your password change logic here
-        // For example, you can call a method in your authentication manager
-        // to change the password for the current user.
-
-        // Show success message or handle errors accordingly
-        Toast.makeText(this, "Password changed successfully", Toast.LENGTH_SHORT).show()
     }
 
-    private fun isOldPasswordCorrect(oldPassword: String): Boolean {
-        // TODO: Implement your logic to check if the old password is correct
-        // For demonstration purposes, always return true
-        return true
+    private fun validateOldPassword(newPassword: String): Boolean {
+        val tilOldPassword = binding.tilOld
+        val oldPasswordEditText = binding.etOldPassword
+
+        return if (newPassword.isEmpty()) {
+            tilOldPassword.isErrorEnabled = true
+            tilOldPassword.error = assetWrapper.getString(R.string.text_error_password_empty)
+            oldPasswordEditText.setBackgroundResource(R.drawable.bg_edit_text_error)
+            false
+        } else if (newPassword.length < MIN_PASSWORD_LENGTH) {
+            tilOldPassword.isErrorEnabled = true
+            tilOldPassword.error = assetWrapper.getString(R.string.text_error_password_length)
+            oldPasswordEditText.setBackgroundResource(R.drawable.bg_edit_text_error)
+            false
+        } else {
+            tilOldPassword.isErrorEnabled = false
+            oldPasswordEditText.setBackgroundResource(R.drawable.bg_edit_text_secondary_transparent)
+            StyleableToast.makeText(
+                this,
+                assetWrapper.getString(R.string.reset_password_successful),
+                R.style.successtoast
+            ).show()
+            true
+        }
+    }
+
+    private fun validateNewPassword(newPassword: String): Boolean {
+        val tilNewPassword = binding.tilNew
+        val newPasswordEditText = binding.etNewPassword
+
+        return if (newPassword.isEmpty()) {
+            tilNewPassword.isErrorEnabled = true
+            tilNewPassword.error = assetWrapper.getString(R.string.text_error_password_empty)
+            newPasswordEditText.setBackgroundResource(R.drawable.bg_edit_text_error)
+            false
+        } else if (newPassword.length < MIN_PASSWORD_LENGTH) {
+            tilNewPassword.isErrorEnabled = true
+            tilNewPassword.error = assetWrapper.getString(R.string.text_error_password_length)
+            newPasswordEditText.setBackgroundResource(R.drawable.bg_edit_text_error)
+            false
+        } else {
+            tilNewPassword.isErrorEnabled = false
+            newPasswordEditText.setBackgroundResource(R.drawable.bg_edit_text_secondary_transparent)
+            StyleableToast.makeText(
+                this,
+                assetWrapper.getString(R.string.reset_password_successful),
+                R.style.successtoast
+            ).show()
+            true
+        }
+    }
+
+    private fun validateConfirmPassword(confirmPassword: String, newPassword: String): Boolean {
+        val tilConfirmPassword = binding.tilConfirm
+        val confirmPasswordEditText = binding.etConfirmPassword
+
+        return if (confirmPassword.isEmpty()) {
+            tilConfirmPassword.isErrorEnabled = true
+            tilConfirmPassword.error = assetWrapper.getString(R.string.text_error_password_empty)
+            confirmPasswordEditText.setBackgroundResource(R.drawable.bg_edit_text_error)
+            false
+        } else if (confirmPassword.length < MIN_PASSWORD_LENGTH) {
+            tilConfirmPassword.isErrorEnabled = true
+            tilConfirmPassword.error = assetWrapper.getString(R.string.text_error_password_length)
+            confirmPasswordEditText.setBackgroundResource(R.drawable.bg_edit_text_error)
+            false
+        } else if (confirmPassword != newPassword) {
+            tilConfirmPassword.isErrorEnabled = true
+            tilConfirmPassword.error =
+                assetWrapper.getString(R.string.text_error_confirm_password_mismatch)
+            confirmPasswordEditText.setBackgroundResource(R.drawable.bg_edit_text_error)
+            false
+        } else {
+            tilConfirmPassword.isErrorEnabled = false
+            confirmPasswordEditText.setBackgroundResource(R.drawable.bg_edit_text_secondary_transparent)
+            StyleableToast.makeText(
+                this,
+                assetWrapper.getString(R.string.reset_password_successful),
+                R.style.successtoast
+            ).show()
+            true
+        }
     }
 }

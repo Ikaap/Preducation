@@ -1,0 +1,3 @@
+package com.kelompoksatuandsatu.preducation.presentation.feature.changepassword
+
+class ChangePasswordViewModel
