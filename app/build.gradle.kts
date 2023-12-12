@@ -177,6 +177,9 @@ dependencies {
 
     // toast
     implementation("io.github.muddz:styleabletoast:2.4.0")
+
+    // shimmer
+    implementation("com.facebook.shimmer:shimmer:0.5.0")
 }
 =======
 }

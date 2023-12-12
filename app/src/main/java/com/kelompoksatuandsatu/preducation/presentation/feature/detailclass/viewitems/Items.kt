@@ -16,7 +16,7 @@ class HeaderItem(
     BindableItem<ItemSectionHeaderCurriculcumBinding>() {
     override fun bind(viewBinding: ItemSectionHeaderCurriculcumBinding, position: Int) {
         viewBinding.tvTitleChapter.text = data.title
-        viewBinding.tvChapterTotalDuration.text = data.totalDuration.toString() + "Mins"
+        viewBinding.tvChapterTotalDuration.text = data.totalDuration.toString() + " Mins"
         viewBinding.root.setOnClickListener { onHeaderClick.invoke(data) }
     }
 
@@ -34,9 +34,9 @@ class DataItem(
     override fun bind(viewBinding: ItemSectionDataCurriculcumBinding, position: Int) {
         viewBinding.tvVideoNumber.text = itemData.index.toString()
         viewBinding.tvTitleVideo.text = itemData.title
-        viewBinding.tvDurationVideo.text = itemData.duration.toString() + "Mins"
+        viewBinding.tvDurationVideo.text = itemData.duration.toString() + " Mins"
         viewBinding.tvVideoUrl.text = itemData.videoUrl
-        if (viewBinding.tvVideoUrl.text == null) {
+        if (itemData.videoUrl.isNullOrEmpty()) {
             viewBinding.ivPlayGreen.isGone = true
             viewBinding.ivPlayOrange.isGone = true
             viewBinding.ivLock.isGone = false

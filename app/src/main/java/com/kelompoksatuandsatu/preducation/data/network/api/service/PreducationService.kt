@@ -58,10 +58,10 @@ interface PreducationService {
 
     // detail
     @GET("api/v1/courses/{id}")
-    suspend fun getCourseById(@Path("id") id: String? = null): DetailCourseResponse
+    suspend fun getCourseById(@Path("id") id: String): DetailCourseResponse
 
     @POST("api/v1/progress")
-    suspend fun postIndexCourseById(@Query("id") id: String? = null, @Body progressRequest: ProgressCourseRequest): ProgressCourseResponse
+    suspend fun postIndexCourseById(@Query("id") id: String, @Body progressRequest: Int): ProgressCourseResponse
 
     // profile
     @GET("api/v1/users/{id}")
