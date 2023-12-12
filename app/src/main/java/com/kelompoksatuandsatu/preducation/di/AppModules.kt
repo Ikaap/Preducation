@@ -72,11 +72,15 @@ object AppModules {
         viewModelOf(::ProgressClassViewModel)
         viewModelOf(::NotificationViewModel)
         viewModelOf(::OtpViewModel)
+        viewModelOf(com.kelompoksatuandsatu.preducation.presentation.feature.profile::ProfileViewModel)
+        viewModelOf(::EditProfileViewModel)
+        viewModelOf(::ChangePasswordViewModel)
+
     }
 
     private val utilsModule = module {
         single { AssetWrapper(androidContext()) }
-    }
+        }
 
     val modules: List<Module> = listOf(
         localModule,

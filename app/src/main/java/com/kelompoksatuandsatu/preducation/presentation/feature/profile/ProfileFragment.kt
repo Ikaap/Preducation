@@ -2,38 +2,53 @@ package com.kelompoksatuandsatu.preducation.presentation.feature.profile
 
 import android.app.Activity
 import android.content.Intent
+import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
+import com.kelompoksatuandsatu.preducation.R
 import com.kelompoksatuandsatu.preducation.databinding.FragmentProfileBinding
 import com.kelompoksatuandsatu.preducation.presentation.feature.changepassword.ChangePasswordActivity
 import com.kelompoksatuandsatu.preducation.presentation.feature.editprofile.EditProfileActivity
 import com.kelompoksatuandsatu.preducation.presentation.feature.historypayment.TransactionActivity
 import com.kelompoksatuandsatu.preducation.presentation.feature.login.LoginActivity
+import com.kelompoksatuandsatu.preducation.utils.AssetWrapper
+import org.koin.android.ext.android.inject
+import java.io.FileNotFoundException
+import java.io.InputStream
 
 class ProfileFragment : Fragment() {
 
-    private val IMAGE_PICK_REQUEST_CODE = 123
+    private lateinit var binding: FragmentProfileBinding
 
-    private var _binding: FragmentProfileBinding? = null
-    private val binding get() = _binding!!
+    private val viewModel: ProfileViewModel by viewModels()
+
+    private val assetWrapper: AssetWrapper by inject()
+
+    private val RESULT_LOAD_IMG = 1
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View {
-        _binding = FragmentProfileBinding.inflate(inflater, container, false)
+    ): View? {
+        binding = FragmentProfileBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         setupClickListeners()
+    }
+
+    override fun onResume() {
+        super.onResume()
     }
 
     private fun setupClickListeners() {
@@ -42,7 +57,6 @@ class ProfileFragment : Fragment() {
         }
 
         binding.clEditProfile.setOnClickListener {
-            // Handle edit profile click
             startActivity(Intent(requireContext(), EditProfileActivity::class.java))
         }
 
@@ -51,7 +65,6 @@ class ProfileFragment : Fragment() {
         }
 
         binding.clPaymentHistory.setOnClickListener {
-            // Handle payment history click
             startActivity(Intent(requireContext(), TransactionActivity::class.java))
         }
 
@@ -61,44 +74,51 @@ class ProfileFragment : Fragment() {
     }
 
     private fun startImageUpload() {
-        // You might use an image picker library or open the device's image gallery
-        val imagePickerIntent = Intent(Intent.ACTION_PICK)
-        imagePickerIntent.type = "image/*"
-        startActivityForResult(imagePickerIntent, IMAGE_PICK_REQUEST_CODE)
+        val photoPickerIntent = Intent(Intent.ACTION_PICK)
+        photoPickerIntent.type = "image/*"
+        startActivityForResult(photoPickerIntent, RESULT_LOAD_IMG)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == IMAGE_PICK_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
-            val selectedImageUri: Uri? = data?.data
-            // Now, you can upload the selected image to your server or storage
-            uploadImage(selectedImageUri)
+
+        if (requestCode == RESULT_LOAD_IMG && resultCode == Activity.RESULT_OK) {
+            try {
+                val imageUri: Uri? = data?.data
+                val imageStream: InputStream? = imageUri?.let {
+                    requireActivity().contentResolver.openInputStream(it)
+                }
+                val selectedImage = BitmapFactory.decodeStream(imageStream)
+                binding.ivUserPhoto.setImageBitmap(selectedImage)
+            } catch (e: FileNotFoundException) {
+                e.printStackTrace()
+                Toast.makeText(requireContext(), "Something went wrong", Toast.LENGTH_LONG).show()
+            }
+        } else {
+            Toast.makeText(requireContext(), "You haven't picked an image", Toast.LENGTH_LONG).show()
         }
     }
 
-    private fun uploadImage(imageUri: Uri?) {
-        // Implement the logic to upload the image to your server or storage
-        // For example, you might use Firebase Storage, AWS S3, or your own server API
-        // After a successful upload, you can update the user's profile picture
-        // For simplicity, let's just show a toast message here
-        showToast("Image uploaded successfully!")
-    }
-
-    private fun showToast(s: String) {
-        TODO("Not yet implemented")
+    private fun showToast(message: String) {
+        Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
     }
 
     private fun performLogout() {
-        val intent = Intent(requireContext(), LoginActivity::class.java)
-        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        AlertDialog.Builder(requireContext())
+            .setMessage(
+                assetWrapper.getString(R.string.text_logout_dialog)
+            )
+            .setPositiveButton(assetWrapper.getString(R.string.text_yes)) { _, _ ->
+                viewModel.performLogout()
+                navigateToLogin()
+            }.setNegativeButton(assetWrapper.getString(R.string.text_no)) { _, _ ->
+            }.create().show()
+    }
+
+    private fun navigateToLogin() {
+        val intent = Intent(requireContext(), LoginActivity::class.java).apply {
+            flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+        }
         startActivity(intent)
-        requireActivity().finish()
     }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
-    }
-
-    // Add other functions for image upload, logout, etc., as needed
 }
