@@ -5,16 +5,12 @@ import com.kelompoksatuandsatu.preducation.data.network.api.datasource.UserDataS
 import com.kelompoksatuandsatu.preducation.data.network.api.model.ResetPasswordRequest
 import com.kelompoksatuandsatu.preducation.data.network.api.model.ResetPasswordResponse
 import com.kelompoksatuandsatu.preducation.data.network.api.model.auth.login.LoginRequest
-import com.kelompoksatuandsatu.preducation.data.network.api.model.auth.login.toToken
 import com.kelompoksatuandsatu.preducation.data.network.api.model.auth.register.RegisterRequest
-import com.kelompoksatuandsatu.preducation.model.auth.LoginToken
 import com.kelompoksatuandsatu.preducation.model.auth.UserAuth
 import com.kelompoksatuandsatu.preducation.model.auth.UserLogin
 import com.kelompoksatuandsatu.preducation.utils.ResultWrapper
 import com.kelompoksatuandsatu.preducation.utils.proceedFlow
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.onEach
 
 interface UserRepository {
     suspend fun createResetPassword(resetPasswordRequest: ResetPasswordRequest): Flow<ResultWrapper<ResetPasswordResponse>>
