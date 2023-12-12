@@ -149,5 +149,6 @@
     <string name="text_clear">Clear</string>
     <string name="text_sort">Sort</string>
     <string name="text_class_topic">Class Topic</string>
+    <string name="course_is_empty">Course is Empty</string>
 
 </resources>

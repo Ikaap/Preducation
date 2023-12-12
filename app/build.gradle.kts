@@ -6,6 +6,7 @@ plugins {
     id("org.jlleitschuh.gradle.ktlint")
     id("com.google.gms.google-services")
     id("com.google.firebase.crashlytics")
+    id("com.google.devtools.ksp")
 }
 
 android {
@@ -110,6 +111,10 @@ dependencies {
 
     // data store
     implementation("androidx.datastore:datastore-preferences:1.0.0")
+
+    // room database libraries
+    implementation("androidx.room:room-ktx:2.6.0")
+    ksp("androidx.room:room-compiler:2.6.0")
 
     // firebase
     implementation(platform("com.google.firebase:firebase-bom:32.3.1"))
