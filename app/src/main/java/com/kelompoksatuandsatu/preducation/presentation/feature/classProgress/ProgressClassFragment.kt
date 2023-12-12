@@ -8,33 +8,36 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.kelompoksatuandsatu.preducation.data.local.dummy.DummyCategoryCourseDataSource
-import com.kelompoksatuandsatu.preducation.data.local.dummy.DummyCategoryCourseDataSourceImpl
-import com.kelompoksatuandsatu.preducation.data.local.dummy.DummyCategoryPopularDataSource
-import com.kelompoksatuandsatu.preducation.data.local.dummy.DummyCategoryPopularDataSourceImpl
-import com.kelompoksatuandsatu.preducation.data.local.dummy.DummyPopularCourseDataSource
-import com.kelompoksatuandsatu.preducation.data.local.dummy.DummyPopularCourseDataSourceImpl
 import com.kelompoksatuandsatu.preducation.databinding.DialogNonLoginBinding
 import com.kelompoksatuandsatu.preducation.databinding.FragmentProgressClassBinding
-import com.kelompoksatuandsatu.preducation.model.CategoryCourse
-import com.kelompoksatuandsatu.preducation.model.CategoryPopular
-import com.kelompoksatuandsatu.preducation.model.Course
 import com.kelompoksatuandsatu.preducation.presentation.common.adapter.AdapterLayoutMenu
 import com.kelompoksatuandsatu.preducation.presentation.common.adapter.CategoryCourseListAdapter
 import com.kelompoksatuandsatu.preducation.presentation.common.adapter.CategoryCourseRoundedListAdapter
 import com.kelompoksatuandsatu.preducation.presentation.common.adapter.CourseCardListAdapter
 import com.kelompoksatuandsatu.preducation.presentation.feature.register.RegisterActivity
+import com.kelompoksatuandsatu.preducation.utils.proceedWhen
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class ProgressClassFragment : Fragment() {
 
     private lateinit var binding: FragmentProgressClassBinding
 
+    private val viewModel: ProgressClassViewModel by viewModel()
+
     private val categoryCourseAdapter: CategoryCourseListAdapter by lazy {
         CategoryCourseListAdapter {
+            viewModel.getCourseProgress(it.nameCategoryCourse.lowercase())
             showSuccessDialog()
+        }
+    }
+
+    private val categoryProgressAdapter: CategoryCourseRoundedListAdapter by lazy {
+        CategoryCourseRoundedListAdapter {
+            viewModel.getCourseProgress(it.nameCategoryPopular.lowercase())
         }
     }
 
@@ -48,18 +51,18 @@ class ProgressClassFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
+    ): View {
         binding = FragmentProgressClassBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        super.onViewCreated(view, savedInstanceState)
         showCategoryCourse()
         showCourse()
         showCategoryProgress()
+        fetchData()
+
         binding.rvProgressCourse.setOnClickListener {
             showSuccessDialog()
         }
@@ -81,18 +84,38 @@ class ProgressClassFragment : Fragment() {
     }
 
     private fun showCategoryProgress() {
-        val categoryPopularAdapter = CategoryCourseRoundedListAdapter()
-        binding.rvCategoryProgress.adapter = categoryPopularAdapter
+        binding.rvCategoryProgress.adapter = categoryProgressAdapter
         binding.rvCategoryProgress.layoutManager = LinearLayoutManager(
             requireContext(),
             LinearLayoutManager.HORIZONTAL,
             false
         )
-        val dummyCategoryPopularDataSource: DummyCategoryPopularDataSource =
-            DummyCategoryPopularDataSourceImpl()
-        val categoryPopularList: List<CategoryPopular> =
-            dummyCategoryPopularDataSource.getCategoryProgress()
-        categoryPopularAdapter.setData(categoryPopularList)
+
+        viewModel.categoriesProgress.observe(viewLifecycleOwner) {
+            it.proceedWhen(
+                doOnSuccess = { result ->
+                    binding.rvCategoryProgress.isVisible = true
+                    binding.layoutStateCategoryProgress.tvError.isVisible = false
+                    binding.layoutStateCategoryProgress.pbLoading.isVisible = false
+
+                    result.payload?.let { categoriesProgress ->
+                        categoryProgressAdapter.setData(categoriesProgress)
+                    }
+                },
+                doOnLoading = {
+                    binding.layoutStateCategoryProgress.root.isVisible = true
+                    binding.layoutStateCategoryProgress.pbLoading.isVisible = true
+                    binding.rvCategoryProgress.isVisible = false
+                },
+                doOnError = {
+                    binding.layoutStateCategoryProgress.root.isVisible = true
+                    binding.layoutStateCategoryProgress.pbLoading.isVisible = false
+                    binding.layoutStateCategoryProgress.tvError.isVisible = true
+                    binding.layoutStateCategoryProgress.tvError.text = it.exception?.message.orEmpty()
+                    binding.rvCategoryProgress.isVisible = false
+                }
+            )
+        }
     }
 
     private fun showCourse() {
@@ -102,20 +125,68 @@ class ProgressClassFragment : Fragment() {
             LinearLayoutManager.HORIZONTAL,
             false
         )
-        val dummyPopularDataSource: DummyPopularCourseDataSource =
-            DummyPopularCourseDataSourceImpl()
-        val popularCourseList: List<Course> =
-            dummyPopularDataSource.getPopularCourse()
-        progressCourseAdapter.setData(popularCourseList)
+
+        viewModel.courseProgress.observe(viewLifecycleOwner) {
+            it.proceedWhen(
+                doOnLoading = {
+                    binding.layoutStateCourseProgress.root.isVisible = true
+                    binding.layoutStateCourseProgress.pbLoading.isVisible = true
+                    binding.layoutStateCourseProgress.tvError.isVisible = false
+                    binding.rvProgressCourse.isVisible = false
+                },
+                doOnSuccess = { result ->
+                    binding.layoutStateCourseProgress.root.isVisible = false
+                    binding.rvProgressCourse.isVisible = true
+                    binding.layoutStateCourseProgress.pbLoading.isVisible = false
+                    binding.layoutStateCourseProgress.tvError.isVisible = false
+                    result.payload?.let { data ->
+                        progressCourseAdapter.setData(data)
+                    }
+                },
+                doOnError = {
+                    binding.layoutStateCourseProgress.root.isVisible = true
+                    binding.rvProgressCourse.isVisible = false
+                    binding.layoutStateCourseProgress.pbLoading.isVisible = false
+                    binding.layoutStateCourseProgress.tvError.isVisible = true
+                }
+            )
+        }
     }
 
     private fun showCategoryCourse() {
         binding.rvCategoryCourse.adapter = categoryCourseAdapter
         binding.rvCategoryCourse.layoutManager = GridLayoutManager(requireContext(), 4)
-        val dummyCategoryCourseDataSource: DummyCategoryCourseDataSource =
-            DummyCategoryCourseDataSourceImpl()
-        val categoryCourseList: List<CategoryCourse> =
-            dummyCategoryCourseDataSource.getCategoryCourse()
-        categoryCourseAdapter.setData(categoryCourseList)
+
+        viewModel.categoriesClass.observe(viewLifecycleOwner) {
+            it.proceedWhen(
+                doOnSuccess = { result ->
+                    binding.rvCategoryCourse.isVisible = true
+                    binding.layoutStateCategoryCourse.tvError.isVisible = false
+                    binding.layoutStateCategoryCourse.pbLoading.isVisible = false
+
+                    result.payload?.let { categoriesCourse ->
+                        categoryCourseAdapter.setData(categoriesCourse)
+                    }
+                },
+                doOnLoading = {
+                    binding.layoutStateCategoryCourse.root.isVisible = true
+                    binding.layoutStateCategoryCourse.pbLoading.isVisible = true
+                    binding.rvCategoryCourse.isVisible = false
+                },
+                doOnError = {
+                    binding.layoutStateCategoryCourse.root.isVisible = true
+                    binding.layoutStateCategoryCourse.pbLoading.isVisible = false
+                    binding.layoutStateCategoryCourse.tvError.isVisible = true
+                    binding.layoutStateCategoryCourse.tvError.text = it.exception?.message.orEmpty()
+                    binding.rvCategoryCourse.isVisible = false
+                }
+            )
+        }
+    }
+
+    private fun fetchData() {
+        viewModel.getCategoriesClass()
+        viewModel.getCategoriesProgress()
+        viewModel.getCourseProgress()
     }
 }

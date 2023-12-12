@@ -9,7 +9,8 @@ import com.kelompoksatuandsatu.preducation.core.ViewHolderBinder
 import com.kelompoksatuandsatu.preducation.databinding.ItemCategoryRoundedBinding
 import com.kelompoksatuandsatu.preducation.model.CategoryPopular
 
-class CategoryCourseRoundedListAdapter() : RecyclerView.Adapter<LinearCategoryPopularItemViewHolder>() {
+class CategoryCourseRoundedListAdapter(private val itemClick: (CategoryPopular) -> Unit) :
+    RecyclerView.Adapter<LinearCategoryPopularItemViewHolder>() {
     private val dataDiffer = AsyncListDiffer(
         this,
         object : DiffUtil.ItemCallback<CategoryPopular>() {
@@ -37,7 +38,8 @@ class CategoryCourseRoundedListAdapter() : RecyclerView.Adapter<LinearCategoryPo
                 LayoutInflater.from(parent.context),
                 parent,
                 false
-            )
+            ),
+            itemClick = itemClick
         )
     }
 
@@ -49,9 +51,13 @@ class CategoryCourseRoundedListAdapter() : RecyclerView.Adapter<LinearCategoryPo
 }
 
 class LinearCategoryPopularItemViewHolder(
-    private val binding: ItemCategoryRoundedBinding
+    private val binding: ItemCategoryRoundedBinding,
+    private val itemClick: (CategoryPopular) -> Unit
 ) : RecyclerView.ViewHolder(binding.root), ViewHolderBinder<CategoryPopular> {
     override fun bind(item: CategoryPopular) {
-        binding.tvCategoryPopular.text = item.nameCategoryPopular
+        with(item) {
+            binding.tvCategoryPopular.text = item.nameCategoryPopular
+            itemView.setOnClickListener { itemClick(this) }
+        }
     }
 }

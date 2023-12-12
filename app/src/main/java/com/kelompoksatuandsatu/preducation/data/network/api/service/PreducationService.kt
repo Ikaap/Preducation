@@ -2,6 +2,9 @@ package com.kelompoksatuandsatu.preducation.data.network.api.service
 
 import com.chuckerteam.chucker.api.ChuckerInterceptor
 import com.kelompoksatuandsatu.preducation.BuildConfig
+import com.kelompoksatuandsatu.preducation.data.network.api.model.categoriesclass.CategoriesClassResponse
+import com.kelompoksatuandsatu.preducation.data.network.api.model.categoriesprogress.CategoriesProgressResponse
+import com.kelompoksatuandsatu.preducation.data.network.api.model.courseprogress.CourseProgressResponse
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -15,7 +18,7 @@ interface PreducationService {
 
     // home & see all
     @GET("api/v1/categories")
-    suspend fun getCategoriesClass() // : CategoriesClassResponse
+    suspend fun getCategoriesClass() : CategoriesClassResponse
 
     @GET("api/v1/courses")
     suspend fun getCourseHome(@Query("category") category: String? = null) // : CourseResponse
@@ -26,9 +29,11 @@ interface PreducationService {
 
     // class
     // get all categories class
+    @GET("api/v1/categories/progress")
+    suspend fun getCategoriesProgress() : CategoriesProgressResponse
     // get all categories progress class
     @GET("api/v1/progress")
-    suspend fun getCourseUserProgress(@Query("progressClass") progressClass: String? = null) // : CourseProgressResponse
+    suspend fun getCourseUserProgress(@Query("progressClass") progressClass: String? = null) : CourseProgressResponse
 
     // course
     // get all categories type class
