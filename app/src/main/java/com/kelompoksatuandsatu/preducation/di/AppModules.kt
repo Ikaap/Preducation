@@ -41,12 +41,12 @@ object AppModules {
 
     private val dataSourceModule = module {
         single<UserPreferenceDataSource> { UserPreferenceDataSourceImpl(get()) }
-        single<CourseDataSource> { CourseDataSourceImpl(get(), get()) }
+        single<CourseDataSource> { CourseDataSourceImpl(get()) }
         single<UserDataSource> { UserDataSourceImpl(get()) }
     }
 
     private val repositoryModule = module {
-        single<CourseRepository> { CourseRepositoryImpl(get(), get()) }
+        single<CourseRepository> { CourseRepositoryImpl(get()) }
         single<UserRepository> { UserRepositoryImpl(get(), get()) }
     }
 
@@ -54,6 +54,7 @@ object AppModules {
         viewModelOf(::HomeViewModel)
         viewModelOf(::SeeAllViewModel)
         viewModelOf(::DetailClassViewModel)
+//        viewModel { param -> DetailClassViewModel(param.get(), get(), get()) }
         viewModelOf(::RegisterViewModel)
         viewModelOf(::LoginViewModel)
     }

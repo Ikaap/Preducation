@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.view.isGone
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -13,9 +14,6 @@ import coil.load
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.kelompoksatuandsatu.preducation.databinding.FragmentCurriculcumBinding
 import com.kelompoksatuandsatu.preducation.databinding.LayoutDialogBuyClassBinding
-import com.kelompoksatuandsatu.preducation.model.ItemSectionDataCurriculcum
-import com.kelompoksatuandsatu.preducation.model.ItemSectionHeaderCurriculcum
-import com.kelompoksatuandsatu.preducation.model.SectionedCurriculcumData
 import com.kelompoksatuandsatu.preducation.presentation.feature.detailclass.viewitems.DataItem
 import com.kelompoksatuandsatu.preducation.presentation.feature.detailclass.viewitems.HeaderItem
 import com.kelompoksatuandsatu.preducation.presentation.feature.payment.PaymentActivity
@@ -55,6 +53,11 @@ class CurriculcumFragment : Fragment() {
         viewModel.detailCourse.observe(viewLifecycleOwner) {
             it.proceedWhen(
                 doOnSuccess = {
+                    binding.shimmerAboutRvChapter.isGone = true
+                    binding.layoutCommonState.root.isGone = true
+                    binding.layoutCommonState.tvError.isGone = true
+                    binding.layoutCommonState.tvDataEmpty.isGone = true
+                    binding.layoutCommonState.ivDataEmpty.isGone = true
                     binding.rvDataCurriculcum.apply {
                         layoutManager = LinearLayoutManager(requireContext())
                         adapter = adapterGroupie
@@ -78,7 +81,7 @@ class CurriculcumFragment : Fragment() {
                                         "Item clicked : title = ${data.title} -> url = ${data.videoUrl}",
                                         Toast.LENGTH_SHORT
                                     ).show()
-                                    viewModel.postIndexVideo(it)
+                                    it.index?.let { it1 -> viewModel.postIndexVideo(it1) }
                                 }
                             }
                             if (dataSection != null) {
@@ -90,6 +93,33 @@ class CurriculcumFragment : Fragment() {
                             adapterGroupie.addAll(section)
                         }
                     }
+                },
+                doOnLoading = {
+                    binding.shimmerAboutRvChapter.isGone = false
+                    binding.layoutCommonState.root.isGone = true
+                    binding.layoutCommonState.clDataEmpty.isGone = true
+                    binding.layoutCommonState.tvError.isGone = true
+                    binding.layoutCommonState.tvDataEmpty.isGone = true
+                    binding.layoutCommonState.ivDataEmpty.isGone = true
+                },
+                doOnEmpty = {
+                    binding.shimmerAboutRvChapter.isGone = true
+                    binding.layoutCommonState.root.isGone = false
+                    binding.layoutCommonState.clDataEmpty.isGone = true
+                    binding.layoutCommonState.tvError.isGone = false
+                    binding.layoutCommonState.tvError.text = "data kosong"
+                    binding.layoutCommonState.tvDataEmpty.isGone = true
+                    binding.layoutCommonState.ivDataEmpty.isGone = true
+                },
+                doOnError = {
+                    binding.shimmerAboutRvChapter.isGone = true
+                    binding.layoutCommonState.root.isGone = false
+                    binding.layoutCommonState.clDataEmpty.isGone = true
+                    binding.layoutCommonState.tvError.isGone = false
+                    binding.layoutCommonState.tvError.text =
+                        it.exception?.message + "${it.payload?.id}"
+                    binding.layoutCommonState.tvDataEmpty.isGone = true
+                    binding.layoutCommonState.ivDataEmpty.isGone = true
                 }
             )
         }
@@ -140,66 +170,4 @@ class CurriculcumFragment : Fragment() {
             requireContext().startActivity(intent)
         }
     }
-
-    private fun setData() {
-        viewModel.getCourseById()
-
-//        binding.rvDataCurriculcum.apply {
-//            layoutManager = LinearLayoutManager(requireContext())
-//            adapter = adapterGroupie
-//        }
-//
-//        val section = getListData().map {
-//            val section = Section()
-//            section.setHeader(
-//                HeaderItem(it.header) { data ->
-//                    Toast.makeText(
-//                        requireContext(),
-//                        "Header Clicked : ${data.title}",
-//                        Toast.LENGTH_SHORT
-//                    ).show()
-//                }
-//            )
-//            val dataSection = it.data.map { data ->
-//                DataItem(data) { data ->
-//                    Toast.makeText(
-//                        requireContext(),
-//                        "Item clicked : ${data.title}",
-//                        Toast.LENGTH_SHORT
-//                    ).show()
-//                }
-//            }
-//            section.addAll(dataSection)
-//            section
-//        }
-//        adapterGroupie.addAll(section)
-    }
-
-    private fun getListData(): List<SectionedCurriculcumData> = listOf(
-        SectionedCurriculcumData(
-            ItemSectionHeaderCurriculcum("Chapter 1 - Introduction", 25),
-            listOf(
-                ItemSectionDataCurriculcum("01", "Pengenalan Design System", 10, true),
-                ItemSectionDataCurriculcum(
-                    "02",
-                    "Tujuan Mengikuti Kelas Design System",
-                    5,
-                    false
-                ),
-                ItemSectionDataCurriculcum(
-                    "03",
-                    "Contoh Dalam Membangun Design System",
-                    10,
-                    false
-                )
-            )
-        ),
-        SectionedCurriculcumData(
-            ItemSectionHeaderCurriculcum("Chapter 2 - Graphic Design", 55),
-            listOf(
-                ItemSectionDataCurriculcum("04", "Video 1", 30, false),
-                ItemSectionDataCurriculcum("05", "Video 2", 25, false)
-            )
-        )
-    )
 }

@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cl_data_detail_course"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/tv_category_course"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/color_shimmer"
+            android:fontFamily="@font/montserrat_bold"
+            android:textColor="@color/app_color_primary_container"
+            android:textSize="12sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="UI/UX Design" />
+
+        <TextView
+            android:id="@+id/tv_course_rating"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/color_shimmer"
+            android:fontFamily="@font/montserrat_bold"
+            android:textColor="@color/app_color_secondary"
+            android:textSize="12sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="4.2" />
+
+        <ImageView
+            android:layout_width="14dp"
+            android:layout_height="14dp"
+            android:layout_marginEnd="6dp"
+            android:background="@color/color_shimmer"
+            android:src="@drawable/ic_star"
+            app:layout_constraintBottom_toBottomOf="@id/tv_course_rating"
+            app:layout_constraintEnd_toStartOf="@id/tv_course_rating"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_name_course"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:background="@color/color_shimmer"
+            android:fontFamily="@font/montserrat_bold"
+            android:textColor="@color/app_color_secondary"
+            android:textSize="14sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_category_course"
+            tools:text="Intro Basic of User Interaction Design" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:background="@color/color_shimmer"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_name_course">
+
+            <ImageView
+                android:id="@+id/iv_ellipse_modul"
+                android:layout_width="6dp"
+                android:layout_height="6dp"
+                android:src="@drawable/ic_ellipse"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tv_total_modul_course"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:background="@color/color_shimmer"
+                android:fontFamily="@font/montserrat"
+                android:textColor="@color/app_color_on_primary_container"
+                android:textSize="12sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@id/iv_ellipse_modul"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="19 Modul" />
+
+            <ImageView
+                android:id="@+id/iv_ellipse_hour"
+                android:layout_width="6dp"
+                android:layout_height="6dp"
+                android:layout_marginStart="6dp"
+                android:src="@drawable/ic_ellipse"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@id/tv_total_modul_course"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tv_total_hour_course"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:background="@color/color_shimmer"
+                android:fontFamily="@font/montserrat"
+                android:textColor="@color/app_color_on_primary_container"
+                android:textSize="12sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@id/iv_ellipse_hour"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="60 Hour" />
+
+            <ImageView
+                android:id="@+id/iv_ellipse_level"
+                android:layout_width="6dp"
+                android:layout_height="6dp"
+                android:layout_marginStart="6dp"
+                android:src="@drawable/ic_ellipse"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@id/tv_total_hour_course"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tv_level_course"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:background="@color/color_shimmer"
+                android:fontFamily="@font/montserrat"
+                android:textColor="@color/app_color_on_primary_container"
+                android:textSize="12sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@id/iv_ellipse_level"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="Advanced Level" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

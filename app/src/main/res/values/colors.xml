@@ -4,6 +4,7 @@
     <color name="white">#FFFFFFFF</color>
 
     <color name="stroke_radio_checked">#E8F1FF</color>
+    <color name="color_shimmer">#D0D0D0</color>
 
     <color name="background_method_payment_bank">#3C3C3C</color>
     <color name="background_method_payment_card">#6148FF</color>

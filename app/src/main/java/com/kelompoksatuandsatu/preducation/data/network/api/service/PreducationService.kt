@@ -10,7 +10,6 @@ import com.kelompoksatuandsatu.preducation.data.network.api.model.auth.register.
 import com.kelompoksatuandsatu.preducation.data.network.api.model.category.categoryclass.CategoriesClassResponse
 import com.kelompoksatuandsatu.preducation.data.network.api.model.course.CourseResponse
 import com.kelompoksatuandsatu.preducation.data.network.api.model.course.detailcourse.DetailCourseResponse
-import com.kelompoksatuandsatu.preducation.data.network.api.model.course.detailcourse.progress.ProgressCourseRequest
 import com.kelompoksatuandsatu.preducation.data.network.api.model.course.detailcourse.progress.ProgressCourseResponse
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
@@ -49,10 +48,10 @@ interface PreducationService {
 
     // detail
     @GET("api/v1/courses/{id}")
-    suspend fun getCourseById(@Path("id") id: String? = null): DetailCourseResponse
+    suspend fun getCourseById(@Path("id") id: String): DetailCourseResponse
 
     @POST("api/v1/progress")
-    suspend fun postIndexCourseById(@Query("id") id: String? = null, @Body progressRequest: ProgressCourseRequest): ProgressCourseResponse
+    suspend fun postIndexCourseById(@Query("id") id: String, @Body progressRequest: Int): ProgressCourseResponse
 
     // profile
     @GET("api/v1/users/{id}")
