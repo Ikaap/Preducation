@@ -5,6 +5,8 @@ import android.os.Bundle
 import android.text.SpannableString
 import android.text.style.UnderlineSpan
 import android.util.Patterns
+import android.annotation.SuppressLint
+import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.kelompoksatuandsatu.preducation.R
 import com.kelompoksatuandsatu.preducation.databinding.ActivityRegisterBinding
@@ -176,4 +178,6 @@ class RegisterActivity : AppCompatActivity() {
         val intent = Intent(this, OtpActivity::class.java)
         startActivity(intent)
     }
+    }
+
 }

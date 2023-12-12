@@ -1,6 +1,5 @@
 package com.kelompoksatuandsatu.preducation.presentation.feature.login
 
-import android.content.Intent
 import android.os.Bundle
 import android.text.SpannableString
 import android.text.style.UnderlineSpan
@@ -22,6 +21,7 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private val viewModel: LoginViewModel by viewModel()
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -144,4 +144,6 @@ class LoginActivity : AppCompatActivity() {
         val intent = Intent(this, MainActivity::class.java)
         startActivity(intent)
     }
+    }
+
 }
