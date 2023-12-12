@@ -1,10 +1,5 @@
 package com.kelompoksatuandsatu.preducation.data.network.api.datasource
 
-import com.kelompoksatuandsatu.preducation.data.network.api.model.auth.login.LoginRequest
-import com.kelompoksatuandsatu.preducation.data.network.api.model.auth.login.LoginResponse
-import com.kelompoksatuandsatu.preducation.data.network.api.model.auth.register.RegisterRequest
-import com.kelompoksatuandsatu.preducation.data.network.api.model.auth.register.RegisterResponse
-import com.kelompoksatuandsatu.preducation.data.network.api.service.PreducationService
 import com.kelompoksatuandsatu.preducation.data.network.api.model.changepassword.ChangePasswordRequest
 import com.kelompoksatuandsatu.preducation.data.network.api.model.changepassword.ChangePasswordResponse
 import com.kelompoksatuandsatu.preducation.data.network.api.model.logout.UserLogoutResponse
@@ -12,17 +7,15 @@ import com.kelompoksatuandsatu.preducation.data.network.api.model.user.UserReque
 import com.kelompoksatuandsatu.preducation.data.network.api.model.user.UserResponse
 import com.kelompoksatuandsatu.preducation.data.network.api.service.PreducationService
 
-
 interface UserDataSource {
     suspend fun userRegister(userRegisterRequest: RegisterRequest): RegisterResponse
 
     suspend fun userLogin(userLoginRequest: LoginRequest): LoginResponse
 
-    suspend fun getUserById(): UserResponse
+    suspend fun getUserById(id: String? = null): UserResponse
     suspend fun updateUserById(id: String, userRequest: UserRequest): UserResponse
     suspend fun updateUserPassword(id: String, passwordRequest: ChangePasswordRequest): ChangePasswordResponse
     suspend fun performLogout(): UserLogoutResponse
-
 }
 
 class UserDataSourceImpl(private val service: PreducationService) : UserDataSource {
@@ -33,9 +26,8 @@ class UserDataSourceImpl(private val service: PreducationService) : UserDataSour
     override suspend fun userLogin(userLoginRequest: LoginRequest): LoginResponse {
         return service.userLogin(userLoginRequest)
     }
-
-    override suspend fun getUserById(): UserResponse {
-        return service.getUserById()
+    override suspend fun getUserById(id: String?): UserResponse {
+        return service.getUserById(id)
     }
 
     override suspend fun updateUserById(id: String, userRequest: UserRequest): UserResponse {

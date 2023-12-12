@@ -16,9 +16,10 @@ import com.kelompoksatuandsatu.preducation.utils.ResultWrapper
 import com.kelompoksatuandsatu.preducation.utils.proceedFlow
 import kotlinx.coroutines.flow.Flow
 
+import com.kelompoksatuandsatu.preducation.utils.proceedFlow
 
 interface UserRepository {
-    suspend fun getUserById(): UserResponse
+    suspend fun getUserById(id: String? = null): UserResponse
 
     suspend fun updateUserById(id: String, userRequest: UserRequest): UserResponse
     suspend fun updateUserPassword(
@@ -36,8 +37,10 @@ interface UserRepository {
 
 class UserRepositoryImpl(private val userDataSource: UserDataSource) : UserRepository {
 
-    override suspend fun getUserById(): UserResponse {
-        return userDataSource.getUserById()
+    override suspend fun getUserById(id: String?): UserResponse {
+        return proceedFlow {
+            userDataSource.getUserById()
+        }
     }
 
     override suspend fun updateUserById(id: String, userRequest: UserRequest): UserResponse {
@@ -59,7 +62,7 @@ class UserRepositoryImpl(private val userDataSource: UserDataSource) : UserRepos
         return proceedFlow {
             val dataRequest =
                 RegisterRequest(request.email, request.name, request.phone, request.password)
-            dataSource.userRegister(dataRequest).message.toString()
+            userDataSource.userRegister(dataRequest).message.toString()
         }
     }
 
