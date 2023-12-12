@@ -153,7 +153,7 @@
     <string name="text_number_phone_empty">Phone number should not be empty</string>
     <string name="text_number_phone_invalid">Enter a valid format phone number</string>
     <string name="register_successfull">Register Successfull</string>
-    <string name="register_failed">"Register Failed : "</string>
+    <string name="register_failed">Register Failed</string>
     <string name="login_success">Login Successfull</string>
     <string name="login_failed">Login Failed</string>
 </resources>
