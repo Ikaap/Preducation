@@ -9,9 +9,7 @@ import com.kelompoksatuandsatu.preducation.data.network.api.model.user.UserRespo
 import com.kelompoksatuandsatu.preducation.data.local.datastore.datasource.UserPreferenceDataSource
 import com.kelompoksatuandsatu.preducation.data.network.api.datasource.UserDataSource
 import com.kelompoksatuandsatu.preducation.data.network.api.model.auth.login.LoginRequest
-import com.kelompoksatuandsatu.preducation.data.network.api.model.auth.otp.OtpRequest
 import com.kelompoksatuandsatu.preducation.data.network.api.model.auth.register.RegisterRequest
-import com.kelompoksatuandsatu.preducation.model.auth.OtpData
 import com.kelompoksatuandsatu.preducation.model.auth.UserAuth
 import com.kelompoksatuandsatu.preducation.model.auth.UserLogin
 import com.kelompoksatuandsatu.preducation.utils.ResultWrapper
@@ -20,7 +18,7 @@ import kotlinx.coroutines.flow.Flow
 
 
 interface UserRepository {
-    suspend fun getUserById(): UserResponse
+    suspend fun getUserById(id: String? = null): UserResponse
 
     suspend fun updateUserById(id: String, userRequest: UserRequest): UserResponse
     suspend fun updateUserPassword(
@@ -41,11 +39,35 @@ class UserRepositoryImpl(
     private val dataSource: UserDataSource,
     private val userPreferenceDataSource: UserPreferenceDataSource
 ) : UserRepository {
+
+
+
+    override suspend fun getUserById(id: String?): UserResponse {
+        return proceedFlow {
+            userDataSource.getUserById()
+        }
+    }
+
+    override suspend fun updateUserById(id: String, userRequest: UserRequest): UserResponse {
+        return userDataSource.updateUserById(id, userRequest)
+    }
+
+    override suspend fun updateUserPassword(
+        id: String,
+        passwordRequest: ChangePasswordRequest
+    ): ChangePasswordResponse {
+        return userDataSource.updateUserPassword(id, passwordRequest)
+    }
+
+    override suspend fun performLogout(): UserLogoutResponse {
+        return userDataSource.performLogout()
+    }
+
     override suspend fun userRegister(request: UserAuth): Flow<ResultWrapper<String>> {
         return proceedFlow {
             val dataRequest =
                 RegisterRequest(request.email, request.name, request.phone, request.password)
-            dataSource.userRegister(dataRequest).message.toString()
+            userDataSource.userRegister(dataRequest).message.toString()
         }
     }
 
