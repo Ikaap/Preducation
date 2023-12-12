@@ -1,16 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
-
-    <data>
-        <variable
-            name="registerModel"
-            type="com.kelompoksatuandsatu.preducation.model.Register"/>
-    </data>
-
-<androidx.core.widget.NestedScrollView
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/app_color_on_primary"
@@ -149,7 +140,8 @@
 
                 <EditText
                     android:id="@+id/passwordInput"
-                    android:layout_width="292dp"                    android:layout_height="52dp"
+                    android:layout_width="292dp"
+                    android:layout_height="52dp"
                     android:background="@null"
                     android:drawablePadding="10dp"
                     android:hint="Buat Password"
@@ -233,28 +225,6 @@
                 android:textSize="16sp" />
         </LinearLayout>
 
-        <!-- Error / Success Message Box -->
-<!--        <LinearLayout-->
-<!--            android:id="@+id/errorMessageBox"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="52dp"-->
-<!--            android:layout_marginTop="24dp"-->
-<!--            android:background="@drawable/bg_error_message"-->
-<!--            android:gravity="center"-->
-<!--            android:visibility="gone">-->
-
-<!--            <TextView-->
-<!--                android:id="@+id/errorMessage"-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:fontFamily="@font/poppins_medium"-->
-<!--                android:text="@string/text_password_min_8_character"-->
-<!--                android:textColor="@color/white"-->
-<!--                android:textSize="16sp" />-->
-
-<!--        </LinearLayout>-->
-
     </LinearLayout>
 
 </androidx.core.widget.NestedScrollView>
-</layout>
