@@ -11,6 +11,8 @@ import com.kelompoksatuandsatu.preducation.data.network.api.model.category.categ
 import com.kelompoksatuandsatu.preducation.data.network.api.model.course.CourseResponse
 import com.kelompoksatuandsatu.preducation.data.network.api.model.course.detailcourse.DetailCourseResponse
 import com.kelompoksatuandsatu.preducation.data.network.api.model.course.detailcourse.progress.ProgressCourseResponse
+import com.kelompoksatuandsatu.preducation.data.network.api.model.payment.PaymentCourseRequest
+import com.kelompoksatuandsatu.preducation.data.network.api.model.payment.PaymentCourseResponse
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -64,7 +66,7 @@ interface PreducationService {
     @GET("api/v1/payments")
     suspend fun getHistoryPayment() // : HistoryPaymentResponse
 
-    //     auth
+    // auth
     @POST("api/v1/auths/register")
     suspend fun userRegister(@Body userRegisterRequest: RegisterRequest): RegisterResponse
 
@@ -79,8 +81,8 @@ interface PreducationService {
     // suspend fun userPostOtp(@Body userForgotPassword: UserForgotPasswordRequest)//:UserForgotPasswordResponse
 
     // payment
-    // @POST("api/v1/payments")
-    // suspend fun paymentCourse(@Body paymentCourseRequest: PaymentCourseRequest)//:PaymentCourseResponse
+    @POST("api/v1/payments")
+    suspend fun paymentCourse(@Body paymentCourseRequest: PaymentCourseRequest): PaymentCourseResponse
 
     companion object {
         @JvmStatic

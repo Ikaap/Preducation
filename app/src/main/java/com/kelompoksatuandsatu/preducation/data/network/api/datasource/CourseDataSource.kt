@@ -4,11 +4,14 @@ import com.kelompoksatuandsatu.preducation.data.network.api.model.category.categ
 import com.kelompoksatuandsatu.preducation.data.network.api.model.course.CourseResponse
 import com.kelompoksatuandsatu.preducation.data.network.api.model.course.detailcourse.DetailCourseResponse
 import com.kelompoksatuandsatu.preducation.data.network.api.model.course.detailcourse.progress.ProgressCourseResponse
+import com.kelompoksatuandsatu.preducation.data.network.api.model.payment.PaymentCourseRequest
+import com.kelompoksatuandsatu.preducation.data.network.api.model.payment.PaymentCourseResponse
 import com.kelompoksatuandsatu.preducation.data.network.api.service.PreducationService
 
 interface CourseDataSource {
     suspend fun getCategoriesClass(): CategoriesClassResponse
     suspend fun getCourseHome(category: String? = null): CourseResponse
+    suspend fun paymentCourse(paymentCourseRequest: PaymentCourseRequest): PaymentCourseResponse
     suspend fun getCourseById(id: String): DetailCourseResponse
 
     suspend fun postIndexCourseById(id: String, progressRequest: Int): ProgressCourseResponse
@@ -26,6 +29,10 @@ class CourseDataSourceImpl(
 
     override suspend fun getCourseById(id: String): DetailCourseResponse {
         return service.getCourseById(id)
+    }
+
+    override suspend fun paymentCourse(paymentCourseRequest: PaymentCourseRequest): PaymentCourseResponse {
+        return service.paymentCourse(paymentCourseRequest)
     }
 
     override suspend fun postIndexCourseById(

@@ -16,11 +16,14 @@ import com.kelompoksatuandsatu.preducation.data.repository.UserRepository
 import com.kelompoksatuandsatu.preducation.data.repository.UserRepositoryImpl
 import com.kelompoksatuandsatu.preducation.presentation.feature.detailclass.DetailClassViewModel
 import com.kelompoksatuandsatu.preducation.presentation.feature.home.HomeViewModel
+import com.kelompoksatuandsatu.preducation.presentation.feature.home.SeeAllViewModel
 import com.kelompoksatuandsatu.preducation.presentation.feature.login.LoginViewModel
+import com.kelompoksatuandsatu.preducation.presentation.feature.payment.PaymentViewModel
 import com.kelompoksatuandsatu.preducation.presentation.feature.register.RegisterViewModel
 import com.kelompoksatuandsatu.preducation.utils.PreferenceDataStoreHelper
 import com.kelompoksatuandsatu.preducation.utils.PreferenceDataStoreHelperImpl
 import org.koin.android.ext.koin.androidContext
+import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.androidx.viewmodel.dsl.viewModelOf
 import org.koin.core.module.Module
 import org.koin.dsl.module
@@ -53,8 +56,10 @@ object AppModules {
         viewModelOf(::HomeViewModel)
         viewModelOf(::DetailClassViewModel)
 //        viewModel { param -> DetailClassViewModel(param.get(), get(), get()) }
+        viewModel { param -> PaymentViewModel(param.get(), get()) }
         viewModelOf(::RegisterViewModel)
         viewModelOf(::LoginViewModel)
+//        viewModel { param -> PaymentViewModel(param.get(), get()) }
     }
 
     val modules: List<Module> = listOf(
