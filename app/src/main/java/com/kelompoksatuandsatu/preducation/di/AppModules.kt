@@ -16,7 +16,6 @@ import com.kelompoksatuandsatu.preducation.data.repository.UserRepository
 import com.kelompoksatuandsatu.preducation.data.repository.UserRepositoryImpl
 import com.kelompoksatuandsatu.preducation.presentation.feature.detailclass.DetailClassViewModel
 import com.kelompoksatuandsatu.preducation.presentation.feature.home.HomeViewModel
-import com.kelompoksatuandsatu.preducation.presentation.feature.home.SeeAllViewModel
 import com.kelompoksatuandsatu.preducation.presentation.feature.login.LoginViewModel
 import com.kelompoksatuandsatu.preducation.presentation.feature.register.RegisterViewModel
 import com.kelompoksatuandsatu.preducation.utils.PreferenceDataStoreHelper
@@ -52,7 +51,6 @@ object AppModules {
 
     private val viewModelModule = module {
         viewModelOf(::HomeViewModel)
-        viewModelOf(::SeeAllViewModel)
         viewModelOf(::DetailClassViewModel)
 //        viewModel { param -> DetailClassViewModel(param.get(), get(), get()) }
         viewModelOf(::RegisterViewModel)

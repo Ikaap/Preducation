@@ -52,7 +52,11 @@ class CategoryCourseListAdapter(private val itemClick: (CategoryClass) -> Unit) 
     override fun getItemCount(): Int = dataDiffer.currentList.size
 
     override fun onBindViewHolder(holder: CategoryCourseItemViewHolder, position: Int) {
-        holder.bindView(dataDiffer.currentList[position])
+        val categoryItem = dataDiffer.currentList[position]
+        holder.bindView(categoryItem)
+        holder.itemView.setOnClickListener {
+            itemClick(categoryItem)
+        }
     }
 }
 
