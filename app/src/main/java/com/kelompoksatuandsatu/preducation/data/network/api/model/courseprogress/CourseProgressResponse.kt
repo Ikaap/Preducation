@@ -6,12 +6,12 @@ import com.google.gson.annotations.SerializedName
 @Keep
 data class CourseProgressResponse(
 
-	@SerializedName("data")
-	val data: List<CourseProgressItemResponse>?,
+    @SerializedName("data")
+    val data: List<CourseProgressItemResponse>?,
 
-	@SerializedName("success")
-	val success: Boolean?,
+    @SerializedName("success")
+    val success: Boolean?,
 
-	@SerializedName("message")
-	val message: String?
+    @SerializedName("message")
+    val message: String?
 )

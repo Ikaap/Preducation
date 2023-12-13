@@ -1,11 +1,15 @@
 package com.kelompoksatuandsatu.preducation.data.repository
 
+import com.kelompoksatuandsatu.preducation.data.local.datastore.datasource.UserPreferenceDataSource
 import com.kelompoksatuandsatu.preducation.data.network.api.datasource.CourseDataSource
+import com.kelompoksatuandsatu.preducation.data.network.api.model.categoriesprogress.toCategoryProgressList
 import com.kelompoksatuandsatu.preducation.data.network.api.model.category.categoryclass.toCategoryClassList
+import com.kelompoksatuandsatu.preducation.data.network.api.model.category.categorytypeclass.toCategoryTypeClassList
 import com.kelompoksatuandsatu.preducation.data.network.api.model.course.detailcourse.progress.ProgressCourseRequest
-import com.kelompoksatuandsatu.preducation.data.network.api.model.course.detailcourse.toDetailCourse
 import com.kelompoksatuandsatu.preducation.data.network.api.model.course.toCourseList
+import com.kelompoksatuandsatu.preducation.data.network.api.model.courseprogress.toCourseProgressList
 import com.kelompoksatuandsatu.preducation.model.CategoryClass
+import com.kelompoksatuandsatu.preducation.model.CategoryPopular
 import com.kelompoksatuandsatu.preducation.model.CourseViewParam
 import com.kelompoksatuandsatu.preducation.model.detailcourse.DetailCourseViewParam
 import com.kelompoksatuandsatu.preducation.model.detailcourse.VideoViewParam
@@ -16,17 +20,15 @@ import kotlinx.coroutines.flow.Flow
 interface CourseRepository {
     fun getCategoriesClass(): Flow<ResultWrapper<List<CategoryClass>>>
     fun getCourseHome(category: String? = null): Flow<ResultWrapper<List<CourseViewParam>>>
-
     fun getCourseById(id: String? = null): Flow<ResultWrapper<DetailCourseViewParam>>
-
     suspend fun postIndexCourseById(id: String? = null, request: VideoViewParam): Flow<ResultWrapper<Boolean>>
     fun getCategoriesProgress(): Flow<ResultWrapper<List<CategoryPopular>>>
-    fun getCourseUserProgress(category: String? = null): Flow<ResultWrapper<List<Course>>>
+    fun getCategoriesTypeClass(): Flow<ResultWrapper<List<CategoryPopular>>>
+    fun getCourseUserProgress(category: String? = null): Flow<ResultWrapper<List<CourseViewParam>>>
 }
 
 class CourseRepositoryImpl(
     private val apiDataSource: CourseDataSource,
-    private val userPreferenceDataSource: UserPreferenceDataSource
 ) : CourseRepository {
     override fun getCategoriesClass(): Flow<ResultWrapper<List<CategoryClass>>> {
         return proceedFlow {
@@ -63,9 +65,16 @@ class CourseRepositoryImpl(
         }
     }
 
-    override fun getCourseUserProgress(category: String?): Flow<ResultWrapper<List<Course>>> {
+    override fun getCourseUserProgress(category: String?): Flow<ResultWrapper<List<CourseViewParam>>> {
         return proceedFlow {
             apiDataSource.getCourseUserProgress(category).data?.toCourseProgressList() ?: emptyList()
+        }
+    }
+
+    override fun getCategoriesTypeClass(): Flow<ResultWrapper<List<CategoryPopular>>> {
+        return proceedFlow {
+            val apiResult = apiDataSource.getCategoriesTypeClass()
+            apiResult.data?.toCategoryTypeClassList() ?: emptyList()
         }
     }
 }

@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.kelompoksatuandsatu.preducation.core.ViewHolderBinder
 import com.kelompoksatuandsatu.preducation.databinding.ItemLinearCourseBinding
 import com.kelompoksatuandsatu.preducation.model.CourseViewParam
+import java.util.Locale
 
 class CourseLinearListAdapter(
     var adapterLayoutMenu: AdapterLayoutMenu,
@@ -81,5 +82,17 @@ class CourseLinearListAdapter(
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         (holder as ViewHolderBinder<CourseViewParam>).bind(dataDiffer.currentList[position])
+    }
+
+    fun filter(query: CharSequence?) {
+        val filteredList = if (query.isNullOrBlank()) {
+            dataDiffer.currentList
+        } else {
+            dataDiffer.currentList.filter { course ->
+                course.title?.toLowerCase(Locale.getDefault())
+                    ?.contains(query.toString().toLowerCase(Locale.getDefault())) == true
+            }
+        }
+        dataDiffer.submitList(filteredList)
     }
 }

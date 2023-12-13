@@ -7,11 +7,14 @@ import com.kelompoksatuandsatu.preducation.data.network.api.model.auth.login.Log
 import com.kelompoksatuandsatu.preducation.data.network.api.model.auth.login.LoginResponse
 import com.kelompoksatuandsatu.preducation.data.network.api.model.auth.register.RegisterRequest
 import com.kelompoksatuandsatu.preducation.data.network.api.model.auth.register.RegisterResponse
+import com.kelompoksatuandsatu.preducation.data.network.api.model.categoriesprogress.CategoriesProgressResponse
 import com.kelompoksatuandsatu.preducation.data.network.api.model.category.categoryclass.CategoriesClassResponse
+import com.kelompoksatuandsatu.preducation.data.network.api.model.category.categorytypeclass.CategoriesTypeClassResponse
 import com.kelompoksatuandsatu.preducation.data.network.api.model.course.CourseResponse
 import com.kelompoksatuandsatu.preducation.data.network.api.model.course.detailcourse.DetailCourseResponse
 import com.kelompoksatuandsatu.preducation.data.network.api.model.course.detailcourse.progress.ProgressCourseRequest
 import com.kelompoksatuandsatu.preducation.data.network.api.model.course.detailcourse.progress.ProgressCourseResponse
+import com.kelompoksatuandsatu.preducation.data.network.api.model.courseprogress.CourseProgressResponse
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -39,15 +42,20 @@ interface PreducationService {
     // class
     // get all categories class
     @GET("api/v1/categories/progress")
-    suspend fun getCategoriesProgress() : CategoriesProgressResponse
+    suspend fun getCategoriesProgress(): CategoriesProgressResponse
+
     // get all categories progress class
     @GET("api/v1/progress")
-    suspend fun getCourseUserProgress(@Query("progressClass") progressClass: String? = null) // : CourseProgressResponse
+    suspend fun getCourseUserProgress(@Query("progressClass") progressClass: String? = null)  : CourseProgressResponse
 
     // course
-    // get all categories type class
     @GET("api/v1/courses")
     suspend fun getCourseTopic(@Query("typeClass") typeClass: String? = null) // : CourseResponse
+
+    // get all categories type class
+    @GET("api/v1/categories/type-class")
+    suspend fun getCategoriesTypeClass(@Query("typeClass") typeClass: String? = null) : CategoriesTypeClassResponse
+
 
     // detail
     @GET("api/v1/courses/{id}")

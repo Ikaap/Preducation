@@ -17,7 +17,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <include
-            android:id="@+id/layout_state_category"
+            android:id="@+id/layout_state_search_bar"
             layout="@layout/layout_search_bar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -81,6 +81,16 @@
                 app:layout_constraintTop_toBottomOf="@id/tv_title_popular_course"
                 tools:listitem="@layout/item_category_rounded" />
 
+            <include
+                android:id="@+id/layout_state_category_type"
+                layout="@layout/layout_content_state"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:visibility="gone"
+                app:layout_constraintTop_toTopOf="@id/rv_category_type"
+                app:layout_constraintBottom_toBottomOf="@id/rv_category_type"
+                tools:visibility="visible" />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
@@ -96,5 +106,14 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/cl_class_progress"
         tools:listitem="@layout/item_linear_course" />
+
+    <include
+        android:id="@+id/layout_state_course"
+        layout="@layout/layout_content_state"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:layout_constraintTop_toTopOf="@id/rv_course"
+        tools:visibility="visible" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
