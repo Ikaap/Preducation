@@ -7,6 +7,7 @@ import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import com.kelompoksatuandsatu.preducation.databinding.ActivitySeeAllPopularCoursesBinding
 import com.kelompoksatuandsatu.preducation.databinding.DialogNonLoginBinding
@@ -48,11 +49,15 @@ class SeeAllPopularCoursesActivity : AppCompatActivity() {
     }
 
     private fun observeData() {
-        viewModel.course.observe(this) {
+        viewModel.coursePopular.observe(this) {
             it.proceedWhen(
                 doOnSuccess = {
                     binding.rvCourse.isVisible = true
                     binding.shimmerCourseCard.isVisible = false
+                    binding.layoutStateCoursePopular.root.isGone = true
+                    binding.layoutStateCoursePopular.ivDataEmpty.isGone = true
+                    binding.layoutStateCoursePopular.tvError.isGone = true
+                    binding.layoutStateCoursePopular.tvDataEmpty.isGone = true
                     binding.rvCourse.apply {
                         isVisible = true
                         adapter = courseAdapter
@@ -64,12 +69,28 @@ class SeeAllPopularCoursesActivity : AppCompatActivity() {
                 doOnLoading = {
                     binding.rvCourse.isVisible = false
                     binding.shimmerCourseCard.isVisible = true
+                    binding.layoutStateCoursePopular.root.isGone = true
+                    binding.layoutStateCoursePopular.ivDataEmpty.isGone = true
+                    binding.layoutStateCoursePopular.tvError.isGone = true
+                    binding.layoutStateCoursePopular.tvDataEmpty.isGone = true
                 },
                 doOnEmpty = {
                     binding.rvCourse.isVisible = false
                     binding.shimmerCourseCard.isVisible = false
+                    binding.layoutStateCoursePopular.root.isGone = false
+                    binding.layoutStateCoursePopular.ivDataEmpty.isGone = true
+                    binding.layoutStateCoursePopular.tvError.isGone = false
+                    binding.layoutStateCoursePopular.tvError.text = "Data Empty"
+                    binding.layoutStateCoursePopular.tvDataEmpty.isGone = true
                 },
                 doOnError = {
+                    binding.rvCourse.isVisible = false
+                    binding.shimmerCourseCard.isVisible = false
+                    binding.layoutStateCoursePopular.root.isGone = false
+                    binding.layoutStateCoursePopular.ivDataEmpty.isGone = true
+                    binding.layoutStateCoursePopular.tvError.isGone = false
+                    binding.layoutStateCoursePopular.tvError.text = it.exception?.message
+                    binding.layoutStateCoursePopular.tvDataEmpty.isGone = true
                 }
             )
         }
