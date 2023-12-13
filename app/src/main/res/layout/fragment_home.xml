@@ -119,7 +119,7 @@
 
                     <com.facebook.shimmer.ShimmerFrameLayout
                         android:id="@+id/shimmer_category_circle"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:visibility="visible"
                         app:layout_constraintStart_toStartOf="@id/rv_category_course"
@@ -147,6 +147,18 @@
 
 
                     </com.facebook.shimmer.ShimmerFrameLayout>
+
+                    <include
+                        android:id="@+id/layout_state_category_circle"
+                        layout="@layout/common_layout_content_state"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:visibility="gone"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
 
@@ -241,6 +253,18 @@
 
 
                     </com.facebook.shimmer.ShimmerFrameLayout>
+
+                    <include
+                        android:id="@+id/layout_state_category_rounded"
+                        layout="@layout/common_layout_content_state"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:visibility="gone"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
 
@@ -264,7 +288,7 @@
 
                     <com.facebook.shimmer.ShimmerFrameLayout
                         android:id="@+id/shimmer_course_card"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:visibility="visible"
                         app:layout_constraintStart_toStartOf="@id/rv_popular_course"
@@ -286,6 +310,18 @@
 
 
                     </com.facebook.shimmer.ShimmerFrameLayout>
+
+                    <include
+                        android:id="@+id/layout_state_course_popular"
+                        layout="@layout/common_layout_content_state"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:visibility="gone"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
