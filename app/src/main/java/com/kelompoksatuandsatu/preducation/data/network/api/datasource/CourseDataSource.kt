@@ -1,5 +1,9 @@
 package com.kelompoksatuandsatu.preducation.data.network.api.datasource
 
+import com.kelompoksatuandsatu.preducation.data.network.api.model.categoriesclass.CategoriesClassResponse
+import com.kelompoksatuandsatu.preducation.data.network.api.model.categoriesprogress.CategoriesProgressResponse
+import com.kelompoksatuandsatu.preducation.data.network.api.model.courseprogress.CourseProgressResponse
+import com.kelompoksatuandsatu.preducation.data.network.api.service.PreducationService
 import com.kelompoksatuandsatu.preducation.data.network.api.model.category.categoryclass.CategoriesClassResponse
 import com.kelompoksatuandsatu.preducation.data.network.api.model.course.CourseResponse
 import com.kelompoksatuandsatu.preducation.data.network.api.model.course.detailcourse.DetailCourseResponse
@@ -15,6 +19,10 @@ interface CourseDataSource {
     suspend fun getCourseById(id: String): DetailCourseResponse
 
     suspend fun postIndexCourseById(id: String, progressRequest: Int): ProgressCourseResponse
+  
+  
+    suspend fun getCourseUserProgress(category: String? = null): CourseProgressResponse
+    suspend fun getCategoriesProgress(): CategoriesProgressResponse
 }
 class CourseDataSourceImpl(
     private val service: PreducationService
@@ -40,5 +48,11 @@ class CourseDataSourceImpl(
         progressRequest: Int
     ): ProgressCourseResponse {
         return service.postIndexCourseById(id, progressRequest)
+    }
+     override suspend fun getCourseUserProgress(category: String?): CourseProgressResponse {
+        return service.getCourseUserProgress(category)
+    }
+    override suspend fun getCategoriesProgress(): CategoriesProgressResponse {
+        return service.getCategoriesProgress()
     }
 }

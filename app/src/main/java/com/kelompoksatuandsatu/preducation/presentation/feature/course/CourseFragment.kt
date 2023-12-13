@@ -53,18 +53,18 @@ class CourseFragment : Fragment() {
     }
 
     private fun showCategoryType() {
-//        val categoryPopularAdapter = CategoryCourseRoundedListAdapter()
-//        binding.rvCategoryType.adapter = categoryPopularAdapter
-//        binding.rvCategoryType.layoutManager = LinearLayoutManager(
-//            requireContext(),
-//            LinearLayoutManager.HORIZONTAL,
-//            false
-//        )
-//        val dummyCategoryPopularDataSource: DummyCategoryPopularDataSource =
-//            DummyCategoryPopularDataSourceImpl()
-//        val categoryPopularList: List<CategoryPopular> =
-//            dummyCategoryPopularDataSource.getCategoryType()
-//        categoryPopularAdapter.setData(categoryPopularList)
+        val categoryPopularAdapter = CategoryCourseRoundedListAdapter {}
+        binding.rvCategoryType.adapter = categoryPopularAdapter
+        binding.rvCategoryType.layoutManager = LinearLayoutManager(
+            requireContext(),
+            LinearLayoutManager.HORIZONTAL,
+            false
+        )
+        val dummyCategoryPopularDataSource: DummyCategoryPopularDataSource =
+            DummyCategoryPopularDataSourceImpl()
+        val categoryPopularList: List<CategoryPopular> =
+            dummyCategoryPopularDataSource.getCategoryType()
+        categoryPopularAdapter.setData(categoryPopularList)
     }
 
     private fun showCourseType() {

@@ -60,6 +60,7 @@ object AppModules {
         viewModelOf(::RegisterViewModel)
         viewModelOf(::LoginViewModel)
 //        viewModel { param -> PaymentViewModel(param.get(), get()) }
+
     }
 
     val modules: List<Module> = listOf(

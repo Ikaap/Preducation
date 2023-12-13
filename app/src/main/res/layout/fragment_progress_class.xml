@@ -19,7 +19,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <include
-            android:id="@+id/layout_state_category"
+            android:id="@+id/layout_state_search_bar"
             layout="@layout/layout_search_bar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -73,6 +73,15 @@
                     app:spanCount="4"
                     tools:listitem="@layout/item_category_circle" />
 
+                <include
+                    android:id="@+id/layout_state_category_course"
+                    layout="@layout/layout_content_state"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone"
+                    app:layout_constraintTop_toBottomOf="@id/tv_title_category"
+                    tools:visibility="visible" />
+
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -95,6 +104,31 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
+                <TextView
+                    android:id="@+id/tv_nav_to_see_all_title_category"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="6dp"
+                    android:layout_marginEnd="10dp"
+                    android:fontFamily="@font/montserrat_semibold"
+                    android:text="@string/text_to_see_all"
+                    android:textAlignment="center"
+                    android:textColor="@color/app_color_primary"
+                    android:textSize="12sp"
+                    app:layout_constraintBottom_toTopOf="@id/rv_category_progress"
+                    app:layout_constraintEnd_toStartOf="@id/iv_to_see_all"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <ImageView
+                    android:id="@+id/iv_to_see_all"
+                    android:layout_width="12dp"
+                    android:layout_height="12dp"
+                    android:contentDescription="@string/iv_arrow_right"
+                    android:src="@drawable/ic_see_all"
+                    app:layout_constraintBottom_toTopOf="@id/rv_category_progress"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rv_category_progress"
                     android:layout_width="match_parent"
@@ -105,6 +139,16 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/tv_title_popular_course"
                     tools:listitem="@layout/item_category_rounded" />
+
+                <include
+                    android:id="@+id/layout_state_category_progress"
+                    layout="@layout/layout_content_state"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:visibility="gone"
+                    app:layout_constraintTop_toTopOf="@id/rv_category_progress"
+                    app:layout_constraintBottom_toBottomOf="@id/rv_category_progress"
+                    tools:visibility="visible" />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rv_progress_course"
@@ -117,6 +161,15 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/rv_category_progress"
                     tools:listitem="@layout/item_course_card" />
+
+                <include
+                    android:id="@+id/layout_state_course_progress"
+                    layout="@layout/layout_content_state"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone"
+                    app:layout_constraintTop_toTopOf="@id/rv_progress_course"
+                    tools:visibility="visible" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 

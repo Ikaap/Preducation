@@ -37,10 +37,13 @@ class CategoryCourseRoundedListAdapter(
         parent: ViewGroup,
         viewType: Int
     ): LinearCategoryPopularItemViewHolder {
-        val binding = ItemCategoryRoundedBinding.inflate(
-            LayoutInflater.from(parent.context),
-            parent,
-            false
+        return LinearCategoryPopularItemViewHolder(
+            binding = ItemCategoryRoundedBinding.inflate(
+                LayoutInflater.from(parent.context),
+                parent,
+                false
+            ),
+            itemClick = itemClick
         )
         return LinearCategoryPopularItemViewHolder(binding, viewModel, itemClick)
     }
