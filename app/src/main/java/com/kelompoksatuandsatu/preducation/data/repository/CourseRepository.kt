@@ -12,7 +12,11 @@ import com.kelompoksatuandsatu.preducation.model.detailcourse.DetailCourseViewPa
 import com.kelompoksatuandsatu.preducation.model.detailcourse.VideoViewParam
 import com.kelompoksatuandsatu.preducation.utils.ResultWrapper
 import com.kelompoksatuandsatu.preducation.utils.proceedFlow
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.onStart
 
 interface CourseRepository {
     fun getCategoriesClass(): Flow<ResultWrapper<List<CategoryClass>>>
@@ -20,7 +24,11 @@ interface CourseRepository {
 
     fun getCourseById(id: String? = null): Flow<ResultWrapper<DetailCourseViewParam>>
 
-    suspend fun postIndexCourseById(id: String? = null, request: VideoViewParam): Flow<ResultWrapper<Boolean>>
+    suspend fun postIndexCourseById(
+        id: String? = null,
+        request: VideoViewParam
+    ): Flow<ResultWrapper<Boolean>>
+
 }
 
 class CourseRepositoryImpl(
@@ -30,18 +38,45 @@ class CourseRepositoryImpl(
     override fun getCategoriesClass(): Flow<ResultWrapper<List<CategoryClass>>> {
         return proceedFlow {
             apiDataSource.getCategoriesClass().data?.toCategoryClassList() ?: emptyList()
+        }.map {
+            if (it.payload?.isEmpty() == true) {
+                ResultWrapper.Empty(it.payload)
+            } else {
+                it
+            }
+        }.catch {
+            emit(ResultWrapper.Error(Exception(it)))
+        }.onStart {
+            emit(ResultWrapper.Loading())
+            delay(3000)
         }
     }
 
     override fun getCourseHome(category: String?): Flow<ResultWrapper<List<CourseViewParam>>> {
         return proceedFlow {
             apiDataSource.getCourseHome(category).data?.toCourseList() ?: emptyList()
+        }.map {
+            if (it.payload?.isEmpty() == true) {
+                ResultWrapper.Empty(it.payload)
+            } else {
+                it
+            }
+        }.catch {
+            emit(ResultWrapper.Error(Exception(it)))
+        }.onStart {
+            emit(ResultWrapper.Loading())
+            delay(3000)
         }
     }
 
     override fun getCourseById(id: String?): Flow<ResultWrapper<DetailCourseViewParam>> {
         return proceedFlow {
             apiDataSource.getCourseById(id).data?.toDetailCourse()!!
+        }.catch {
+            emit(ResultWrapper.Error(Exception(it)))
+        }.onStart {
+            emit(ResultWrapper.Loading())
+            delay(3000)
         }
     }
 

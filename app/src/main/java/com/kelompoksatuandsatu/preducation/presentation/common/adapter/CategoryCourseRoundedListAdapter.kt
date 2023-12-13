@@ -17,8 +17,8 @@ class CategoryCourseRoundedListAdapter(
     private val itemClick: (CategoryClass) -> Unit
 ) : RecyclerView.Adapter<CategoryCourseRoundedListAdapter.LinearCategoryPopularItemViewHolder>() {
 
-    var selectedPosition = -1
-    var lastSelectedPosition = -1
+    private var selectedPosition = 0
+    private var lastSelectedPosition = 0
 
     private val dataDiffer = AsyncListDiffer(
         this,
@@ -54,15 +54,22 @@ class CategoryCourseRoundedListAdapter(
             selectedPosition = holder.bindingAdapterPosition
             notifyItemChanged(lastSelectedPosition)
             notifyItemChanged(selectedPosition)
-            viewModel.getCourse(dataDiffer.currentList[position].name)
+            if (position != 0) {
+                viewModel.getCourse(dataDiffer.currentList[position].name)
+            }
         }
         updateItemBackground(holder, position)
     }
 
     private fun updateItemBackground(holder: LinearCategoryPopularItemViewHolder, position: Int) {
         if (selectedPosition == position) {
-            holder.binding.llCategoryPopular.setBackgroundResource(R.drawable.bg_category_clicked)
-            holder.binding.tvCategoryPopular.setTextColor(ContextCompat.getColor(holder.itemView.context, android.R.color.white))
+            if (position == 0) {
+                holder.binding.llCategoryPopular.setBackgroundResource(R.drawable.bg_category_clicked)
+                holder.binding.tvCategoryPopular.setTextColor(ContextCompat.getColor(holder.itemView.context, android.R.color.white))
+            } else {
+                holder.binding.llCategoryPopular.setBackgroundResource(R.drawable.bg_category_clicked)
+                holder.binding.tvCategoryPopular.setTextColor(ContextCompat.getColor(holder.itemView.context, android.R.color.white))
+            }
         } else {
             holder.binding.llCategoryPopular.setBackgroundResource(R.drawable.bg_outline_category)
             holder.binding.tvCategoryPopular.setTextColor(ContextCompat.getColor(holder.itemView.context, R.color.app_color_primary))
