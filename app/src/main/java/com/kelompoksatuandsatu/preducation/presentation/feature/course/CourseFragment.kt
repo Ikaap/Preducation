@@ -61,7 +61,7 @@ class CourseFragment : Fragment() {
     }
 
     private fun showCategoryType() {
-        val categoryPopularAdapter = CategoryCourseRoundedListAdapter()
+        val categoryPopularAdapter = CategoryCourseRoundedListAdapter {}
         binding.rvCategoryType.adapter = categoryPopularAdapter
         binding.rvCategoryType.layoutManager = LinearLayoutManager(
             requireContext(),

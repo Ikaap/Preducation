@@ -6,14 +6,14 @@ import com.kelompoksatuandsatu.preducation.model.CategoryPopular
 
 @Keep
 data class CategoriesProgressItemResponse(
-	@SerializedName("name")
-	val name: String?
+    @SerializedName("name")
+    val name: String?
 )
 
 fun CategoriesProgressItemResponse.toCategoryProgress() = CategoryPopular(
-	nameCategoryPopular = this.name.orEmpty()
+    nameCategoryPopular = this.name.orEmpty()
 )
 
 fun Collection<CategoriesProgressItemResponse>.toCategoryProgressList() = this.map {
-	it.toCategoryProgress()
+    it.toCategoryProgress()
 }

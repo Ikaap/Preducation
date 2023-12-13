@@ -104,6 +104,31 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
+                <TextView
+                    android:id="@+id/tv_nav_to_see_all_title_category"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="6dp"
+                    android:layout_marginEnd="10dp"
+                    android:fontFamily="@font/montserrat_semibold"
+                    android:text="@string/text_to_see_all"
+                    android:textAlignment="center"
+                    android:textColor="@color/app_color_primary"
+                    android:textSize="12sp"
+                    app:layout_constraintBottom_toTopOf="@id/rv_category_progress"
+                    app:layout_constraintEnd_toStartOf="@id/iv_to_see_all"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <ImageView
+                    android:id="@+id/iv_to_see_all"
+                    android:layout_width="12dp"
+                    android:layout_height="12dp"
+                    android:contentDescription="@string/iv_arrow_right"
+                    android:src="@drawable/ic_see_all"
+                    app:layout_constraintBottom_toTopOf="@id/rv_category_progress"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rv_category_progress"
                     android:layout_width="match_parent"

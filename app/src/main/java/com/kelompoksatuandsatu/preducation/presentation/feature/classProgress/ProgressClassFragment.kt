@@ -8,16 +8,22 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.widget.SearchView
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.kelompoksatuandsatu.preducation.R
 import com.kelompoksatuandsatu.preducation.databinding.DialogNonLoginBinding
 import com.kelompoksatuandsatu.preducation.databinding.FragmentProgressClassBinding
+import com.kelompoksatuandsatu.preducation.model.Course
 import com.kelompoksatuandsatu.preducation.presentation.common.adapter.AdapterLayoutMenu
 import com.kelompoksatuandsatu.preducation.presentation.common.adapter.CategoryCourseListAdapter
 import com.kelompoksatuandsatu.preducation.presentation.common.adapter.CategoryCourseRoundedListAdapter
 import com.kelompoksatuandsatu.preducation.presentation.common.adapter.CourseCardListAdapter
+import com.kelompoksatuandsatu.preducation.presentation.feature.detailclass.DetailClassActivity
+import com.kelompoksatuandsatu.preducation.presentation.feature.filter.FilterActivity
+import com.kelompoksatuandsatu.preducation.presentation.feature.home.SeeAllPopularCoursesActivity
 import com.kelompoksatuandsatu.preducation.presentation.feature.register.RegisterActivity
 import com.kelompoksatuandsatu.preducation.utils.proceedWhen
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -44,7 +50,27 @@ class ProgressClassFragment : Fragment() {
     private val progressCourseAdapter: CourseCardListAdapter by lazy {
         CourseCardListAdapter(AdapterLayoutMenu.CLASS) {
             showSuccessDialog()
+            navigateToDetail(it)
         }
+    }
+
+    private val searchView: SearchView by lazy {
+        binding.clSearchBar.findViewById(R.id.cv_search)
+    }
+
+    private val searchQueryListener = object : SearchView.OnQueryTextListener {
+        override fun onQueryTextSubmit(query: String?): Boolean {
+            return false
+        }
+
+        override fun onQueryTextChange(newText: String?): Boolean {
+            progressCourseAdapter.filter(newText)
+            return false
+        }
+    }
+
+    private fun navigateToDetail(course: Course) {
+        DetailClassActivity.startActivity(requireContext(), course)
     }
 
     override fun onCreateView(
@@ -62,9 +88,17 @@ class ProgressClassFragment : Fragment() {
         showCourse()
         showCategoryProgress()
         fetchData()
+        setOnClickListener()
+        searchView.setOnQueryTextListener(searchQueryListener)
+    }
 
-        binding.rvProgressCourse.setOnClickListener {
-            showSuccessDialog()
+    private fun setOnClickListener() {
+        binding.tvNavToSeeAllTitleCategory.setOnClickListener {
+            SeeAllPopularCoursesActivity.startActivity(requireContext())
+        }
+
+        binding.ivToSeeAll.setOnClickListener {
+            SeeAllPopularCoursesActivity.startActivity(requireContext())
         }
     }
 

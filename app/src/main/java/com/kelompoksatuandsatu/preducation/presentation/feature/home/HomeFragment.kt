@@ -92,7 +92,7 @@ class HomeFragment : Fragment() {
     }
 
     private fun showCategoryPopular() {
-        val categoryPopularAdapter = CategoryCourseRoundedListAdapter()
+        val categoryPopularAdapter = CategoryCourseRoundedListAdapter {}
         binding.rvCategoryPopular.adapter = categoryPopularAdapter
         binding.rvCategoryPopular.layoutManager = LinearLayoutManager(
             requireContext(),

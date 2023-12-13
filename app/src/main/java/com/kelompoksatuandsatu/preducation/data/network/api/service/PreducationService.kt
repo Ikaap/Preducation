@@ -18,7 +18,7 @@ interface PreducationService {
 
     // home & see all
     @GET("api/v1/categories")
-    suspend fun getCategoriesClass() : CategoriesClassResponse
+    suspend fun getCategoriesClass(): CategoriesClassResponse
 
     @GET("api/v1/courses")
     suspend fun getCourseHome(@Query("category") category: String? = null) // : CourseResponse
@@ -30,10 +30,11 @@ interface PreducationService {
     // class
     // get all categories class
     @GET("api/v1/categories/progress")
-    suspend fun getCategoriesProgress() : CategoriesProgressResponse
+    suspend fun getCategoriesProgress(): CategoriesProgressResponse
+
     // get all categories progress class
     @GET("api/v1/progress")
-    suspend fun getCourseUserProgress(@Query("progressClass") progressClass: String? = null) : CourseProgressResponse
+    suspend fun getCourseUserProgress(@Query("progressClass") progressClass: String? = null): CourseProgressResponse
 
     // course
     // get all categories type class
