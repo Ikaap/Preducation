@@ -27,7 +27,6 @@ interface CourseRepository {
         id: String,
         request: Int
     ): Flow<ResultWrapper<Boolean>>
-
     suspend fun paymentCourse(item: DetailCourseViewParam): Flow<ResultWrapper<PaymentResponseViewParam>>
 }
 
@@ -37,12 +36,34 @@ class CourseRepositoryImpl(
     override fun getCategoriesClass(): Flow<ResultWrapper<List<CategoryClass>>> {
         return proceedFlow {
             apiDataSource.getCategoriesClass().data?.toCategoryClassList() ?: emptyList()
+        }.map {
+            if (it.payload?.isEmpty() == true) {
+                ResultWrapper.Empty(it.payload)
+            } else {
+                it
+            }
+        }.catch {
+            emit(ResultWrapper.Error(Exception(it)))
+        }.onStart {
+            emit(ResultWrapper.Loading())
+            delay(3000)
         }
     }
 
     override fun getCourseHome(category: String?): Flow<ResultWrapper<List<CourseViewParam>>> {
         return proceedFlow {
             apiDataSource.getCourseHome(category).data?.toCourseList() ?: emptyList()
+        }.map {
+            if (it.payload?.isEmpty() == true) {
+                ResultWrapper.Empty(it.payload)
+            } else {
+                it
+            }
+        }.catch {
+            emit(ResultWrapper.Error(Exception(it)))
+        }.onStart {
+            emit(ResultWrapper.Loading())
+            delay(3000)
         }
     }
 

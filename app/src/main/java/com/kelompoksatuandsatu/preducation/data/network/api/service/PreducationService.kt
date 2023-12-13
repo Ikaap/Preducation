@@ -66,7 +66,7 @@ interface PreducationService {
     @GET("api/v1/payments")
     suspend fun getHistoryPayment() // : HistoryPaymentResponse
 
-//     auth
+    // auth
     @POST("api/v1/auths/register")
     suspend fun userRegister(@Body userRegisterRequest: RegisterRequest): RegisterResponse
 

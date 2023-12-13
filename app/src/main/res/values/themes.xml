@@ -53,5 +53,7 @@
         <item name="stStrokeWidth">25dp</item>
     </style>
 
+
     <style name="Theme.Preducation" parent="Base.Theme.Preducation" />
+
 </resources>

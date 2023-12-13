@@ -31,4 +31,6 @@
     <color name="app_color_on_error">#FFFFFF</color>
     <color name="app_color_error_container">#FFE1E5</color>
     <color name="app_color_on_error_container">#BD1329</color>
+
+    <color name="color_shimmer">#D0D0D0</color>
 </resources>

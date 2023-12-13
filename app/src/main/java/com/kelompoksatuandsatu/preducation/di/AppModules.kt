@@ -54,7 +54,6 @@ object AppModules {
 
     private val viewModelModule = module {
         viewModelOf(::HomeViewModel)
-        viewModelOf(::SeeAllViewModel)
         viewModelOf(::DetailClassViewModel)
 //        viewModel { param -> DetailClassViewModel(param.get(), get(), get()) }
         viewModel { param -> PaymentViewModel(param.get(), get()) }

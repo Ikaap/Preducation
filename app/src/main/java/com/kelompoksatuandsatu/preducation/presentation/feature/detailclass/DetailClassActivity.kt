@@ -8,6 +8,7 @@ import android.content.res.Configuration
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintSet
@@ -76,6 +77,7 @@ class DetailClassActivity : AppCompatActivity() {
         val idCourse = intent.getStringExtra("EXTRA_COURSE_ID")
         idCourse?.let { viewModel.getCourseById(it) }
 //        Toast.makeText(this, "id : $idCourse", Toast.LENGTH_SHORT).show()
+
     }
 
     private fun observeData() {
