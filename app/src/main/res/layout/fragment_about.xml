@@ -92,8 +92,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tv_title_about_class">
 
-                <include
-                    layout="@layout/layout_shimmer_detail_about_desc"/>
+                <include layout="@layout/layout_shimmer_detail_about_desc" />
 
             </com.facebook.shimmer.ShimmerFrameLayout>
 
@@ -139,7 +138,8 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tv_title_recommended_student" />
+                app:layout_constraintTop_toBottomOf="@id/tv_title_recommended_student"
+                tools:listitem="@layout/item_desc_recommeded_students" />
 
             <com.facebook.shimmer.ShimmerFrameLayout
                 android:id="@+id/shimmer_about_recommended_students"
@@ -150,8 +150,21 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tv_title_recommended_student">
 
-                <include
-                    layout="@layout/layout_shimmer_about_recommended_students"/>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <include layout="@layout/layout_shimmer_about_recommended_students" />
+
+                    <include layout="@layout/layout_shimmer_about_recommended_students" />
+
+                    <include layout="@layout/layout_shimmer_about_recommended_students" />
+
+                    <include layout="@layout/layout_shimmer_about_recommended_students" />
+
+
+                </LinearLayout>
 
             </com.facebook.shimmer.ShimmerFrameLayout>
 

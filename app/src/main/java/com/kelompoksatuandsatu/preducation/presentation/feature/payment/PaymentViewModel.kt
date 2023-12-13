@@ -33,12 +33,6 @@ class PaymentViewModel(
                     _paymentResult.postValue(it)
                 }
             }
-//            request?.let {
-//                courseRepo.paymentCourse(it).collect { result ->
-//                    Log.d("MyTag", "Result: $result")
-//                    _paymentResult.postValue(result)
-//                }
-//            }
         }
     }
 }

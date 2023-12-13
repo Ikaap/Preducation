@@ -32,6 +32,8 @@ class CurriculcumFragment : Fragment() {
 
     private val viewModel: DetailClassViewModel by activityViewModels()
 
+    var itemVideoId: String = ""
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -76,6 +78,7 @@ class CurriculcumFragment : Fragment() {
                             )
                             val dataSection = it.videos?.map { data ->
                                 DataItem(data) {
+                                    itemVideoId = data.videoUrl.toString()
                                     Toast.makeText(
                                         requireContext(),
                                         "Item clicked : title = ${data.title} -> url = ${data.videoUrl}",
