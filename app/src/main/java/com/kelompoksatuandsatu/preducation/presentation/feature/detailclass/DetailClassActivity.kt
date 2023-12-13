@@ -6,7 +6,9 @@ import android.content.Intent
 import android.content.pm.ActivityInfo
 import android.content.res.Configuration
 import android.os.Bundle
+import android.util.Log
 import android.view.View
+import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintSet
@@ -17,13 +19,15 @@ import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayout
 import com.kelompoksatuandsatu.preducation.R
 import com.kelompoksatuandsatu.preducation.databinding.ActivityDetailClassBinding
-import com.kelompoksatuandsatu.preducation.model.Course
+import com.kelompoksatuandsatu.preducation.model.CourseViewParam
 import com.kelompoksatuandsatu.preducation.presentation.feature.detailclass.adapter.ViewPagerAdapter
+import com.kelompoksatuandsatu.preducation.utils.proceedWhen
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.PlayerConstants
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.AbstractYouTubePlayerListener
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.FullscreenListener
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.options.IFramePlayerOptions
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class DetailClassActivity : AppCompatActivity() {
 
@@ -47,23 +51,94 @@ class DetailClassActivity : AppCompatActivity() {
             }
         }
     }
+
+    private val viewModel: DetailClassViewModel by viewModel()
+
+    var videoId: String = ""
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
         setOnClickListener()
+        showDetailClass()
+        observeData()
         setYoutubeFullScreen()
         setLayoutViewPager()
-        showDetailClass()
-    }
-
-    private fun showDetailClass() {
-        // TODO get data course
     }
 
     private fun setOnClickListener() {
         binding.ivBack.setOnClickListener {
-            // TODO Intent to class or course or home
+            onBackPressed()
+        }
+    }
+
+    private fun showDetailClass() {
+        val idCourse = intent.getStringExtra("EXTRA_COURSE_ID")
+        idCourse?.let { viewModel.getCourseById(it) }
+//        Toast.makeText(this, "id : $idCourse", Toast.LENGTH_SHORT).show()
+
+    }
+
+    private fun observeData() {
+        viewModel.detailCourse.observe(this) {
+            it.proceedWhen(
+                doOnSuccess = {
+                    binding.shimmerDataCourse.isGone = true
+                    binding.layoutCommonState.root.isGone = true
+                    binding.layoutCommonState.tvError.isGone = true
+                    binding.layoutCommonState.tvDataEmpty.isGone = true
+                    binding.layoutCommonState.ivDataEmpty.isGone = true
+                    it.payload?.let { data ->
+                        Log.d("DATA course : ", "id(${data.id}, title(${data.title} ")
+                        if (data.title != null) {
+                            videoId = data.chapters?.get(0)?.videos?.get(0)?.videoUrl.toString()
+                            binding.tvCategoryCourse.text = data.category?.name
+                            binding.tvNameCourse.text = data.title
+                            binding.tvTotalModulCourse.text =
+                                data.totalModule.toString() + " Module"
+                            binding.tvTotalHourCourse.text = data.totalDuration.toString() + " Mins"
+                            binding.tvLevelCourse.text = data.level + " Level"
+                            binding.tvCourseRating.text = data.totalRating.toString()
+                        } else {
+                            binding.shimmerDataCourse.isGone = true
+                            binding.layoutCommonState.root.isGone = false
+                            binding.layoutCommonState.clDataEmpty.isGone = true
+                            binding.layoutCommonState.tvError.isGone = false
+                            binding.layoutCommonState.tvError.text = "data kosong"
+                            binding.layoutCommonState.tvDataEmpty.isGone = true
+                            binding.layoutCommonState.ivDataEmpty.isGone = true
+                        }
+                    }
+                },
+                doOnLoading = {
+                    binding.shimmerDataCourse.isGone = false
+                    binding.layoutCommonState.root.isGone = true
+                    binding.layoutCommonState.clDataEmpty.isGone = true
+                    binding.layoutCommonState.tvError.isGone = true
+                    binding.layoutCommonState.tvDataEmpty.isGone = true
+                    binding.layoutCommonState.ivDataEmpty.isGone = true
+                },
+                doOnEmpty = {
+                    binding.shimmerDataCourse.isGone = true
+                    binding.layoutCommonState.root.isGone = false
+                    binding.layoutCommonState.clDataEmpty.isGone = true
+                    binding.layoutCommonState.tvError.isGone = false
+                    binding.layoutCommonState.tvError.text = "data kosong"
+                    binding.layoutCommonState.tvDataEmpty.isGone = true
+                    binding.layoutCommonState.ivDataEmpty.isGone = true
+                },
+                doOnError = {
+                    binding.shimmerDataCourse.isGone = true
+                    binding.layoutCommonState.root.isGone = false
+                    binding.layoutCommonState.clDataEmpty.isGone = true
+                    binding.layoutCommonState.tvError.isGone = false
+                    binding.layoutCommonState.tvError.text =
+                        it.exception?.message + "${it.payload?.id}"
+                    binding.layoutCommonState.tvDataEmpty.isGone = true
+                    binding.layoutCommonState.ivDataEmpty.isGone = true
+                }
+            )
         }
     }
 
@@ -109,7 +184,7 @@ class DetailClassActivity : AppCompatActivity() {
             override fun onReady(youTubePlayer: YouTubePlayer) {
                 super.onReady(youTubePlayer)
                 this@DetailClassActivity.youTubePlayer = youTubePlayer
-                val videoId = "LJY5M2eXDRM"
+//                val videoId = "LJY5M2eXDRM"
                 youTubePlayer.cueVideo(videoId, 0.0F)
                 binding.ivPlayVideo.setOnClickListener {
                     youTubePlayer.play()
@@ -249,10 +324,11 @@ class DetailClassActivity : AppCompatActivity() {
     }
 
     companion object {
-        const val EXTRA_MENU = "EXTRA_MENU"
-        fun startActivity(context: Context, couser: Course) {
+        const val EXTRA_COURSE_ID = "EXTRA_COURSE_ID"
+        fun startActivity(context: Context, course: CourseViewParam) {
+            val id = course.id
             val intent = Intent(context, DetailClassActivity::class.java)
-            intent.putExtra(EXTRA_MENU, couser)
+            intent.putExtra(EXTRA_COURSE_ID, id)
             context.startActivity(intent)
         }
     }

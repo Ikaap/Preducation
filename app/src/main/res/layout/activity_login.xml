@@ -50,24 +50,34 @@
                 android:text="@string/text_email"
                 android:textSize="16sp" />
 
-            <EditText
-                android:id="@+id/emailInput"
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/tilEmail"
                 android:layout_width="match_parent"
-                android:layout_height="52dp"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:background="@drawable/bg_edit_text_secondary_transparent"
-                android:hint="email@gmail.com"
-                android:inputType="textEmailAddress"
-                android:paddingHorizontal="14dp" />
+                app:errorEnabled="true"
+                app:hintEnabled="false"
+                tools:visibility="visible">
 
+                <EditText
+                    android:id="@+id/et_email"
+                    android:layout_width="match_parent"
+                    android:layout_height="52dp"
+                    android:layout_marginTop="8dp"
+                    android:background="@drawable/bg_edit_text_secondary_transparent"
+                    android:hint="email@gmail.com"
+                    android:inputType="textEmailAddress"
+                    android:paddingHorizontal="14dp" />
+            </com.google.android.material.textfield.TextInputLayout>
+          
         </LinearLayout>
-
+      
         <!-- Password Input -->
         <LinearLayout
             android:id="@+id/formPasswordLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="4dp"
             android:orientation="vertical">
 
             <LinearLayout
@@ -100,72 +110,84 @@
                     android:textSize="16sp" />
             </LinearLayout>
 
-            <LinearLayout
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/tilPassword"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:background="@drawable/bg_edit_text_secondary_transparent"
-                android:orientation="horizontal">
+                app:errorEnabled="true"
+                app:hintEnabled="false"
+                app:passwordToggleEnabled="true"
+                tools:visibility="visible">
 
                 <EditText
-                    android:id="@+id/passwordInput"
-                    android:layout_width="304dp"
+                    android:id="@+id/et_password"
+                    android:layout_width="match_parent"
                     android:layout_height="52dp"
-                    android:background="@null"
-                    android:drawablePadding="10dp"
+                    android:layout_marginTop="8dp"
+                    android:background="@drawable/bg_edit_text_secondary_transparent"
                     android:hint="*****"
                     android:inputType="textPassword"
-                    android:paddingHorizontal="14dp" />
+                    android:paddingHorizontal="12dp" />
 
-                <Button
-                    android:id="@+id/showHidePasswordButton"
-                    android:layout_width="52dp"
-                    android:layout_height="52dp"
-                    android:background="@android:color/transparent"
-                    android:drawableEnd="@drawable/img_show_password" />
-
-            </LinearLayout>
+            </com.google.android.material.textfield.TextInputLayout>
 
         </LinearLayout>
 
         <!-- Login Button -->
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/cl_button_sign_in"
+        <FrameLayout
+            android:id="@+id/fl_btn_loading_state"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:layout_marginHorizontal="6dp"
-            android:layout_marginTop="38dp"
-            android:background="@drawable/bg_button_primary">
+            android:layout_height="wrap_content"
+            android:layout_marginTop="38dp">
 
-            <TextView
-                android:id="@+id/tv_sign_in"
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/signInButton"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:visibility="visible"
+                android:layout_marginHorizontal="6dp"
+                android:background="@drawable/bg_button_primary">
+
+                <TextView
+                    android:id="@+id/tv_sign_in"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/montserrat_bold"
+                    android:gravity="center"
+                    android:padding="8dp"
+                    android:text="@string/text_sign_in"
+                    android:textColor="@color/white"
+                    android:textSize="16sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@id/iv_arrow_right"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <ImageView
+                    android:id="@+id/iv_arrow_right"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_marginEnd="8dp"
+                    android:background="@drawable/bg_ellipse_white"
+                    android:contentDescription="@string/desc_arrow_right"
+                    android:padding="10dp"
+                    android:src="@drawable/ic_arrow_right_orange"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <com.google.android.material.progressindicator.CircularProgressIndicator
+                android:id="@+id/pb_loading"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/montserrat_bold"
-                android:gravity="center"
-                android:padding="8dp"
-                android:text="@string/text_sign_in"
-                android:textColor="@color/white"
-                android:textSize="16sp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@id/iv_arrow_right"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <ImageView
-                android:id="@+id/iv_arrow_right"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:layout_marginEnd="8dp"
-                android:background="@drawable/bg_ellipse_white"
-                android:contentDescription="@string/desc_arrow_right"
-                android:padding="10dp"
-                android:src="@drawable/ic_arrow_right_orange"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
+                android:layout_gravity="center"
+                android:indeterminate="true"
+                android:visibility="gone" />
+        </FrameLayout>
 
         <!-- Register Text -->
         <LinearLayout
@@ -187,8 +209,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="6dp"
-                android:textAlignment="center"
                 android:fontFamily="@font/montserrat_bold"
+                android:textAlignment="center"
                 android:textColor="@color/app_color_primary"
                 android:textSize="16sp" />
         </LinearLayout>
@@ -203,27 +225,6 @@
             android:fontFamily="@font/montserrat_bold"
             android:text="@string/text_enter_without_logging_in"
             android:textSize="16sp" />
-
-        <!-- Error Message Box -->
-        <LinearLayout
-            android:id="@+id/errorMessageBox"
-            android:layout_width="match_parent"
-            android:layout_height="52dp"
-            android:layout_marginTop="24dp"
-            android:background="@drawable/bg_error_message"
-            android:gravity="center"
-            android:visibility="gone">
-
-            <TextView
-                android:id="@+id/errorMessage"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/poppins_medium"
-                android:text="@string/text_sorry_wrong_password"
-                android:textColor="@color/white"
-                android:textSize="16sp" />
-
-        </LinearLayout>
 
     </LinearLayout>
 

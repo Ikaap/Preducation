@@ -5,11 +5,24 @@ import com.kelompoksatuandsatu.preducation.BuildConfig
 import com.kelompoksatuandsatu.preducation.data.network.api.model.categoriesclass.CategoriesClassResponse
 import com.kelompoksatuandsatu.preducation.data.network.api.model.categoriesprogress.CategoriesProgressResponse
 import com.kelompoksatuandsatu.preducation.data.network.api.model.courseprogress.CourseProgressResponse
+import com.kelompoksatuandsatu.preducation.data.network.api.interceptor.AuthInterceptor
+import com.kelompoksatuandsatu.preducation.data.network.api.model.auth.login.LoginRequest
+import com.kelompoksatuandsatu.preducation.data.network.api.model.auth.login.LoginResponse
+import com.kelompoksatuandsatu.preducation.data.network.api.model.auth.register.RegisterRequest
+import com.kelompoksatuandsatu.preducation.data.network.api.model.auth.register.RegisterResponse
+import com.kelompoksatuandsatu.preducation.data.network.api.model.category.categoryclass.CategoriesClassResponse
+import com.kelompoksatuandsatu.preducation.data.network.api.model.course.CourseResponse
+import com.kelompoksatuandsatu.preducation.data.network.api.model.course.detailcourse.DetailCourseResponse
+import com.kelompoksatuandsatu.preducation.data.network.api.model.course.detailcourse.progress.ProgressCourseResponse
+import com.kelompoksatuandsatu.preducation.data.network.api.model.payment.PaymentCourseRequest
+import com.kelompoksatuandsatu.preducation.data.network.api.model.payment.PaymentCourseResponse
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import retrofit2.http.Body
 import retrofit2.http.DELETE
 import retrofit2.http.GET
+import retrofit2.http.POST
 import retrofit2.http.Path
 import retrofit2.http.Query
 import java.util.concurrent.TimeUnit
@@ -21,7 +34,7 @@ interface PreducationService {
     suspend fun getCategoriesClass(): CategoriesClassResponse
 
     @GET("api/v1/courses")
-    suspend fun getCourseHome(@Query("category") category: String? = null) // : CourseResponse
+    suspend fun getCourseHome(@Query("category") category: String? = null): CourseResponse
 
     // notification
     @GET("api/v1/notifications")
@@ -43,9 +56,10 @@ interface PreducationService {
 
     // detail
     @GET("api/v1/courses/{id}")
-    suspend fun getCourseById(@Path("id") id: String? = null) // : DetailCourseResponse
-    // @POST("api/v1/progress")
-    // suspend fun getCourseById(@Query("id") id: String? = null, @Body progressRequest: ProgressRequest) // : ProgressResponse
+    suspend fun getCourseById(@Path("id") id: String): DetailCourseResponse
+
+    @POST("api/v1/progress")
+    suspend fun postIndexCourseById(@Query("id") id: String, @Body progressRequest: Int): ProgressCourseResponse
 
     // profile
     @GET("api/v1/users/{id}")
@@ -59,10 +73,12 @@ interface PreducationService {
     suspend fun getHistoryPayment() // : HistoryPaymentResponse
 
     // auth
-    // @POST("api/v1/auths/register")
-    // suspend fun userRegister(@Body userRegisterRequest: UserRegisterRequest)//:UserRegisterResponse
-    // @POST("api/v1/auths/login")
-    // suspend fun userLogin(@Body userLoginRequest: UserLoginRequest)//:UserLoginResponse
+    @POST("api/v1/auths/register")
+    suspend fun userRegister(@Body userRegisterRequest: RegisterRequest): RegisterResponse
+
+    @POST("api/v1/auths/login")
+    suspend fun userLogin(@Body userLoginRequest: LoginRequest): LoginResponse
+
     @DELETE("api/v1/auths/logout")
     suspend fun userLogout() // :UserLogoutResponse
     // @POST("api/v1/auths/forgot-password")
@@ -71,14 +87,15 @@ interface PreducationService {
     // suspend fun userPostOtp(@Body userForgotPassword: UserForgotPasswordRequest)//:UserForgotPasswordResponse
 
     // payment
-    // @POST("api/v1/payments")
-    // suspend fun paymentCourse(@Body paymentCourseRequest: PaymentCourseRequest)//:PaymentCourseResponse
+    @POST("api/v1/payments")
+    suspend fun paymentCourse(@Body paymentCourseRequest: PaymentCourseRequest): PaymentCourseResponse
 
     companion object {
         @JvmStatic
-        operator fun invoke(chucker: ChuckerInterceptor): PreducationService {
+        operator fun invoke(chucker: ChuckerInterceptor, authInterceptor: AuthInterceptor): PreducationService {
             val okHttpClient = OkHttpClient.Builder()
                 .addInterceptor(chucker)
+                .addInterceptor(authInterceptor)
                 .connectTimeout(120, TimeUnit.SECONDS)
                 .readTimeout(120, TimeUnit.SECONDS)
                 .build()

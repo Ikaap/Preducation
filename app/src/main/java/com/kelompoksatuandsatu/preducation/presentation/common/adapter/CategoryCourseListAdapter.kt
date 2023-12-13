@@ -7,30 +7,30 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import com.kelompoksatuandsatu.preducation.databinding.ItemCategoryCircleBinding
-import com.kelompoksatuandsatu.preducation.model.CategoryCourse
+import com.kelompoksatuandsatu.preducation.model.CategoryClass
 
-class CategoryCourseListAdapter(private val itemClick: (CategoryCourse) -> Unit) :
+class CategoryCourseListAdapter(private val itemClick: (CategoryClass) -> Unit) :
     RecyclerView.Adapter<CategoryCourseItemViewHolder>() {
     private val dataDiffer = AsyncListDiffer(
         this,
-        object : DiffUtil.ItemCallback<CategoryCourse>() {
+        object : DiffUtil.ItemCallback<CategoryClass>() {
             override fun areItemsTheSame(
-                oldItem: CategoryCourse,
-                newItem: CategoryCourse
+                oldItem: CategoryClass,
+                newItem: CategoryClass
             ): Boolean {
                 return oldItem.id == newItem.id
             }
 
             override fun areContentsTheSame(
-                oldItem: CategoryCourse,
-                newItem: CategoryCourse
+                oldItem: CategoryClass,
+                newItem: CategoryClass
             ): Boolean {
                 return oldItem.id == newItem.id
             }
         }
     )
 
-    fun setData(data: List<CategoryCourse>) {
+    fun setData(data: List<CategoryClass>) {
         dataDiffer.submitList(data)
         notifyItemChanged(0, data.size)
     }
@@ -52,22 +52,26 @@ class CategoryCourseListAdapter(private val itemClick: (CategoryCourse) -> Unit)
     override fun getItemCount(): Int = dataDiffer.currentList.size
 
     override fun onBindViewHolder(holder: CategoryCourseItemViewHolder, position: Int) {
-        holder.bindView(dataDiffer.currentList[position])
+        val categoryItem = dataDiffer.currentList[position]
+        holder.bindView(categoryItem)
+        holder.itemView.setOnClickListener {
+            itemClick(categoryItem)
+        }
     }
 }
 
 class CategoryCourseItemViewHolder(
     private val binding: ItemCategoryCircleBinding,
-    private val itemClick: (CategoryCourse) -> Unit
+    private val itemClick: (CategoryClass) -> Unit
 ) : RecyclerView.ViewHolder(binding.root) {
 
-    fun bindView(item: CategoryCourse) {
+    fun bindView(item: CategoryClass) {
         with(item) {
-            binding.ivCategoryCourse.load(item.imgUrlCategoryCourse) {
+            binding.ivCategoryCourse.load(item.imageCategory) {
                 crossfade(true)
             }
-            binding.tvCategoryCourse.text = item.nameCategoryCourse
-            itemView.setOnClickListener { itemClick(this) }
+            binding.tvCategoryCourse.text = item.name
+            itemView.setOnClickListener { itemClick(item) }
         }
     }
 }

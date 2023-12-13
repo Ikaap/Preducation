@@ -19,7 +19,6 @@ import com.kelompoksatuandsatu.preducation.databinding.FragmentProgressClassBind
 import com.kelompoksatuandsatu.preducation.model.Course
 import com.kelompoksatuandsatu.preducation.presentation.common.adapter.AdapterLayoutMenu
 import com.kelompoksatuandsatu.preducation.presentation.common.adapter.CategoryCourseListAdapter
-import com.kelompoksatuandsatu.preducation.presentation.common.adapter.CategoryCourseRoundedListAdapter
 import com.kelompoksatuandsatu.preducation.presentation.common.adapter.CourseCardListAdapter
 import com.kelompoksatuandsatu.preducation.presentation.feature.detailclass.DetailClassActivity
 import com.kelompoksatuandsatu.preducation.presentation.feature.filter.FilterActivity
