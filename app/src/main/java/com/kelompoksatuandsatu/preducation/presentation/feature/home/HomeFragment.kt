@@ -62,6 +62,12 @@ class HomeFragment : Fragment() {
         }
     }
 
+    private val categoryCoursePopularAdapter: CategoryCourseRoundedListAdapter by lazy {
+        CategoryCourseRoundedListAdapter(viewModel) {
+            viewModel.getCourse(it.name)
+        }
+    }
+
     private val popularCourseAdapter: CourseCardListAdapter by lazy {
         CourseCardListAdapter(AdapterLayoutMenu.HOME) {
             showSuccessDialog()
@@ -96,7 +102,6 @@ class HomeFragment : Fragment() {
         binding.rvPopularCourse.setOnClickListener {
             showSuccessDialog()
         }
-
         binding.tvNavToSeeAllTitleCategory.setOnClickListener {
             SeeAllPopularCoursesActivity.startActivity(requireContext())
         }

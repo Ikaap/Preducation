@@ -35,7 +35,6 @@ class SeeAllPopularCoursesActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         val categoryName = intent.getStringExtra("CATEGORY_NAME")
-
         getData(categoryName)
         observeData()
 

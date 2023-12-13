@@ -28,6 +28,7 @@ interface CourseRepository {
         id: String? = null,
         request: VideoViewParam
     ): Flow<ResultWrapper<Boolean>>
+
 }
 
 class CourseRepositoryImpl(
@@ -49,18 +50,6 @@ class CourseRepositoryImpl(
             emit(ResultWrapper.Loading())
             delay(3000)
         }
-//        return proceedFlow {
-//            apiDataSource.getCategoriesClass().data?.toCategoryClassList() ?: emptyList()
-//        }.map {
-//            if (it.payload?.isEmpty() == true) {
-//                ResultWrapper.Empty(it.payload)
-//            } else {
-//                it
-//            }
-//        }.onStart {
-//            emit(ResultWrapper.Loading())
-//            delay(3000)
-//        }
     }
 
     override fun getCourseHome(category: String?): Flow<ResultWrapper<List<CourseViewParam>>> {
