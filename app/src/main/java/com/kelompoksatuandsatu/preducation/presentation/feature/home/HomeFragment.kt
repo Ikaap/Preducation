@@ -8,13 +8,12 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.widget.SearchView
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.kelompoksatuandsatu.preducation.R
 import com.kelompoksatuandsatu.preducation.databinding.DialogNonLoginBinding
 import com.kelompoksatuandsatu.preducation.databinding.FragmentHomeBinding
+import com.kelompoksatuandsatu.preducation.model.CategoryClass
 import com.kelompoksatuandsatu.preducation.model.Course
 import com.kelompoksatuandsatu.preducation.presentation.common.adapter.AdapterLayoutMenu
 import com.kelompoksatuandsatu.preducation.presentation.common.adapter.CategoryCourseListAdapter
@@ -28,25 +27,15 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 class HomeFragment : Fragment() {
     private lateinit var binding: FragmentHomeBinding
 
-    private val searchView: SearchView by lazy {
-        binding.clSearchBar.findViewById(R.id.sv_search)
-    }
-
-    private val searchQueryListener = object : SearchView.OnQueryTextListener {
-        override fun onQueryTextSubmit(query: String?): Boolean {
-            return false
-        }
-
-        override fun onQueryTextChange(newText: String?): Boolean {
-            popularCourseAdapter.filter(newText)
-            return false
-        }
-    }
-
     private val categoryCourseAdapter: CategoryCourseListAdapter by lazy {
-        CategoryCourseListAdapter {
-            showSuccessDialog()
+        CategoryCourseListAdapter { selectedCategory ->
+            navigateToSeeAllActivity(selectedCategory)
         }
+    }
+    private fun navigateToSeeAllActivity(selectedCategory: CategoryClass) {
+        val intent = Intent(requireContext(), SeeAllPopularCoursesActivity::class.java)
+        intent.putExtra("CATEGORY_NAME", selectedCategory.name)
+        startActivity(intent)
     }
 
     private val categoryCoursePopularAdapter: CategoryCourseRoundedListAdapter by lazy {
@@ -82,7 +71,6 @@ class HomeFragment : Fragment() {
         setOnClickListener()
         getData()
         observeData()
-        searchView.setOnQueryTextListener(searchQueryListener)
     }
 
     private fun setOnClickListener() {
@@ -109,9 +97,8 @@ class HomeFragment : Fragment() {
         viewModel.categoriesClass.observe(viewLifecycleOwner) {
             it.proceedWhen(
                 doOnSuccess = {
-                    binding.layoutStateCategoryCourse.root.isVisible = false
-                    binding.layoutStateCategoryCourse.pbLoading.isVisible = false
-                    binding.layoutStateCategoryCourse.tvError.isVisible = false
+                    binding.rvCategoryCourse.isVisible = true
+                    binding.shimmerCategoryCircle.isVisible = false
                     binding.rvCategoryCourse.apply {
                         isVisible = true
                         adapter = categoryCourseAdapter
@@ -121,17 +108,14 @@ class HomeFragment : Fragment() {
                     }
                 },
                 doOnLoading = {
-                    binding.layoutStateCategoryCourse.root.isVisible = true
-                    binding.layoutStateCategoryCourse.pbLoading.isVisible = true
-                    binding.layoutStateCategoryCourse.tvError.isVisible = false
                     binding.rvCategoryCourse.isVisible = false
+                    binding.shimmerCategoryCircle.isVisible = true
+                },
+                doOnEmpty = {
+                    binding.rvCategoryCourse.isVisible = false
+                    binding.shimmerCategoryCircle.isVisible = false
                 },
                 doOnError = {
-                    binding.layoutStateCategoryCourse.root.isVisible = true
-                    binding.layoutStateCategoryCourse.pbLoading.isVisible = false
-                    binding.layoutStateCategoryCourse.tvError.isVisible = true
-                    binding.layoutStateCategoryCourse.tvError.text = it.exception?.message.orEmpty()
-                    binding.rvCategoryCourse.isVisible = false
                 }
             )
         }
@@ -139,6 +123,15 @@ class HomeFragment : Fragment() {
         viewModel.categoriesClassPopular.observe(viewLifecycleOwner) {
             it.proceedWhen(
                 doOnSuccess = {
+                    binding.rvCategoryPopular.isVisible = true
+                    binding.shimmerCategoryRounded.isVisible = false
+                    binding.rvCategoryPopular.apply {
+                        isVisible = true
+                        adapter = categoryCoursePopularAdapter
+                    }
+                    it.payload?.let { data ->
+                        categoryCoursePopularAdapter.setData(data)
+                    }
                     binding.rvCategoryPopular.apply {
                         binding.rvCategoryPopular.layoutManager = LinearLayoutManager(
                             requireContext(),
@@ -150,6 +143,16 @@ class HomeFragment : Fragment() {
                     it.payload?.let { data ->
                         categoryCoursePopularAdapter.setData(data)
                     }
+                },
+                doOnLoading = {
+                    binding.rvCategoryPopular.isVisible = false
+                    binding.shimmerCategoryRounded.isVisible = true
+                },
+                doOnEmpty = {
+                    binding.rvCategoryPopular.isVisible = false
+                    binding.shimmerCategoryRounded.isVisible = false
+                },
+                doOnError = {
                 }
             )
         }
@@ -157,9 +160,8 @@ class HomeFragment : Fragment() {
         viewModel.course.observe(viewLifecycleOwner) {
             it.proceedWhen(
                 doOnSuccess = {
-                    binding.layoutStatePopularCourse.root.isVisible = false
-                    binding.layoutStatePopularCourse.pbLoading.isVisible = false
-                    binding.layoutStatePopularCourse.tvError.isVisible = false
+                    binding.rvPopularCourse.isVisible = true
+                    binding.shimmerCourseCard.isVisible = false
                     binding.rvPopularCourse.apply {
                         isVisible = true
                         adapter = popularCourseAdapter
@@ -169,25 +171,14 @@ class HomeFragment : Fragment() {
                     }
                 },
                 doOnLoading = {
-                    binding.layoutStatePopularCourse.root.isVisible = true
-                    binding.layoutStatePopularCourse.pbLoading.isVisible = true
-                    binding.layoutStatePopularCourse.tvError.isVisible = false
                     binding.rvPopularCourse.isVisible = false
-                },
-                doOnError = {
-                    binding.layoutStatePopularCourse.root.isVisible = true
-                    binding.layoutStatePopularCourse.pbLoading.isVisible = false
-                    binding.layoutStatePopularCourse.tvError.isVisible = true
-                    binding.layoutStatePopularCourse.tvError.text = it.exception?.message.orEmpty()
-                    binding.rvPopularCourse.isVisible = false
+                    binding.shimmerCourseCard.isVisible = true
                 },
                 doOnEmpty = {
-                    binding.layoutStatePopularCourse.root.isVisible = true
-                    binding.layoutStatePopularCourse.pbLoading.isVisible = false
-                    binding.layoutStatePopularCourse.tvError.isVisible = true
-                    binding.layoutStatePopularCourse.tvError.text =
-                        resources.getString(R.string.popular_course_not_found)
                     binding.rvPopularCourse.isVisible = false
+                    binding.shimmerCourseCard.isVisible = false
+                },
+                doOnError = {
                 }
             )
         }

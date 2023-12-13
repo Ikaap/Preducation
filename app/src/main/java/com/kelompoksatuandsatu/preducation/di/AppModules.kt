@@ -7,7 +7,6 @@ import com.kelompoksatuandsatu.preducation.data.network.api.service.PreducationS
 import com.kelompoksatuandsatu.preducation.data.repository.CourseRepository
 import com.kelompoksatuandsatu.preducation.data.repository.CourseRepositoryImpl
 import com.kelompoksatuandsatu.preducation.presentation.feature.home.HomeViewModel
-import com.kelompoksatuandsatu.preducation.presentation.feature.home.SeeAllViewModel
 import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModelOf
 import org.koin.core.module.Module
@@ -29,7 +28,6 @@ object AppModules {
 
     private val viewModelModule = module {
         viewModelOf(::HomeViewModel)
-        viewModelOf(::SeeAllViewModel)
     }
 
     val modules: List<Module> = listOf(
