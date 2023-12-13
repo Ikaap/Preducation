@@ -7,6 +7,7 @@ import android.content.pm.ActivityInfo
 import android.content.res.Configuration
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintSet
@@ -70,26 +71,58 @@ class DetailClassActivity : AppCompatActivity() {
             onBackPressed()
         }
     }
+
     private fun showDetailClass() {
         val idCourse = intent.getStringExtra("EXTRA_COURSE_ID")
-        idCourse?.let {
-            viewModel.getCourseById(it)
-        }
+        idCourse?.let { viewModel.getCourseById(it) }
+        Toast.makeText(this, "id : $idCourse", Toast.LENGTH_SHORT).show()
     }
 
     private fun observeData() {
         viewModel.detailCourse.observe(this) {
             it.proceedWhen(
                 doOnSuccess = {
+                    binding.shimmerDataCourse.isGone = true
+                    binding.layoutCommonState.root.isGone = true
+                    binding.layoutCommonState.tvError.isGone = true
+                    binding.layoutCommonState.tvDataEmpty.isGone = true
+                    binding.layoutCommonState.ivDataEmpty.isGone = true
                     it.payload?.let {
                         videoId = it.id.toString()
                         binding.tvCategoryCourse.text = it.category?.name
                         binding.tvNameCourse.text = it.title
-                        binding.tvTotalModulCourse.text = it.totalModule.toString()
-                        binding.tvTotalHourCourse.text = it.totalDuration.toString() + "Mins"
-                        binding.tvLevelCourse.text = it.level
+                        binding.tvTotalModulCourse.text = it.totalModule.toString() + " Module"
+                        binding.tvTotalHourCourse.text = it.totalDuration.toString() + " Mins"
+                        binding.tvLevelCourse.text = it.level + " Level"
                         binding.tvCourseRating.text = it.totalRating.toString()
                     }
+                },
+                doOnLoading = {
+                    binding.shimmerDataCourse.isGone = false
+                    binding.layoutCommonState.root.isGone = true
+                    binding.layoutCommonState.clDataEmpty.isGone = true
+                    binding.layoutCommonState.tvError.isGone = true
+                    binding.layoutCommonState.tvDataEmpty.isGone = true
+                    binding.layoutCommonState.ivDataEmpty.isGone = true
+                },
+                doOnEmpty = {
+                    binding.shimmerDataCourse.isGone = true
+                    binding.layoutCommonState.root.isGone = false
+                    binding.layoutCommonState.clDataEmpty.isGone = true
+                    binding.layoutCommonState.tvError.isGone = false
+                    binding.layoutCommonState.tvError.text = "data kosong"
+                    binding.layoutCommonState.tvDataEmpty.isGone = true
+                    binding.layoutCommonState.ivDataEmpty.isGone = true
+                },
+                doOnError = {
+                    binding.shimmerDataCourse.isGone = true
+                    binding.layoutCommonState.root.isGone = false
+                    binding.layoutCommonState.clDataEmpty.isGone = true
+                    binding.layoutCommonState.tvError.isGone = false
+                    binding.layoutCommonState.tvError.text =
+                        it.exception?.message + "${it.payload?.id}"
+                    binding.layoutCommonState.tvDataEmpty.isGone = true
+                    binding.layoutCommonState.ivDataEmpty.isGone = true
                 }
             )
         }
