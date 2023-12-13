@@ -1,9 +1,7 @@
 package com.kelompoksatuandsatu.preducation.data.repository
 
-import com.kelompoksatuandsatu.preducation.data.local.datastore.datasource.UserPreferenceDataSource
 import com.kelompoksatuandsatu.preducation.data.network.api.datasource.CourseDataSource
 import com.kelompoksatuandsatu.preducation.data.network.api.model.category.categoryclass.toCategoryClassList
-import com.kelompoksatuandsatu.preducation.data.network.api.model.course.detailcourse.progress.ProgressCourseRequest
 import com.kelompoksatuandsatu.preducation.data.network.api.model.course.detailcourse.toDetailCourse
 import com.kelompoksatuandsatu.preducation.data.network.api.model.course.toCourseList
 import com.kelompoksatuandsatu.preducation.data.network.api.model.payment.PaymentCourseRequest
@@ -12,10 +10,12 @@ import com.kelompoksatuandsatu.preducation.model.CategoryClass
 import com.kelompoksatuandsatu.preducation.model.CourseViewParam
 import com.kelompoksatuandsatu.preducation.model.PaymentResponseViewParam
 import com.kelompoksatuandsatu.preducation.model.detailcourse.DetailCourseViewParam
-import com.kelompoksatuandsatu.preducation.model.detailcourse.VideoViewParam
 import com.kelompoksatuandsatu.preducation.utils.ResultWrapper
 import com.kelompoksatuandsatu.preducation.utils.proceedFlow
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.onStart
 
 interface CourseRepository {
     fun getCategoriesClass(): Flow<ResultWrapper<List<CategoryClass>>>
@@ -29,7 +29,6 @@ interface CourseRepository {
     ): Flow<ResultWrapper<Boolean>>
 
     suspend fun paymentCourse(item: DetailCourseViewParam): Flow<ResultWrapper<PaymentResponseViewParam>>
-
 }
 
 class CourseRepositoryImpl(
@@ -73,24 +72,6 @@ class CourseRepositoryImpl(
         return proceedFlow {
 //            val indexReq = ProgressCourseRequest(request.index)
             apiDataSource.postIndexCourseById(id, request).success == true
-        }
-    }
-
-    override suspend fun postIndexCourseById(
-        id: String?,
-        request: VideoViewParam
-    ): Flow<ResultWrapper<Boolean>> {
-        return proceedFlow {
-            val indexReq = ProgressCourseRequest(request.index)
-            apiDataSource.postIndexCourseById(id, indexReq).success == true
-        }
-    }
-
-    override suspend fun paymentCourse(item: DetailCourseViewParam): Flow<ResultWrapper<PaymentResponseViewParam>> {
-        return proceedFlow {
-            val paymentItemRequest = PaymentCourseRequest(item.id, item.title, item.price)
-
-            apiDataSource.paymentCourse(paymentItemRequest).data?.toPaymentResponse()!!
         }
     }
 }

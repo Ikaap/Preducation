@@ -6,8 +6,8 @@ import android.content.Intent
 import android.content.pm.ActivityInfo
 import android.content.res.Configuration
 import android.os.Bundle
+import android.util.Log
 import android.view.View
-import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintSet
@@ -75,7 +75,7 @@ class DetailClassActivity : AppCompatActivity() {
     private fun showDetailClass() {
         val idCourse = intent.getStringExtra("EXTRA_COURSE_ID")
         idCourse?.let { viewModel.getCourseById(it) }
-        Toast.makeText(this, "id : $idCourse", Toast.LENGTH_SHORT).show()
+//        Toast.makeText(this, "id : $idCourse", Toast.LENGTH_SHORT).show()
     }
 
     private fun observeData() {
@@ -87,14 +87,26 @@ class DetailClassActivity : AppCompatActivity() {
                     binding.layoutCommonState.tvError.isGone = true
                     binding.layoutCommonState.tvDataEmpty.isGone = true
                     binding.layoutCommonState.ivDataEmpty.isGone = true
-                    it.payload?.let {
-                        videoId = it.id.toString()
-                        binding.tvCategoryCourse.text = it.category?.name
-                        binding.tvNameCourse.text = it.title
-                        binding.tvTotalModulCourse.text = it.totalModule.toString() + " Module"
-                        binding.tvTotalHourCourse.text = it.totalDuration.toString() + " Mins"
-                        binding.tvLevelCourse.text = it.level + " Level"
-                        binding.tvCourseRating.text = it.totalRating.toString()
+                    it.payload?.let { data ->
+                        Log.d("DATA course : ", "id(${data.id}, title(${data.title} ")
+                        if (data.title != null) {
+                            videoId = data.chapters?.get(0)?.videos?.get(0)?.videoUrl.toString()
+                            binding.tvCategoryCourse.text = data.category?.name
+                            binding.tvNameCourse.text = data.title
+                            binding.tvTotalModulCourse.text =
+                                data.totalModule.toString() + " Module"
+                            binding.tvTotalHourCourse.text = data.totalDuration.toString() + " Mins"
+                            binding.tvLevelCourse.text = data.level + " Level"
+                            binding.tvCourseRating.text = data.totalRating.toString()
+                        } else {
+                            binding.shimmerDataCourse.isGone = true
+                            binding.layoutCommonState.root.isGone = false
+                            binding.layoutCommonState.clDataEmpty.isGone = true
+                            binding.layoutCommonState.tvError.isGone = false
+                            binding.layoutCommonState.tvError.text = "data kosong"
+                            binding.layoutCommonState.tvDataEmpty.isGone = true
+                            binding.layoutCommonState.ivDataEmpty.isGone = true
+                        }
                     }
                 },
                 doOnLoading = {

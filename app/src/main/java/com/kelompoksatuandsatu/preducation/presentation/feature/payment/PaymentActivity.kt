@@ -8,6 +8,7 @@ import android.graphics.Bitmap
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.webkit.WebResourceRequest
 import android.webkit.WebView
@@ -20,6 +21,8 @@ import coil.load
 import com.kelompoksatuandsatu.preducation.databinding.ActivityPaymentBinding
 import com.kelompoksatuandsatu.preducation.databinding.LayoutDialogSuccessPaymentBinding
 import com.kelompoksatuandsatu.preducation.model.detailcourse.DetailCourseViewParam
+import com.kelompoksatuandsatu.preducation.presentation.feature.detailclass.DetailClassActivity
+import com.kelompoksatuandsatu.preducation.presentation.feature.main.MainActivity
 import com.kelompoksatuandsatu.preducation.utils.proceedWhen
 import com.kelompoksatuandsatu.preducation.utils.toCurrencyFormat
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -44,13 +47,11 @@ class PaymentActivity : AppCompatActivity() {
         setClickListener()
         getDataCourse(viewModel.course)
         observeData()
-        getRedirectUrl()
     }
 
     private fun setClickListener() {
         binding.clButtonPayment.setOnClickListener {
             viewModel.payment()
-            openUrlFromWebView(url)
         }
         binding.ivBack.setOnClickListener {
             onBackPressed()
@@ -81,7 +82,8 @@ class PaymentActivity : AppCompatActivity() {
                             "token : ${it.token}, url : ${it.redirectUrl}",
                             Toast.LENGTH_SHORT
                         ).show()
-                        url = it.redirectUrl.toString()
+                        url = it.redirectUrl.orEmpty()
+                        openUrlFromWebView(url)
                     }
                 },
                 doOnError = { e ->
@@ -92,15 +94,6 @@ class PaymentActivity : AppCompatActivity() {
                     Toast.makeText(this, "kosong", Toast.LENGTH_SHORT).show()
                 }
             )
-        }
-    }
-
-    private fun getRedirectUrl(): String {
-        if (url.isEmpty()) {
-            url = "https://sample-demo-dot-midtrans-support-tools.et.r.appspot.com/snap-redirect/"
-            return url
-        } else {
-            return url
         }
     }
 
@@ -136,6 +129,10 @@ class PaymentActivity : AppCompatActivity() {
 
             override fun onPageFinished(view: WebView?, url: String?) {
                 prosessDialog.hide()
+                Log.d("PaymentActivity", "onPageFinished: $url")
+                if (url?.contains("success") == true) {
+                    showSuccessDialog()
+                }
                 super.onPageFinished(view, url)
             }
         }
@@ -143,14 +140,22 @@ class PaymentActivity : AppCompatActivity() {
         binding.webViewMidtrans.settings.javaScriptEnabled = true
         binding.webViewMidtrans.scrollBarStyle = View.SCROLLBARS_INSIDE_OVERLAY
         binding.webViewMidtrans.loadUrl(url)
-
-        // TODO ketika payment sudah selesai dan berhasil munculin dialog
     }
 
     private fun showSuccessDialog() {
         val binding: LayoutDialogSuccessPaymentBinding =
             LayoutDialogSuccessPaymentBinding.inflate(layoutInflater)
         val dialog = AlertDialog.Builder(this, 0).create()
+
+        binding.tvBackToHome.setOnClickListener {
+            val intent = Intent(this, MainActivity::class.java)
+            startActivity(intent)
+        }
+
+        binding.clButtonStartStudy.setOnClickListener {
+            val intent = Intent(this, DetailClassActivity::class.java)
+            startActivity(intent)
+        }
 
         dialog.apply {
             setView(binding.root)
