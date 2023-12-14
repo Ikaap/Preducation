@@ -2,6 +2,7 @@ package com.kelompoksatuandsatu.preducation.data.network.api.model.course.detail
 
 import androidx.annotation.Keep
 import com.google.gson.annotations.SerializedName
+import com.kelompoksatuandsatu.preducation.model.course.detailcourse.CategoryDetailCourse
 
 @Keep
 data class Category(
@@ -11,7 +12,7 @@ data class Category(
     val name: String?
 )
 
-fun Category.toCategory() = com.kelompoksatuandsatu.preducation.model.detailcourse.CategoryDetailCourse(
+fun Category.toCategory() = CategoryDetailCourse(
     id = this.id.orEmpty(),
     name = this.name.orEmpty()
 )

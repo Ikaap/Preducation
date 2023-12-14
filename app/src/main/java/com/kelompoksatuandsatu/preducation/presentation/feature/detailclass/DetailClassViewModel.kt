@@ -5,7 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kelompoksatuandsatu.preducation.data.repository.CourseRepository
-import com.kelompoksatuandsatu.preducation.model.detailcourse.DetailCourseViewParam
+import com.kelompoksatuandsatu.preducation.model.course.detailcourse.DetailCourseViewParam
 import com.kelompoksatuandsatu.preducation.utils.ResultWrapper
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch

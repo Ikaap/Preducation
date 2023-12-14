@@ -1,15 +1,13 @@
-package com.kelompoksatuandsatu.preducation.data.network.api.model.course.detailcourse
+package com.kelompoksatuandsatu.preducation.data.network.api.model.course.courseall
 
 import androidx.annotation.Keep
 import com.google.gson.annotations.SerializedName
-import com.kelompoksatuandsatu.preducation.model.course.detailcourse.DetailCourseViewParam
+import com.kelompoksatuandsatu.preducation.model.course.courseall.CourseViewParam
 
 @Keep
 data class Data(
     @SerializedName("category")
     val category: Category?,
-    @SerializedName("chapters")
-    val chapters: List<Chapter>?,
     @SerializedName("classCode")
     val classCode: String?,
     @SerializedName("createdAt")
@@ -29,29 +27,26 @@ data class Data(
     @SerializedName("sold")
     val sold: Int?,
     @SerializedName("targetAudience")
-    val targetAudience: List<String>?,
+    val targetAudience: List<String?>?,
+    @SerializedName("thumbnail")
+    val thumbnail: String?,
     @SerializedName("title")
     val title: String?,
     @SerializedName("totalDuration")
-    val totalDuration: Int?,
+    val totalDuration: Double?,
     @SerializedName("totalModule")
     val totalModule: Int?,
     @SerializedName("totalRating")
-    val totalRating: Int?,
+    val totalRating: Double?,
     @SerializedName("typeClass")
-    val typeClass: String?,
-    @SerializedName("updatedAt")
-    val updatedAt: String?,
-    @SerializedName("thumbnail")
-    val thumbnail: String?
+    val typeClass: String?
 )
 
-fun Data.toDetailCourse() = DetailCourseViewParam(
-    category = this.category?.toCategory(),
-    chapters = this.chapters?.toChapterList(),
+fun Data.toCourse() = CourseViewParam(
+    category = this.category,
     classCode = this.classCode.orEmpty(),
     createdAt = this.createdAt.orEmpty(),
-//    createdBy = this.createdBy,
+    createdBy = this.createdBy,
     description = this.description.orEmpty(),
     id = this.id.orEmpty(),
     isActive = this.isActive ?: false,
@@ -59,11 +54,12 @@ fun Data.toDetailCourse() = DetailCourseViewParam(
     price = this.price ?: 0,
     sold = this.sold ?: 0,
     targetAudience = this.targetAudience.orEmpty(),
+    thumbnail = this.thumbnail.orEmpty(),
     title = this.title.orEmpty(),
-    totalDuration = this.totalDuration ?: 0,
+    totalDuration = this.totalDuration ?: 0.0,
     totalModule = this.totalModule ?: 0,
-    totalRating = this.totalRating ?: 0,
-    typeClass = this.typeClass.orEmpty(),
-    updatedAt = this.updatedAt.orEmpty(),
-    thumbnail = this.thumbnail.orEmpty()
+    totalRating = this.totalRating ?: 0.0,
+    typeClass = this.typeClass.orEmpty()
 )
+
+fun Collection<Data>.toCourseList() = this.map { it.toCourse() }

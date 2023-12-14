@@ -18,7 +18,8 @@ import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayout
 import com.kelompoksatuandsatu.preducation.R
 import com.kelompoksatuandsatu.preducation.databinding.ActivityDetailClassBinding
-import com.kelompoksatuandsatu.preducation.model.CourseViewParam
+import com.kelompoksatuandsatu.preducation.model.course.courseall.CourseViewParam
+import com.kelompoksatuandsatu.preducation.model.progress.CourseProgressItemClass
 import com.kelompoksatuandsatu.preducation.presentation.feature.detailclass.adapter.ViewPagerAdapter
 import com.kelompoksatuandsatu.preducation.utils.proceedWhen
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.PlayerConstants
@@ -324,6 +325,13 @@ class DetailClassActivity : AppCompatActivity() {
     companion object {
         const val EXTRA_COURSE_ID = "EXTRA_COURSE_ID"
         fun startActivity(context: Context, course: CourseViewParam) {
+            val id = course.id
+            val intent = Intent(context, DetailClassActivity::class.java)
+            intent.putExtra(EXTRA_COURSE_ID, id)
+            context.startActivity(intent)
+        }
+
+        fun startActivityProgress(context: Context, course: CourseProgressItemClass) {
             val id = course.id
             val intent = Intent(context, DetailClassActivity::class.java)
             intent.putExtra(EXTRA_COURSE_ID, id)

@@ -1,39 +1,44 @@
 package com.kelompoksatuandsatu.preducation.presentation.feature.classProgress
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kelompoksatuandsatu.preducation.R
+import com.kelompoksatuandsatu.preducation.data.local.datastore.datasource.UserPreferenceDataSource
 import com.kelompoksatuandsatu.preducation.data.repository.CourseRepository
-import com.kelompoksatuandsatu.preducation.model.CategoryCourse
-import com.kelompoksatuandsatu.preducation.model.CategoryPopular
-import com.kelompoksatuandsatu.preducation.model.Course
+import com.kelompoksatuandsatu.preducation.model.category.categoryclass.CategoryClass
+import com.kelompoksatuandsatu.preducation.model.category.categoryprogress.CategoryType
+import com.kelompoksatuandsatu.preducation.model.progress.CourseProgressItemClass
 import com.kelompoksatuandsatu.preducation.utils.AssetWrapper
 import com.kelompoksatuandsatu.preducation.utils.ResultWrapper
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class ProgressClassViewModel(
-    val repositoryCourse: CourseRepository,
-    private val assetsWrapper: AssetWrapper
+    private val repositoryCourse: CourseRepository,
+    private val assetsWrapper: AssetWrapper,
+    private val userPreferenceDataSource: UserPreferenceDataSource
 ) : ViewModel() {
 
-    private val _courseProgress = MutableLiveData<ResultWrapper<List<Course>>>()
-    val courseProgress: LiveData<ResultWrapper<List<Course>>>
+    private val _courseProgress = MutableLiveData<ResultWrapper<List<CourseProgressItemClass>>>()
+    val courseProgress: LiveData<ResultWrapper<List<CourseProgressItemClass>>>
         get() = _courseProgress
 
     fun getCourseProgress(category: String? = null) {
         viewModelScope.launch(Dispatchers.IO) {
-            repositoryCourse.getCourseUserProgress(if (category == assetsWrapper.getString(R.string.all))null else category?.lowercase())
+            repositoryCourse.getCourseUserProgress(if (category == assetsWrapper.getString(R.string.all)) null else category?.lowercase())
                 .collect {
                     _courseProgress.postValue(it)
+
+                    Log.d("DATA CLASS ", "${it.payload}")
                 }
         }
     }
 
-    private val _categoriesClass = MutableLiveData<ResultWrapper<List<CategoryCourse>>>()
-    val categoriesClass: LiveData<ResultWrapper<List<CategoryCourse>>>
+    private val _categoriesClass = MutableLiveData<ResultWrapper<List<CategoryClass>>>()
+    val categoriesClass: LiveData<ResultWrapper<List<CategoryClass>>>
         get() = _categoriesClass
 
     fun getCategoriesClass() {
@@ -44,8 +49,8 @@ class ProgressClassViewModel(
         }
     }
 
-    private val _categoriesProgress = MutableLiveData<ResultWrapper<List<CategoryPopular>>>()
-    val categoriesProgress: LiveData<ResultWrapper<List<CategoryPopular>>>
+    private val _categoriesProgress = MutableLiveData<ResultWrapper<List<CategoryType>>>()
+    val categoriesProgress: LiveData<ResultWrapper<List<CategoryType>>>
         get() = _categoriesProgress
 
     fun getCategoriesProgress() {
@@ -53,6 +58,17 @@ class ProgressClassViewModel(
             repositoryCourse.getCategoriesProgress().collect {
                 _categoriesProgress.postValue(it)
             }
+        }
+    }
+
+    private val _isUserLogin = MutableLiveData<Boolean>()
+    val isUserLogin: LiveData<Boolean>
+        get() = _isUserLogin
+
+    fun checkLogin() {
+        viewModelScope.launch(Dispatchers.IO) {
+            val userStatus = userPreferenceDataSource.getUserToken().firstOrNull() != null
+            _isUserLogin.postValue(userStatus)
         }
     }
 }

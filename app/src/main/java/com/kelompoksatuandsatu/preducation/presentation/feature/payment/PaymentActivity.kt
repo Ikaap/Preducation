@@ -20,7 +20,7 @@ import androidx.core.view.isGone
 import coil.load
 import com.kelompoksatuandsatu.preducation.databinding.ActivityPaymentBinding
 import com.kelompoksatuandsatu.preducation.databinding.LayoutDialogSuccessPaymentBinding
-import com.kelompoksatuandsatu.preducation.model.detailcourse.DetailCourseViewParam
+import com.kelompoksatuandsatu.preducation.model.course.detailcourse.DetailCourseViewParam
 import com.kelompoksatuandsatu.preducation.presentation.feature.detailclass.DetailClassActivity
 import com.kelompoksatuandsatu.preducation.presentation.feature.main.MainActivity
 import com.kelompoksatuandsatu.preducation.utils.proceedWhen

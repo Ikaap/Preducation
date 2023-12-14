@@ -2,7 +2,7 @@ package com.kelompoksatuandsatu.preducation.data.network.api.model.course.detail
 
 import androidx.annotation.Keep
 import com.google.gson.annotations.SerializedName
-import com.kelompoksatuandsatu.preducation.model.detailcourse.ChapterViewParam
+import com.kelompoksatuandsatu.preducation.model.course.detailcourse.ChapterViewParam
 
 @Keep
 data class Chapter(
