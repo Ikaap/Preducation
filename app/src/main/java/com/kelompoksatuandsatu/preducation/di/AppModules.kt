@@ -33,7 +33,7 @@ import org.koin.dsl.module
 object AppModules {
 
     private val localModule = module {
-        single { androidContext().appDataStore }
+        single { androidContext().userDataStore }
         single<PreferenceDataStoreHelper> { PreferenceDataStoreHelperImpl(get()) }
     }
 
@@ -63,6 +63,11 @@ object AppModules {
         viewModelOf(::RegisterViewModel)
         viewModelOf(::LoginViewModel)
         viewModelOf(::ProgressClassViewModel)
+//        viewModel { param -> PaymentViewModel(param.get(), get()) }
+    }
+
+    private val utilsModule = module {
+        single { AssetWrapper(androidContext()) }
     }
 
     private val utilsModule = module {

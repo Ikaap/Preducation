@@ -71,6 +71,7 @@
             </com.google.android.material.textfield.TextInputLayout>
 
         </LinearLayout>
+      
         <!-- Password Input -->
         <LinearLayout
             android:id="@+id/formPasswordLayout"
@@ -208,8 +209,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="6dp"
-                android:textAlignment="center"
                 android:fontFamily="@font/montserrat_bold"
+                android:textAlignment="center"
                 android:textColor="@color/app_color_primary"
                 android:textSize="16sp" />
         </LinearLayout>

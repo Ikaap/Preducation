@@ -1,5 +1,6 @@
 package com.kelompoksatuandsatu.preducation.presentation.feature.classProgress
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -30,6 +31,8 @@ class ProgressClassViewModel(
             repositoryCourse.getCourseUserProgress(if (category == assetsWrapper.getString(R.string.all)) null else category?.lowercase())
                 .collect {
                     _courseProgress.postValue(it)
+
+                    Log.d("DATA CLASS ", "${it.payload}")
                 }
         }
     }

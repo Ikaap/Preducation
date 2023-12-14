@@ -24,7 +24,16 @@
             android:exported="false" />
         <activity
             android:name=".presentation.feature.payment.PaymentActivity"
-            android:exported="false"/>
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data
+                    android:host="demo"
+                    android:scheme="midtrans" />
+            </intent-filter>
+        </activity>
         <activity
             android:name=".presentation.feature.splashscreen.SplashScreenActivity"
             android:exported="true" >

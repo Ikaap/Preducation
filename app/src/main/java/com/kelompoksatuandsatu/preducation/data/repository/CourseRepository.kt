@@ -26,12 +26,14 @@ import kotlinx.coroutines.flow.onStart
 interface CourseRepository {
     fun getCategoriesClass(): Flow<ResultWrapper<List<CategoryClass>>>
     fun getCourseHome(category: String? = null): Flow<ResultWrapper<List<CourseViewParam>>>
-    fun getCourseById(id: String? = null): Flow<ResultWrapper<DetailCourseViewParam>>
+
     suspend fun postIndexCourseById(id: String? = null, request: Int): Flow<ResultWrapper<Boolean>>
     fun getCategoriesProgress(): Flow<ResultWrapper<List<CategoryType>>>
     fun getCategoriesTypeClass(): Flow<ResultWrapper<List<CategoryType>>>
     fun getCourseUserProgress(category: String? = null): Flow<ResultWrapper<List<CourseProgressItemClass>>>
     suspend fun paymentCourse(item: DetailCourseViewParam): Flow<ResultWrapper<PaymentResponseViewParam>>
+
+    fun getCourseById(id: String): Flow<ResultWrapper<DetailCourseViewParam>>
 }
 
 class CourseRepositoryImpl(
@@ -71,7 +73,7 @@ class CourseRepositoryImpl(
         }
     }
 
-    override fun getCourseById(id: String?): Flow<ResultWrapper<DetailCourseViewParam>> {
+    override fun getCourseById(id: String): Flow<ResultWrapper<DetailCourseViewParam>> {
         return proceedFlow {
             apiDataSource.getCourseById(id).data?.toDetailCourse()!!
         }.catch {
@@ -102,8 +104,9 @@ class CourseRepositoryImpl(
 
     override fun getCategoriesProgress(): Flow<ResultWrapper<List<CategoryType>>> {
         return proceedFlow {
-            val apiResult = apiDataSource.getCategoriesProgress()
-            apiResult.data?.toCategoryProgressList() ?: emptyList()
+//            val apiResult = apiDataSource.getCategoriesProgress()
+//            apiResult.data?.toCategoryProgressList() ?: emptyList()
+            apiDataSource.getCategoriesProgress().data?.toCategoryProgressList() ?: emptyList()
         }
     }
 
