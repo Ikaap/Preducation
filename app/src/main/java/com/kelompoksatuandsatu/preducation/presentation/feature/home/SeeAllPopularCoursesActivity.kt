@@ -11,8 +11,10 @@ import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import com.kelompoksatuandsatu.preducation.databinding.ActivitySeeAllPopularCoursesBinding
 import com.kelompoksatuandsatu.preducation.databinding.DialogNonLoginBinding
-import com.kelompoksatuandsatu.preducation.presentation.common.adapter.AdapterLayoutMenu
-import com.kelompoksatuandsatu.preducation.presentation.common.adapter.CourseLinearListAdapter
+import com.kelompoksatuandsatu.preducation.model.course.courseall.CourseViewParam
+import com.kelompoksatuandsatu.preducation.presentation.common.adapter.course.AdapterLayoutMenu
+import com.kelompoksatuandsatu.preducation.presentation.common.adapter.course.CourseLinearListAdapter
+import com.kelompoksatuandsatu.preducation.presentation.feature.detailclass.DetailClassActivity
 import com.kelompoksatuandsatu.preducation.presentation.feature.register.RegisterActivity
 import com.kelompoksatuandsatu.preducation.utils.proceedWhen
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -27,9 +29,17 @@ class SeeAllPopularCoursesActivity : AppCompatActivity() {
 
     private val courseAdapter: CourseLinearListAdapter by lazy {
         CourseLinearListAdapter(AdapterLayoutMenu.SEEALL) {
-            showSuccessDialog()
+            navigateToDetail(it)
         }
     }
+
+    private fun navigateToDetail(course: CourseViewParam) {
+        val intent = Intent(this, DetailClassActivity::class.java).apply {
+            putExtra("EXTRA_COURSE_ID", course.id)
+        }
+        startActivity(intent)
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
@@ -38,6 +48,7 @@ class SeeAllPopularCoursesActivity : AppCompatActivity() {
         getData(categoryName)
         observeData()
 
+        viewModel.checkLogin()
         binding.ivBack.setOnClickListener {
             onBackPressed()
         }
@@ -93,9 +104,15 @@ class SeeAllPopularCoursesActivity : AppCompatActivity() {
                 }
             )
         }
+
+        viewModel.isUserLogin.observe(this) { isLogin ->
+            if (!isLogin) {
+                showDialog()
+            }
+        }
     }
 
-    private fun showSuccessDialog() {
+    private fun showDialog() {
         val binding: DialogNonLoginBinding = DialogNonLoginBinding.inflate(layoutInflater)
         val dialog = AlertDialog.Builder(this, 0).create()
 

@@ -2,7 +2,7 @@ package com.kelompoksatuandsatu.preducation.data.network.api.model.category.cate
 
 import androidx.annotation.Keep
 import com.google.gson.annotations.SerializedName
-import com.kelompoksatuandsatu.preducation.model.CategoryClass
+import com.kelompoksatuandsatu.preducation.model.category.categoryclass.CategoryClass
 
 @Keep
 data class Data(

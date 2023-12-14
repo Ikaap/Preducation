@@ -16,12 +16,12 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.kelompoksatuandsatu.preducation.R
 import com.kelompoksatuandsatu.preducation.databinding.DialogNonLoginBinding
 import com.kelompoksatuandsatu.preducation.databinding.FragmentHomeBinding
-import com.kelompoksatuandsatu.preducation.model.CategoryClass
-import com.kelompoksatuandsatu.preducation.model.CourseViewParam
-import com.kelompoksatuandsatu.preducation.presentation.common.adapter.AdapterLayoutMenu
-import com.kelompoksatuandsatu.preducation.presentation.common.adapter.CategoryCourseListAdapter
-import com.kelompoksatuandsatu.preducation.presentation.common.adapter.CategoryCourseRoundedListAdapter
-import com.kelompoksatuandsatu.preducation.presentation.common.adapter.CourseCardListAdapter
+import com.kelompoksatuandsatu.preducation.model.category.categoryclass.CategoryClass
+import com.kelompoksatuandsatu.preducation.model.course.courseall.CourseViewParam
+import com.kelompoksatuandsatu.preducation.presentation.common.adapter.category.CategoryCourseListAdapter
+import com.kelompoksatuandsatu.preducation.presentation.common.adapter.category.CategoryRoundedHomeListAdapter
+import com.kelompoksatuandsatu.preducation.presentation.common.adapter.course.AdapterLayoutMenu
+import com.kelompoksatuandsatu.preducation.presentation.common.adapter.course.CourseCardListAdapter
 import com.kelompoksatuandsatu.preducation.presentation.feature.detailclass.DetailClassActivity
 import com.kelompoksatuandsatu.preducation.presentation.feature.register.RegisterActivity
 import com.kelompoksatuandsatu.preducation.utils.proceedWhen
@@ -56,21 +56,15 @@ class HomeFragment : Fragment() {
         startActivity(intent)
     }
 
-    private val categoryCoursePopularAdapter: CategoryCourseRoundedListAdapter by lazy {
-        CategoryCourseRoundedListAdapter(viewModel) {
-            viewModel.getCourse(it.name)
-        }
-    }
-
-    private val categoryCoursePopularAdapter: CategoryCourseRoundedListAdapter by lazy {
-        CategoryCourseRoundedListAdapter(viewModel) {
+    private val categoryCoursePopularAdapter: CategoryRoundedHomeListAdapter by lazy {
+        CategoryRoundedHomeListAdapter(viewModel) {
             viewModel.getCourse(it.name)
         }
     }
 
     private val popularCourseAdapter: CourseCardListAdapter by lazy {
         CourseCardListAdapter(AdapterLayoutMenu.HOME) {
-            showSuccessDialog()
+            navigateToDetail(it)
         }
     }
 
@@ -99,9 +93,6 @@ class HomeFragment : Fragment() {
     }
 
     private fun setOnClickListener() {
-        binding.rvPopularCourse.setOnClickListener {
-            showSuccessDialog()
-        }
         binding.tvNavToSeeAllTitleCategory.setOnClickListener {
             SeeAllPopularCoursesActivity.startActivity(requireContext())
         }
@@ -115,6 +106,7 @@ class HomeFragment : Fragment() {
         viewModel.getCategoriesClass()
         viewModel.getCategoriesClassPopular()
         viewModel.getCourse()
+        viewModel.checkLogin()
     }
 
     private fun observeData() {
@@ -266,9 +258,15 @@ class HomeFragment : Fragment() {
                 }
             )
         }
+
+        viewModel.isUserLogin.observe(viewLifecycleOwner) { isLogin ->
+            if (!isLogin) {
+                showDialog()
+            }
+        }
     }
 
-    private fun showSuccessDialog() {
+    private fun showDialog() {
         val binding: DialogNonLoginBinding = DialogNonLoginBinding.inflate(layoutInflater)
         val dialog = AlertDialog.Builder(requireContext(), 0).create()
 
@@ -282,5 +280,4 @@ class HomeFragment : Fragment() {
             startActivity(intent)
         }
     }
-
 }

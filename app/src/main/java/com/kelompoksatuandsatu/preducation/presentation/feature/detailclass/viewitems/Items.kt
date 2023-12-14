@@ -5,8 +5,8 @@ import androidx.core.view.isGone
 import com.kelompoksatuandsatu.preducation.R
 import com.kelompoksatuandsatu.preducation.databinding.ItemSectionDataCurriculcumBinding
 import com.kelompoksatuandsatu.preducation.databinding.ItemSectionHeaderCurriculcumBinding
-import com.kelompoksatuandsatu.preducation.model.detailcourse.ChapterViewParam
-import com.kelompoksatuandsatu.preducation.model.detailcourse.VideoViewParam
+import com.kelompoksatuandsatu.preducation.model.course.detailcourse.ChapterViewParam
+import com.kelompoksatuandsatu.preducation.model.course.detailcourse.VideoViewParam
 import com.xwray.groupie.viewbinding.BindableItem
 
 class HeaderItem(

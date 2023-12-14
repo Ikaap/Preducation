@@ -11,8 +11,8 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.kelompoksatuandsatu.preducation.databinding.DialogNonLoginBinding
 import com.kelompoksatuandsatu.preducation.databinding.FragmentCourseBinding
-import com.kelompoksatuandsatu.preducation.presentation.common.adapter.AdapterLayoutMenu
-import com.kelompoksatuandsatu.preducation.presentation.common.adapter.CourseLinearListAdapter
+import com.kelompoksatuandsatu.preducation.presentation.common.adapter.course.AdapterLayoutMenu
+import com.kelompoksatuandsatu.preducation.presentation.common.adapter.course.CourseLinearListAdapter
 import com.kelompoksatuandsatu.preducation.presentation.feature.filter.FilterActivity
 import com.kelompoksatuandsatu.preducation.presentation.feature.register.RegisterActivity
 
@@ -40,8 +40,6 @@ class CourseFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         super.onViewCreated(view, savedInstanceState)
 
-        showCourseType()
-        showCategoryType()
         binding.rvCourse.setOnClickListener {
             showSuccessDialog()
         }
@@ -50,35 +48,6 @@ class CourseFragment : Fragment() {
             val intent = Intent(requireContext(), FilterActivity::class.java)
             startActivity(intent)
         }
-    }
-
-    private fun showCategoryType() {
-        val categoryPopularAdapter = CategoryCourseRoundedListAdapter {}
-        binding.rvCategoryType.adapter = categoryPopularAdapter
-        binding.rvCategoryType.layoutManager = LinearLayoutManager(
-            requireContext(),
-            LinearLayoutManager.HORIZONTAL,
-            false
-        )
-        val dummyCategoryPopularDataSource: DummyCategoryPopularDataSource =
-            DummyCategoryPopularDataSourceImpl()
-        val categoryPopularList: List<CategoryPopular> =
-            dummyCategoryPopularDataSource.getCategoryType()
-        categoryPopularAdapter.setData(categoryPopularList)
-    }
-
-    private fun showCourseType() {
-//        binding.rvCourse.adapter = typeCourseAdapter
-//        binding.rvCourse.layoutManager = LinearLayoutManager(
-//            requireContext(),
-//            LinearLayoutManager.VERTICAL,
-//            false
-//        )
-//        val dummyPopularDataSource: DummyPopularCourseDataSource =
-//            DummyPopularCourseDataSourceImpl()
-//        val popularCourseList: List<Course> =
-//            dummyPopularDataSource.getPopularCourse()
-//        typeCourseAdapter.setData(popularCourseList)
     }
 
     private fun showSuccessDialog() {

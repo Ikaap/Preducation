@@ -1,26 +1,25 @@
 package com.kelompoksatuandsatu.preducation.data.repository
 
 import com.kelompoksatuandsatu.preducation.data.network.api.datasource.CourseDataSource
-import com.kelompoksatuandsatu.preducation.data.network.api.model.categoriesclass.toCategoryList
-import com.kelompoksatuandsatu.preducation.data.network.api.model.categoriesprogress.toCategoryProgressList
-import com.kelompoksatuandsatu.preducation.data.network.api.model.courseprogress.toCourseProgressList
-import com.kelompoksatuandsatu.preducation.model.CategoryCourse
-import com.kelompoksatuandsatu.preducation.model.CategoryPopular
-import com.kelompoksatuandsatu.preducation.model.Course
+import com.kelompoksatuandsatu.preducation.data.network.api.model.category.categoriesprogress.toCategoryProgressList
 import com.kelompoksatuandsatu.preducation.data.network.api.model.category.categoryclass.toCategoryClassList
+import com.kelompoksatuandsatu.preducation.data.network.api.model.course.courseall.toCourseList
 import com.kelompoksatuandsatu.preducation.data.network.api.model.course.detailcourse.toDetailCourse
-import com.kelompoksatuandsatu.preducation.data.network.api.model.course.toCourseList
 import com.kelompoksatuandsatu.preducation.data.network.api.model.payment.PaymentCourseRequest
 import com.kelompoksatuandsatu.preducation.data.network.api.model.payment.toPaymentResponse
-import com.kelompoksatuandsatu.preducation.model.CategoryClass
-import com.kelompoksatuandsatu.preducation.model.CourseViewParam
-import com.kelompoksatuandsatu.preducation.model.PaymentResponseViewParam
-import com.kelompoksatuandsatu.preducation.model.detailcourse.DetailCourseViewParam
+import com.kelompoksatuandsatu.preducation.data.network.api.model.progress.courseprogress.toCourseProgressList
+import com.kelompoksatuandsatu.preducation.model.category.categoryclass.CategoryClass
+import com.kelompoksatuandsatu.preducation.model.category.categoryprogress.CategoryType
+import com.kelompoksatuandsatu.preducation.model.course.courseall.CourseViewParam
+import com.kelompoksatuandsatu.preducation.model.course.detailcourse.DetailCourseViewParam
+import com.kelompoksatuandsatu.preducation.model.payment.PaymentResponseViewParam
+import com.kelompoksatuandsatu.preducation.model.progress.CourseProgressItemClass
 import com.kelompoksatuandsatu.preducation.utils.ResultWrapper
 import com.kelompoksatuandsatu.preducation.utils.proceedFlow
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onStart
 
 interface CourseRepository {
@@ -35,8 +34,8 @@ interface CourseRepository {
     ): Flow<ResultWrapper<Boolean>>
     suspend fun paymentCourse(item: DetailCourseViewParam): Flow<ResultWrapper<PaymentResponseViewParam>>
 
-    fun getCategoriesProgress(): Flow<ResultWrapper<List<CategoryPopular>>>
-    fun getCourseUserProgress(category: String? = null): Flow<ResultWrapper<List<Course>>>
+    fun getCategoriesProgress(): Flow<ResultWrapper<List<CategoryType>>>
+    fun getCourseUserProgress(category: String? = null): Flow<ResultWrapper<List<CourseProgressItemClass>>>
 }
 
 class CourseRepositoryImpl(
@@ -103,17 +102,19 @@ class CourseRepositoryImpl(
 //            val indexReq = ProgressCourseRequest(request.index)
             apiDataSource.postIndexCourseById(id, request).success == true
         }
-        
-     override fun getCategoriesProgress(): Flow<ResultWrapper<List<CategoryPopular>>> {
+    }
+
+    override fun getCategoriesProgress(): Flow<ResultWrapper<List<CategoryType>>> {
         return proceedFlow {
-            val apiResult = apiDataSource.getCategoriesProgress()
-            apiResult.data?.toCategoryProgressList() ?: emptyList()
+//            val apiResult = apiDataSource.getCategoriesProgress()
+//            apiResult.data?.toCategoryProgressList() ?: emptyList()
+            apiDataSource.getCategoriesProgress().data?.toCategoryProgressList() ?: emptyList()
         }
     }
 
-    override fun getCourseUserProgress(category: String?): Flow<ResultWrapper<List<Course>>> {
+    override fun getCourseUserProgress(category: String?): Flow<ResultWrapper<List<CourseProgressItemClass>>> {
         return proceedFlow {
             apiDataSource.getCourseUserProgress(category).data?.toCourseProgressList() ?: emptyList()
-    }
+        }
     }
 }
