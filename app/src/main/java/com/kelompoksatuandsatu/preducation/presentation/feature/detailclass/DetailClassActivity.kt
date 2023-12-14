@@ -89,25 +89,20 @@ class DetailClassActivity : AppCompatActivity() {
                     binding.layoutCommonState.tvDataEmpty.isGone = true
                     binding.layoutCommonState.ivDataEmpty.isGone = true
                     it.payload?.let { data ->
-                        Log.d("DATA course : ", "id(${data.id}, title(${data.title} ")
-                        if (data.title != null) {
-                            videoId = data.chapters?.get(0)?.videos?.get(0)?.videoUrl.toString()
-                            binding.tvCategoryCourse.text = data.category?.name
-                            binding.tvNameCourse.text = data.title
-                            binding.tvTotalModulCourse.text =
-                                data.totalModule.toString() + " Module"
-                            binding.tvTotalHourCourse.text = data.totalDuration.toString() + " Mins"
-                            binding.tvLevelCourse.text = data.level + " Level"
-                            binding.tvCourseRating.text = data.totalRating.toString()
-                        } else {
-                            binding.shimmerDataCourse.isGone = true
-                            binding.layoutCommonState.root.isGone = false
-                            binding.layoutCommonState.clDataEmpty.isGone = true
-                            binding.layoutCommonState.tvError.isGone = false
-                            binding.layoutCommonState.tvError.text = "data kosong"
-                            binding.layoutCommonState.tvDataEmpty.isGone = true
-                            binding.layoutCommonState.ivDataEmpty.isGone = true
+                        data.chapters?.map { chapter ->
+                            chapter.videos?.map { itemVideo ->
+                                videoId = itemVideo.videoUrl.toString()
+                            }
                         }
+//                        Log.d("DATA course : ", "id(${data.id}, title(${data.title} ")
+//                        videoId = data.chapters?.get(0)?.videos?.get(0)?.videoUrl.toString()
+                        binding.tvCategoryCourse.text = data.category?.name
+                        binding.tvNameCourse.text = data.title
+                        binding.tvTotalModulCourse.text =
+                            data.totalModule.toString() + " Module"
+                        binding.tvTotalHourCourse.text = data.totalDuration.toString() + " Mins"
+                        binding.tvLevelCourse.text = data.level + " Level"
+                        binding.tvCourseRating.text = data.totalRating.toString()
                     }
                 },
                 doOnLoading = {
@@ -132,10 +127,10 @@ class DetailClassActivity : AppCompatActivity() {
                     binding.layoutCommonState.root.isGone = false
                     binding.layoutCommonState.clDataEmpty.isGone = true
                     binding.layoutCommonState.tvError.isGone = false
-                    binding.layoutCommonState.tvError.text =
-                        it.exception?.message + "${it.payload?.id}"
+                    binding.layoutCommonState.tvError.text = it.exception?.message.toString()
                     binding.layoutCommonState.tvDataEmpty.isGone = true
                     binding.layoutCommonState.ivDataEmpty.isGone = true
+                    Log.d("EROR", "${it.message}")
                 }
             )
         }

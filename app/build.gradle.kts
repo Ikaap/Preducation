@@ -44,7 +44,6 @@ android {
     buildFeatures {
         viewBinding = true
         buildConfig = true
-        dataBinding = true
     }
 
     flavorDimensions += "env"
@@ -148,9 +147,6 @@ dependencies {
     // groupie
     implementation("com.github.lisawray.groupie:groupie:2.10.1")
     implementation("com.github.lisawray.groupie:groupie-viewbinding:2.10.1")
-
-    // toast
-    implementation("io.github.muddz:styleabletoast:2.4.0")
 
     // shimmer
     implementation("com.facebook.shimmer:shimmer:0.5.0")
