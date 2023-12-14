@@ -1,4 +1,4 @@
-package com.kelompoksatuandsatu.preducation.presentation.common.adapter
+package com.kelompoksatuandsatu.preducation.presentation.common.adapter.course
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.kelompoksatuandsatu.preducation.core.ViewHolderBinder
 import com.kelompoksatuandsatu.preducation.databinding.ItemCourseCardBinding
-import com.kelompoksatuandsatu.preducation.model.CourseViewParam
+import com.kelompoksatuandsatu.preducation.model.course.courseall.CourseViewParam
 import java.util.Locale
 
 class CourseCardListAdapter(
@@ -19,7 +19,10 @@ class CourseCardListAdapter(
     private val dataDiffer = AsyncListDiffer(
         this,
         object : DiffUtil.ItemCallback<CourseViewParam>() {
-            override fun areItemsTheSame(oldItem: CourseViewParam, newItem: CourseViewParam): Boolean {
+            override fun areItemsTheSame(
+                oldItem: CourseViewParam,
+                newItem: CourseViewParam
+            ): Boolean {
                 return oldItem.id == newItem.id
             }
 
@@ -40,32 +43,17 @@ class CourseCardListAdapter(
     override fun getItemViewType(position: Int): Int {
         return adapterLayoutMenu.ordinal
     }
+
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
     ): ViewHolder {
-        return when (viewType) {
-            AdapterLayoutMenu.HOME.ordinal -> {
-                HomeCourseItemViewHolder(
-                    binding = ItemCourseCardBinding.inflate(
-                        LayoutInflater.from(parent.context),
-                        parent,
-                        false
-                    ),
-                    itemClick
-                )
-            }
-            else -> {
-                ClassCourseItemViewHolder(
-                    binding = ItemCourseCardBinding.inflate(
-                        LayoutInflater.from(parent.context),
-                        parent,
-                        false
-                    ),
-                    itemClick
-                )
-            }
-        }
+        val binding = ItemCourseCardBinding.inflate(
+            LayoutInflater.from(parent.context),
+            parent,
+            false
+        )
+        return HomeCourseItemViewHolder(binding, itemClick)
     }
 
     override fun getItemCount(): Int = dataDiffer.currentList.size

@@ -6,7 +6,7 @@ import com.google.gson.annotations.SerializedName
 @Keep
 data class CourseResponse(
     @SerializedName("data")
-    val data: List<Data>?,
+    val data: List<DataCourseAll>?,
     @SerializedName("message")
     val message: String?,
     @SerializedName("success")

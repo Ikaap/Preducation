@@ -15,10 +15,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.kelompoksatuandsatu.preducation.R
 import com.kelompoksatuandsatu.preducation.databinding.DialogNonLoginBinding
 import com.kelompoksatuandsatu.preducation.databinding.FragmentCourseBinding
-import com.kelompoksatuandsatu.preducation.model.CourseViewParam
-import com.kelompoksatuandsatu.preducation.presentation.common.adapter.AdapterLayoutMenu
-import com.kelompoksatuandsatu.preducation.presentation.common.adapter.CategoryTypeRoundedListAdapter
+import com.kelompoksatuandsatu.preducation.model.course.courseall.CourseViewParam
 import com.kelompoksatuandsatu.preducation.presentation.common.adapter.CourseLinearListAdapter
+import com.kelompoksatuandsatu.preducation.presentation.common.adapter.category.CategoryRoundedCourseListAdapter
+import com.kelompoksatuandsatu.preducation.presentation.common.adapter.course.AdapterLayoutMenu
 import com.kelompoksatuandsatu.preducation.presentation.feature.detailclass.DetailClassActivity
 import com.kelompoksatuandsatu.preducation.presentation.feature.filter.FilterActivity
 import com.kelompoksatuandsatu.preducation.presentation.feature.register.RegisterActivity
@@ -33,14 +33,19 @@ class CourseFragment : Fragment() {
 
     private val typeCourseAdapter: CourseLinearListAdapter by lazy {
         CourseLinearListAdapter(AdapterLayoutMenu.COURSE) {
-            showSuccessDialog()
-            navigateToDetail(it)
+            viewModel.isUserLogin.observe(viewLifecycleOwner) { isLogin ->
+                if (!isLogin) {
+                    showDialog()
+                } else {
+                    navigateToDetail(it)
+                }
+            }
         }
     }
 
-    private val categoryTypeClassAdapter: CategoryTypeRoundedListAdapter by lazy {
-        CategoryTypeRoundedListAdapter(viewModel) {
-            viewModel.getCourse(it.nameCategoryPopular.lowercase())
+    private val categoryTypeClassAdapter: CategoryRoundedCourseListAdapter by lazy {
+        CategoryRoundedCourseListAdapter(viewModel) {
+            viewModel.getCourse(it.nameCategory.lowercase())
         }
     }
 
@@ -79,7 +84,7 @@ class CourseFragment : Fragment() {
         fetchData()
         setOnClickListener()
 
-        searchView.setOnQueryTextListener(searchQueryListener)
+//        searchView.setOnQueryTextListener(searchQueryListener)
     }
 
     private fun setOnClickListener() {
@@ -158,7 +163,7 @@ class CourseFragment : Fragment() {
         }
     }
 
-    private fun showSuccessDialog() {
+    private fun showDialog() {
         val binding: DialogNonLoginBinding = DialogNonLoginBinding.inflate(layoutInflater)
         val dialog = AlertDialog.Builder(requireContext(), 0).create()
 
@@ -176,5 +181,6 @@ class CourseFragment : Fragment() {
     private fun fetchData() {
         viewModel.getCourse()
         viewModel.getCategoriesTypeClass()
+        viewModel.checkLogin()
     }
 }

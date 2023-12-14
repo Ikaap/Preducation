@@ -19,10 +19,13 @@ import com.kelompoksatuandsatu.preducation.presentation.feature.course.CourseVie
 import com.kelompoksatuandsatu.preducation.presentation.feature.detailclass.DetailClassViewModel
 import com.kelompoksatuandsatu.preducation.presentation.feature.home.HomeViewModel
 import com.kelompoksatuandsatu.preducation.presentation.feature.login.LoginViewModel
+import com.kelompoksatuandsatu.preducation.presentation.feature.payment.PaymentViewModel
 import com.kelompoksatuandsatu.preducation.presentation.feature.register.RegisterViewModel
+import com.kelompoksatuandsatu.preducation.utils.AssetWrapper
 import com.kelompoksatuandsatu.preducation.utils.PreferenceDataStoreHelper
 import com.kelompoksatuandsatu.preducation.utils.PreferenceDataStoreHelperImpl
 import org.koin.android.ext.koin.androidContext
+import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.androidx.viewmodel.dsl.viewModelOf
 import org.koin.core.module.Module
 import org.koin.dsl.module
@@ -52,13 +55,18 @@ object AppModules {
     }
 
     private val viewModelModule = module {
-        viewModelOf(::ProgressClassViewModel)
         viewModelOf(::HomeViewModel)
         viewModelOf(::DetailClassViewModel)
+        viewModelOf(::CourseViewModel)
+        viewModel { param -> PaymentViewModel(param.get(), get()) }
 //        viewModel { param -> DetailClassViewModel(param.get(), get(), get()) }
         viewModelOf(::RegisterViewModel)
         viewModelOf(::LoginViewModel)
-        viewModelOf(::CourseViewModel)
+        viewModelOf(::ProgressClassViewModel)
+    }
+
+    private val utilsModule = module {
+        single { AssetWrapper(androidContext()) }
     }
 
     val modules: List<Module> = listOf(
@@ -66,6 +74,7 @@ object AppModules {
         networkModule,
         dataSourceModule,
         repositoryModule,
-        viewModelModule
+        viewModelModule,
+        utilsModule
     )
 }

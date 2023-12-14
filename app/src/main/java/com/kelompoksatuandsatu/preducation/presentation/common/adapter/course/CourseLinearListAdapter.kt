@@ -7,7 +7,10 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.kelompoksatuandsatu.preducation.core.ViewHolderBinder
 import com.kelompoksatuandsatu.preducation.databinding.ItemLinearCourseBinding
-import com.kelompoksatuandsatu.preducation.model.CourseViewParam
+import com.kelompoksatuandsatu.preducation.model.course.courseall.CourseViewParam
+import com.kelompoksatuandsatu.preducation.presentation.common.adapter.course.AdapterLayoutMenu
+import com.kelompoksatuandsatu.preducation.presentation.common.adapter.course.CourseLinearItemViewHolder
+import com.kelompoksatuandsatu.preducation.presentation.common.adapter.course.HomeCourseLinearItemViewHolder
 import java.util.Locale
 
 class CourseLinearListAdapter(
@@ -55,18 +58,8 @@ class CourseLinearListAdapter(
                     itemClick
                 )
             }
-            AdapterLayoutMenu.COURSE.ordinal -> {
-                CourseLinearItemViewHolder(
-                    binding = ItemLinearCourseBinding.inflate(
-                        LayoutInflater.from(parent.context),
-                        parent,
-                        false
-                    ),
-                    itemClick
-                )
-            }
             else -> {
-                HistoryPaymentItemViewHolder(
+                CourseLinearItemViewHolder(
                     binding = ItemLinearCourseBinding.inflate(
                         LayoutInflater.from(parent.context),
                         parent,

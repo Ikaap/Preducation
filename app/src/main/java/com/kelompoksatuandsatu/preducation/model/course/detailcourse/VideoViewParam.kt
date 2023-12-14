@@ -7,7 +7,7 @@ import kotlinx.parcelize.Parcelize
 data class VideoViewParam(
     val duration: Int?,
     val id: String?,
-    val index: Int?,
+    val index: Int,
     val title: String?,
     val videoUrl: String?
 ) : Parcelable

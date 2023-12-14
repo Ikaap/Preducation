@@ -9,17 +9,19 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.SearchView
+import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.kelompoksatuandsatu.preducation.R
 import com.kelompoksatuandsatu.preducation.databinding.DialogNonLoginBinding
 import com.kelompoksatuandsatu.preducation.databinding.FragmentHomeBinding
-import com.kelompoksatuandsatu.preducation.model.CourseViewParam
-import com.kelompoksatuandsatu.preducation.presentation.common.adapter.AdapterLayoutMenu
-import com.kelompoksatuandsatu.preducation.presentation.common.adapter.CategoryCourseListAdapter
-import com.kelompoksatuandsatu.preducation.presentation.common.adapter.CategoryCourseRoundedListAdapter
-import com.kelompoksatuandsatu.preducation.presentation.common.adapter.CourseCardListAdapter
+import com.kelompoksatuandsatu.preducation.model.category.categoryclass.CategoryClass
+import com.kelompoksatuandsatu.preducation.model.course.courseall.CourseViewParam
+import com.kelompoksatuandsatu.preducation.presentation.common.adapter.category.CategoryCourseListAdapter
+import com.kelompoksatuandsatu.preducation.presentation.common.adapter.category.CategoryRoundedHomeListAdapter
+import com.kelompoksatuandsatu.preducation.presentation.common.adapter.course.AdapterLayoutMenu
+import com.kelompoksatuandsatu.preducation.presentation.common.adapter.course.CourseCardListAdapter
 import com.kelompoksatuandsatu.preducation.presentation.feature.detailclass.DetailClassActivity
 import com.kelompoksatuandsatu.preducation.presentation.feature.register.RegisterActivity
 import com.kelompoksatuandsatu.preducation.utils.proceedWhen
@@ -44,21 +46,31 @@ class HomeFragment : Fragment() {
     }
 
     private val categoryCourseAdapter: CategoryCourseListAdapter by lazy {
-        CategoryCourseListAdapter {
-            showSuccessDialog()
+        CategoryCourseListAdapter { selectedCategory ->
+            navigateToSeeAllActivity(selectedCategory)
         }
     }
+    private fun navigateToSeeAllActivity(selectedCategory: CategoryClass) {
+        val intent = Intent(requireContext(), SeeAllPopularCoursesActivity::class.java)
+        intent.putExtra("CATEGORY_NAME", selectedCategory.name)
+        startActivity(intent)
+    }
 
-    private val categoryCoursePopularAdapter: CategoryCourseRoundedListAdapter by lazy {
-        CategoryCourseRoundedListAdapter(viewModel) {
+    private val categoryCoursePopularAdapter: CategoryRoundedHomeListAdapter by lazy {
+        CategoryRoundedHomeListAdapter(viewModel) {
             viewModel.getCourse(it.name)
         }
     }
 
     private val popularCourseAdapter: CourseCardListAdapter by lazy {
         CourseCardListAdapter(AdapterLayoutMenu.HOME) {
-//            showSuccessDialog()
-            navigateToDetail(it)
+            viewModel.isUserLogin.observe(viewLifecycleOwner) { isLogin ->
+                if (!isLogin) {
+                    showDialog()
+                } else {
+                    navigateToDetail(it)
+                }
+            }
         }
     }
 
@@ -87,10 +99,6 @@ class HomeFragment : Fragment() {
     }
 
     private fun setOnClickListener() {
-//        binding.rvPopularCourse.setOnClickListener {
-//            showSuccessDialog()
-//        }
-
         binding.tvNavToSeeAllTitleCategory.setOnClickListener {
             SeeAllPopularCoursesActivity.startActivity(requireContext())
         }
@@ -104,15 +112,19 @@ class HomeFragment : Fragment() {
         viewModel.getCategoriesClass()
         viewModel.getCategoriesClassPopular()
         viewModel.getCourse()
+        viewModel.checkLogin()
     }
 
     private fun observeData() {
         viewModel.categoriesClass.observe(viewLifecycleOwner) {
             it.proceedWhen(
                 doOnSuccess = {
-                    binding.layoutStateCategoryCourse.root.isVisible = false
-//                    binding.layoutStateCategoryCourse.pbLoading.isVisible = false
-                    binding.layoutStateCategoryCourse.tvError.isVisible = false
+                    binding.rvCategoryCourse.isVisible = true
+                    binding.shimmerCategoryCircle.isVisible = false
+                    binding.layoutStateCategoryCircle.root.isGone = true
+                    binding.layoutStateCategoryCircle.ivDataEmpty.isGone = true
+                    binding.layoutStateCategoryCircle.tvError.isGone = true
+                    binding.layoutStateCategoryCircle.tvDataEmpty.isGone = true
                     binding.rvCategoryCourse.apply {
                         isVisible = true
                         adapter = categoryCourseAdapter
@@ -122,17 +134,30 @@ class HomeFragment : Fragment() {
                     }
                 },
                 doOnLoading = {
-                    binding.layoutStateCategoryCourse.root.isVisible = true
-//                    binding.layoutStateCategoryCourse.pbLoading.isVisible = true
-                    binding.layoutStateCategoryCourse.tvError.isVisible = false
                     binding.rvCategoryCourse.isVisible = false
+                    binding.shimmerCategoryCircle.isVisible = true
+                    binding.layoutStateCategoryCircle.root.isGone = true
+                    binding.layoutStateCategoryCircle.ivDataEmpty.isGone = true
+                    binding.layoutStateCategoryCircle.tvError.isGone = true
+                    binding.layoutStateCategoryCircle.tvDataEmpty.isGone = true
+                },
+                doOnEmpty = {
+                    binding.rvCategoryCourse.isVisible = false
+                    binding.shimmerCategoryCircle.isVisible = false
+                    binding.layoutStateCategoryCircle.root.isGone = false
+                    binding.layoutStateCategoryCircle.ivDataEmpty.isGone = true
+                    binding.layoutStateCategoryCircle.tvError.isGone = false
+                    binding.layoutStateCategoryCircle.tvError.text = "Data Empty"
+                    binding.layoutStateCategoryCircle.tvDataEmpty.isGone = true
                 },
                 doOnError = {
-                    binding.layoutStateCategoryCourse.root.isVisible = true
-//                    binding.layoutStateCategoryCourse.pbLoading.isVisible = false
-                    binding.layoutStateCategoryCourse.tvError.isVisible = true
-                    binding.layoutStateCategoryCourse.tvError.text = it.exception?.message.orEmpty()
                     binding.rvCategoryCourse.isVisible = false
+                    binding.shimmerCategoryCircle.isVisible = false
+                    binding.layoutStateCategoryCircle.root.isGone = false
+                    binding.layoutStateCategoryCircle.ivDataEmpty.isGone = true
+                    binding.layoutStateCategoryCircle.tvError.isGone = false
+                    binding.layoutStateCategoryCircle.tvError.text = it.exception?.message
+                    binding.layoutStateCategoryCircle.tvDataEmpty.isGone = true
                 }
             )
         }
@@ -140,6 +165,19 @@ class HomeFragment : Fragment() {
         viewModel.categoriesClassPopular.observe(viewLifecycleOwner) {
             it.proceedWhen(
                 doOnSuccess = {
+                    binding.rvCategoryPopular.isVisible = true
+                    binding.shimmerCategoryRounded.isVisible = false
+                    binding.layoutStateCategoryRounded.root.isGone = true
+                    binding.layoutStateCategoryRounded.ivDataEmpty.isGone = true
+                    binding.layoutStateCategoryRounded.tvError.isGone = true
+                    binding.layoutStateCategoryRounded.tvDataEmpty.isGone = true
+                    binding.rvCategoryPopular.apply {
+                        isVisible = true
+                        adapter = categoryCoursePopularAdapter
+                    }
+                    it.payload?.let { data ->
+                        categoryCoursePopularAdapter.setData(data)
+                    }
                     binding.rvCategoryPopular.apply {
                         binding.rvCategoryPopular.layoutManager = LinearLayoutManager(
                             requireContext(),
@@ -151,6 +189,32 @@ class HomeFragment : Fragment() {
                     it.payload?.let { data ->
                         categoryCoursePopularAdapter.setData(data)
                     }
+                },
+                doOnLoading = {
+                    binding.rvCategoryPopular.isVisible = false
+                    binding.shimmerCategoryRounded.isVisible = true
+                    binding.layoutStateCategoryRounded.root.isGone = true
+                    binding.layoutStateCategoryRounded.ivDataEmpty.isGone = true
+                    binding.layoutStateCategoryRounded.tvError.isGone = true
+                    binding.layoutStateCategoryRounded.tvDataEmpty.isGone = true
+                },
+                doOnEmpty = {
+                    binding.rvCategoryPopular.isVisible = false
+                    binding.shimmerCategoryRounded.isVisible = false
+                    binding.layoutStateCategoryRounded.root.isGone = false
+                    binding.layoutStateCategoryRounded.ivDataEmpty.isGone = true
+                    binding.layoutStateCategoryRounded.tvError.isGone = false
+                    binding.layoutStateCategoryRounded.tvError.text = "Data Empty"
+                    binding.layoutStateCategoryRounded.tvDataEmpty.isGone = true
+                },
+                doOnError = {
+                    binding.rvCategoryPopular.isVisible = false
+                    binding.shimmerCategoryRounded.isVisible = false
+                    binding.layoutStateCategoryRounded.root.isGone = false
+                    binding.layoutStateCategoryRounded.ivDataEmpty.isGone = true
+                    binding.layoutStateCategoryRounded.tvError.isGone = false
+                    binding.layoutStateCategoryRounded.tvError.text = it.exception?.message
+                    binding.layoutStateCategoryRounded.tvDataEmpty.isGone = true
                 }
             )
         }
@@ -158,9 +222,12 @@ class HomeFragment : Fragment() {
         viewModel.coursePopular.observe(viewLifecycleOwner) {
             it.proceedWhen(
                 doOnSuccess = {
-                    binding.layoutStatePopularCourse.root.isVisible = false
-//                    binding.layoutStatePopularCourse.pbLoading.isVisible = false
-                    binding.layoutStatePopularCourse.tvError.isVisible = false
+                    binding.rvPopularCourse.isVisible = true
+                    binding.shimmerCourseCard.isVisible = false
+                    binding.layoutStateCoursePopular.root.isGone = true
+                    binding.layoutStateCoursePopular.ivDataEmpty.isGone = true
+                    binding.layoutStateCoursePopular.tvError.isGone = true
+                    binding.layoutStateCoursePopular.tvDataEmpty.isGone = true
                     binding.rvPopularCourse.apply {
                         isVisible = true
                         adapter = popularCourseAdapter
@@ -170,31 +237,36 @@ class HomeFragment : Fragment() {
                     }
                 },
                 doOnLoading = {
-                    binding.layoutStatePopularCourse.root.isVisible = true
-//                    binding.layoutStatePopularCourse.pbLoading.isVisible = true
-                    binding.layoutStatePopularCourse.tvError.isVisible = false
                     binding.rvPopularCourse.isVisible = false
-                },
-                doOnError = {
-                    binding.layoutStatePopularCourse.root.isVisible = true
-//                    binding.layoutStatePopularCourse.pbLoading.isVisible = false
-                    binding.layoutStatePopularCourse.tvError.isVisible = true
-                    binding.layoutStatePopularCourse.tvError.text = it.exception?.message.orEmpty()
-                    binding.rvPopularCourse.isVisible = false
+                    binding.shimmerCourseCard.isVisible = true
+                    binding.layoutStateCoursePopular.root.isGone = true
+                    binding.layoutStateCoursePopular.ivDataEmpty.isGone = true
+                    binding.layoutStateCoursePopular.tvError.isGone = true
+                    binding.layoutStateCoursePopular.tvDataEmpty.isGone = true
                 },
                 doOnEmpty = {
-                    binding.layoutStatePopularCourse.root.isVisible = true
-//                    binding.layoutStatePopularCourse.pbLoading.isVisible = false
-                    binding.layoutStatePopularCourse.tvError.isVisible = true
-                    binding.layoutStatePopularCourse.tvError.text =
-                        resources.getString(R.string.popular_course_not_found)
                     binding.rvPopularCourse.isVisible = false
+                    binding.shimmerCourseCard.isVisible = false
+                    binding.layoutStateCoursePopular.root.isGone = false
+                    binding.layoutStateCoursePopular.ivDataEmpty.isGone = true
+                    binding.layoutStateCoursePopular.tvError.isGone = false
+                    binding.layoutStateCoursePopular.tvError.text = "Data Empty"
+                    binding.layoutStateCoursePopular.tvDataEmpty.isGone = true
+                },
+                doOnError = {
+                    binding.rvPopularCourse.isVisible = false
+                    binding.shimmerCourseCard.isVisible = false
+                    binding.layoutStateCoursePopular.root.isGone = false
+                    binding.layoutStateCoursePopular.ivDataEmpty.isGone = true
+                    binding.layoutStateCoursePopular.tvError.isGone = false
+                    binding.layoutStateCoursePopular.tvError.text = it.exception?.message
+                    binding.layoutStateCoursePopular.tvDataEmpty.isGone = true
                 }
             )
         }
     }
 
-    private fun showSuccessDialog() {
+    private fun showDialog() {
         val binding: DialogNonLoginBinding = DialogNonLoginBinding.inflate(layoutInflater)
         val dialog = AlertDialog.Builder(requireContext(), 0).create()
 

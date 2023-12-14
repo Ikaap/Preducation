@@ -2,7 +2,7 @@ package com.kelompoksatuandsatu.preducation.data.network.api.model.category.cate
 
 import androidx.annotation.Keep
 import com.google.gson.annotations.SerializedName
-import com.kelompoksatuandsatu.preducation.model.CategoryPopular
+import com.kelompoksatuandsatu.preducation.model.category.categoryprogress.CategoryType
 
 @Keep
 data class Data(
@@ -10,8 +10,8 @@ data class Data(
     val name: String?
 )
 
-fun Data.toCategoryTypeClass() = CategoryPopular(
-    nameCategoryPopular = this.name.orEmpty()
+fun Data.toCategoryTypeClass() = CategoryType(
+    nameCategory = this.name.orEmpty()
 )
 
 fun Collection<Data>.toCategoryTypeClassList() = this.map {
