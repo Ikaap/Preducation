@@ -11,7 +11,6 @@ import com.kelompoksatuandsatu.preducation.core.ViewHolderBinder
 import com.kelompoksatuandsatu.preducation.databinding.ItemCategoryRoundedBinding
 import com.kelompoksatuandsatu.preducation.model.CategoryPopular
 import com.kelompoksatuandsatu.preducation.presentation.feature.course.CourseViewModel
-import com.kelompoksatuandsatu.preducation.presentation.feature.home.HomeViewModel
 
 class CategoryTypeRoundedListAdapter(
     private val viewModel: CourseViewModel,

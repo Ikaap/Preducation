@@ -46,7 +46,7 @@ interface PreducationService {
 
     // get all categories progress class
     @GET("api/v1/progress")
-    suspend fun getCourseUserProgress(@Query("progressClass") progressClass: String? = null)  : CourseProgressResponse
+    suspend fun getCourseUserProgress(@Query("progressClass") progressClass: String? = null): CourseProgressResponse
 
     // course
     @GET("api/v1/courses")
@@ -54,8 +54,7 @@ interface PreducationService {
 
     // get all categories type class
     @GET("api/v1/categories/type-class")
-    suspend fun getCategoriesTypeClass(@Query("typeClass") typeClass: String? = null) : CategoriesTypeClassResponse
-
+    suspend fun getCategoriesTypeClass(@Query("typeClass") typeClass: String? = null): CategoriesTypeClassResponse
 
     // detail
     @GET("api/v1/courses/{id}")

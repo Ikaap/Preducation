@@ -16,7 +16,7 @@ import kotlinx.coroutines.launch
 class CourseViewModel(
     val repositoryCourse: CourseRepository,
     private val assetsWrapper: AssetWrapper
-): ViewModel() {
+) : ViewModel() {
 
     private val _course = MutableLiveData<ResultWrapper<List<CourseViewParam>>>()
     val course: LiveData<ResultWrapper<List<CourseViewParam>>>
