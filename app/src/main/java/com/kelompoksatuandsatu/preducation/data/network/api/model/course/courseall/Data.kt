@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName
 import com.kelompoksatuandsatu.preducation.model.course.courseall.CourseViewParam
 
 @Keep
-data class Data(
+data class DataCourseAll(
     @SerializedName("category")
     val category: Category?,
     @SerializedName("classCode")
@@ -42,7 +42,7 @@ data class Data(
     val typeClass: String?
 )
 
-fun Data.toCourse() = CourseViewParam(
+fun DataCourseAll.toCourse() = CourseViewParam(
     category = this.category,
     classCode = this.classCode.orEmpty(),
     createdAt = this.createdAt.orEmpty(),
@@ -62,4 +62,4 @@ fun Data.toCourse() = CourseViewParam(
     typeClass = this.typeClass.orEmpty()
 )
 
-fun Collection<Data>.toCourseList() = this.map { it.toCourse() }
+fun Collection<DataCourseAll>.toCourseList() = this.map { it.toCourse() }

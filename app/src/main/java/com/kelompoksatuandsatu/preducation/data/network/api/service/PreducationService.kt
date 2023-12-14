@@ -8,6 +8,8 @@ import com.kelompoksatuandsatu.preducation.data.network.api.model.auth.login.Log
 import com.kelompoksatuandsatu.preducation.data.network.api.model.auth.register.RegisterRequest
 import com.kelompoksatuandsatu.preducation.data.network.api.model.auth.register.RegisterResponse
 import com.kelompoksatuandsatu.preducation.data.network.api.model.category.categoriesprogress.CategoriesProgressResponse
+import com.kelompoksatuandsatu.preducation.data.network.api.model.category.categoryclass.CategoriesClassResponse
+import com.kelompoksatuandsatu.preducation.data.network.api.model.category.categorytypeclass.CategoriesTypeClassResponse
 import com.kelompoksatuandsatu.preducation.data.network.api.model.course.courseall.CourseResponse
 import com.kelompoksatuandsatu.preducation.data.network.api.model.course.detailcourse.DetailCourseResponse
 import com.kelompoksatuandsatu.preducation.data.network.api.model.course.detailcourse.progress.ProgressCourseResponse
@@ -29,7 +31,7 @@ interface PreducationService {
 
     // home & see all
     @GET("api/v1/categories")
-    suspend fun getCategoriesClass(): com.kelompoksatuandsatu.preducation.data.network.api.model.category.categoryclass.CategoriesClassResponse
+    suspend fun getCategoriesClass(): CategoriesClassResponse
 
     @GET("api/v1/courses")
     suspend fun getCourseHome(@Query("category") category: String? = null): CourseResponse
@@ -48,9 +50,12 @@ interface PreducationService {
     suspend fun getCourseUserProgress(@Query("progressClass") progressClass: String? = null): CourseProgressResponse
 
     // course
-    // get all categories type class
     @GET("api/v1/courses")
     suspend fun getCourseTopic(@Query("typeClass") typeClass: String? = null) // : CourseResponse
+
+    // get all categories type class
+    @GET("api/v1/categories/type-class")
+    suspend fun getCategoriesTypeClass(@Query("typeClass") typeClass: String? = null): CategoriesTypeClassResponse
 
     // detail
     @GET("api/v1/courses/{id}")
@@ -70,7 +75,7 @@ interface PreducationService {
     @GET("api/v1/payments")
     suspend fun getHistoryPayment() // : HistoryPaymentResponse
 
-    // auth
+    //     auth
     @POST("api/v1/auths/register")
     suspend fun userRegister(@Body userRegisterRequest: RegisterRequest): RegisterResponse
 

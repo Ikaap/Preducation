@@ -46,7 +46,13 @@ class ProgressClassFragment : Fragment() {
 
     private val progressCourseAdapter: CourseProgressListAdapter by lazy {
         CourseProgressListAdapter {
-            navigateToDetail(it)
+            viewModel.isUserLogin.observe(viewLifecycleOwner) { isLogin ->
+                if (!isLogin) {
+                    showDialog()
+                } else {
+                    navigateToDetail(it)
+                }
+            }
         }
     }
 
@@ -149,6 +155,13 @@ class ProgressClassFragment : Fragment() {
                     binding.layoutStateCategoryProgress.pbLoading.isVisible = false
                     binding.layoutStateCategoryProgress.tvError.isVisible = true
                     binding.layoutStateCategoryProgress.tvError.text = it.exception?.message.orEmpty()
+                    binding.rvCategoryProgress.isVisible = false
+                },
+                doOnEmpty = {
+                    binding.layoutStateCategoryProgress.root.isVisible = true
+                    binding.layoutStateCategoryProgress.pbLoading.isVisible = false
+                    binding.layoutStateCategoryProgress.tvError.isVisible = true
+                    binding.layoutStateCategoryProgress.tvError.text = "Login dulu"
                     binding.rvCategoryProgress.isVisible = false
                 }
             )

@@ -1,9 +1,9 @@
 package com.kelompoksatuandsatu.preducation.di
 
 import com.chuckerteam.chucker.api.ChuckerInterceptor
+import com.kelompoksatuandsatu.preducation.data.local.datastore.appDataStore
 import com.kelompoksatuandsatu.preducation.data.local.datastore.datasource.UserPreferenceDataSource
 import com.kelompoksatuandsatu.preducation.data.local.datastore.datasource.UserPreferenceDataSourceImpl
-import com.kelompoksatuandsatu.preducation.data.local.datastore.datasource.userDataStore
 import com.kelompoksatuandsatu.preducation.data.network.api.datasource.CourseDataSource
 import com.kelompoksatuandsatu.preducation.data.network.api.datasource.CourseDataSourceImpl
 import com.kelompoksatuandsatu.preducation.data.network.api.datasource.UserDataSource
@@ -15,6 +15,7 @@ import com.kelompoksatuandsatu.preducation.data.repository.CourseRepositoryImpl
 import com.kelompoksatuandsatu.preducation.data.repository.UserRepository
 import com.kelompoksatuandsatu.preducation.data.repository.UserRepositoryImpl
 import com.kelompoksatuandsatu.preducation.presentation.feature.classProgress.ProgressClassViewModel
+import com.kelompoksatuandsatu.preducation.presentation.feature.course.CourseViewModel
 import com.kelompoksatuandsatu.preducation.presentation.feature.detailclass.DetailClassViewModel
 import com.kelompoksatuandsatu.preducation.presentation.feature.home.HomeViewModel
 import com.kelompoksatuandsatu.preducation.presentation.feature.login.LoginViewModel
@@ -56,12 +57,17 @@ object AppModules {
     private val viewModelModule = module {
         viewModelOf(::HomeViewModel)
         viewModelOf(::DetailClassViewModel)
-//        viewModel { param -> DetailClassViewModel(param.get(), get(), get()) }
+        viewModelOf(::CourseViewModel)
         viewModel { param -> PaymentViewModel(param.get(), get()) }
+//        viewModel { param -> DetailClassViewModel(param.get(), get(), get()) }
         viewModelOf(::RegisterViewModel)
         viewModelOf(::LoginViewModel)
         viewModelOf(::ProgressClassViewModel)
 //        viewModel { param -> PaymentViewModel(param.get(), get()) }
+    }
+
+    private val utilsModule = module {
+        single { AssetWrapper(androidContext()) }
     }
 
     private val utilsModule = module {

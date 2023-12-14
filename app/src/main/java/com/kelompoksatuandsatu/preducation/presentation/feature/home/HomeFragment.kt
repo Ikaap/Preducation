@@ -64,7 +64,13 @@ class HomeFragment : Fragment() {
 
     private val popularCourseAdapter: CourseCardListAdapter by lazy {
         CourseCardListAdapter(AdapterLayoutMenu.HOME) {
-            navigateToDetail(it)
+            viewModel.isUserLogin.observe(viewLifecycleOwner) { isLogin ->
+                if (!isLogin) {
+                    showDialog()
+                } else {
+                    navigateToDetail(it)
+                }
+            }
         }
     }
 
@@ -259,11 +265,6 @@ class HomeFragment : Fragment() {
             )
         }
 
-        viewModel.isUserLogin.observe(viewLifecycleOwner) { isLogin ->
-            if (!isLogin) {
-                showDialog()
-            }
-        }
     }
 
     private fun showDialog() {
