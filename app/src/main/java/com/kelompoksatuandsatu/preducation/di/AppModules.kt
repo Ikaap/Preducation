@@ -1,9 +1,9 @@
 package com.kelompoksatuandsatu.preducation.di
 
 import com.chuckerteam.chucker.api.ChuckerInterceptor
-import com.kelompoksatuandsatu.preducation.data.local.datastore.appDataStore
 import com.kelompoksatuandsatu.preducation.data.local.datastore.datasource.UserPreferenceDataSource
 import com.kelompoksatuandsatu.preducation.data.local.datastore.datasource.UserPreferenceDataSourceImpl
+import com.kelompoksatuandsatu.preducation.data.local.datastore.userDataStore
 import com.kelompoksatuandsatu.preducation.data.network.api.datasource.CourseDataSource
 import com.kelompoksatuandsatu.preducation.data.network.api.datasource.CourseDataSourceImpl
 import com.kelompoksatuandsatu.preducation.data.network.api.datasource.UserDataSource
@@ -39,8 +39,8 @@ object AppModules {
 
     private val networkModule = module {
         single { ChuckerInterceptor(androidContext()) }
-        single { PreducationService.invoke(get(), get()) }
         single { AuthInterceptor(get()) }
+        single { PreducationService.invoke(get(), get()) }
     }
 
     private val dataSourceModule = module {
@@ -59,15 +59,9 @@ object AppModules {
         viewModelOf(::DetailClassViewModel)
         viewModelOf(::CourseViewModel)
         viewModel { param -> PaymentViewModel(param.get(), get()) }
-//        viewModel { param -> DetailClassViewModel(param.get(), get(), get()) }
         viewModelOf(::RegisterViewModel)
         viewModelOf(::LoginViewModel)
         viewModelOf(::ProgressClassViewModel)
-//        viewModel { param -> PaymentViewModel(param.get(), get()) }
-    }
-
-    private val utilsModule = module {
-        single { AssetWrapper(androidContext()) }
     }
 
     private val utilsModule = module {

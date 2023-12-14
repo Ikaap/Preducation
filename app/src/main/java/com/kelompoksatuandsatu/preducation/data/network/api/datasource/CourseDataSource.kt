@@ -14,11 +14,11 @@ import com.kelompoksatuandsatu.preducation.data.network.api.service.PreducationS
 interface CourseDataSource {
     suspend fun getCategoriesClass(): CategoriesClassResponse
     suspend fun getCourseHome(category: String? = null): CourseResponse
-    suspend fun getCourseById(id: String? = null): DetailCourseResponse
+    suspend fun getCourseById(id: String): DetailCourseResponse
     suspend fun getCourseUserProgress(category: String? = null): CourseProgressResponse
     suspend fun getCategoriesProgress(category: String? = null): CategoriesProgressResponse
     suspend fun getCategoriesTypeClass(category: String? = null): CategoriesTypeClassResponse
-    suspend fun postIndexCourseById(id: String? = null, progressRequest: Int): ProgressCourseResponse
+    suspend fun postIndexCourseById(id: String, progressRequest: Int): ProgressCourseResponse
 
     suspend fun paymentCourse(paymentCourseRequest: PaymentCourseRequest): PaymentCourseResponse
 }
@@ -49,12 +49,12 @@ class CourseDataSourceImpl(
         return service.getCategoriesTypeClass()
     }
 
-    override suspend fun getCourseById(id: String?): DetailCourseResponse {
+    override suspend fun getCourseById(id: String): DetailCourseResponse {
         return service.getCourseById(id)
     }
 
     override suspend fun postIndexCourseById(
-        id: String?,
+        id: String,
         progressRequest: Int
     ): ProgressCourseResponse {
         return service.postIndexCourseById(id, progressRequest)

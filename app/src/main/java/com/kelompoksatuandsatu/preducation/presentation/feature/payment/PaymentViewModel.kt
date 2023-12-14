@@ -26,7 +26,7 @@ class PaymentViewModel(
     fun payment() {
         viewModelScope.launch(Dispatchers.IO) {
             val request = course
-            Log.d("MyTag", "Request: $request")
+            Log.d("DATA PAYMENT", "Request: ${request?.id}, ${request?.title}, ${request?.price}, ")
             if (request != null) {
                 courseRepo.paymentCourse(request).collect {
                     _paymentResult.postValue(it)

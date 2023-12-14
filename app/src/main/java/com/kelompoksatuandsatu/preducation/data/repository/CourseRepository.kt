@@ -27,7 +27,7 @@ interface CourseRepository {
     fun getCategoriesClass(): Flow<ResultWrapper<List<CategoryClass>>>
     fun getCourseHome(category: String? = null): Flow<ResultWrapper<List<CourseViewParam>>>
 
-    suspend fun postIndexCourseById(id: String? = null, request: Int): Flow<ResultWrapper<Boolean>>
+    suspend fun postIndexCourseById(id: String, request: Int): Flow<ResultWrapper<Boolean>>
     fun getCategoriesProgress(): Flow<ResultWrapper<List<CategoryType>>>
     fun getCategoriesTypeClass(): Flow<ResultWrapper<List<CategoryType>>>
     fun getCourseUserProgress(category: String? = null): Flow<ResultWrapper<List<CourseProgressItemClass>>>
@@ -85,7 +85,7 @@ class CourseRepositoryImpl(
     }
 
     override suspend fun postIndexCourseById(
-        id: String?,
+        id: String,
         request: Int
     ): Flow<ResultWrapper<Boolean>> {
         return proceedFlow {
