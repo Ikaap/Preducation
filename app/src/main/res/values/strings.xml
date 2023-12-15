@@ -127,7 +127,7 @@
     <string name="tv_sign_up">Sign Up</string>
 
     <string name="desc_iv_logo_app">iv_logo_app</string>
-    <string name="tv_reset_password">Reset Password</string>
+    <string name="tv_forgot_password">Forgot Password</string>
     <string name="tv_title_email">Email</string>
     <string name="tv_send_email">Send</string>
     <string name="desc_arrow_right">arrow_right</string>
