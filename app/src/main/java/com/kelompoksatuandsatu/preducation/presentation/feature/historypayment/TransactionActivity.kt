@@ -8,8 +8,6 @@ import androidx.appcompat.app.AppCompatActivity
 // import com.kelompoksatuandsatu.preducation.data.local.dummy.DummyPopularCourseDataSourceImpl
 import com.kelompoksatuandsatu.preducation.databinding.ActivityTransactionBinding
 import com.kelompoksatuandsatu.preducation.databinding.DialogNonLoginBinding
-import com.kelompoksatuandsatu.preducation.presentation.common.adapter.AdapterLayoutMenu
-import com.kelompoksatuandsatu.preducation.presentation.common.adapter.CourseLinearListAdapter
 
 class TransactionActivity : AppCompatActivity() {
 

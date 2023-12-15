@@ -1,5 +1,5 @@
 package com.kelompoksatuandsatu.preducation.model.auth
 
-data class ForgotPassword(
+data class UserForgotPassword(
     val email: String?
 )

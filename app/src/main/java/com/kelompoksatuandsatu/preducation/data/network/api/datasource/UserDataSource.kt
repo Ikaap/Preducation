@@ -1,5 +1,7 @@
 package com.kelompoksatuandsatu.preducation.data.network.api.datasource
 
+import com.kelompoksatuandsatu.preducation.data.network.api.model.auth.forgotpassword.ForgotPasswordRequest
+import com.kelompoksatuandsatu.preducation.data.network.api.model.auth.forgotpassword.ForgotPasswordResponse
 import com.kelompoksatuandsatu.preducation.data.network.api.model.auth.login.LoginRequest
 import com.kelompoksatuandsatu.preducation.data.network.api.model.auth.login.LoginResponse
 import com.kelompoksatuandsatu.preducation.data.network.api.model.auth.register.RegisterRequest
@@ -11,8 +13,7 @@ interface UserDataSource {
 
     suspend fun userLogin(userLoginRequest: LoginRequest): LoginResponse
 
-    suspend fun createResetPassword(resetPasswordRequest: ResetPasswordRequest): ResetPasswordResponse
-
+    suspend fun userForgotPassword(forgotPasswordRequest: ForgotPasswordRequest): ForgotPasswordResponse
 }
 
 class UserDataSourceImpl(private val service: PreducationService) : UserDataSource {
@@ -22,7 +23,7 @@ class UserDataSourceImpl(private val service: PreducationService) : UserDataSour
     override suspend fun userLogin(userLoginRequest: LoginRequest): LoginResponse {
         return service.userLogin(userLoginRequest)
     }
-    override suspend fun createResetPassword(resetPasswordRequest: ResetPasswordRequest): ResetPasswordResponse {
-        return service.createResetPassword(resetPasswordRequest)
+    override suspend fun userForgotPassword(forgotPasswordRequest: ForgotPasswordRequest): ForgotPasswordResponse {
+        return service.userForgotPassword(forgotPasswordRequest)
     }
 }

@@ -11,13 +11,13 @@ import com.kelompoksatuandsatu.preducation.utils.proceedWhen
 import io.github.muddz.styleabletoast.StyleableToast
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class ForgotPasswordActivity : AppCompatActivity() {
+class ForgotPasswordNewActivity : AppCompatActivity() {
 
     private val binding: ActivityForgotPasswordBinding by lazy {
         ActivityForgotPasswordBinding.inflate(layoutInflater)
     }
 
-    private val viewModel: ForgotPasswordViewModel by viewModel()
+    private val viewModel: ForgotPasswordNewViewModel by viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

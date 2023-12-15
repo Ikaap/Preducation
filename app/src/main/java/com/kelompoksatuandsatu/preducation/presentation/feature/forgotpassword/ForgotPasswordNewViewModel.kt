@@ -10,7 +10,7 @@ import com.kelompoksatuandsatu.preducation.utils.ResultWrapper
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class ForgotPasswordViewModel(private val repo: UserRepository) : ViewModel() {
+class ForgotPasswordNewViewModel(private val repo: UserRepository) : ViewModel() {
 
     private val _forgotPasswordResult = MutableLiveData<ResultWrapper<Boolean>>()
     val forgotPasswordResult: LiveData<ResultWrapper<Boolean>>

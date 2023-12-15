@@ -1,16 +1,6 @@
 package com.kelompoksatuandsatu.preducation.di
 
 import com.chuckerteam.chucker.api.ChuckerInterceptor
-import com.kelompoksatuandsatu.preducation.data.network.api.datasource.CourseDataSource
-import com.kelompoksatuandsatu.preducation.data.network.api.datasource.CourseDataSourceImpl
-import com.kelompoksatuandsatu.preducation.data.network.api.service.PreducationService
-import com.kelompoksatuandsatu.preducation.data.repository.CourseRepository
-import com.kelompoksatuandsatu.preducation.data.repository.CourseRepositoryImpl
-import com.kelompoksatuandsatu.preducation.presentation.feature.home.HomeViewModel
-import com.kelompoksatuandsatu.preducation.presentation.feature.home.SeeAllViewModel
-import org.koin.android.ext.koin.androidContext
-import org.koin.androidx.viewmodel.dsl.viewModelOf
-import com.chuckerteam.chucker.api.ChuckerInterceptor
 import com.kelompoksatuandsatu.preducation.data.local.datastore.datasource.UserPreferenceDataSource
 import com.kelompoksatuandsatu.preducation.data.local.datastore.datasource.UserPreferenceDataSourceImpl
 import com.kelompoksatuandsatu.preducation.data.local.datastore.userDataStore
@@ -32,6 +22,7 @@ import com.kelompoksatuandsatu.preducation.presentation.feature.classProgress.Pr
 import com.kelompoksatuandsatu.preducation.presentation.feature.course.CourseViewModel
 import com.kelompoksatuandsatu.preducation.presentation.feature.detailclass.DetailClassViewModel
 import com.kelompoksatuandsatu.preducation.presentation.feature.home.HomeViewModel
+import com.kelompoksatuandsatu.preducation.presentation.feature.home.SeeAllViewModel
 import com.kelompoksatuandsatu.preducation.presentation.feature.login.LoginViewModel
 import com.kelompoksatuandsatu.preducation.presentation.feature.notifications.NotificationViewModel
 import com.kelompoksatuandsatu.preducation.presentation.feature.payment.PaymentViewModel

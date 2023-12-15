@@ -62,12 +62,6 @@ class HomeFragment : Fragment() {
         }
     }
 
-    private val categoryCoursePopularAdapter: CategoryCourseRoundedListAdapter by lazy {
-        CategoryCourseRoundedListAdapter {
-            viewModel.getCourse(it.name)
-        }
-    }
-
     private val popularCourseAdapter: CourseCardListAdapter by lazy {
         CourseCardListAdapter(AdapterLayoutMenu.HOME) {
             viewModel.isUserLogin.observe(viewLifecycleOwner) { isLogin ->
@@ -113,68 +107,6 @@ class HomeFragment : Fragment() {
             SeeAllPopularCoursesActivity.startActivity(requireContext())
         }
     }
-    private fun getData() {
-        viewModel.getCategoriesClass()
-        viewModel.getCategoriesClassPopular()
-        viewModel.getCourse()
-    }
-
-    private fun observeData() {
-        viewModel.categoriesClass.observe(viewLifecycleOwner) {
-            it.proceedWhen(
-                doOnSuccess = {
-                    binding.rvCategoryCourse.apply {
-                        binding.rvCategoryCourse.layoutManager = LinearLayoutManager(
-                            requireContext(),
-                            LinearLayoutManager.HORIZONTAL,
-                            false
-                        )
-                        adapter = categoryCourseAdapter
-                    }
-                    it.payload?.let { data ->
-                        categoryCourseAdapter.setData(data)
-                    }
-                }
-            )
-        }
-
-        viewModel.categoriesClassPopular.observe(viewLifecycleOwner) {
-            it.proceedWhen(
-                doOnSuccess = {
-                    binding.rvCategoryPopular.apply {
-                        binding.rvCategoryPopular.layoutManager = LinearLayoutManager(
-                            requireContext(),
-                            LinearLayoutManager.HORIZONTAL,
-                            false
-                        )
-                        adapter = categoryCoursePopularAdapter
-                    }
-                    it.payload?.let { data ->
-                        categoryCoursePopularAdapter.setData(data)
-                    }
-                }
-            )
-        }
-
-        viewModel.course.observe(viewLifecycleOwner) {
-            it.proceedWhen(
-                doOnSuccess = {
-                    binding.rvPopularCourse.apply {
-                        binding.rvPopularCourse.layoutManager = LinearLayoutManager(
-                            requireContext(),
-                            LinearLayoutManager.HORIZONTAL,
-                            false
-                        )
-                        adapter = popularCourseAdapter
-                    }
-                    it.payload?.let { data ->
-                        popularCourseAdapter.setData(data)
-                    }
-                }
-            )
-        }
-    }
-
     private fun getData() {
         viewModel.getCategoriesClass()
         viewModel.getCategoriesClassPopular()

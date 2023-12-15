@@ -2,7 +2,9 @@ package com.kelompoksatuandsatu.preducation.data.network.api.model.course
 
 import androidx.annotation.Keep
 import com.google.gson.annotations.SerializedName
-import com.kelompoksatuandsatu.preducation.model.CourseViewParam
+import com.kelompoksatuandsatu.preducation.data.network.api.model.course.courseall.Category
+import com.kelompoksatuandsatu.preducation.data.network.api.model.course.courseall.CreatedBy
+import com.kelompoksatuandsatu.preducation.model.course.courseall.CourseViewParam
 
 @Keep
 data class Data(
@@ -56,7 +58,7 @@ fun Data.toCourse() = CourseViewParam(
     targetAudience = this.targetAudience.orEmpty(),
     thumbnail = this.thumbnail.orEmpty(),
     title = this.title.orEmpty(),
-    totalDuration = this.totalDuration ?: 0,
+    totalDuration = this.totalDuration?.toDouble() ?: 0.0,
     totalModule = this.totalModule ?: 0,
     totalRating = this.totalRating ?: 0.0,
     typeClass = this.typeClass.orEmpty()

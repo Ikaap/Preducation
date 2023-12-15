@@ -10,6 +10,7 @@ import androidx.core.view.isVisible
 import com.kelompoksatuandsatu.preducation.R
 import com.kelompoksatuandsatu.preducation.databinding.ActivityLoginBinding
 import com.kelompoksatuandsatu.preducation.model.auth.UserLogin
+import com.kelompoksatuandsatu.preducation.presentation.feature.forgotpassword.ForgotPasswordActivity
 import com.kelompoksatuandsatu.preducation.presentation.feature.main.MainActivity
 import com.kelompoksatuandsatu.preducation.presentation.feature.register.RegisterActivity
 import com.kelompoksatuandsatu.preducation.utils.proceedWhen
@@ -54,6 +55,10 @@ class LoginActivity : AppCompatActivity() {
 
         binding.tvWithoutLogin.setOnClickListener {
             val intent = Intent(this, MainActivity::class.java)
+            startActivity(intent)
+        }
+        binding.forgotPasswordText.setOnClickListener {
+            val intent = Intent(this, ForgotPasswordActivity::class.java)
             startActivity(intent)
         }
     }
