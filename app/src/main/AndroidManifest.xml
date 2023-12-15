@@ -18,7 +18,7 @@
             android:name=".presentation.feature.filter.FilterActivity"
             android:exported="false" />
         <activity
-            android:name=".presentation.feature.resetpassword.ResetPasswordActivity"
+            android:name=".presentation.feature.forgotpassword.ForgotPasswordActivity"
             android:exported="false" />
         <activity
             android:name=".presentation.feature.payment.PaymentActivity"
@@ -72,11 +72,6 @@
         <activity
             android:name=".presentation.feature.main.MainActivity"
             android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
     </application>
 

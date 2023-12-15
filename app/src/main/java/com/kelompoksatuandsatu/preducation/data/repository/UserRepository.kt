@@ -2,8 +2,10 @@ package com.kelompoksatuandsatu.preducation.data.repository
 
 import com.kelompoksatuandsatu.preducation.data.local.datastore.datasource.UserPreferenceDataSource
 import com.kelompoksatuandsatu.preducation.data.network.api.datasource.UserDataSource
+import com.kelompoksatuandsatu.preducation.data.network.api.model.auth.forgotpassword.ForgotPasswordRequest
 import com.kelompoksatuandsatu.preducation.data.network.api.model.auth.login.LoginRequest
 import com.kelompoksatuandsatu.preducation.data.network.api.model.auth.register.RegisterRequest
+import com.kelompoksatuandsatu.preducation.model.auth.ForgotPassword
 import com.kelompoksatuandsatu.preducation.model.auth.UserAuth
 import com.kelompoksatuandsatu.preducation.model.auth.UserLogin
 import com.kelompoksatuandsatu.preducation.utils.ResultWrapper
@@ -11,7 +13,7 @@ import com.kelompoksatuandsatu.preducation.utils.proceedFlow
 import kotlinx.coroutines.flow.Flow
 
 interface UserRepository {
-    suspend fun createResetPassword(resetPasswordRequest: ResetPasswordRequest): Flow<ResultWrapper<ResetPasswordResponse>>
+    suspend fun userForgotPassword(request: ForgotPassword): Flow<ResultWrapper<Boolean>>
 
     suspend fun userRegister(request: UserAuth): Flow<ResultWrapper<String>>
 
@@ -41,8 +43,11 @@ class UserRepositoryImpl(
         }
     }
 
-
-    override suspend fun createResetPassword(resetPasswordRequest: ResetPasswordRequest): Flow<ResultWrapper<ResetPasswordResponse>> {
-        return proceedFlow { dataSource.createResetPassword(resetPasswordRequest) }
+    override suspend fun userForgotPassword(request: ForgotPassword): Flow<ResultWrapper<Boolean>> {
+        return proceedFlow {
+            val dataRequest = ForgotPasswordRequest(request.email)
+            val forgotPasswordResult = dataSource.userForgotPassword(dataRequest)
+            forgotPasswordResult.success
+        }
     }
 }

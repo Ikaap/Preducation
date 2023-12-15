@@ -1,6 +1,5 @@
 package com.kelompoksatuandsatu.preducation.data.network.api.datasource
 
-import com.kelompoksatuandsatu.preducation.data.local.datastore.datasource.UserPreferenceDataSource
 import com.kelompoksatuandsatu.preducation.data.network.api.model.category.categoryclass.CategoriesClassResponse
 import com.kelompoksatuandsatu.preducation.data.network.api.model.course.CourseResponse
 import com.kelompoksatuandsatu.preducation.data.network.api.model.course.detailcourse.DetailCourseResponse
@@ -16,8 +15,7 @@ interface CourseDataSource {
     suspend fun postIndexCourseById(id: String? = null, progressRequest: ProgressCourseRequest): ProgressCourseResponse
 }
 class CourseDataSourceImpl(
-    private val service: PreducationService,
-    private val userPreferenceDataSource: UserPreferenceDataSource
+    private val service: PreducationService
 ) : CourseDataSource {
     override suspend fun getCategoriesClass(): CategoriesClassResponse {
         return service.getCategoriesClass()

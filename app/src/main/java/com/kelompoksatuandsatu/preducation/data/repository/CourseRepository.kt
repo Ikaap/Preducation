@@ -1,6 +1,5 @@
 package com.kelompoksatuandsatu.preducation.data.repository
 
-import com.kelompoksatuandsatu.preducation.data.local.datastore.datasource.UserPreferenceDataSource
 import com.kelompoksatuandsatu.preducation.data.network.api.datasource.CourseDataSource
 import com.kelompoksatuandsatu.preducation.data.network.api.model.category.categoryclass.toCategoryClassList
 import com.kelompoksatuandsatu.preducation.data.network.api.model.course.detailcourse.progress.ProgressCourseRequest
@@ -24,8 +23,7 @@ interface CourseRepository {
 }
 
 class CourseRepositoryImpl(
-    private val apiDataSource: CourseDataSource,
-    private val userPreferenceDataSource: UserPreferenceDataSource
+    private val apiDataSource: CourseDataSource
 ) : CourseRepository {
     override fun getCategoriesClass(): Flow<ResultWrapper<List<CategoryClass>>> {
         return proceedFlow {
