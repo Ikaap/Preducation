@@ -6,12 +6,16 @@ import com.kelompoksatuandsatu.preducation.data.local.datastore.datasource.UserP
 import com.kelompoksatuandsatu.preducation.data.local.datastore.userDataStore
 import com.kelompoksatuandsatu.preducation.data.network.api.datasource.CourseDataSource
 import com.kelompoksatuandsatu.preducation.data.network.api.datasource.CourseDataSourceImpl
+import com.kelompoksatuandsatu.preducation.data.network.api.datasource.NotificationApiDataSource
+import com.kelompoksatuandsatu.preducation.data.network.api.datasource.NotificationDataSource
 import com.kelompoksatuandsatu.preducation.data.network.api.datasource.UserDataSource
 import com.kelompoksatuandsatu.preducation.data.network.api.datasource.UserDataSourceImpl
 import com.kelompoksatuandsatu.preducation.data.network.api.interceptor.AuthInterceptor
 import com.kelompoksatuandsatu.preducation.data.network.api.service.PreducationService
 import com.kelompoksatuandsatu.preducation.data.repository.CourseRepository
 import com.kelompoksatuandsatu.preducation.data.repository.CourseRepositoryImpl
+import com.kelompoksatuandsatu.preducation.data.repository.NotificationRepository
+import com.kelompoksatuandsatu.preducation.data.repository.NotificationRepositoryImpl
 import com.kelompoksatuandsatu.preducation.data.repository.UserRepository
 import com.kelompoksatuandsatu.preducation.data.repository.UserRepositoryImpl
 import com.kelompoksatuandsatu.preducation.presentation.feature.classProgress.ProgressClassViewModel
@@ -19,6 +23,7 @@ import com.kelompoksatuandsatu.preducation.presentation.feature.course.CourseVie
 import com.kelompoksatuandsatu.preducation.presentation.feature.detailclass.DetailClassViewModel
 import com.kelompoksatuandsatu.preducation.presentation.feature.home.HomeViewModel
 import com.kelompoksatuandsatu.preducation.presentation.feature.login.LoginViewModel
+import com.kelompoksatuandsatu.preducation.presentation.feature.notifications.NotificationViewModel
 import com.kelompoksatuandsatu.preducation.presentation.feature.payment.PaymentViewModel
 import com.kelompoksatuandsatu.preducation.presentation.feature.register.RegisterViewModel
 import com.kelompoksatuandsatu.preducation.utils.AssetWrapper
@@ -47,11 +52,13 @@ object AppModules {
         single<UserPreferenceDataSource> { UserPreferenceDataSourceImpl(get()) }
         single<CourseDataSource> { CourseDataSourceImpl(get()) }
         single<UserDataSource> { UserDataSourceImpl(get()) }
+        single<NotificationDataSource> { NotificationApiDataSource(get()) }
     }
 
     private val repositoryModule = module {
         single<CourseRepository> { CourseRepositoryImpl(get()) }
         single<UserRepository> { UserRepositoryImpl(get(), get()) }
+        single<NotificationRepository> { NotificationRepositoryImpl(get()) }
     }
 
     private val viewModelModule = module {
@@ -62,6 +69,7 @@ object AppModules {
         viewModelOf(::RegisterViewModel)
         viewModelOf(::LoginViewModel)
         viewModelOf(::ProgressClassViewModel)
+        viewModelOf(::NotificationViewModel)
     }
 
     private val utilsModule = module {
