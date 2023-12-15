@@ -11,6 +11,6 @@ class NotificationApiDataSource(private val apiClient: PreducationService) :
     NotificationDataSource {
 
     override suspend fun getUserNotifications(): NotificationResponse {
-        return apiClient.getUserNotification()
+        return apiClient.getUserNotifications()
     }
 }

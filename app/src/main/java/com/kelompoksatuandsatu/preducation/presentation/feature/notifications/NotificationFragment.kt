@@ -10,9 +10,12 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.kelompoksatuandsatu.preducation.R
 import com.kelompoksatuandsatu.preducation.databinding.FragmentNotificationBinding
 import com.kelompoksatuandsatu.preducation.presentation.feature.notifications.adapter.NotificationAdapter
+import com.kelompoksatuandsatu.preducation.utils.AssetWrapper
 import com.kelompoksatuandsatu.preducation.utils.proceedWhen
+import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.dsl.module
 
 class NotificationFragment : Fragment() {
 
@@ -20,11 +23,11 @@ class NotificationFragment : Fragment() {
 
     private val viewModel: NotificationViewModel by viewModel()
 
-//    private val assetWrapper: AssetWrapper by inject()
-//
-//    private val viewModelModule = module {
-//        viewModel { NotificationViewModel(get()) }
-//    }
+    private val assetWrapper: AssetWrapper by inject()
+
+    private val viewModelModule = module {
+        viewModel { NotificationViewModel(get()) }
+    }
 
     private val notificationAdapter: NotificationAdapter by lazy {
         NotificationAdapter()
@@ -53,7 +56,7 @@ class NotificationFragment : Fragment() {
 
     private fun setupRecyclerView() {
         binding.rvNotification.layoutManager =
-            LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+            LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
         binding.rvNotification.adapter = notificationAdapter
     }
 
@@ -63,11 +66,8 @@ class NotificationFragment : Fragment() {
                 doOnSuccess = { data ->
                     binding.rvNotification.isVisible = true
                     binding.layoutStateNotification.root.isVisible = false
-                    binding.layoutStateNotification.tvError.isVisible = false
                     binding.layoutStateNotification.pbLoading.isVisible = false
-                    binding.rvNotification.apply {
-                        adapter = notificationAdapter
-                    }
+                    binding.layoutStateNotification.tvError.isVisible = false
 
                     data.payload?.let { notificationData ->
                         notificationAdapter.setData(notificationData)
@@ -76,24 +76,24 @@ class NotificationFragment : Fragment() {
                 doOnLoading = {
                     binding.rvNotification.isVisible = false
                     binding.layoutStateNotification.root.isVisible = true
-                    binding.layoutStateNotification.tvError.isVisible = false
                     binding.layoutStateNotification.pbLoading.isVisible = true
+                    binding.layoutStateNotification.tvError.isVisible = false
                 },
                 doOnError = { error ->
                     binding.rvNotification.isVisible = false
                     binding.layoutStateNotification.root.isVisible = true
+                    binding.layoutStateNotification.pbLoading.isVisible = false
                     binding.layoutStateNotification.tvError.isVisible = true
                     binding.layoutStateNotification.tvError.text = error.exception?.message
-                    binding.layoutStateNotification.pbLoading.isVisible = false
                 },
                 doOnEmpty = {
                     binding.rvNotification.isVisible = false
                     binding.layoutStateNotification.root.isVisible = true
+                    binding.layoutStateNotification.pbLoading.isVisible = false
                     binding.layoutStateNotification.tvError.isVisible = true
                     binding.layoutStateNotification.tvError.text =
                         resources.getString(R.string.text_notification)
                     binding.rvNotification.isVisible = false
-                    binding.layoutStateNotification.pbLoading.isVisible = false
                 }
             )
         }
