@@ -4,20 +4,17 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.kelompoksatuandsatu.preducation.databinding.ItemListNotificationBinding
 import com.kelompoksatuandsatu.preducation.model.NotificationItem
 
-class NotificationAdapter : ListAdapter<NotificationItem, NotificationAdapter.NotificationItemViewHolder>(
-    NotificationDiffCallback()
-) {
+class NotificationAdapter() : RecyclerView.Adapter<NotificationItemViewHolder>() {
 
     private val dataDiffer = AsyncListDiffer(
         this,
         object : DiffUtil.ItemCallback<NotificationItem>() {
             override fun areItemsTheSame(oldItem: NotificationItem, newItem: NotificationItem): Boolean {
-                return oldItem._id == newItem._id
+                return oldItem.userId == newItem.userId
             }
 
             override fun areContentsTheSame(oldItem: NotificationItem, newItem: NotificationItem): Boolean {
@@ -35,18 +32,10 @@ class NotificationAdapter : ListAdapter<NotificationItem, NotificationAdapter.No
         return NotificationItemViewHolder(binding)
     }
 
+    override fun getItemCount(): Int = dataDiffer.currentList.size
+
     override fun onBindViewHolder(holder: NotificationItemViewHolder, position: Int) {
-        val notificationItem = getItem(position)
-        holder.bind(notificationItem)
-    }
-
-    class NotificationItemViewHolder(private val binding: ItemListNotificationBinding) :
-        RecyclerView.ViewHolder(binding.root) {
-
-        fun bind(notificationItem: NotificationItem) {
-            binding.tvNotificationName.text = notificationItem.title
-            binding.tvNotificationDesc1.text = notificationItem.description
-        }
+        holder.bind(dataDiffer.currentList[position])
     }
 
     fun setData(data: List<NotificationItem>) {
@@ -56,20 +45,12 @@ class NotificationAdapter : ListAdapter<NotificationItem, NotificationAdapter.No
     fun refreshList() {
         notifyItemRangeChanged(0, dataDiffer.currentList.size)
     }
+}
+class NotificationItemViewHolder(private val binding: ItemListNotificationBinding) :
+    RecyclerView.ViewHolder(binding.root) {
 
-    private class NotificationDiffCallback : DiffUtil.ItemCallback<NotificationItem>() {
-        override fun areItemsTheSame(
-            oldItem: NotificationItem,
-            newItem: NotificationItem
-        ): Boolean {
-            return oldItem._id == newItem._id
-        }
-
-        override fun areContentsTheSame(
-            oldItem: NotificationItem,
-            newItem: NotificationItem
-        ): Boolean {
-            return oldItem == newItem
-        }
+    fun bind(notificationItem: NotificationItem) {
+        binding.tvNotificationName.text = notificationItem.title
+        binding.tvNotificationDesc1.text = notificationItem.description
     }
 }

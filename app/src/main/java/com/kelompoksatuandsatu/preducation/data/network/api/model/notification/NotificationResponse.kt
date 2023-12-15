@@ -1,16 +1,14 @@
 package com.kelompoksatuandsatu.preducation.data.network.api.model.notification
 
-import com.google.errorprone.annotations.Keep
+import androidx.annotation.Keep
 import com.google.gson.annotations.SerializedName
 
 @Keep
 data class NotificationResponse(
-    @SerializedName("success")
-    val success: Boolean,
+    @SerializedName("data")
+    val data: List<Data>?,
     @SerializedName("message")
     val message: String?,
-    @SerializedName("data")
-    val data: List<NotificationItemResponse>?,
-    @SerializedName("status")
-    val status: String? = null
+    @SerializedName("success")
+    val success: Boolean?
 )
