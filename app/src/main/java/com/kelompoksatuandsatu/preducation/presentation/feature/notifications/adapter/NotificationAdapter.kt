@@ -2,43 +2,55 @@ package com.kelompoksatuandsatu.preducation.presentation.feature.notifications.a
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.kelompoksatuandsatu.preducation.databinding.ItemListNotificationBinding
-import com.kelompoksatuandsatu.preducation.model.notofication.NotificationItem
+import com.kelompoksatuandsatu.preducation.model.NotificationItem
 
-class NotificationAdapter : ListAdapter<NotificationItem, NotificationAdapter.NotificationViewHolder>(
-    NotificationDiffCallback()
-) {
+class NotificationAdapter() : RecyclerView.Adapter<NotificationItemViewHolder>() {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NotificationViewHolder {
-        val inflater = LayoutInflater.from(parent.context)
-        val binding = ItemListNotificationBinding.inflate(inflater, parent, false)
-        return NotificationViewHolder(binding)
+    private val dataDiffer = AsyncListDiffer(
+        this,
+        object : DiffUtil.ItemCallback<NotificationItem>() {
+            override fun areItemsTheSame(oldItem: NotificationItem, newItem: NotificationItem): Boolean {
+                return oldItem.userId == newItem.userId
+            }
+
+            override fun areContentsTheSame(oldItem: NotificationItem, newItem: NotificationItem): Boolean {
+                return oldItem.hashCode() == newItem.hashCode()
+            }
+        }
+    )
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NotificationItemViewHolder {
+        val binding = ItemListNotificationBinding.inflate(
+            LayoutInflater.from(parent.context),
+            parent,
+            false
+        )
+        return NotificationItemViewHolder(binding)
     }
 
-    override fun onBindViewHolder(holder: NotificationViewHolder, position: Int) {
-        val notification = getItem(position)
-        holder.bind(notification)
+    override fun getItemCount(): Int = dataDiffer.currentList.size
+
+    override fun onBindViewHolder(holder: NotificationItemViewHolder, position: Int) {
+        holder.bind(dataDiffer.currentList[position])
     }
 
-    class NotificationViewHolder(private val binding: ItemListNotificationBinding) : RecyclerView.ViewHolder(binding.root) {
-
-        fun bind(notification: NotificationItem) {
-//            binding.tvDayNotification.text = notification.day
-            binding.tvNotificationName.text = notification.name
-            binding.tvNotificationDesc1.text = notification.description1
-        }
+    fun setData(data: List<NotificationItem>) {
+        dataDiffer.submitList(data)
     }
 
-    class NotificationDiffCallback : DiffUtil.ItemCallback<NotificationItem>() {
-        override fun areItemsTheSame(oldItem: NotificationItem, newItem: NotificationItem): Boolean {
-            return oldItem == newItem
-        }
+    fun refreshList() {
+        notifyItemRangeChanged(0, dataDiffer.currentList.size)
+    }
+}
+class NotificationItemViewHolder(private val binding: ItemListNotificationBinding) :
+    RecyclerView.ViewHolder(binding.root) {
 
-        override fun areContentsTheSame(oldItem: NotificationItem, newItem: NotificationItem): Boolean {
-            return oldItem == newItem
-        }
+    fun bind(notificationItem: NotificationItem) {
+        binding.tvNotificationName.text = notificationItem.title
+        binding.tvNotificationDesc1.text = notificationItem.description
     }
 }

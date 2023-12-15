@@ -4,7 +4,6 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.kelompoksatuandsatu.preducation.databinding.ActivitySplashScreenOneBinding
-import com.kelompoksatuandsatu.preducation.presentation.feature.main.MainActivity
 
 class SplashScreenOneActivity : AppCompatActivity() {
 
@@ -37,7 +36,7 @@ class SplashScreenOneActivity : AppCompatActivity() {
     }
 
     private fun navigateToMain() {
-        val intent = Intent(this, MainActivity::class.java).apply {
+        val intent = Intent(this, SplashScreenThreeActivity::class.java).apply {
             flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
         }
         startActivity(intent)
