@@ -1,5 +1,6 @@
 package com.kelompoksatuandsatu.preducation.presentation.common.adapter.classprogress
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.view.isGone
@@ -9,35 +10,35 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import coil.load
 import com.kelompoksatuandsatu.preducation.core.ViewHolderBinder
+import com.kelompoksatuandsatu.preducation.data.network.api.model.payment.history.Payment
 import com.kelompoksatuandsatu.preducation.databinding.ItemLinearCourseBinding
-import com.kelompoksatuandsatu.preducation.model.course.courseall.CourseViewParam
 import java.util.Locale
 
 // TODO model disesuaikan
 class HistoryPaymentListAdapter(
-    private val itemClick: (CourseViewParam) -> Unit
+    private val itemClick: (Payment) -> Unit
 ) :
     RecyclerView.Adapter<HistoryPaymentListAdapter.HistoryPaymentItemViewHolder>() {
     private val dataDiffer = AsyncListDiffer(
         this,
-        object : DiffUtil.ItemCallback<CourseViewParam>() {
+        object : DiffUtil.ItemCallback<Payment>() {
             override fun areItemsTheSame(
-                oldItem: CourseViewParam,
-                newItem: CourseViewParam
+                oldItem: Payment,
+                newItem: Payment
             ): Boolean {
-                return oldItem.id == newItem.id
+                return oldItem._id == newItem._id
             }
 
             override fun areContentsTheSame(
-                oldItem: CourseViewParam,
-                newItem: CourseViewParam
+                oldItem: Payment,
+                newItem: Payment
             ): Boolean {
-                return oldItem.id == newItem.id
+                return oldItem._id == newItem._id
             }
         }
     )
 
-    fun setData(data: List<CourseViewParam>) {
+    fun setData(data: List<Payment>) {
         dataDiffer.submitList(data)
         notifyItemChanged(0, data.size)
     }
@@ -60,7 +61,7 @@ class HistoryPaymentListAdapter(
     override fun getItemCount(): Int = dataDiffer.currentList.size
 
     override fun onBindViewHolder(holder: HistoryPaymentItemViewHolder, position: Int) {
-        (holder as ViewHolderBinder<CourseViewParam>).bind(dataDiffer.currentList[position])
+        (holder as ViewHolderBinder<Payment>).bind(dataDiffer.currentList[position])
     }
 
     fun filter(query: CharSequence?) {
@@ -68,8 +69,8 @@ class HistoryPaymentListAdapter(
             dataDiffer.currentList
         } else {
             dataDiffer.currentList.filter { course ->
-                course.title?.toLowerCase(Locale.getDefault())
-                    ?.contains(query.toString().toLowerCase(Locale.getDefault())) == true
+                course.courseId.title.lowercase(Locale.getDefault())
+                    .contains(query.toString().lowercase(Locale.getDefault()))
             }
         }
         dataDiffer.submitList(filteredList)
@@ -78,20 +79,21 @@ class HistoryPaymentListAdapter(
     // TODO model disesuaikan
     class HistoryPaymentItemViewHolder(
         private val binding: ItemLinearCourseBinding,
-        private val itemClick: (CourseViewParam) -> Unit
-    ) : RecyclerView.ViewHolder(binding.root), ViewHolderBinder<CourseViewParam> {
+        private val itemClick: (Payment) -> Unit
+    ) : RecyclerView.ViewHolder(binding.root), ViewHolderBinder<Payment> {
 
-        override fun bind(item: CourseViewParam) {
+        @SuppressLint("SetTextI18n")
+        override fun bind(item: Payment) {
             with(item) {
-                binding.ivPopularCourse.load(item.thumbnail) {
+                binding.ivPopularCourse.load(item.courseId.thumbnail) {
                     crossfade(true)
                 }
-                binding.tvCategoryPopular.text = item.category?.name
-                binding.tvRatingPopularCourse.text = item.totalRating.toString()
-                binding.tvTitleCourse.text = item.title
-                binding.tvLevelCourse.text = item.level
-                binding.tvDurationCourse.text = item.totalDuration.toString() + "Mins"
-                binding.tvModuleCourse.text = item.totalModule.toString() + "Module"
+                binding.tvCategoryPopular.text = item.courseId.category.name
+                binding.tvRatingPopularCourse.text = item.courseId.totalRating.toString()
+                binding.tvTitleCourse.text = item.courseId.title
+                binding.tvLevelCourse.text = item.courseId.level
+                binding.tvDurationCourse.text = item.courseId.totalDuration.toString() + "Mins"
+                binding.tvModuleCourse.text = item.courseId.totalModule.toString() + "Module"
                 binding.tvPriceCourse.isGone = true
                 binding.clTypeClassFreemium.isGone = true
                 binding.clTypeClassPremium.isGone = true

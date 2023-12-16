@@ -1,6 +1,7 @@
 package com.kelompoksatuandsatu.preducation.di
 
 import com.chuckerteam.chucker.api.ChuckerInterceptor
+import com.google.gson.Gson
 import com.kelompoksatuandsatu.preducation.data.local.datastore.datasource.UserPreferenceDataSource
 import com.kelompoksatuandsatu.preducation.data.local.datastore.datasource.UserPreferenceDataSourceImpl
 import com.kelompoksatuandsatu.preducation.data.local.datastore.datasource.userDataStore
@@ -34,6 +35,7 @@ object AppModules {
     private val localModule = module {
         single { androidContext().userDataStore }
         single<PreferenceDataStoreHelper> { PreferenceDataStoreHelperImpl(get()) }
+        single { Gson() }
     }
 
     private val networkModule = module {

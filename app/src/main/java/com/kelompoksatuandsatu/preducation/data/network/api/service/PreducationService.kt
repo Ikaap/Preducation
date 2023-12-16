@@ -13,6 +13,7 @@ import com.kelompoksatuandsatu.preducation.data.network.api.model.course.detailc
 import com.kelompoksatuandsatu.preducation.data.network.api.model.course.detailcourse.progress.ProgressCourseResponse
 import com.kelompoksatuandsatu.preducation.data.network.api.model.payment.PaymentCourseRequest
 import com.kelompoksatuandsatu.preducation.data.network.api.model.payment.PaymentCourseResponse
+import com.kelompoksatuandsatu.preducation.data.network.api.model.payment.history.HistoryPaymentResponse
 import com.kelompoksatuandsatu.preducation.data.network.api.model.progress.courseprogress.CourseProgressResponse
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
@@ -68,7 +69,7 @@ interface PreducationService {
     // @PATCH("api/v1/users/update-password/{id}")
     // suspend fun updateUserPassword(@Path("id") id: String? = null, @Body changePasswordRequest: ChangePasswordRequest) //:ChangePasswordResponse
     @GET("api/v1/payments")
-    suspend fun getHistoryPayment() // : HistoryPaymentResponse
+    suspend fun getHistoryPayment(@Query("accessToken") accessToken: String): HistoryPaymentResponse
 
     // auth
     @POST("api/v1/auths/register")
