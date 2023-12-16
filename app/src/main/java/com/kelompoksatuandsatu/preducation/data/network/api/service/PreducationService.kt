@@ -16,6 +16,7 @@ import com.kelompoksatuandsatu.preducation.data.network.api.model.payment.Paymen
 import com.kelompoksatuandsatu.preducation.data.network.api.model.payment.history.HistoryPaymentResponse
 import com.kelompoksatuandsatu.preducation.data.network.api.model.progress.courseprogress.CourseProgressResponse
 import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.Body
@@ -69,7 +70,7 @@ interface PreducationService {
     // @PATCH("api/v1/users/update-password/{id}")
     // suspend fun updateUserPassword(@Path("id") id: String? = null, @Body changePasswordRequest: ChangePasswordRequest) //:ChangePasswordResponse
     @GET("api/v1/payments")
-    suspend fun getHistoryPayment(@Query("accessToken") accessToken: String): HistoryPaymentResponse
+    suspend fun getHistoryPayment(): HistoryPaymentResponse
 
     // auth
     @POST("api/v1/auths/register")
@@ -92,9 +93,11 @@ interface PreducationService {
     companion object {
         @JvmStatic
         operator fun invoke(chucker: ChuckerInterceptor, authInterceptor: AuthInterceptor): PreducationService {
+            val logging = HttpLoggingInterceptor().apply { level = HttpLoggingInterceptor.Level.BODY }
             val okHttpClient = OkHttpClient.Builder()
                 .addInterceptor(chucker)
                 .addInterceptor(authInterceptor)
+                .addInterceptor(logging)
                 .connectTimeout(120, TimeUnit.SECONDS)
                 .readTimeout(120, TimeUnit.SECONDS)
                 .build()

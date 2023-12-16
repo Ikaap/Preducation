@@ -5,12 +5,23 @@ import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
+import com.chuckerteam.chucker.api.ChuckerInterceptor
+import com.kelompoksatuandsatu.preducation.data.local.datastore.datasource.UserPreferenceDataSource
+import com.kelompoksatuandsatu.preducation.data.local.datastore.datasource.UserPreferenceDataSourceImpl
+import com.kelompoksatuandsatu.preducation.data.local.datastore.datasource.historyPaymentDataStore
+import com.kelompoksatuandsatu.preducation.data.network.api.datasource.PaymentDataSource
+import com.kelompoksatuandsatu.preducation.data.network.api.interceptor.AuthInterceptor
+import com.kelompoksatuandsatu.preducation.data.network.api.service.PreducationService
 import com.kelompoksatuandsatu.preducation.data.repository.PaymentRepository
 import com.kelompoksatuandsatu.preducation.databinding.ActivityTransactionBinding
 import com.kelompoksatuandsatu.preducation.databinding.DialogNonLoginBinding
 import com.kelompoksatuandsatu.preducation.presentation.common.adapter.classprogress.HistoryPaymentListAdapter
+import com.kelompoksatuandsatu.preducation.utils.PreferenceDataStoreHelperImpl
+import kotlinx.coroutines.launch
 
 class TransactionActivity : AppCompatActivity() {
 
@@ -20,6 +31,7 @@ class TransactionActivity : AppCompatActivity() {
 
     private lateinit var historyPaymentAdapter: HistoryPaymentListAdapter
     private lateinit var paymentViewModel: PaymentViewModel
+    private lateinit var userPreferenceDataSource: UserPreferenceDataSource
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,32 +41,36 @@ class TransactionActivity : AppCompatActivity() {
             onBackPressed()
         }
 
-//        historyPaymentAdapter = HistoryPaymentListAdapter { payment ->
-//            showSuccessDialog()
-//        }
-//
-//        binding.rvHistory.adapter = historyPaymentAdapter
-//        val preferenceDataStoreHelper = PreferenceDataStoreHelperImpl(historyPaymentDataStore)
-//
-//        val userPreferenceDataSource = UserPreferenceDataSourceImpl(preferenceDataStoreHelper)
-//        val chucker = ChuckerInterceptor(this)
-//        val auth = AuthInterceptor(userPreferenceDataSource)
-//
-//        val preducationService = PreducationService(chucker, auth)
-//        val paymentDataSource = PaymentDataSource(preducationService)
-//        val paymentRepository = PaymentRepository(paymentDataSource)
-//        val factory = PaymentViewModelFactory(paymentRepository)
-//
-//        paymentViewModel = ViewModelProvider(this, factory)[PaymentViewModel::class.java]
-//
-//        paymentViewModel.payments.observe(
-//            this,
-//            Observer { payments ->
-//                historyPaymentAdapter.setData(payments)
-//            }
-//        )
-//
-//        paymentViewModel.fetchPayments("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NTc5YTI3MzQ3NjEwMDFmOWU0OGRmNGEiLCJlbWFpbCI6InVzZXIxQGV4YW1wbGUuY29tIiwicGhvbmUiOiIxMjM0NTY3ODkwIiwicm9sZSI6InVzZXIiLCJpYXQiOjE3MDI1NjkzNjYsImV4cCI6MTcwMjgyODU2Nn0.HBZWsz06YnY411Wh-ASPNhvhgOSzda74Js3FahKx-nI")
+        historyPaymentAdapter = HistoryPaymentListAdapter { payment ->
+            showSuccessDialog()
+        }
+
+        binding.rvHistory.adapter = historyPaymentAdapter
+        val preferenceDataStoreHelper = PreferenceDataStoreHelperImpl(historyPaymentDataStore)
+
+        userPreferenceDataSource = UserPreferenceDataSourceImpl(preferenceDataStoreHelper)
+        val chucker = ChuckerInterceptor(this)
+        val auth = AuthInterceptor(userPreferenceDataSource)
+
+        val preducationService = PreducationService(chucker, auth)
+        val paymentDataSource = PaymentDataSource(preducationService)
+        val paymentRepository = PaymentRepository(paymentDataSource)
+        val factory = PaymentViewModelFactory(paymentRepository)
+
+        paymentViewModel = ViewModelProvider(this, factory)[PaymentViewModel::class.java]
+
+        paymentViewModel.payments.observe(
+            this,
+            Observer { historyPaymentResponse ->
+                val payments = historyPaymentResponse.data
+                historyPaymentAdapter.setData(payments)
+            }
+        )
+
+        lifecycleScope.launch {
+            userPreferenceDataSource.getUserToken()
+            paymentViewModel.fetchPayments()
+        }
     }
 
     private fun showSuccessDialog() {
