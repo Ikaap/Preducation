@@ -8,11 +8,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import com.kelompoksatuandsatu.preducation.R
 import com.kelompoksatuandsatu.preducation.databinding.FragmentProfileBinding
 import com.kelompoksatuandsatu.preducation.presentation.feature.changepassword.ChangePasswordActivity
 import com.kelompoksatuandsatu.preducation.presentation.feature.editprofile.EditProfileActivity
 import com.kelompoksatuandsatu.preducation.presentation.feature.historypayment.TransactionActivity
 import com.kelompoksatuandsatu.preducation.presentation.feature.login.LoginActivity
+import com.kelompoksatuandsatu.preducation.utils.proceedWhen
+import io.github.muddz.styleabletoast.StyleableToast
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class ProfileFragment : Fragment() {
 
@@ -20,6 +24,7 @@ class ProfileFragment : Fragment() {
 
     private var _binding: FragmentProfileBinding? = null
     private val binding get() = _binding!!
+    private val viewModel: ProfileViewModel by viewModel()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -34,6 +39,7 @@ class ProfileFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         setupClickListeners()
+        observeLogoutResult()
     }
 
     private fun setupClickListeners() {
@@ -56,7 +62,7 @@ class ProfileFragment : Fragment() {
         }
 
         binding.clLogout.setOnClickListener {
-            performLogout()
+            viewModel.userLogout()
         }
     }
 
@@ -86,6 +92,42 @@ class ProfileFragment : Fragment() {
 
     private fun showToast(s: String) {
         TODO("Not yet implemented")
+    }
+
+    private fun observeLogoutResult() {
+        viewModel.logoutResults.observe(viewLifecycleOwner) { result ->
+            result.proceedWhen(
+                doOnSuccess = {
+                    StyleableToast.makeText(
+                        requireContext(),
+                        "Successfully Logout",
+                        R.style.successtoast
+                    ).show()
+                    performLogout()
+                },
+                doOnError = {
+                    StyleableToast.makeText(
+                        requireContext(),
+                        "Failed to Logout",
+                        R.style.failedtoast
+                    ).show()
+                },
+                doOnLoading = {
+                    StyleableToast.makeText(
+                        requireContext(),
+                        "Loading Logout",
+                        R.style.successtoast
+                    ).show()
+                },
+                doOnEmpty = {
+                    StyleableToast.makeText(
+                        requireContext(),
+                        "Empty Logout",
+                        R.style.failedtoast
+                    ).show()
+                }
+            )
+        }
     }
 
     private fun performLogout() {

@@ -5,6 +5,7 @@ import com.kelompoksatuandsatu.preducation.BuildConfig
 import com.kelompoksatuandsatu.preducation.data.network.api.interceptor.AuthInterceptor
 import com.kelompoksatuandsatu.preducation.data.network.api.model.auth.login.LoginRequest
 import com.kelompoksatuandsatu.preducation.data.network.api.model.auth.login.LoginResponse
+import com.kelompoksatuandsatu.preducation.data.network.api.model.auth.logout.LogoutResponse
 import com.kelompoksatuandsatu.preducation.data.network.api.model.auth.register.RegisterRequest
 import com.kelompoksatuandsatu.preducation.data.network.api.model.auth.register.RegisterResponse
 import com.kelompoksatuandsatu.preducation.data.network.api.model.category.categoriesprogress.CategoriesProgressResponse
@@ -17,6 +18,7 @@ import com.kelompoksatuandsatu.preducation.data.network.api.model.payment.histor
 import com.kelompoksatuandsatu.preducation.data.network.api.model.progress.courseprogress.CourseProgressResponse
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
+import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.Body
@@ -80,7 +82,8 @@ interface PreducationService {
     suspend fun userLogin(@Body userLoginRequest: LoginRequest): LoginResponse
 
     @DELETE("api/v1/auths/logout")
-    suspend fun userLogout() // :UserLogoutResponse
+    suspend fun userLogout(): Response<LogoutResponse>
+
     // @POST("api/v1/auths/forgot-password")
     // suspend fun userForgotPassword(@Body userForgotPassword: UserForgotPasswordRequest)//:UserForgotPasswordResponse
     // @POST("api/v1/auths/email-otp")
