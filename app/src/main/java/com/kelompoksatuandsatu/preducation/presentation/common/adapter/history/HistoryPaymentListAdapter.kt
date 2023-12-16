@@ -38,9 +38,10 @@ class HistoryPaymentListAdapter(
         }
     )
 
+    @SuppressLint("NotifyDataSetChanged")
     fun setData(data: List<Payment>) {
         dataDiffer.submitList(data)
-        notifyItemChanged(0, data.size)
+        notifyDataSetChanged()
     }
 
     override fun onCreateViewHolder(
