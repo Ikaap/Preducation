@@ -8,3 +8,7 @@ data class ProgressCourseRequest(
     @SerializedName("indexProgress")
     val indexProgress: Int
 )
+
+// fun ProgressCourseRequest.toIndexProgress() = ProgressCourse(
+//    indexProgress = this.indexProgress
+// )

@@ -40,12 +40,19 @@ class DataItem(
             viewBinding.ivPlayGreen.isGone = true
             viewBinding.ivPlayOrange.isGone = true
             viewBinding.ivLock.isGone = false
+        } else if (itemData.isWatch == true) {
+            viewBinding.ivPlayGreen.isGone = false
+            viewBinding.ivPlayOrange.isGone = true
+            viewBinding.ivLock.isGone = true
         } else {
             viewBinding.ivPlayGreen.isGone = false
             viewBinding.ivPlayOrange.isGone = false
             viewBinding.ivLock.isGone = true
         }
-        viewBinding.root.setOnClickListener { onItemClick.invoke(itemData) }
+
+        viewBinding.root.setOnClickListener {
+            onItemClick.invoke(itemData)
+        }
     }
 
     override fun getLayout(): Int = R.layout.item_section_data_curriculcum

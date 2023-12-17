@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kelompoksatuandsatu.preducation.data.repository.CourseRepository
 import com.kelompoksatuandsatu.preducation.model.course.detailcourse.DetailCourseViewParam
+import com.kelompoksatuandsatu.preducation.model.course.detailcourse.VideoViewParam
 import com.kelompoksatuandsatu.preducation.utils.ResultWrapper
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -18,8 +19,12 @@ class DetailClassViewModel(
         get() = _detailCourse
 
     private val _progressVideo = MutableLiveData<ResultWrapper<Boolean>>()
-    val progressVideo: LiveData<ResultWrapper<Boolean>>
-        get() = _progressVideo
+
+//    val progressVideo: LiveData<ResultWrapper<Boolean>>
+//        get() = _progressVideo
+
+    private val _selectedVideoId = MutableLiveData<String>()
+    val selectedVideoId: LiveData<String> get() = _selectedVideoId
 
     fun getCourseById(courseId: String) {
         viewModelScope.launch(Dispatchers.IO) {
@@ -29,7 +34,7 @@ class DetailClassViewModel(
         }
     }
 
-    fun postIndexVideo(index: Int) {
+    fun postIndexVideo(index: VideoViewParam) {
         viewModelScope.launch(Dispatchers.IO) {
             val id = detailCourse.value?.payload?.id
             id?.let {
@@ -38,5 +43,9 @@ class DetailClassViewModel(
                 }
             }
         }
+    }
+
+    fun onVideoItemClick(videoId: String) {
+        _selectedVideoId.postValue(videoId)
     }
 }

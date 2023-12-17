@@ -32,7 +32,8 @@ class CurriculcumFragment : Fragment() {
 
     private val viewModel: DetailClassViewModel by activityViewModels()
 
-    var itemVideoId: String = ""
+    private var itemVideoId: String = ""
+    private var currentVideoPosition: Int = 0
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -84,7 +85,10 @@ class CurriculcumFragment : Fragment() {
                                         "Item clicked : title = ${data.title} -> url = ${data.videoUrl}",
                                         Toast.LENGTH_SHORT
                                     ).show()
-                                    it.index?.let { it1 -> viewModel.postIndexVideo(it1) }
+                                    // klik video
+                                    viewModel.onVideoItemClick(data.videoUrl.orEmpty())
+
+                                    viewModel.postIndexVideo(data)
                                 }
                             }
                             if (dataSection != null) {

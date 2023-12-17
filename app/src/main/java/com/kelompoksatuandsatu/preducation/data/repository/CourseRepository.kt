@@ -5,6 +5,7 @@ import com.kelompoksatuandsatu.preducation.data.network.api.model.category.categ
 import com.kelompoksatuandsatu.preducation.data.network.api.model.category.categoryclass.toCategoryClassList
 import com.kelompoksatuandsatu.preducation.data.network.api.model.category.categorytypeclass.toCategoryTypeClassList
 import com.kelompoksatuandsatu.preducation.data.network.api.model.course.courseall.toCourseList
+import com.kelompoksatuandsatu.preducation.data.network.api.model.course.detailcourse.progress.ProgressCourseRequest
 import com.kelompoksatuandsatu.preducation.data.network.api.model.course.detailcourse.toDetailCourse
 import com.kelompoksatuandsatu.preducation.data.network.api.model.payment.PaymentCourseRequest
 import com.kelompoksatuandsatu.preducation.data.network.api.model.payment.toPaymentResponse
@@ -13,6 +14,7 @@ import com.kelompoksatuandsatu.preducation.model.category.categoryclass.Category
 import com.kelompoksatuandsatu.preducation.model.category.categoryprogress.CategoryType
 import com.kelompoksatuandsatu.preducation.model.course.courseall.CourseViewParam
 import com.kelompoksatuandsatu.preducation.model.course.detailcourse.DetailCourseViewParam
+import com.kelompoksatuandsatu.preducation.model.course.detailcourse.VideoViewParam
 import com.kelompoksatuandsatu.preducation.model.payment.PaymentResponseViewParam
 import com.kelompoksatuandsatu.preducation.model.progress.CourseProgressItemClass
 import com.kelompoksatuandsatu.preducation.utils.ResultWrapper
@@ -27,12 +29,11 @@ interface CourseRepository {
     fun getCategoriesClass(): Flow<ResultWrapper<List<CategoryClass>>>
     fun getCourseHome(category: String? = null): Flow<ResultWrapper<List<CourseViewParam>>>
 
-    suspend fun postIndexCourseById(id: String, request: Int): Flow<ResultWrapper<Boolean>>
+    suspend fun postIndexCourseById(id: String, request: VideoViewParam): Flow<ResultWrapper<Boolean>>
     fun getCategoriesProgress(): Flow<ResultWrapper<List<CategoryType>>>
     fun getCategoriesTypeClass(): Flow<ResultWrapper<List<CategoryType>>>
     fun getCourseUserProgress(category: String? = null): Flow<ResultWrapper<List<CourseProgressItemClass>>>
     suspend fun paymentCourse(item: DetailCourseViewParam): Flow<ResultWrapper<PaymentResponseViewParam>>
-
     fun getCourseById(id: String): Flow<ResultWrapper<DetailCourseViewParam>>
 }
 
@@ -86,11 +87,11 @@ class CourseRepositoryImpl(
 
     override suspend fun postIndexCourseById(
         id: String,
-        request: Int
+        request: VideoViewParam
     ): Flow<ResultWrapper<Boolean>> {
         return proceedFlow {
-//            val indexReq = ProgressCourseRequest(request.index)
-            apiDataSource.postIndexCourseById(id, request).success == true
+            val indexReq = ProgressCourseRequest(request.index)
+            apiDataSource.postIndexCourseById(id, indexReq).success == true
         }
     }
 

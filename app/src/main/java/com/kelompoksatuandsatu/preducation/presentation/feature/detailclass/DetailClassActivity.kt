@@ -8,6 +8,7 @@ import android.content.res.Configuration
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintSet
@@ -21,6 +22,7 @@ import com.kelompoksatuandsatu.preducation.databinding.ActivityDetailClassBindin
 import com.kelompoksatuandsatu.preducation.model.course.courseall.CourseViewParam
 import com.kelompoksatuandsatu.preducation.model.progress.CourseProgressItemClass
 import com.kelompoksatuandsatu.preducation.presentation.feature.detailclass.adapter.ViewPagerAdapter
+import com.kelompoksatuandsatu.preducation.presentation.feature.main.MainActivity
 import com.kelompoksatuandsatu.preducation.utils.proceedWhen
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.PlayerConstants
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer
@@ -54,7 +56,7 @@ class DetailClassActivity : AppCompatActivity() {
 
     private val viewModel: DetailClassViewModel by viewModel()
 
-    var videoId: String = ""
+    private var videoId: String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -71,12 +73,21 @@ class DetailClassActivity : AppCompatActivity() {
         binding.ivBack.setOnClickListener {
             onBackPressed()
         }
+        binding.clButtonOtherClass.setOnClickListener {
+            navigateToMain()
+        }
+        binding.clButtonNext.setOnClickListener {
+        }
+    }
+
+    private fun navigateToMain() {
+        val intent = Intent(this, MainActivity::class.java)
+        startActivity(intent)
     }
 
     private fun showDetailClass() {
         val idCourse = intent.getStringExtra("EXTRA_COURSE_ID")
         idCourse?.let { viewModel.getCourseById(it) }
-//        Toast.makeText(this, "id : $idCourse", Toast.LENGTH_SHORT).show()
     }
 
     private fun observeData() {
@@ -89,13 +100,6 @@ class DetailClassActivity : AppCompatActivity() {
                     binding.layoutCommonState.tvDataEmpty.isGone = true
                     binding.layoutCommonState.ivDataEmpty.isGone = true
                     it.payload?.let { data ->
-                        data.chapters?.map { chapter ->
-                            chapter.videos?.map { itemVideo ->
-                                videoId = itemVideo.videoUrl.toString()
-                            }
-                        }
-//                        Log.d("DATA course : ", "id(${data.id}, title(${data.title} ")
-//                        videoId = data.chapters?.get(0)?.videos?.get(0)?.videoUrl.toString()
                         binding.tvCategoryCourse.text = data.category?.name
                         binding.tvNameCourse.text = data.title
                         binding.tvTotalModulCourse.text =
@@ -133,6 +137,22 @@ class DetailClassActivity : AppCompatActivity() {
                     Log.d("EROR", "${it.message}")
                 }
             )
+        }
+    }
+
+    private fun extractYouTubeVideoId(videoUrl: String): String? {
+        val pattern = "(?<=watch\\?v=|/videos/|embed/|youtu.be/|/v/|/e/)([^\"&?/\\s]{11})"
+
+        return pattern.toRegex().find(videoUrl)?.value
+    }
+
+    private fun observeVideoUrl() {
+        viewModel.selectedVideoId.observe(this) { id ->
+            id.let {
+                videoId = extractYouTubeVideoId(it.orEmpty()).orEmpty()
+                Toast.makeText(this, videoId, Toast.LENGTH_SHORT).show()
+                youTubePlayer.cueVideo(videoId, 0.0F)
+            }
         }
     }
 
@@ -178,8 +198,8 @@ class DetailClassActivity : AppCompatActivity() {
             override fun onReady(youTubePlayer: YouTubePlayer) {
                 super.onReady(youTubePlayer)
                 this@DetailClassActivity.youTubePlayer = youTubePlayer
-//                val videoId = "LJY5M2eXDRM"
-                youTubePlayer.cueVideo(videoId, 0.0F)
+
+                observeVideoUrl()
                 binding.ivPlayVideo.setOnClickListener {
                     youTubePlayer.play()
                     binding.ivPlayVideo.isGone = true
@@ -210,20 +230,20 @@ class DetailClassActivity : AppCompatActivity() {
         when (state) {
             PlayerConstants.PlayerState.ENDED -> {
                 binding.ivPlayVideo.isGone = false
-                binding.tvButtonNext.isGone = false
-                binding.tvButtonOtherClass.isGone = false
+                binding.clButtonNext.isGone = false
+                binding.clButtonOtherClass.isGone = false
             }
 
             PlayerConstants.PlayerState.PAUSED -> {
                 binding.ivPlayVideo.isGone = false
-                binding.tvButtonNext.isGone = false
-                binding.tvButtonOtherClass.isGone = false
+                binding.clButtonNext.isGone = false
+                binding.clButtonOtherClass.isGone = false
             }
 
             PlayerConstants.PlayerState.PLAYING -> {
                 binding.ivPlayVideo.isGone = true
-                binding.tvButtonNext.isGone = true
-                binding.tvButtonOtherClass.isGone = true
+                binding.clButtonNext.isGone = true
+                binding.clButtonOtherClass.isGone = true
             }
 
             else -> {}

@@ -16,6 +16,7 @@ import com.kelompoksatuandsatu.preducation.data.network.api.model.changepassword
 import com.kelompoksatuandsatu.preducation.data.network.api.model.changepassword.ChangePasswordResponse
 import com.kelompoksatuandsatu.preducation.data.network.api.model.course.courseall.CourseResponse
 import com.kelompoksatuandsatu.preducation.data.network.api.model.course.detailcourse.DetailCourseResponse
+import com.kelompoksatuandsatu.preducation.data.network.api.model.course.detailcourse.progress.ProgressCourseRequest
 import com.kelompoksatuandsatu.preducation.data.network.api.model.course.detailcourse.progress.ProgressCourseResponse
 import com.kelompoksatuandsatu.preducation.data.network.api.model.logout.UserLogoutResponse
 import com.kelompoksatuandsatu.preducation.data.network.api.model.notification.NotificationResponse
@@ -75,7 +76,7 @@ interface PreducationService {
     suspend fun getCourseById(@Path("id") id: String): DetailCourseResponse
 
     @POST("api/v1/progress")
-    suspend fun postIndexCourseById(@Query("id") id: String, @Body progressRequest: Int): ProgressCourseResponse
+    suspend fun postIndexCourseById(@Query("courseId") id: String, @Body progressRequest: ProgressCourseRequest): ProgressCourseResponse
 
     // profile
     @GET("api/v1/users/{id}")
