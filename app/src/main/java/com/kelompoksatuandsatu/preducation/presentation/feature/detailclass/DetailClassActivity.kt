@@ -29,6 +29,7 @@ import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.AbstractYouTubePlayerListener
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.FullscreenListener
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.options.IFramePlayerOptions
+import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.utils.loadOrCueVideo
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class DetailClassActivity : AppCompatActivity() {
@@ -77,6 +78,19 @@ class DetailClassActivity : AppCompatActivity() {
             navigateToMain()
         }
         binding.clButtonNext.setOnClickListener {
+            val nextVideoId = viewModel.getNextVideoId()
+
+            if (nextVideoId != null) {
+                Toast.makeText(this, "ID video selanjutnya: $nextVideoId", Toast.LENGTH_SHORT)
+                    .show()
+                youTubePlayer.loadOrCueVideo(
+                    lifecycle,
+                    extractYouTubeVideoId(nextVideoId).orEmpty(),
+                    0f
+                )
+            } else {
+                Toast.makeText(this, "Tidak ada video selanjutnya", Toast.LENGTH_SHORT).show()
+            }
         }
     }
 
@@ -203,6 +217,8 @@ class DetailClassActivity : AppCompatActivity() {
                 binding.ivPlayVideo.setOnClickListener {
                     youTubePlayer.play()
                     binding.ivPlayVideo.isGone = true
+                    binding.clButtonNext.isGone = true
+                    binding.clButtonOtherClass.isGone = true
                 }
 
                 youTubePlayer.addListener(object : AbstractYouTubePlayerListener() {
@@ -229,15 +245,27 @@ class DetailClassActivity : AppCompatActivity() {
     private fun setImagePlayVisibility(state: PlayerConstants.PlayerState) {
         when (state) {
             PlayerConstants.PlayerState.ENDED -> {
-                binding.ivPlayVideo.isGone = false
-                binding.clButtonNext.isGone = false
-                binding.clButtonOtherClass.isGone = false
+                if (isFullScreen) {
+                    binding.ivPlayVideo.isGone = false
+                    binding.clButtonNext.isGone = false
+                    binding.clButtonOtherClass.isGone = false
+                } else {
+                    binding.ivPlayVideo.isGone = false
+                    binding.clButtonNext.isGone = true
+                    binding.clButtonOtherClass.isGone = true
+                }
             }
 
             PlayerConstants.PlayerState.PAUSED -> {
-                binding.ivPlayVideo.isGone = false
-                binding.clButtonNext.isGone = false
-                binding.clButtonOtherClass.isGone = false
+                if (isFullScreen) {
+                    binding.ivPlayVideo.isGone = false
+                    binding.clButtonNext.isGone = false
+                    binding.clButtonOtherClass.isGone = false
+                } else {
+                    binding.ivPlayVideo.isGone = false
+                    binding.clButtonNext.isGone = true
+                    binding.clButtonOtherClass.isGone = true
+                }
             }
 
             PlayerConstants.PlayerState.PLAYING -> {
@@ -276,6 +304,9 @@ class DetailClassActivity : AppCompatActivity() {
         binding.flFullScreen.removeAllViews()
         binding.clDataCourse.visibility = View.VISIBLE
         binding.viewBackground.visibility = View.VISIBLE
+
+        binding.clButtonNext.isGone = true
+        binding.clButtonOtherClass.isGone = true
 
         val constraintSet = ConstraintSet()
         constraintSet.clone(binding.clYoutubePlayer)
