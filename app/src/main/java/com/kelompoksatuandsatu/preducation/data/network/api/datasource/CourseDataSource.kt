@@ -5,6 +5,7 @@ import com.kelompoksatuandsatu.preducation.data.network.api.model.category.categ
 import com.kelompoksatuandsatu.preducation.data.network.api.model.category.categorytypeclass.CategoriesTypeClassResponse
 import com.kelompoksatuandsatu.preducation.data.network.api.model.course.courseall.CourseResponse
 import com.kelompoksatuandsatu.preducation.data.network.api.model.course.detailcourse.DetailCourseResponse
+import com.kelompoksatuandsatu.preducation.data.network.api.model.course.detailcourse.progress.ProgressCourseRequest
 import com.kelompoksatuandsatu.preducation.data.network.api.model.course.detailcourse.progress.ProgressCourseResponse
 import com.kelompoksatuandsatu.preducation.data.network.api.model.payment.PaymentCourseRequest
 import com.kelompoksatuandsatu.preducation.data.network.api.model.payment.PaymentCourseResponse
@@ -18,7 +19,7 @@ interface CourseDataSource {
     suspend fun getCourseUserProgress(category: String? = null): CourseProgressResponse
     suspend fun getCategoriesProgress(category: String? = null): CategoriesProgressResponse
     suspend fun getCategoriesTypeClass(category: String? = null): CategoriesTypeClassResponse
-    suspend fun postIndexCourseById(id: String, progressRequest: Int): ProgressCourseResponse
+    suspend fun postIndexCourseById(id: String, progressRequest: ProgressCourseRequest): ProgressCourseResponse
 
     suspend fun paymentCourse(paymentCourseRequest: PaymentCourseRequest): PaymentCourseResponse
 }
@@ -55,7 +56,7 @@ class CourseDataSourceImpl(
 
     override suspend fun postIndexCourseById(
         id: String,
-        progressRequest: Int
+        progressRequest: ProgressCourseRequest
     ): ProgressCourseResponse {
         return service.postIndexCourseById(id, progressRequest)
     }
