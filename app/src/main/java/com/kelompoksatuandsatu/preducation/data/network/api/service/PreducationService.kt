@@ -16,6 +16,7 @@ import com.kelompoksatuandsatu.preducation.data.network.api.model.changepassword
 import com.kelompoksatuandsatu.preducation.data.network.api.model.changepassword.ChangePasswordResponse
 import com.kelompoksatuandsatu.preducation.data.network.api.model.course.courseall.CourseResponse
 import com.kelompoksatuandsatu.preducation.data.network.api.model.course.detailcourse.DetailCourseResponse
+import com.kelompoksatuandsatu.preducation.data.network.api.model.course.detailcourse.progress.ProgressCourseRequest
 import com.kelompoksatuandsatu.preducation.data.network.api.model.course.detailcourse.progress.ProgressCourseResponse
 import com.kelompoksatuandsatu.preducation.data.network.api.model.logout.UserLogoutResponse
 import com.kelompoksatuandsatu.preducation.data.network.api.model.notification.NotificationResponse
