@@ -54,7 +54,9 @@ class CategoryRoundedHomeListAdapter(
             selectedPosition = holder.bindingAdapterPosition
             notifyItemChanged(lastSelectedPosition)
             notifyItemChanged(selectedPosition)
-            if (position != 0) {
+            if (position == 0) {
+                viewModel.getCourse()
+            } else {
                 viewModel.getCourse(dataDiffer.currentList[position].name)
             }
         }
