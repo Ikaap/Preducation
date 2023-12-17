@@ -20,9 +20,12 @@ import com.kelompoksatuandsatu.preducation.data.repository.UserRepository
 import com.kelompoksatuandsatu.preducation.data.repository.UserRepositoryImpl
 import com.kelompoksatuandsatu.preducation.presentation.feature.classProgress.ProgressClassViewModel
 import com.kelompoksatuandsatu.preducation.presentation.feature.course.CourseViewModel
+import com.kelompoksatuandsatu.preducation.presentation.feature.changepassword.ChangePasswordViewModel
 import com.kelompoksatuandsatu.preducation.presentation.feature.detailclass.DetailClassViewModel
+import com.kelompoksatuandsatu.preducation.presentation.feature.editprofile.EditProfileViewModel
 import com.kelompoksatuandsatu.preducation.presentation.feature.home.HomeViewModel
 import com.kelompoksatuandsatu.preducation.presentation.feature.login.LoginViewModel
+import com.kelompoksatuandsatu.preducation.presentation.feature.profile.ProfileViewModel
 import com.kelompoksatuandsatu.preducation.presentation.feature.notifications.NotificationViewModel
 import com.kelompoksatuandsatu.preducation.presentation.feature.otp.OtpViewModel
 import com.kelompoksatuandsatu.preducation.presentation.feature.payment.PaymentViewModel
@@ -73,6 +76,7 @@ object AppModules {
         viewModelOf(::NotificationViewModel)
         viewModelOf(::OtpViewModel)
         viewModelOf(com.kelompoksatuandsatu.preducation.presentation.feature.profile::ProfileViewModel)
+        viewModelOf(::ProfileViewModel)
         viewModelOf(::EditProfileViewModel)
         viewModelOf(::ChangePasswordViewModel)
 

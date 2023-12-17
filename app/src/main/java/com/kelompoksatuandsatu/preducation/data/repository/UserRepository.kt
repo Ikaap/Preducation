@@ -16,17 +16,18 @@ import com.kelompoksatuandsatu.preducation.utils.ResultWrapper
 import com.kelompoksatuandsatu.preducation.utils.proceedFlow
 import kotlinx.coroutines.flow.Flow
 
+import com.kelompoksatuandsatu.preducation.utils.proceedFlow
 
 interface UserRepository {
-    suspend fun getUserById(id: String? = null): UserResponse
+    suspend fun getUserById(id: String? = null): Flow<ResultWrapper<List<UserViewParam>>>
 
-    suspend fun updateUserById(id: String, userRequest: UserRequest): UserResponse
+    suspend fun updateUserById(id: String, userRequest: UserRequest): Flow<ResultWrapper<List<UserViewParam>>>
     suspend fun updateUserPassword(
         id: String,
         passwordRequest: ChangePasswordRequest
-    ): ChangePasswordResponse
+    ): Flow<ResultWrapper<List<Password>>>
 
-    suspend fun performLogout(): UserLogoutResponse
+    suspend fun performLogout(): Flow<ResultWrapper<Boolean>>
 
     suspend fun userRegister(request: UserAuth): Flow<ResultWrapper<String>>
 
@@ -42,25 +43,32 @@ class UserRepositoryImpl(
 
 
 
-    override suspend fun getUserById(id: String?): UserResponse {
+    override suspend fun getUserById(id: String?): Flow<ResultWrapper<List<UserViewParam>>> {
         return proceedFlow {
-            userDataSource.getUserById()
+            userDataSource.getUserById(id).data?.toUserList() ?: emptyList()
         }
     }
 
-    override suspend fun updateUserById(id: String, userRequest: UserRequest): UserResponse {
-        return userDataSource.updateUserById(id, userRequest)
+    override suspend fun updateUserById(
+        id: String,
+        userRequest: UserRequest
+    ): Flow<ResultWrapper<List<UserViewParam>>> {
+        return proceedFlow {
+            userDataSource.updateUserById(id, userRequest).data?.toUserList() ?: emptyList()
+        }
     }
 
     override suspend fun updateUserPassword(
         id: String,
         passwordRequest: ChangePasswordRequest
-    ): ChangePasswordResponse {
-        return userDataSource.updateUserPassword(id, passwordRequest)
+    ): Flow<ResultWrapper<List<Password>>> {
+        return proceedFlow {
+            (userDataSource.updateUserPassword(id, passwordRequest).data?.toPasswordList() ?: emptyList())
+        }
     }
 
-    override suspend fun performLogout(): UserLogoutResponse {
-        return userDataSource.performLogout()
+    override suspend fun performLogout(): Flow<ResultWrapper<Boolean>> {
+        TODO("Not yet implemented")
     }
 
     override suspend fun userRegister(request: UserAuth): Flow<ResultWrapper<String>> {
@@ -74,7 +82,7 @@ class UserRepositoryImpl(
     override suspend fun userLogin(request: UserLogin): Flow<ResultWrapper<Boolean>> {
         return proceedFlow {
             val dataReq = LoginRequest(request.identifier, request.password)
-            val loginResult = dataSource.userLogin(dataReq)
+            val loginResult = userDataSource.userLogin(dataReq)
             if (loginResult.success) {
                 userPreferenceDataSource.saveUserToken(loginResult.data.accessToken)
             }
