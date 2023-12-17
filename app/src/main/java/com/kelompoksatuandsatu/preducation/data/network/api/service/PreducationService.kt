@@ -11,15 +11,10 @@ import com.kelompoksatuandsatu.preducation.data.network.api.model.auth.register.
 import com.kelompoksatuandsatu.preducation.data.network.api.model.auth.register.RegisterResponse
 import com.kelompoksatuandsatu.preducation.data.network.api.model.category.categoriesprogress.CategoriesProgressResponse
 import com.kelompoksatuandsatu.preducation.data.network.api.model.category.categoryclass.CategoriesClassResponse
-import com.kelompoksatuandsatu.preducation.data.network.api.model.category.categorytypeclass.CategoriesTypeClassResponse
-import com.kelompoksatuandsatu.preducation.data.network.api.model.course.courseall.CourseResponse
+import com.kelompoksatuandsatu.preducation.data.network.api.model.course.CourseResponse
 import com.kelompoksatuandsatu.preducation.data.network.api.model.course.detailcourse.DetailCourseResponse
 import com.kelompoksatuandsatu.preducation.data.network.api.model.course.detailcourse.progress.ProgressCourseRequest
 import com.kelompoksatuandsatu.preducation.data.network.api.model.course.detailcourse.progress.ProgressCourseResponse
-import com.kelompoksatuandsatu.preducation.data.network.api.model.notification.NotificationResponse
-import com.kelompoksatuandsatu.preducation.data.network.api.model.payment.PaymentCourseRequest
-import com.kelompoksatuandsatu.preducation.data.network.api.model.payment.PaymentCourseResponse
-import com.kelompoksatuandsatu.preducation.data.network.api.model.progress.courseprogress.CourseProgressResponse
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -28,6 +23,7 @@ import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.http.PATCH
+import retrofit2.http.POST
 import retrofit2.http.Path
 import retrofit2.http.Query
 import java.util.concurrent.TimeUnit
@@ -36,10 +32,10 @@ interface PreducationService {
 
     // home & see all
     @GET("api/v1/categories")
-    suspend fun getCategoriesClass() // : CategoriesClassResponse
+    suspend fun getCategoriesClass(): CategoriesClassResponse
 
     @GET("api/v1/courses")
-    suspend fun getCourseHome(@Query("category") category: String? = null) // : CourseResponse
+    suspend fun getCourseHome(@Query("category") category: String? = null): CourseResponse
 
     // post otp
     @POST("api/v1/auths/email-otp")

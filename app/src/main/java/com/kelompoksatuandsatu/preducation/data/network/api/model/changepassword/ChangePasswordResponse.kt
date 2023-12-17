@@ -1,7 +1,6 @@
 package com.kelompoksatuandsatu.preducation.data.network.api.model.changepassword
 
 import com.google.gson.annotations.SerializedName
-import com.kelompoksatuandsatu.preducation.model.User
 
 data class ChangePasswordResponse(
     @SerializedName("success")
@@ -11,5 +10,5 @@ data class ChangePasswordResponse(
     @SerializedName("status")
     val status: String,
     @SerializedName("data")
-    val data: List<User>?
+    val data: List<ChangePasswordItem>?
 )
