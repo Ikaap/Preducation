@@ -1,5 +1,9 @@
 package com.kelompoksatuandsatu.preducation.data.network.api.datasource
 
+import com.kelompoksatuandsatu.preducation.data.network.api.model.auth.login.LoginRequest
+import com.kelompoksatuandsatu.preducation.data.network.api.model.auth.login.LoginResponse
+import com.kelompoksatuandsatu.preducation.data.network.api.model.auth.register.RegisterRequest
+import com.kelompoksatuandsatu.preducation.data.network.api.model.auth.register.RegisterResponse
 import com.kelompoksatuandsatu.preducation.data.network.api.model.changepassword.ChangePasswordRequest
 import com.kelompoksatuandsatu.preducation.data.network.api.model.changepassword.ChangePasswordResponse
 import com.kelompoksatuandsatu.preducation.data.network.api.model.logout.UserLogoutResponse

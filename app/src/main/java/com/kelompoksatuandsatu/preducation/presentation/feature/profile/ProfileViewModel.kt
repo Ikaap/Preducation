@@ -6,6 +6,7 @@ import com.kelompoksatuandsatu.preducation.data.repository.UserRepository
 import kotlinx.coroutines.launch
 
 class ProfileViewModel(private val userRepo: UserRepository) : ViewModel() {
+
     fun performLogout() {
         viewModelScope.launch {
             try {
