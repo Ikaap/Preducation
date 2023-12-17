@@ -87,7 +87,6 @@ class CurriculcumFragment : Fragment() {
                                     ).show()
                                     // klik video
                                     viewModel.onVideoItemClick(data.videoUrl.orEmpty())
-
                                     viewModel.postIndexVideo(data)
                                 }
                             }

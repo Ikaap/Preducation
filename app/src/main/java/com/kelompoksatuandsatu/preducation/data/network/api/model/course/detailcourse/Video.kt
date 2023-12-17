@@ -17,7 +17,9 @@ data class Video(
     @SerializedName("videoUrl")
     val videoUrl: String?,
     @SerializedName("isWatch")
-    val isWatch: Boolean?
+    val isWatch: Boolean?,
+    @SerializedName("nextVideo")
+    val nextVideo: Boolean?
 
 )
 
@@ -27,7 +29,8 @@ fun Video.toVideo() = VideoViewParam(
     index = this.index ?: 0,
     title = this.title.orEmpty(),
     videoUrl = this.videoUrl.orEmpty(),
-    isWatch = this.isWatch ?: false
+    isWatch = this.isWatch ?: false,
+    nextVideo = this.nextVideo ?: false
 )
 
 fun Collection<Video>.toVideoList() = this.map { it.toVideo() }

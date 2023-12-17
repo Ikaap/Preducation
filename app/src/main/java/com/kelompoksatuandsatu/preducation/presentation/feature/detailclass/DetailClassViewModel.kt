@@ -48,4 +48,22 @@ class DetailClassViewModel(
     fun onVideoItemClick(videoId: String) {
         _selectedVideoId.postValue(videoId)
     }
+
+    private val _selectedVideoIndex = MutableLiveData<Int>()
+    val selectedVideoIndex: LiveData<Int>
+        get() = _selectedVideoIndex
+
+    fun getNextVideoId(): String? {
+        val listVideo = detailCourse.value?.payload?.chapters?.flatMap { it.videos ?: emptyList() }
+        val video = listVideo?.map { it.videoUrl.orEmpty() } ?: emptyList()
+
+        val nextIndex = selectedVideoIndex.value?.plus(1) ?: 1
+
+        return if (nextIndex < video.size) {
+            _selectedVideoIndex.postValue(nextIndex)
+            video[nextIndex]
+        } else {
+            null
+        }
+    }
 }
