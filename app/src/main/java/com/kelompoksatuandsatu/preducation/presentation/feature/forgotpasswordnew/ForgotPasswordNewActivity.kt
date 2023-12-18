@@ -1,14 +1,21 @@
-package com.kelompoksatuandsatu.preducation.presentation.feature.forgotpassword
+package com.kelompoksatuandsatu.preducation.presentation.feature.forgotpasswordnew
 
+import android.app.AlertDialog
+import android.content.Intent
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.util.Patterns
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import com.kelompoksatuandsatu.preducation.R
 import com.kelompoksatuandsatu.preducation.databinding.ActivityForgotPasswordBinding
+import com.kelompoksatuandsatu.preducation.databinding.LayoutDialogSucessResetPasswordBinding
 import com.kelompoksatuandsatu.preducation.model.auth.UserForgotPassword
+import com.kelompoksatuandsatu.preducation.presentation.feature.login.LoginActivity
 import com.kelompoksatuandsatu.preducation.utils.proceedWhen
 import io.github.muddz.styleabletoast.StyleableToast
+import kotlinx.coroutines.delay
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class ForgotPasswordNewActivity : AppCompatActivity() {
@@ -72,6 +79,8 @@ class ForgotPasswordNewActivity : AppCompatActivity() {
                         getString(R.string.reset_password_successful),
                         R.style.successtoast
                     ).show()
+//                    showDialog()
+                    navigateToLogin()
                 },
                 doOnLoading = {
                     binding.pbLoading.isVisible = true
@@ -88,6 +97,25 @@ class ForgotPasswordNewActivity : AppCompatActivity() {
                     ).show()
                 }
             )
+        }
+    }
+
+    private fun navigateToLogin() {
+        val intent = Intent(this, LoginActivity::class.java)
+        startActivity(intent)
+    }
+    private fun showDialog() {
+        val binding: LayoutDialogSucessResetPasswordBinding = LayoutDialogSucessResetPasswordBinding.inflate(layoutInflater)
+        val dialog = AlertDialog.Builder(this, 0).create()
+
+        dialog.apply {
+            setView(binding.root)
+            window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        }.show()
+
+        binding.ivButtonNextLogin.setOnClickListener {
+            val intent = Intent(this, LoginActivity::class.java)
+            startActivity(intent)
         }
     }
 }

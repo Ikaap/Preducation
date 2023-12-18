@@ -21,6 +21,7 @@ import com.kelompoksatuandsatu.preducation.data.repository.UserRepositoryImpl
 import com.kelompoksatuandsatu.preducation.presentation.feature.classProgress.ProgressClassViewModel
 import com.kelompoksatuandsatu.preducation.presentation.feature.course.CourseViewModel
 import com.kelompoksatuandsatu.preducation.presentation.feature.detailclass.DetailClassViewModel
+import com.kelompoksatuandsatu.preducation.presentation.feature.forgotpasswordnew.ForgotPasswordNewViewModel
 import com.kelompoksatuandsatu.preducation.presentation.feature.home.HomeViewModel
 import com.kelompoksatuandsatu.preducation.presentation.feature.home.SeeAllViewModel
 import com.kelompoksatuandsatu.preducation.presentation.feature.login.LoginViewModel
@@ -72,6 +73,7 @@ object AppModules {
         viewModelOf(::ProgressClassViewModel)
         viewModelOf(::NotificationViewModel)
         viewModelOf(::SeeAllViewModel)
+        viewModelOf(::ForgotPasswordNewViewModel)
     }
 
     private val utilsModule = module {

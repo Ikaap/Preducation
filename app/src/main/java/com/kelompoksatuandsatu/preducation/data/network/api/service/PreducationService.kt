@@ -87,6 +87,7 @@ interface PreducationService {
 
     @DELETE("api/v1/auths/logout")
     suspend fun userLogout() // :UserLogoutResponse
+
     @POST("api/v1/auths/forgot-password")
     suspend fun userForgotPassword(@Body userForgotPassword: ForgotPasswordRequest): ForgotPasswordResponse
     // @POST("api/v1/auths/email-otp")

@@ -17,7 +17,7 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
-            android:name=".presentation.feature.forgotpassword.ForgotPasswordNewActivity"
+            android:name=".presentation.feature.forgotpasswordnew.ForgotPasswordNewActivity"
             android:exported="false" />
         <activity
             android:name=".presentation.feature.filter.FilterActivity"

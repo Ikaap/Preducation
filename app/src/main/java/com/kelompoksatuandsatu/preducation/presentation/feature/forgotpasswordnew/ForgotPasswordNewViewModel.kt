@@ -1,4 +1,4 @@
-package com.kelompoksatuandsatu.preducation.presentation.feature.forgotpassword
+package com.kelompoksatuandsatu.preducation.presentation.feature.forgotpasswordnew
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
