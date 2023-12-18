@@ -5,6 +5,6 @@ import com.google.gson.annotations.SerializedName
 
 @Keep
 data class OtpRequest(
-	@SerializedName("email")
-	val email: String?
+    @SerializedName("email")
+    val email: String?
 )
