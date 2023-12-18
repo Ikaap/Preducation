@@ -9,11 +9,13 @@ import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import com.kelompoksatuandsatu.preducation.R
 import com.kelompoksatuandsatu.preducation.databinding.FragmentProfileBinding
+import com.kelompoksatuandsatu.preducation.model.UserViewParam
 import com.kelompoksatuandsatu.preducation.presentation.feature.changepassword.ChangePasswordActivity
 import com.kelompoksatuandsatu.preducation.presentation.feature.editprofile.EditProfileActivity
 import com.kelompoksatuandsatu.preducation.presentation.feature.historypayment.TransactionActivity
 import com.kelompoksatuandsatu.preducation.presentation.feature.login.LoginActivity
 import org.koin.androidx.viewmodel.ext.android.viewModel
+
 class ProfileFragment : Fragment() {
 
     private lateinit var binding: FragmentProfileBinding
