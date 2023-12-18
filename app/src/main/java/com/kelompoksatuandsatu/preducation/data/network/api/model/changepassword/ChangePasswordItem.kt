@@ -1,7 +1,7 @@
 package com.kelompoksatuandsatu.preducation.data.network.api.model.changepassword
 
 import com.google.gson.annotations.SerializedName
-import com.kelompoksatuandsatu.preducation.model.Password
+import com.kelompoksatuandsatu.preducation.model.user.Password
 
 data class ChangePasswordItem(
     @SerializedName("_id")

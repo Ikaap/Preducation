@@ -1,5 +1,11 @@
 package com.kelompoksatuandsatu.preducation.data.network.api.datasource
 
+import com.kelompoksatuandsatu.preducation.data.network.api.model.auth.login.LoginRequest
+import com.kelompoksatuandsatu.preducation.data.network.api.model.auth.login.LoginResponse
+import com.kelompoksatuandsatu.preducation.data.network.api.model.auth.otp.OtpRequest
+import com.kelompoksatuandsatu.preducation.data.network.api.model.auth.otp.OtpResponse
+import com.kelompoksatuandsatu.preducation.data.network.api.model.auth.register.RegisterRequest
+import com.kelompoksatuandsatu.preducation.data.network.api.model.auth.register.RegisterResponse
 import com.kelompoksatuandsatu.preducation.data.network.api.model.changepassword.ChangePasswordRequest
 import com.kelompoksatuandsatu.preducation.data.network.api.model.changepassword.ChangePasswordResponse
 import com.kelompoksatuandsatu.preducation.data.network.api.model.logout.UserLogoutResponse
@@ -30,13 +36,10 @@ class UserDataSourceImpl(private val service: PreducationService) : UserDataSour
     }
     override suspend fun getUserById(id: String?): UserResponse {
         return service.getUserById(id)
+    }
 
     override suspend fun userOtp(userOtpRequest: OtpRequest): OtpResponse {
         return service.getOtpToEmail(userOtpRequest)
-    }
-
-    override suspend fun getUserById(): UserResponse {
-        return service.getUserById()
     }
 
     override suspend fun updateUserById(id: String, userRequest: UserRequest): UserResponse {
