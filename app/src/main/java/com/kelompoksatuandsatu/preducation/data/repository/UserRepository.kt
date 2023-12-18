@@ -28,6 +28,7 @@ import com.kelompoksatuandsatu.preducation.utils.ResultWrapper
 import com.kelompoksatuandsatu.preducation.utils.proceedFlow
 import kotlinx.coroutines.flow.Flow
 
+
 interface UserRepository {
     suspend fun getUserById(id: String): Flow<ResultWrapper<UserViewParam>>
 
