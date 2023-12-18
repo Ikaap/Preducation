@@ -9,11 +9,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import com.kelompoksatuandsatu.preducation.R
 import com.kelompoksatuandsatu.preducation.databinding.ActivityOtpBinding
-import com.kelompoksatuandsatu.preducation.databinding.DialogNonLoginBinding
 import com.kelompoksatuandsatu.preducation.databinding.LayoutDialogSuccesOtpBinding
 import com.kelompoksatuandsatu.preducation.presentation.feature.login.LoginActivity
-import com.kelompoksatuandsatu.preducation.presentation.feature.main.MainActivity
-import com.kelompoksatuandsatu.preducation.presentation.feature.register.RegisterActivity
 import com.kelompoksatuandsatu.preducation.utils.proceedWhen
 import com.otpview.OTPListener
 import com.otpview.OTPTextView
@@ -52,7 +49,6 @@ class OtpActivity : AppCompatActivity() {
                         getString(R.string.register_successfull),
                         R.style.successtoast
                     ).show()
-//                    navigateToMain()
                     showDialog()
                 },
                 doOnLoading = {
@@ -83,9 +79,5 @@ class OtpActivity : AppCompatActivity() {
             val intent = Intent(this, LoginActivity::class.java)
             startActivity(intent)
         }
-    }
-    private fun navigateToMain() {
-        val intent = Intent(this, MainActivity::class.java)
-        startActivity(intent)
     }
 }

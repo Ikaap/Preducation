@@ -1,9 +1,11 @@
 package com.kelompoksatuandsatu.preducation.data.network.api.datasource
 
+import com.kelompoksatuandsatu.preducation.data.network.api.model.auth.forgotpassword.ForgotPasswordRequest
+import com.kelompoksatuandsatu.preducation.data.network.api.model.auth.forgotpassword.ForgotPasswordResponse
 import com.kelompoksatuandsatu.preducation.data.network.api.model.auth.login.LoginRequest
 import com.kelompoksatuandsatu.preducation.data.network.api.model.auth.login.LoginResponse
-import com.kelompoksatuandsatu.preducation.data.network.api.model.auth.otp.OtpRequest
-import com.kelompoksatuandsatu.preducation.data.network.api.model.auth.otp.OtpResponse
+import com.kelompoksatuandsatu.preducation.data.network.api.model.auth.otp.postemail.EmailOtpRequest
+import com.kelompoksatuandsatu.preducation.data.network.api.model.auth.otp.postemail.EmailOtpResponse
 import com.kelompoksatuandsatu.preducation.data.network.api.model.auth.register.RegisterRequest
 import com.kelompoksatuandsatu.preducation.data.network.api.model.auth.register.RegisterResponse
 import com.kelompoksatuandsatu.preducation.data.network.api.model.changepassword.ChangePasswordRequest
@@ -18,12 +20,14 @@ interface UserDataSource {
 
     suspend fun userLogin(userLoginRequest: LoginRequest): LoginResponse
 
-    suspend fun userOtp(userOtpRequest: OtpRequest): OtpResponse
+    suspend fun postEmailOtp(emailOtpRequest: EmailOtpRequest): EmailOtpResponse
 
     suspend fun getUserById(id: String? = null): UserResponse
     suspend fun updateUserById(id: String, userRequest: UserRequest): UserResponse
     suspend fun updateUserPassword(id: String, passwordRequest: ChangePasswordRequest): ChangePasswordResponse
     suspend fun performLogout(): UserLogoutResponse
+
+    suspend fun userForgotPassword(forgotPasswordRequest: ForgotPasswordRequest): ForgotPasswordResponse
 }
 
 class UserDataSourceImpl(private val service: PreducationService) : UserDataSource {
@@ -38,8 +42,8 @@ class UserDataSourceImpl(private val service: PreducationService) : UserDataSour
         return service.getUserById(id)
     }
 
-    override suspend fun userOtp(userOtpRequest: OtpRequest): OtpResponse {
-        return service.getOtpToEmail(userOtpRequest)
+    override suspend fun postEmailOtp(emailOtpRequest: EmailOtpRequest): EmailOtpResponse {
+        return service.postEmailOtp(emailOtpRequest)
     }
 
     override suspend fun updateUserById(id: String, userRequest: UserRequest): UserResponse {
@@ -52,5 +56,9 @@ class UserDataSourceImpl(private val service: PreducationService) : UserDataSour
 
     override suspend fun performLogout(): UserLogoutResponse {
         return service.logout()
+    }
+
+    override suspend fun userForgotPassword(forgotPasswordRequest: ForgotPasswordRequest): ForgotPasswordResponse {
+        return service.userForgotPassword(forgotPasswordRequest)
     }
 }

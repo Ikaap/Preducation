@@ -3,10 +3,14 @@ package com.kelompoksatuandsatu.preducation.data.network.api.service
 import com.chuckerteam.chucker.api.ChuckerInterceptor
 import com.kelompoksatuandsatu.preducation.BuildConfig
 import com.kelompoksatuandsatu.preducation.data.network.api.interceptor.AuthInterceptor
+import com.kelompoksatuandsatu.preducation.data.network.api.model.auth.forgotpassword.ForgotPasswordRequest
+import com.kelompoksatuandsatu.preducation.data.network.api.model.auth.forgotpassword.ForgotPasswordResponse
 import com.kelompoksatuandsatu.preducation.data.network.api.model.auth.login.LoginRequest
 import com.kelompoksatuandsatu.preducation.data.network.api.model.auth.login.LoginResponse
-import com.kelompoksatuandsatu.preducation.data.network.api.model.auth.otp.OtpRequest
-import com.kelompoksatuandsatu.preducation.data.network.api.model.auth.otp.OtpResponse
+import com.kelompoksatuandsatu.preducation.data.network.api.model.auth.otp.postemail.EmailOtpRequest
+import com.kelompoksatuandsatu.preducation.data.network.api.model.auth.otp.postemail.EmailOtpResponse
+import com.kelompoksatuandsatu.preducation.data.network.api.model.auth.otp.verifyotp.OtpRequest
+import com.kelompoksatuandsatu.preducation.data.network.api.model.auth.otp.verifyotp.OtpResponse
 import com.kelompoksatuandsatu.preducation.data.network.api.model.auth.register.RegisterRequest
 import com.kelompoksatuandsatu.preducation.data.network.api.model.auth.register.RegisterResponse
 import com.kelompoksatuandsatu.preducation.data.network.api.model.category.categoriesprogress.CategoriesProgressResponse
@@ -45,10 +49,6 @@ interface PreducationService {
 
     @GET("api/v1/courses")
     suspend fun getCourseHome(@Query("category") category: String? = null): CourseResponse
-
-    // post otp
-    @POST("api/v1/auths/email-otp")
-    suspend fun getOtpToEmail(@Body email: OtpRequest): OtpResponse
 
     // notification
     @GET("api/v1/notifications")
@@ -95,14 +95,22 @@ interface PreducationService {
     @POST("api/v1/auths/register")
     suspend fun userRegister(@Body userRegisterRequest: RegisterRequest): RegisterResponse
 
+    // post email for otp
+    @POST("api/v1/auths/email-otp")
+    suspend fun postEmailOtp(@Body emailOtpRequest: EmailOtpRequest): EmailOtpResponse
+
+    @POST("api/v1/auths/email-otp")
+    suspend fun verifyOtp(@Body otpRequest: OtpRequest): OtpResponse
+
     @POST("api/v1/auths/login")
     suspend fun userLogin(@Body userLoginRequest: LoginRequest): LoginResponse
 
     @DELETE("api/v1/auths/logout")
     suspend fun logout(): UserLogoutResponse
 
-    // @POST("api/v1/auths/forgot-password")
-    // suspend fun userForgotPassword(@Body userForgotPassword: UserForgotPasswordRequest)//:UserForgotPasswordResponse
+    @POST("api/v1/auths/forgot-password")
+    suspend fun userForgotPassword(@Body userForgotPassword: ForgotPasswordRequest): ForgotPasswordResponse
+
     // @POST("api/v1/auths/email-otp")
     // suspend fun userPostOtp(@Body userForgotPassword: UserForgotPasswordRequest)//:UserForgotPasswordResponse
 
