@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.kelompoksatuandsatu.preducation.R
 import com.kelompoksatuandsatu.preducation.data.local.datastore.datasource.UserPreferenceDataSource
 import com.kelompoksatuandsatu.preducation.data.repository.CourseRepository
 import com.kelompoksatuandsatu.preducation.model.category.categoryprogress.CategoryType
@@ -14,7 +15,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class CourseViewModel(
-    val repositoryCourse: CourseRepository,
+    private val repositoryCourse: CourseRepository,
     private val assetsWrapper: AssetWrapper,
     private val userPreferenceDataSource: UserPreferenceDataSource
 ) : ViewModel() {
@@ -23,10 +24,10 @@ class CourseViewModel(
     val course: LiveData<ResultWrapper<List<CourseViewParam>>>
         get() = _course
 
-    fun getCourse(category: String? = null) {
+    fun getCourseTopic(typeClass: String? = null) {
         viewModelScope.launch(Dispatchers.IO) {
 //            repositoryCourse.getCourseHome(if (category == assetsWrapper.getString(R.string.all))null else category?.lowercase())
-            repositoryCourse.getCourseHome(category?.lowercase())
+            repositoryCourse.getCourseTopic(if (typeClass == assetsWrapper.getString(R.string.all))null else typeClass?.lowercase())
                 .collect {
                     _course.postValue(it)
                 }

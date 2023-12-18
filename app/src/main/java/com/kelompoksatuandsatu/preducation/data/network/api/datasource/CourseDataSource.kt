@@ -15,10 +15,12 @@ import com.kelompoksatuandsatu.preducation.data.network.api.service.PreducationS
 interface CourseDataSource {
     suspend fun getCategoriesClass(): CategoriesClassResponse
     suspend fun getCourseHome(category: String? = null): CourseResponse
+
+    suspend fun getCourseTopic(typeClass: String? = null): CourseResponse
     suspend fun getCourseById(id: String): DetailCourseResponse
-    suspend fun getCourseUserProgress(category: String? = null): CourseProgressResponse
-    suspend fun getCategoriesProgress(category: String? = null): CategoriesProgressResponse
-    suspend fun getCategoriesTypeClass(category: String? = null): CategoriesTypeClassResponse
+    suspend fun getCourseUserProgress(status: String? = null): CourseProgressResponse
+    suspend fun getCategoriesProgress(): CategoriesProgressResponse
+    suspend fun getCategoriesTypeClass(): CategoriesTypeClassResponse
     suspend fun postIndexCourseById(id: String, progressRequest: ProgressCourseRequest): ProgressCourseResponse
 
     suspend fun paymentCourse(paymentCourseRequest: PaymentCourseRequest): PaymentCourseResponse
@@ -34,19 +36,23 @@ class CourseDataSourceImpl(
         return service.getCourseHome(category)
     }
 
+    override suspend fun getCourseTopic(typeClass: String?): CourseResponse {
+        return service.getCourseTopic(typeClass)
+    }
+
     override suspend fun paymentCourse(paymentCourseRequest: PaymentCourseRequest): PaymentCourseResponse {
         return service.paymentCourse(paymentCourseRequest)
     }
 
-    override suspend fun getCourseUserProgress(category: String?): CourseProgressResponse {
-        return service.getCourseUserProgress(category)
+    override suspend fun getCourseUserProgress(status: String?): CourseProgressResponse {
+        return service.getCourseUserProgress(status)
     }
 
-    override suspend fun getCategoriesProgress(category: String?): CategoriesProgressResponse {
+    override suspend fun getCategoriesProgress(): CategoriesProgressResponse {
         return service.getCategoriesProgress()
     }
 
-    override suspend fun getCategoriesTypeClass(category: String?): CategoriesTypeClassResponse {
+    override suspend fun getCategoriesTypeClass(): CategoriesTypeClassResponse {
         return service.getCategoriesTypeClass()
     }
 

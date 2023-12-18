@@ -34,7 +34,7 @@ class ProgressClassFragment : Fragment() {
 
     private val categoryCourseAdapter: CategoryCourseListAdapter by lazy {
         CategoryCourseListAdapter {
-            viewModel.getCourseProgress(it.name)
+//            viewModel.getCourseProgress(it.name)
         }
     }
 
@@ -50,7 +50,7 @@ class ProgressClassFragment : Fragment() {
                 if (!isLogin) {
                     showDialog()
                 } else {
-                    navigateToDetail(it)
+                    navigateCourseProgressToDetail(it)
                 }
             }
         }
@@ -71,7 +71,7 @@ class ProgressClassFragment : Fragment() {
         }
     }
 
-    private fun navigateToDetail(course: CourseProgressItemClass) {
+    private fun navigateCourseProgressToDetail(course: CourseProgressItemClass) {
         DetailClassActivity.startActivityProgress(requireContext(), course)
     }
 
