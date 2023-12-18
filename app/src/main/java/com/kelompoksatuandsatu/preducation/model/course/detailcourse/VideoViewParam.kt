@@ -9,5 +9,7 @@ data class VideoViewParam(
     val id: String?,
     val index: Int,
     val title: String?,
-    val videoUrl: String?
+    val videoUrl: String?,
+    val isWatch: Boolean?,
+    val nextVideo: Boolean?
 ) : Parcelable

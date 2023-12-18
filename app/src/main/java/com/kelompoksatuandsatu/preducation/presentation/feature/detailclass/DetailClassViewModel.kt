@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kelompoksatuandsatu.preducation.data.repository.CourseRepository
 import com.kelompoksatuandsatu.preducation.model.course.detailcourse.DetailCourseViewParam
+import com.kelompoksatuandsatu.preducation.model.course.detailcourse.VideoViewParam
 import com.kelompoksatuandsatu.preducation.utils.ResultWrapper
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -18,8 +19,12 @@ class DetailClassViewModel(
         get() = _detailCourse
 
     private val _progressVideo = MutableLiveData<ResultWrapper<Boolean>>()
-    val progressVideo: LiveData<ResultWrapper<Boolean>>
-        get() = _progressVideo
+
+//    val progressVideo: LiveData<ResultWrapper<Boolean>>
+//        get() = _progressVideo
+
+    private val _selectedVideoId = MutableLiveData<String>()
+    val selectedVideoId: LiveData<String> get() = _selectedVideoId
 
     fun getCourseById(courseId: String) {
         viewModelScope.launch(Dispatchers.IO) {
@@ -29,7 +34,7 @@ class DetailClassViewModel(
         }
     }
 
-    fun postIndexVideo(index: Int) {
+    fun postIndexVideo(index: VideoViewParam) {
         viewModelScope.launch(Dispatchers.IO) {
             val id = detailCourse.value?.payload?.id
             id?.let {
@@ -37,6 +42,28 @@ class DetailClassViewModel(
                     _progressVideo.postValue(it)
                 }
             }
+        }
+    }
+
+    fun onVideoItemClick(videoId: String) {
+        _selectedVideoId.postValue(videoId)
+    }
+
+    private val _selectedVideoIndex = MutableLiveData<Int>()
+    val selectedVideoIndex: LiveData<Int>
+        get() = _selectedVideoIndex
+
+    fun getNextVideoId(): String? {
+        val listVideo = detailCourse.value?.payload?.chapters?.flatMap { it.videos ?: emptyList() }
+        val video = listVideo?.map { it.videoUrl.orEmpty() } ?: emptyList()
+
+        val nextIndex = selectedVideoIndex.value?.plus(1) ?: 1
+
+        return if (nextIndex < video.size) {
+            _selectedVideoIndex.postValue(nextIndex)
+            video[nextIndex]
+        } else {
+            null
         }
     }
 }
