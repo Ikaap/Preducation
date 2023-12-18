@@ -61,7 +61,7 @@ class ProfileFragment : Fragment() {
         AlertDialog.Builder(requireContext())
             .setMessage(getString(R.string.text_logout_dialog)) // Using getString directly
             .setPositiveButton(getString(R.string.text_yes)) { _, _ ->
-                viewModel.performLogout()
+                //viewModel.performLogout()
                 navigateToLogin()
             }
             .setNegativeButton(getString(R.string.text_no)) { _, _ ->
