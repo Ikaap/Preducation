@@ -3,18 +3,6 @@ package com.kelompoksatuandsatu.preducation.model.progress
 import com.kelompoksatuandsatu.preducation.data.network.api.model.progress.courseprogress.CourseId
 
 data class CourseProgressItemClass(
-//    val durationCourse: Int?,
-//    val thumbnail: String?,
-//    val levelCourse: String?,
-//    val ratingCourse: Int?,
-//    val titleCourse: String?,
-//    val moduleCourse: Int?,
-//    val priceCourse: Int?,
-//    val type: String?,
-//    val id: String?,
-//    val nameCategoryPopular: String?,
-//    val progress: Int?,
-//    val statusPayment: String?
 
     val createdAt: String?,
 
