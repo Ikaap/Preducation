@@ -46,10 +46,7 @@ interface UserRepository {
     suspend fun userForgotPassword(request: UserForgotPassword): Flow<ResultWrapper<Boolean>>
 }
 
-class UserRepositoryImpl(
-    private val userDataSource: UserDataSource,
-    private val userPreferenceDataSource: UserPreferenceDataSource
-) : UserRepository {
+class UserRepositoryImpl(private val userDataSource: UserDataSource, private val userPreferenceDataSource: UserPreferenceDataSource) : UserRepository {
 
     override suspend fun getUserById(id: String?): Flow<ResultWrapper<UserViewParam>> {
         return proceedFlow {
