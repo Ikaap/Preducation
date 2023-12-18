@@ -88,7 +88,7 @@ interface PreducationService {
     @PATCH("api/v1/users/update-password/{id}")
     suspend fun updateUserPassword(@Path("id") id: String? = null, @Body changePasswordRequest: ChangePasswordRequest): ChangePasswordResponse
 
-    @GET("api/v1/payments")
+    // @GET("api/v1/payments")
     // suspend fun getHistoryPayment()//: HistoryPaymentResponse
 
     //     auth
