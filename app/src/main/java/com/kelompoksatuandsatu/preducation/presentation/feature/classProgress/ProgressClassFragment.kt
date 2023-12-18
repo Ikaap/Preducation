@@ -34,7 +34,7 @@ class ProgressClassFragment : Fragment() {
 
     private val categoryCourseAdapter: CategoryCourseListAdapter by lazy {
         CategoryCourseListAdapter {
-//            viewModel.getCourseProgress(it.name)
+            viewModel.getCourseProgress(it.name)
         }
     }
 
