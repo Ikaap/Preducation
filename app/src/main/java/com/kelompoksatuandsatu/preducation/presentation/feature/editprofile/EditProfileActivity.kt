@@ -17,7 +17,6 @@ import com.google.android.material.textfield.TextInputLayout
 import com.kelompoksatuandsatu.preducation.R
 import com.kelompoksatuandsatu.preducation.data.network.api.model.user.UserRequest
 import com.kelompoksatuandsatu.preducation.databinding.ActivityEditProfileBinding
-import com.kelompoksatuandsatu.preducation.model.UserViewParam
 import com.kelompoksatuandsatu.preducation.utils.proceedWhen
 import io.github.muddz.styleabletoast.StyleableToast
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -49,6 +48,7 @@ class EditProfileActivity : AppCompatActivity() {
         }
 
         binding.clButtonChange.setOnClickListener {
+            val userId = intent.getStringExtra("USER_ID")
             if (isFormValid()) {
                 changeProfileData(userId.orEmpty())
             } else {
@@ -112,6 +112,11 @@ class EditProfileActivity : AppCompatActivity() {
         }
     }
 
+    private fun getData() {
+        viewModel.getUserById()
+    }
+
+
     private fun imagePicker() {
         ImagePicker.with(this)
             .cropSquare()
@@ -148,9 +153,9 @@ class EditProfileActivity : AppCompatActivity() {
     }
 
     private fun showUpdateProfile() {
-        val idUser = intent.getStringExtra("EXTRA_USER_ID")
+        val idUser = intent.getStringExtra("USER_ID")
         idUser?.let {
-            viewModel.getUserById(it)
+            viewModel.getUserById()
         }
     }
 
@@ -323,11 +328,8 @@ class EditProfileActivity : AppCompatActivity() {
     }
 
     companion object {
-        const val EXTRA_USER_ID = "EXTRA_USER_ID"
-        fun startActivity(context: Context, user: UserViewParam) {
-            val id = user._id
+        fun startActivity(context: Context) {
             val intent = Intent(context, EditProfileActivity::class.java)
-            intent.putExtra(EXTRA_USER_ID, id)
             context.startActivity(intent)
         }
     }
