@@ -3,6 +3,8 @@ package com.kelompoksatuandsatu.preducation.data.network.api.service
 import com.chuckerteam.chucker.api.ChuckerInterceptor
 import com.kelompoksatuandsatu.preducation.BuildConfig
 import com.kelompoksatuandsatu.preducation.data.network.api.interceptor.AuthInterceptor
+import com.kelompoksatuandsatu.preducation.data.network.api.model.auth.forgotpassword.ForgotPasswordRequest
+import com.kelompoksatuandsatu.preducation.data.network.api.model.auth.forgotpassword.ForgotPasswordResponse
 import com.kelompoksatuandsatu.preducation.data.network.api.model.auth.login.LoginRequest
 import com.kelompoksatuandsatu.preducation.data.network.api.model.auth.login.LoginResponse
 import com.kelompoksatuandsatu.preducation.data.network.api.model.auth.otp.OtpRequest
@@ -101,8 +103,9 @@ interface PreducationService {
     @DELETE("api/v1/auths/logout")
     suspend fun logout(): UserLogoutResponse
 
-    // @POST("api/v1/auths/forgot-password")
-    // suspend fun userForgotPassword(@Body userForgotPassword: UserForgotPasswordRequest)//:UserForgotPasswordResponse
+    @POST("api/v1/auths/forgot-password")
+    suspend fun userForgotPassword(@Body userForgotPassword: ForgotPasswordRequest): ForgotPasswordResponse
+
     // @POST("api/v1/auths/email-otp")
     // suspend fun userPostOtp(@Body userForgotPassword: UserForgotPasswordRequest)//:UserForgotPasswordResponse
 

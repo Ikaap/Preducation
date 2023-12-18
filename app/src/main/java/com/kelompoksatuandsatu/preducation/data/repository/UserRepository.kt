@@ -2,6 +2,7 @@ package com.kelompoksatuandsatu.preducation.data.repository
 
 import com.kelompoksatuandsatu.preducation.data.local.datastore.datasource.UserPreferenceDataSource
 import com.kelompoksatuandsatu.preducation.data.network.api.datasource.UserDataSource
+import com.kelompoksatuandsatu.preducation.data.network.api.model.auth.forgotpassword.ForgotPasswordRequest
 import com.kelompoksatuandsatu.preducation.data.network.api.model.auth.login.LoginRequest
 import com.kelompoksatuandsatu.preducation.data.network.api.model.auth.otp.OtpRequest
 import com.kelompoksatuandsatu.preducation.data.network.api.model.auth.register.RegisterRequest
@@ -12,6 +13,7 @@ import com.kelompoksatuandsatu.preducation.data.network.api.model.user.toUserVie
 import com.kelompoksatuandsatu.preducation.model.auth.OtpData
 import com.kelompoksatuandsatu.preducation.model.auth.UserAuth
 import com.kelompoksatuandsatu.preducation.model.auth.UserLogin
+import com.kelompoksatuandsatu.preducation.model.auth.forgotpassword.UserForgotPassword
 import com.kelompoksatuandsatu.preducation.model.user.Password
 import com.kelompoksatuandsatu.preducation.model.user.UserViewParam
 import com.kelompoksatuandsatu.preducation.utils.ResultWrapper
@@ -34,6 +36,8 @@ interface UserRepository {
     suspend fun userLogin(request: UserLogin): Flow<ResultWrapper<Boolean>>
 
     suspend fun userOtp(request: OtpData): Flow<ResultWrapper<Boolean>>
+
+    suspend fun userForgotPassword(request: UserForgotPassword): Flow<ResultWrapper<Boolean>>
 }
 
 class UserRepositoryImpl(private val userDataSource: UserDataSource, private val userPreferenceDataSource: UserPreferenceDataSource) : UserRepository {
@@ -90,6 +94,14 @@ class UserRepositoryImpl(private val userDataSource: UserDataSource, private val
             val otpRequest = OtpRequest(request.email)
             val otpResult = userDataSource.userOtp(otpRequest)
             otpResult.success == true
+        }
+    }
+
+    override suspend fun userForgotPassword(request: UserForgotPassword): Flow<ResultWrapper<Boolean>> {
+        return proceedFlow {
+            val dataRequest = ForgotPasswordRequest(request.email)
+            val forgotPasswordResult = userDataSource.userForgotPassword(dataRequest)
+            forgotPasswordResult.success
         }
     }
 }
