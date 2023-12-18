@@ -3,7 +3,9 @@ package com.kelompoksatuandsatu.preducation.data.repository
 import com.kelompoksatuandsatu.preducation.data.local.datastore.datasource.UserPreferenceDataSource
 import com.kelompoksatuandsatu.preducation.data.network.api.datasource.UserDataSource
 import com.kelompoksatuandsatu.preducation.data.network.api.model.auth.login.LoginRequest
+import com.kelompoksatuandsatu.preducation.data.network.api.model.auth.otp.OtpRequest
 import com.kelompoksatuandsatu.preducation.data.network.api.model.auth.register.RegisterRequest
+import com.kelompoksatuandsatu.preducation.model.auth.OtpData
 import com.kelompoksatuandsatu.preducation.model.auth.UserAuth
 import com.kelompoksatuandsatu.preducation.model.auth.UserLogin
 import com.kelompoksatuandsatu.preducation.utils.ResultWrapper
@@ -15,6 +17,8 @@ interface UserRepository {
     suspend fun userRegister(request: UserAuth): Flow<ResultWrapper<String>>
 
     suspend fun userLogin(request: UserLogin): Flow<ResultWrapper<Boolean>>
+
+    suspend fun userOtp(request: OtpData): Flow<ResultWrapper<Boolean>>
 }
 
 class UserRepositoryImpl(
@@ -37,6 +41,14 @@ class UserRepositoryImpl(
                 userPreferenceDataSource.saveUserToken(loginResult.data.accessToken)
             }
             loginResult.success
+        }
+    }
+
+    override suspend fun userOtp(request: OtpData): Flow<ResultWrapper<Boolean>> {
+        return proceedFlow {
+            val otpRequest = OtpRequest(request.email)
+            val otpResult = dataSource.userOtp(otpRequest)
+            otpResult.success == true
         }
     }
 }
