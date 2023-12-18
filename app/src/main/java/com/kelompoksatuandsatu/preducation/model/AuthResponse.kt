@@ -23,3 +23,7 @@ data class RegisterData(
     val phone: String,
     val role: String
 )
+
+data class OtpData(
+    val email: String
+)

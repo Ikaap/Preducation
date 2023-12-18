@@ -18,6 +18,7 @@ import com.kelompoksatuandsatu.preducation.presentation.feature.detailclass.Deta
 import com.kelompoksatuandsatu.preducation.presentation.feature.home.HomeViewModel
 import com.kelompoksatuandsatu.preducation.presentation.feature.home.SeeAllViewModel
 import com.kelompoksatuandsatu.preducation.presentation.feature.login.LoginViewModel
+import com.kelompoksatuandsatu.preducation.presentation.feature.otp.OtpViewModel
 import com.kelompoksatuandsatu.preducation.presentation.feature.register.RegisterViewModel
 import com.kelompoksatuandsatu.preducation.utils.PreferenceDataStoreHelper
 import com.kelompoksatuandsatu.preducation.utils.PreferenceDataStoreHelperImpl
@@ -56,6 +57,7 @@ object AppModules {
         viewModelOf(::DetailClassViewModel)
         viewModelOf(::RegisterViewModel)
         viewModelOf(::LoginViewModel)
+        viewModelOf(::OtpViewModel)
     }
 
     val modules: List<Module> = listOf(
