@@ -4,16 +4,16 @@ import com.kelompoksatuandsatu.preducation.data.local.datastore.datasource.UserP
 import com.kelompoksatuandsatu.preducation.data.network.api.datasource.UserDataSource
 import com.kelompoksatuandsatu.preducation.data.network.api.model.auth.forgotpassword.ForgotPasswordRequest
 import com.kelompoksatuandsatu.preducation.data.network.api.model.auth.login.LoginRequest
-import com.kelompoksatuandsatu.preducation.data.network.api.model.auth.otp.OtpRequest
+import com.kelompoksatuandsatu.preducation.data.network.api.model.auth.otp.postemail.EmailOtpRequest
 import com.kelompoksatuandsatu.preducation.data.network.api.model.auth.register.RegisterRequest
 import com.kelompoksatuandsatu.preducation.data.network.api.model.changepassword.ChangePasswordRequest
 import com.kelompoksatuandsatu.preducation.data.network.api.model.changepassword.toPasswordList
 import com.kelompoksatuandsatu.preducation.data.network.api.model.user.UserRequest
 import com.kelompoksatuandsatu.preducation.data.network.api.model.user.toUserList
-import com.kelompoksatuandsatu.preducation.model.auth.OtpData
 import com.kelompoksatuandsatu.preducation.model.auth.UserAuth
 import com.kelompoksatuandsatu.preducation.model.auth.UserLogin
 import com.kelompoksatuandsatu.preducation.model.auth.forgotpassword.UserForgotPassword
+import com.kelompoksatuandsatu.preducation.model.auth.otp.postemailotp.EmailOtp
 import com.kelompoksatuandsatu.preducation.model.user.Password
 import com.kelompoksatuandsatu.preducation.model.user.UserViewParam
 import com.kelompoksatuandsatu.preducation.utils.ResultWrapper
@@ -35,7 +35,7 @@ interface UserRepository {
 
     suspend fun userLogin(request: UserLogin): Flow<ResultWrapper<Boolean>>
 
-    suspend fun userOtp(request: OtpData): Flow<ResultWrapper<Boolean>>
+    suspend fun postEmailOtp(request: EmailOtp): Flow<ResultWrapper<Boolean>>
 
     suspend fun userForgotPassword(request: UserForgotPassword): Flow<ResultWrapper<Boolean>>
 }
@@ -92,11 +92,11 @@ class UserRepositoryImpl(
         }
     }
 
-    override suspend fun userOtp(request: OtpData): Flow<ResultWrapper<Boolean>> {
+    override suspend fun postEmailOtp(request: EmailOtp): Flow<ResultWrapper<Boolean>> {
         return proceedFlow {
-            val otpRequest = OtpRequest(request.email)
-            val otpResult = userDataSource.userOtp(otpRequest)
-            otpResult.success == true
+            val emailRequest = EmailOtpRequest(request.email)
+            val emailResult = userDataSource.postEmailOtp(emailRequest)
+            emailResult.success == true
         }
     }
 

@@ -7,8 +7,10 @@ import com.kelompoksatuandsatu.preducation.data.network.api.model.auth.forgotpas
 import com.kelompoksatuandsatu.preducation.data.network.api.model.auth.forgotpassword.ForgotPasswordResponse
 import com.kelompoksatuandsatu.preducation.data.network.api.model.auth.login.LoginRequest
 import com.kelompoksatuandsatu.preducation.data.network.api.model.auth.login.LoginResponse
-import com.kelompoksatuandsatu.preducation.data.network.api.model.auth.otp.OtpRequest
-import com.kelompoksatuandsatu.preducation.data.network.api.model.auth.otp.OtpResponse
+import com.kelompoksatuandsatu.preducation.data.network.api.model.auth.otp.postemail.EmailOtpRequest
+import com.kelompoksatuandsatu.preducation.data.network.api.model.auth.otp.postemail.EmailOtpResponse
+import com.kelompoksatuandsatu.preducation.data.network.api.model.auth.otp.verifyotp.OtpRequest
+import com.kelompoksatuandsatu.preducation.data.network.api.model.auth.otp.verifyotp.OtpResponse
 import com.kelompoksatuandsatu.preducation.data.network.api.model.auth.register.RegisterRequest
 import com.kelompoksatuandsatu.preducation.data.network.api.model.auth.register.RegisterResponse
 import com.kelompoksatuandsatu.preducation.data.network.api.model.category.categoriesprogress.CategoriesProgressResponse
@@ -47,10 +49,6 @@ interface PreducationService {
 
     @GET("api/v1/courses")
     suspend fun getCourseHome(@Query("category") category: String? = null): CourseResponse
-
-    // post otp
-    @POST("api/v1/auths/email-otp")
-    suspend fun getOtpToEmail(@Body email: OtpRequest): OtpResponse
 
     // notification
     @GET("api/v1/notifications")
@@ -96,6 +94,13 @@ interface PreducationService {
     //     auth
     @POST("api/v1/auths/register")
     suspend fun userRegister(@Body userRegisterRequest: RegisterRequest): RegisterResponse
+
+    // post email for otp
+    @POST("api/v1/auths/email-otp")
+    suspend fun postEmailOtp(@Body emailOtpRequest: EmailOtpRequest): EmailOtpResponse
+
+    @POST("api/v1/auths/email-otp")
+    suspend fun verifyOtp(@Body otpRequest: OtpRequest): OtpResponse
 
     @POST("api/v1/auths/login")
     suspend fun userLogin(@Body userLoginRequest: LoginRequest): LoginResponse
