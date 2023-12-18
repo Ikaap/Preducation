@@ -35,7 +35,10 @@ class CourseCardListAdapter(
         }
     )
 
+    private var originalList: List<CourseViewParam> = emptyList()
+
     fun setData(data: List<CourseViewParam>) {
+        originalList = data
         dataDiffer.submitList(data)
         notifyItemChanged(0, data.size)
     }
@@ -64,11 +67,11 @@ class CourseCardListAdapter(
 
     fun filter(query: CharSequence?) {
         val filteredList = if (query.isNullOrBlank()) {
-            dataDiffer.currentList
+            originalList
         } else {
-            dataDiffer.currentList.filter { course ->
-                course.title?.toLowerCase(Locale.getDefault())
-                    ?.contains(query.toString().toLowerCase(Locale.getDefault())) == true
+            val lowercaseQuery = query.toString().replace("\\s+".toRegex(), "").toLowerCase(Locale.getDefault())
+            originalList.filter { course ->
+                course.title?.replace("\\s+".toRegex(), "")?.toLowerCase(Locale.getDefault())?.contains(lowercaseQuery) == true
             }
         }
         dataDiffer.submitList(filteredList)
