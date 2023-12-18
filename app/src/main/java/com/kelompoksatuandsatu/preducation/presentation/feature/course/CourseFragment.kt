@@ -45,7 +45,7 @@ class CourseFragment : Fragment() {
 
     private val categoryTypeClassAdapter: CategoryRoundedCourseListAdapter by lazy {
         CategoryRoundedCourseListAdapter(viewModel) {
-            viewModel.getCourse(it.nameCategory.lowercase())
+            viewModel.getCourseTopic(it.nameCategory.lowercase())
         }
     }
 
@@ -180,7 +180,7 @@ class CourseFragment : Fragment() {
     }
 
     private fun fetchData() {
-        viewModel.getCourse()
+        viewModel.getCourseTopic()
         viewModel.getCategoriesTypeClass()
         viewModel.checkLogin()
     }

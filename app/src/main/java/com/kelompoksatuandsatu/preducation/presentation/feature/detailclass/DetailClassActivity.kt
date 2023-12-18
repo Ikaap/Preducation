@@ -378,7 +378,7 @@ class DetailClassActivity : AppCompatActivity() {
         }
 
         fun startActivityProgress(context: Context, course: CourseProgressItemClass) {
-            val id = course.id
+            val id = course.courseId?.id
             val intent = Intent(context, DetailClassActivity::class.java)
             intent.putExtra(EXTRA_COURSE_ID, id)
             context.startActivity(intent)

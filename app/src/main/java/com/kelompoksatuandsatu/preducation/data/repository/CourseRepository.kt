@@ -29,10 +29,11 @@ interface CourseRepository {
     fun getCategoriesClass(): Flow<ResultWrapper<List<CategoryClass>>>
     fun getCourseHome(category: String? = null): Flow<ResultWrapper<List<CourseViewParam>>>
 
+    fun getCourseTopic(typeClass: String?): Flow<ResultWrapper<List<CourseViewParam>>>
     suspend fun postIndexCourseById(id: String, request: VideoViewParam): Flow<ResultWrapper<Boolean>>
     fun getCategoriesProgress(): Flow<ResultWrapper<List<CategoryType>>>
     fun getCategoriesTypeClass(): Flow<ResultWrapper<List<CategoryType>>>
-    fun getCourseUserProgress(category: String? = null): Flow<ResultWrapper<List<CourseProgressItemClass>>>
+    fun getCourseUserProgress(status: String? = null): Flow<ResultWrapper<List<CourseProgressItemClass>>>
     suspend fun paymentCourse(item: DetailCourseViewParam): Flow<ResultWrapper<PaymentResponseViewParam>>
     fun getCourseById(id: String): Flow<ResultWrapper<DetailCourseViewParam>>
 }
@@ -60,6 +61,23 @@ class CourseRepositoryImpl(
     override fun getCourseHome(category: String?): Flow<ResultWrapper<List<CourseViewParam>>> {
         return proceedFlow {
             apiDataSource.getCourseHome(category).data?.toCourseList() ?: emptyList()
+        }.map {
+            if (it.payload?.isEmpty() == true) {
+                ResultWrapper.Empty(it.payload)
+            } else {
+                it
+            }
+        }.catch {
+            emit(ResultWrapper.Error(Exception(it)))
+        }.onStart {
+            emit(ResultWrapper.Loading())
+            delay(3000)
+        }
+    }
+
+    override fun getCourseTopic(typeClass: String?): Flow<ResultWrapper<List<CourseViewParam>>> {
+        return proceedFlow {
+            apiDataSource.getCourseTopic(typeClass).data?.toCourseList() ?: emptyList()
         }.map {
             if (it.payload?.isEmpty() == true) {
                 ResultWrapper.Empty(it.payload)
@@ -111,9 +129,9 @@ class CourseRepositoryImpl(
         }
     }
 
-    override fun getCourseUserProgress(category: String?): Flow<ResultWrapper<List<CourseProgressItemClass>>> {
+    override fun getCourseUserProgress(status: String?): Flow<ResultWrapper<List<CourseProgressItemClass>>> {
         return proceedFlow {
-            apiDataSource.getCourseUserProgress(category).data?.toCourseProgressList() ?: emptyList()
+            apiDataSource.getCourseUserProgress(status).data?.toCourseProgressList() ?: emptyList()
         }
     }
 
