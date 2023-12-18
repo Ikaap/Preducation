@@ -31,13 +31,16 @@ android {
             )
         }
     }
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
     }
+
     kotlinOptions {
         jvmTarget = "17"
     }
+
     buildFeatures {
         viewBinding = true
         buildConfig = true
@@ -72,11 +75,11 @@ ktlint {
 }
 
 dependencies {
-
     implementation("androidx.core:core-ktx:1.9.0")
     implementation("androidx.appcompat:appcompat:1.6.1")
     implementation("com.google.android.material:material:1.10.0")
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
+    implementation("com.google.android.gms:play-services-cast-framework:21.4.0")
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
@@ -86,6 +89,9 @@ dependencies {
 
     // otp toast
     implementation("io.github.muddz:styleabletoast:2.4.0")
+
+    // progressbar
+    implementation("com.github.MackHartley:RoundedProgressBar:3.0.0")
 
     // coil
     implementation("io.coil-kt:coil:2.4.0")
@@ -116,6 +122,7 @@ dependencies {
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
     implementation("com.squareup.retrofit2:converter-gson:2.9.0")
     implementation("com.squareup.okhttp3:okhttp:4.11.0")
+    implementation("com.squareup.okhttp3:logging-interceptor:4.9.0")
     // chucker
     debugImplementation("com.github.chuckerteam.chucker:library:4.0.0")
     releaseImplementation("com.github.chuckerteam.chucker:library-no-op:4.0.0")
@@ -143,4 +150,10 @@ dependencies {
 
     // shimmer
     implementation("com.facebook.shimmer:shimmer:0.5.0")
+
+    // toast
+    implementation("io.github.muddz:styleabletoast:2.4.0")
+
+    // image picker
+    implementation("com.github.dhaval2404:imagepicker:2.1")
 }

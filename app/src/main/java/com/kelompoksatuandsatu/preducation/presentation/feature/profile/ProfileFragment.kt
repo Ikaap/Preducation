@@ -1,32 +1,35 @@
 package com.kelompoksatuandsatu.preducation.presentation.feature.profile
 
-import android.app.Activity
 import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
+import com.kelompoksatuandsatu.preducation.R
 import com.kelompoksatuandsatu.preducation.databinding.FragmentProfileBinding
 import com.kelompoksatuandsatu.preducation.presentation.feature.changepassword.ChangePasswordActivity
 import com.kelompoksatuandsatu.preducation.presentation.feature.editprofile.EditProfileActivity
 import com.kelompoksatuandsatu.preducation.presentation.feature.historypayment.TransactionActivity
 import com.kelompoksatuandsatu.preducation.presentation.feature.login.LoginActivity
-
+import org.koin.androidx.viewmodel.ext.android.viewModel
 class ProfileFragment : Fragment() {
 
-    private val IMAGE_PICK_REQUEST_CODE = 123
+    private lateinit var binding: FragmentProfileBinding
 
-    private var _binding: FragmentProfileBinding? = null
-    private val binding get() = _binding!!
+    private val viewModel: ProfileViewModel by viewModel()
+
+    private val RESULT_LOAD_IMG = 1
+
+    var userId: String = ""
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View {
-        _binding = FragmentProfileBinding.inflate(inflater, container, false)
+    ): View? {
+        binding = FragmentProfileBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -37,12 +40,7 @@ class ProfileFragment : Fragment() {
     }
 
     private fun setupClickListeners() {
-        binding.ivUserPhoto.setOnClickListener {
-            startImageUpload()
-        }
-
         binding.clEditProfile.setOnClickListener {
-            // Handle edit profile click
             startActivity(Intent(requireContext(), EditProfileActivity::class.java))
         }
 
@@ -51,7 +49,6 @@ class ProfileFragment : Fragment() {
         }
 
         binding.clPaymentHistory.setOnClickListener {
-            // Handle payment history click
             startActivity(Intent(requireContext(), TransactionActivity::class.java))
         }
 
@@ -60,45 +57,24 @@ class ProfileFragment : Fragment() {
         }
     }
 
-    private fun startImageUpload() {
-        // You might use an image picker library or open the device's image gallery
-        val imagePickerIntent = Intent(Intent.ACTION_PICK)
-        imagePickerIntent.type = "image/*"
-        startActivityForResult(imagePickerIntent, IMAGE_PICK_REQUEST_CODE)
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == IMAGE_PICK_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
-            val selectedImageUri: Uri? = data?.data
-            // Now, you can upload the selected image to your server or storage
-            uploadImage(selectedImageUri)
-        }
-    }
-
-    private fun uploadImage(imageUri: Uri?) {
-        // Implement the logic to upload the image to your server or storage
-        // For example, you might use Firebase Storage, AWS S3, or your own server API
-        // After a successful upload, you can update the user's profile picture
-        // For simplicity, let's just show a toast message here
-        showToast("Image uploaded successfully!")
-    }
-
-    private fun showToast(s: String) {
-        TODO("Not yet implemented")
-    }
-
     private fun performLogout() {
-        val intent = Intent(requireContext(), LoginActivity::class.java)
-        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        AlertDialog.Builder(requireContext())
+            .setMessage(getString(R.string.text_logout_dialog)) // Using getString directly
+            .setPositiveButton(getString(R.string.text_yes)) { _, _ ->
+                viewModel.performLogout()
+                navigateToLogin()
+            }
+            .setNegativeButton(getString(R.string.text_no)) { _, _ ->
+                // Handle negative button click if needed
+            }
+            .create()
+            .show()
+    }
+
+    private fun navigateToLogin() {
+        val intent = Intent(requireContext(), LoginActivity::class.java).apply {
+            flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+        }
         startActivity(intent)
-        requireActivity().finish()
     }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
-    }
-
-    // Add other functions for image upload, logout, etc., as needed
 }

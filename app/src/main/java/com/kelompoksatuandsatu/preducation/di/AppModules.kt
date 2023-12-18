@@ -18,14 +18,17 @@ import com.kelompoksatuandsatu.preducation.data.repository.NotificationRepositor
 import com.kelompoksatuandsatu.preducation.data.repository.NotificationRepositoryImpl
 import com.kelompoksatuandsatu.preducation.data.repository.UserRepository
 import com.kelompoksatuandsatu.preducation.data.repository.UserRepositoryImpl
+import com.kelompoksatuandsatu.preducation.presentation.feature.changepassword.ChangePasswordViewModel
 import com.kelompoksatuandsatu.preducation.presentation.feature.classProgress.ProgressClassViewModel
 import com.kelompoksatuandsatu.preducation.presentation.feature.course.CourseViewModel
 import com.kelompoksatuandsatu.preducation.presentation.feature.detailclass.DetailClassViewModel
+import com.kelompoksatuandsatu.preducation.presentation.feature.editprofile.EditProfileViewModel
 import com.kelompoksatuandsatu.preducation.presentation.feature.home.HomeViewModel
 import com.kelompoksatuandsatu.preducation.presentation.feature.login.LoginViewModel
 import com.kelompoksatuandsatu.preducation.presentation.feature.notifications.NotificationViewModel
 import com.kelompoksatuandsatu.preducation.presentation.feature.otp.OtpViewModel
 import com.kelompoksatuandsatu.preducation.presentation.feature.payment.PaymentViewModel
+import com.kelompoksatuandsatu.preducation.presentation.feature.profile.ProfileViewModel
 import com.kelompoksatuandsatu.preducation.presentation.feature.register.RegisterViewModel
 import com.kelompoksatuandsatu.preducation.utils.AssetWrapper
 import com.kelompoksatuandsatu.preducation.utils.PreferenceDataStoreHelper
@@ -72,6 +75,9 @@ object AppModules {
         viewModelOf(::ProgressClassViewModel)
         viewModelOf(::NotificationViewModel)
         viewModelOf(::OtpViewModel)
+        viewModelOf(::ProfileViewModel)
+        viewModelOf(::EditProfileViewModel)
+        viewModelOf(::ChangePasswordViewModel)
     }
 
     private val utilsModule = module {

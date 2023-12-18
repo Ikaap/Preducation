@@ -12,19 +12,25 @@ import com.kelompoksatuandsatu.preducation.data.network.api.model.auth.register.
 import com.kelompoksatuandsatu.preducation.data.network.api.model.category.categoriesprogress.CategoriesProgressResponse
 import com.kelompoksatuandsatu.preducation.data.network.api.model.category.categoryclass.CategoriesClassResponse
 import com.kelompoksatuandsatu.preducation.data.network.api.model.category.categorytypeclass.CategoriesTypeClassResponse
+import com.kelompoksatuandsatu.preducation.data.network.api.model.changepassword.ChangePasswordRequest
+import com.kelompoksatuandsatu.preducation.data.network.api.model.changepassword.ChangePasswordResponse
 import com.kelompoksatuandsatu.preducation.data.network.api.model.course.courseall.CourseResponse
 import com.kelompoksatuandsatu.preducation.data.network.api.model.course.detailcourse.DetailCourseResponse
 import com.kelompoksatuandsatu.preducation.data.network.api.model.course.detailcourse.progress.ProgressCourseResponse
+import com.kelompoksatuandsatu.preducation.data.network.api.model.logout.UserLogoutResponse
 import com.kelompoksatuandsatu.preducation.data.network.api.model.notification.NotificationResponse
 import com.kelompoksatuandsatu.preducation.data.network.api.model.payment.PaymentCourseRequest
 import com.kelompoksatuandsatu.preducation.data.network.api.model.payment.PaymentCourseResponse
 import com.kelompoksatuandsatu.preducation.data.network.api.model.progress.courseprogress.CourseProgressResponse
+import com.kelompoksatuandsatu.preducation.data.network.api.model.user.UserRequest
+import com.kelompoksatuandsatu.preducation.data.network.api.model.user.UserResponse
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.Body
 import retrofit2.http.DELETE
 import retrofit2.http.GET
+import retrofit2.http.PATCH
 import retrofit2.http.POST
 import retrofit2.http.Path
 import retrofit2.http.Query
@@ -58,7 +64,7 @@ interface PreducationService {
 
     // course
     @GET("api/v1/courses")
-    suspend fun getCourseTopic(@Query("typeClass") typeClass: String? = null) // : CourseResponse
+    suspend fun getCourseTopic(@Query("typeClass") typeClass: String? = null): CourseResponse
 
     // get all categories type class
     @GET("api/v1/categories/type-class")
@@ -73,14 +79,16 @@ interface PreducationService {
 
     // profile
     @GET("api/v1/users/{id}")
-    suspend fun getUserById(@Path("id") id: String? = null) // : UserResponseResponse
+    suspend fun getUserById(@Path("id") id: String? = null): UserResponse
 
-    // @PATCH("api/v1/users/{id}")
-    // suspend fun updateUserById(@Path("id") id: String? = null, @Body userRequest: UserRequest) //:UserResponseResponse
-    // @PATCH("api/v1/users/update-password/{id}")
-    // suspend fun updateUserPassword(@Path("id") id: String? = null, @Body changePasswordRequest: ChangePasswordRequest) //:ChangePasswordResponse
+    @PATCH("api/v1/users/{id}")
+    suspend fun updateUserById(@Path("id") id: String? = null, @Body userRequest: UserRequest): UserResponse
+
+    @PATCH("api/v1/users/update-password/{id}")
+    suspend fun updateUserPassword(@Path("id") id: String? = null, @Body changePasswordRequest: ChangePasswordRequest): ChangePasswordResponse
+
     @GET("api/v1/payments")
-    suspend fun getHistoryPayment() // : HistoryPaymentResponse
+    // suspend fun getHistoryPayment()//: HistoryPaymentResponse
 
     //     auth
     @POST("api/v1/auths/register")
@@ -90,7 +98,8 @@ interface PreducationService {
     suspend fun userLogin(@Body userLoginRequest: LoginRequest): LoginResponse
 
     @DELETE("api/v1/auths/logout")
-    suspend fun userLogout() // :UserLogoutResponse
+    suspend fun logout(): UserLogoutResponse
+
     // @POST("api/v1/auths/forgot-password")
     // suspend fun userForgotPassword(@Body userForgotPassword: UserForgotPasswordRequest)//:UserForgotPasswordResponse
     // @POST("api/v1/auths/email-otp")
