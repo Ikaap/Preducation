@@ -4,21 +4,18 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
-import androidx.lifecycle.lifecycleScope
 import com.kelompoksatuandsatu.preducation.R
 import com.kelompoksatuandsatu.preducation.databinding.ActivityOtpBinding
 import com.kelompoksatuandsatu.preducation.presentation.feature.main.MainActivity
-import com.kelompoksatuandsatu.preducation.utils.ResultWrapper
 import com.kelompoksatuandsatu.preducation.utils.proceedWhen
 import com.otpview.OTPListener
 import com.otpview.OTPTextView
 import io.github.muddz.styleabletoast.StyleableToast
-import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class OtpActivity : AppCompatActivity() {
 
-    private val binding : ActivityOtpBinding by lazy {
+    private val binding: ActivityOtpBinding by lazy {
         ActivityOtpBinding.inflate(layoutInflater)
     }
     private val viewModel: OtpViewModel by viewModel()

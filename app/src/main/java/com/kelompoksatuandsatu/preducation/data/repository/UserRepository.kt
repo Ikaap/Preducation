@@ -5,7 +5,7 @@ import com.kelompoksatuandsatu.preducation.data.network.api.datasource.UserDataS
 import com.kelompoksatuandsatu.preducation.data.network.api.model.auth.login.LoginRequest
 import com.kelompoksatuandsatu.preducation.data.network.api.model.auth.otp.OtpRequest
 import com.kelompoksatuandsatu.preducation.data.network.api.model.auth.register.RegisterRequest
-import com.kelompoksatuandsatu.preducation.model.OtpData
+import com.kelompoksatuandsatu.preducation.model.auth.OtpData
 import com.kelompoksatuandsatu.preducation.model.auth.UserAuth
 import com.kelompoksatuandsatu.preducation.model.auth.UserLogin
 import com.kelompoksatuandsatu.preducation.utils.ResultWrapper
@@ -44,7 +44,7 @@ class UserRepositoryImpl(
         }
     }
 
-    override suspend fun userOtp(request: OtpData): Flow<ResultWrapper<Boolean>>{
+    override suspend fun userOtp(request: OtpData): Flow<ResultWrapper<Boolean>> {
         return proceedFlow {
             val otpRequest = OtpRequest(request.email)
             val otpResult = dataSource.userOtp(otpRequest)
