@@ -20,6 +20,7 @@ import com.kelompoksatuandsatu.preducation.utils.ResultWrapper
 import com.kelompoksatuandsatu.preducation.utils.proceedFlow
 import kotlinx.coroutines.flow.Flow
 
+
 interface UserRepository {
     suspend fun getUserById(id: String? = null): Flow<ResultWrapper<List<UserViewParam>>>
 
@@ -38,10 +39,7 @@ interface UserRepository {
     suspend fun userOtp(request: OtpData): Flow<ResultWrapper<Boolean>>
 }
 
-class UserRepositoryImpl(
-    private val userDataSource: UserDataSource,
-    private val userPreferenceDataSource: UserPreferenceDataSource
-) : UserRepository {
+class UserRepositoryImpl(private val userDataSource: UserDataSource, private val userPreferenceDataSource: UserPreferenceDataSource) : UserRepository {
 
     override suspend fun getUserById(id: String?): Flow<ResultWrapper<List<UserViewParam>>> {
         return proceedFlow {
@@ -66,7 +64,6 @@ class UserRepositoryImpl(
             (userDataSource.updateUserPassword(id, passwordRequest).data?.toPasswordList() ?: emptyList())
         }
     }
-
 
     override suspend fun performLogout(): Flow<ResultWrapper<Boolean>> {
         TODO("Not yet implemented")
