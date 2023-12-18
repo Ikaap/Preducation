@@ -158,7 +158,6 @@
     <string name="text_no">No</string>
     <string name="text_error_password_empty">Password should not be empty</string>
     <string name="text_error_password_length">Password should be at least 8 characters long</string>
-    <string name="text_error_confirm_password_mismatch">Passwords do not match</string>
 
     <string name="edit_profile_successful">Edit Profile Successful</string>
     <string name="text_confirm_password">Confirm Password</string>

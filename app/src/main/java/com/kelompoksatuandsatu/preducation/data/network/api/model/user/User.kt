@@ -1,7 +1,7 @@
 package com.kelompoksatuandsatu.preducation.data.network.api.model.user
 
 import com.google.gson.annotations.SerializedName
-import com.kelompoksatuandsatu.preducation.model.UserViewParam
+import com.kelompoksatuandsatu.preducation.model.user.UserViewParam
 
 data class User(
     @SerializedName("_id")

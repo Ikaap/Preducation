@@ -1,22 +1,22 @@
 package com.kelompoksatuandsatu.preducation.data.repository
 
-import com.kelompoksatuandsatu.preducation.data.network.api.datasource.UserDataSource
-import com.kelompoksatuandsatu.preducation.data.network.api.model.changepassword.ChangePasswordRequest
-import com.kelompoksatuandsatu.preducation.data.network.api.model.changepassword.ChangePasswordResponse
-import com.kelompoksatuandsatu.preducation.data.network.api.model.logout.UserLogoutResponse
-import com.kelompoksatuandsatu.preducation.data.network.api.model.user.UserRequest
-import com.kelompoksatuandsatu.preducation.data.network.api.model.user.UserResponse
 import com.kelompoksatuandsatu.preducation.data.local.datastore.datasource.UserPreferenceDataSource
 import com.kelompoksatuandsatu.preducation.data.network.api.datasource.UserDataSource
 import com.kelompoksatuandsatu.preducation.data.network.api.model.auth.login.LoginRequest
+import com.kelompoksatuandsatu.preducation.data.network.api.model.auth.otp.OtpRequest
 import com.kelompoksatuandsatu.preducation.data.network.api.model.auth.register.RegisterRequest
+import com.kelompoksatuandsatu.preducation.data.network.api.model.changepassword.ChangePasswordRequest
+import com.kelompoksatuandsatu.preducation.data.network.api.model.changepassword.toPasswordList
+import com.kelompoksatuandsatu.preducation.data.network.api.model.user.UserRequest
+import com.kelompoksatuandsatu.preducation.data.network.api.model.user.toUserList
+import com.kelompoksatuandsatu.preducation.model.auth.OtpData
 import com.kelompoksatuandsatu.preducation.model.auth.UserAuth
 import com.kelompoksatuandsatu.preducation.model.auth.UserLogin
+import com.kelompoksatuandsatu.preducation.model.user.Password
+import com.kelompoksatuandsatu.preducation.model.user.UserViewParam
 import com.kelompoksatuandsatu.preducation.utils.ResultWrapper
 import com.kelompoksatuandsatu.preducation.utils.proceedFlow
 import kotlinx.coroutines.flow.Flow
-
-import com.kelompoksatuandsatu.preducation.utils.proceedFlow
 
 interface UserRepository {
     suspend fun getUserById(id: String? = null): Flow<ResultWrapper<List<UserViewParam>>>
@@ -37,11 +37,9 @@ interface UserRepository {
 }
 
 class UserRepositoryImpl(
-    private val dataSource: UserDataSource,
+    private val userDataSource: UserDataSource,
     private val userPreferenceDataSource: UserPreferenceDataSource
 ) : UserRepository {
-
-
 
     override suspend fun getUserById(id: String?): Flow<ResultWrapper<List<UserViewParam>>> {
         return proceedFlow {
@@ -93,28 +91,8 @@ class UserRepositoryImpl(
     override suspend fun userOtp(request: OtpData): Flow<ResultWrapper<Boolean>> {
         return proceedFlow {
             val otpRequest = OtpRequest(request.email)
-            val otpResult = dataSource.userOtp(otpRequest)
+            val otpResult = userDataSource.userOtp(otpRequest)
             otpResult.success == true
         }
     }
-
-    override suspend fun getUserById(): UserResponse {
-        return userDataSource.getUserById()
-    }
-
-    override suspend fun updateUserById(id: String, userRequest: UserRequest): UserResponse {
-        return userDataSource.updateUserById(id, userRequest)
-    }
-
-    override suspend fun updateUserPassword(
-        id: String,
-        passwordRequest: ChangePasswordRequest
-    ): ChangePasswordResponse {
-        return userDataSource.updateUserPassword(id, passwordRequest)
-    }
-
-    override suspend fun performLogout(): UserLogoutResponse {
-        return userDataSource.performLogout()
-    }
-
 }

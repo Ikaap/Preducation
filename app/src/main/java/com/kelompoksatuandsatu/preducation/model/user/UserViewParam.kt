@@ -1,4 +1,4 @@
-package com.kelompoksatuandsatu.preducation.model
+package com.kelompoksatuandsatu.preducation.model.user
 
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
