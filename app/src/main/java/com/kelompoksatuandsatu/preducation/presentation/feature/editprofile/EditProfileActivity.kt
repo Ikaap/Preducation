@@ -17,10 +17,9 @@ import com.google.android.material.textfield.TextInputLayout
 import com.kelompoksatuandsatu.preducation.R
 import com.kelompoksatuandsatu.preducation.data.network.api.model.user.UserRequest
 import com.kelompoksatuandsatu.preducation.databinding.ActivityEditProfileBinding
-import com.kelompoksatuandsatu.preducation.utils.AssetWrapper
+import com.kelompoksatuandsatu.preducation.model.UserViewParam
 import com.kelompoksatuandsatu.preducation.utils.proceedWhen
 import io.github.muddz.styleabletoast.StyleableToast
-import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.io.File
 
@@ -32,7 +31,7 @@ class EditProfileActivity : AppCompatActivity() {
 
     private val viewModel: EditProfileViewModel by viewModel()
 
-    private val assetWrapper: AssetWrapper by inject()
+    var userId: String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,7 +41,6 @@ class EditProfileActivity : AppCompatActivity() {
         showUpdateProfile()
         setForm()
         setDataProfile()
-        getData()
     }
 
     private fun setOnClickListener() {
@@ -51,7 +49,6 @@ class EditProfileActivity : AppCompatActivity() {
         }
 
         binding.clButtonChange.setOnClickListener {
-            val userId = intent.getStringExtra("USER_ID")
             if (isFormValid()) {
                 changeProfileData(userId.orEmpty())
             } else {
@@ -80,31 +77,39 @@ class EditProfileActivity : AppCompatActivity() {
             it.proceedWhen(
                 doOnLoading = {
                     binding.root.isVisible = true
-//                    binding.ivAddPhotoUser.isVisible = false
-//                    binding.clButtonChange.isVisible = false
+                    binding.ivAddPhotoUser.isVisible = false
                 },
                 doOnError = {
                     binding.root.isVisible = true
-//                    binding.ivAddPhotoUser.isVisible = false
-//                    binding.clButtonChange.isVisible = false
+                    binding.ivAddPhotoUser.isVisible = false
                 },
-                doOnSuccess = {
+                doOnSuccess = { response ->
                     binding.root.isVisible = true
                     binding.ivAddPhotoUser.isVisible = true
                     binding.clButtonChange.isVisible = true
-//                    binding.etLongName.setText(it.payload?.name.orEmpty())
-//                    binding.etEmail.setText(it.payload?.email.orEmpty())
-//                    binding.etPhoneNumber.setText(it.payload?.phoneNumber.orEmpty())
-//                    binding.etCountry.setText(it.payload?.country.orEmpty())
-//                    binding.etCity.setText(it.payload?.city.orEmpty())
-//                    binding.ivUserPhoto.load(it.payload?.imageUrl.orEmpty())
+
+                    response.payload?.let { userList ->
+                        for (user in userList) {
+                            userId = user._id.toString()
+                            val userName = user.name.orEmpty()
+                            val userEmail = user.email.orEmpty()
+                            val userPhone = user.phone.orEmpty()
+                            val userCountry = user.country.orEmpty()
+                            val userCity = user.city.orEmpty()
+                            val userImageProfile = user.imageProfile.orEmpty()
+
+                            binding.etLongName.setText(userName)
+                            binding.etEmail.setText(userEmail)
+                            binding.etPhoneNumber.setText(userPhone)
+                            binding.etCountry.setText(userCountry)
+                            binding.etCity.setText(userCity)
+                            binding.ivUserPhoto.load(userImageProfile)
+                        }
+                    }
                 }
+
             )
         }
-    }
-
-    private fun getData() {
-        viewModel.getUserById()
     }
 
     private fun imagePicker() {
@@ -143,9 +148,9 @@ class EditProfileActivity : AppCompatActivity() {
     }
 
     private fun showUpdateProfile() {
-        val idUser = intent.getStringExtra("USER_ID")
+        val idUser = intent.getStringExtra("EXTRA_USER_ID")
         idUser?.let {
-            viewModel.getUserById()
+            viewModel.getUserById(it)
         }
     }
 
@@ -318,8 +323,11 @@ class EditProfileActivity : AppCompatActivity() {
     }
 
     companion object {
-        fun startActivity(context: Context) {
+        const val EXTRA_USER_ID = "EXTRA_USER_ID"
+        fun startActivity(context: Context, user: UserViewParam) {
+            val id = user._id
             val intent = Intent(context, EditProfileActivity::class.java)
+            intent.putExtra(EXTRA_USER_ID, id)
             context.startActivity(intent)
         }
     }
