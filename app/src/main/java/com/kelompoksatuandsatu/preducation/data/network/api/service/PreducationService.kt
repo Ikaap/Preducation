@@ -5,6 +5,8 @@ import com.kelompoksatuandsatu.preducation.BuildConfig
 import com.kelompoksatuandsatu.preducation.data.network.api.interceptor.AuthInterceptor
 import com.kelompoksatuandsatu.preducation.data.network.api.model.auth.login.LoginRequest
 import com.kelompoksatuandsatu.preducation.data.network.api.model.auth.login.LoginResponse
+import com.kelompoksatuandsatu.preducation.data.network.api.model.auth.otp.OtpRequest
+import com.kelompoksatuandsatu.preducation.data.network.api.model.auth.otp.OtpResponse
 import com.kelompoksatuandsatu.preducation.data.network.api.model.auth.register.RegisterRequest
 import com.kelompoksatuandsatu.preducation.data.network.api.model.auth.register.RegisterResponse
 import com.kelompoksatuandsatu.preducation.data.network.api.model.category.categoriesprogress.CategoriesProgressResponse
@@ -37,6 +39,10 @@ interface PreducationService {
 
     @GET("api/v1/courses")
     suspend fun getCourseHome(@Query("category") category: String? = null): CourseResponse
+
+    // post otp
+    @POST("api/v1/auths/email-otp")
+    suspend fun getOtpToEmail(@Body email: OtpRequest): OtpResponse
 
     // notification
     @GET("api/v1/notifications")
