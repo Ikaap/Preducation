@@ -6,6 +6,8 @@ import com.kelompoksatuandsatu.preducation.data.network.api.model.auth.login.Log
 import com.kelompoksatuandsatu.preducation.data.network.api.model.auth.login.LoginResponse
 import com.kelompoksatuandsatu.preducation.data.network.api.model.auth.otp.postemail.EmailOtpRequest
 import com.kelompoksatuandsatu.preducation.data.network.api.model.auth.otp.postemail.EmailOtpResponse
+import com.kelompoksatuandsatu.preducation.data.network.api.model.auth.otp.verifyotp.OtpRequest
+import com.kelompoksatuandsatu.preducation.data.network.api.model.auth.otp.verifyotp.OtpResponse
 import com.kelompoksatuandsatu.preducation.data.network.api.model.auth.register.RegisterRequest
 import com.kelompoksatuandsatu.preducation.data.network.api.model.auth.register.RegisterResponse
 import com.kelompoksatuandsatu.preducation.data.network.api.model.changepassword.ChangePasswordRequest
@@ -21,6 +23,8 @@ interface UserDataSource {
     suspend fun userLogin(userLoginRequest: LoginRequest): LoginResponse
 
     suspend fun postEmailOtp(emailOtpRequest: EmailOtpRequest): EmailOtpResponse
+
+    suspend fun verifyOtp(otpRequest: OtpRequest): OtpResponse
 
     suspend fun getUserById(id: String? = null): UserResponse
     suspend fun updateUserById(id: String, userRequest: UserRequest): UserResponse
@@ -44,6 +48,10 @@ class UserDataSourceImpl(private val service: PreducationService) : UserDataSour
 
     override suspend fun postEmailOtp(emailOtpRequest: EmailOtpRequest): EmailOtpResponse {
         return service.postEmailOtp(emailOtpRequest)
+    }
+
+    override suspend fun verifyOtp(otpRequest: OtpRequest): OtpResponse {
+        return service.verifyOtp(otpRequest)
     }
 
     override suspend fun updateUserById(id: String, userRequest: UserRequest): UserResponse {
