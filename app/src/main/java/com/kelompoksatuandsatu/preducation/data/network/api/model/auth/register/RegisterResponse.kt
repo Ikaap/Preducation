@@ -6,9 +6,9 @@ import com.google.gson.annotations.SerializedName
 @Keep
 data class RegisterResponse(
     @SerializedName("data")
-    val `data`: Data?,
+    val `data`: Data,
     @SerializedName("message")
     val message: String?,
     @SerializedName("success")
-    val success: Boolean?
+    val success: Boolean
 )

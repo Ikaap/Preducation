@@ -12,3 +12,9 @@ data class OtpResponse(
     @SerializedName("success")
     val success: Boolean?
 )
+
+fun OtpResponse.toOtpResponse() = com.kelompoksatuandsatu.preducation.model.auth.otp.verifyotp.OtpResponse(
+    message = this.message.orEmpty(),
+    status = this.status.orEmpty(),
+    success = this.success ?: false
+)

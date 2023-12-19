@@ -62,6 +62,7 @@ class ProfileFragment : Fragment() {
             .setMessage(getString(R.string.text_logout_dialog)) // Using getString directly
             .setPositiveButton(getString(R.string.text_yes)) { _, _ ->
                 // viewModel.performLogout()
+                viewModel.deleteDataUser()
                 navigateToLogin()
             }
             .setNegativeButton(getString(R.string.text_no)) { _, _ ->

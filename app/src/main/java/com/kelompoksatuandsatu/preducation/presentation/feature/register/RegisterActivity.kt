@@ -164,8 +164,6 @@ class RegisterActivity : AppCompatActivity() {
                         R.style.successtoast
                     ).show()
                     navigateToOtp()
-
-                    viewModel.postEmailOtp(emailOtp)
                 },
                 doOnLoading = {
                     binding.pbLoading.isVisible = true
@@ -187,6 +185,7 @@ class RegisterActivity : AppCompatActivity() {
 
     private fun navigateToOtp() {
         val intent = Intent(this, OtpActivity::class.java)
+        intent.putExtra("EMAIL_OTP", emailOtp)
         startActivity(intent)
     }
 }
