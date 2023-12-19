@@ -170,8 +170,6 @@ class RegisterActivity : AppCompatActivity() {
                         Toast.makeText(this, "user id : ${it.data.id}", Toast.LENGTH_SHORT).show()
                     }
                     navigateToOtp()
-
-                    viewModel.postEmailOtp(emailOtp)
                 },
                 doOnLoading = {
                     binding.pbLoading.isVisible = true
