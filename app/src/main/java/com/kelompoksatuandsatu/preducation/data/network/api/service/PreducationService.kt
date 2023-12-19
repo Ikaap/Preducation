@@ -99,7 +99,7 @@ interface PreducationService {
     @POST("api/v1/auths/email-otp")
     suspend fun postEmailOtp(@Body emailOtpRequest: EmailOtpRequest): EmailOtpResponse
 
-    @POST("api/v1/auths/email-otp")
+    @POST("api/v1/auths/verify-otp")
     suspend fun verifyOtp(@Body otpRequest: OtpRequest): OtpResponse
 
     @POST("api/v1/auths/login")

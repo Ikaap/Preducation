@@ -6,7 +6,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kelompoksatuandsatu.preducation.data.repository.UserRepository
 import com.kelompoksatuandsatu.preducation.model.auth.UserAuth
-import com.kelompoksatuandsatu.preducation.model.auth.otp.postemailotp.EmailOtp
 import com.kelompoksatuandsatu.preducation.utils.ResultWrapper
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collect
@@ -14,8 +13,8 @@ import kotlinx.coroutines.launch
 
 class RegisterViewModel(private val repo: UserRepository) : ViewModel() {
 
-    private val _registerResult = MutableLiveData<ResultWrapper<String>>()
-    val registerResult: LiveData<ResultWrapper<String>>
+    private val _registerResult = MutableLiveData<ResultWrapper<Boolean>>()
+    val registerResult: LiveData<ResultWrapper<Boolean>>
         get() = _registerResult
 
     private val _emailOtpResult = MutableLiveData<ResultWrapper<Boolean>>()
@@ -26,14 +25,6 @@ class RegisterViewModel(private val repo: UserRepository) : ViewModel() {
         viewModelScope.launch(Dispatchers.IO) {
             repo.userRegister(request).collect {
                 _registerResult.postValue(it)
-            }
-        }
-    }
-
-    fun postEmailOtp(request: EmailOtp) {
-        viewModelScope.launch(Dispatchers.IO) {
-            repo.postEmailOtp(request).collect {
-                _emailOtpResult.postValue(it)
             }
         }
     }
