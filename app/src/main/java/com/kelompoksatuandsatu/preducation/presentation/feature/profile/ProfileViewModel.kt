@@ -5,7 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kelompoksatuandsatu.preducation.data.repository.UserRepository
-import com.kelompoksatuandsatu.preducation.model.UserViewParam
+import com.kelompoksatuandsatu.preducation.model.user.UserViewParam
 import com.kelompoksatuandsatu.preducation.utils.ResultWrapper
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -13,8 +13,8 @@ import kotlinx.coroutines.launch
 class ProfileViewModel(private val userRepo: UserRepository) :
     ViewModel() {
 
-    private val _getProfile = MutableLiveData<ResultWrapper<List<UserViewParam>>>()
-    val getProfile: LiveData<ResultWrapper<List<UserViewParam>>>
+    private val _getProfile = MutableLiveData<ResultWrapper<UserViewParam>>()
+    val getProfile: LiveData<ResultWrapper<UserViewParam>>
         get() = _getProfile
 
     fun getUserById(userId: String? = null) {

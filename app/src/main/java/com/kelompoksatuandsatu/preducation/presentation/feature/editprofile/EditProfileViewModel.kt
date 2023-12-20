@@ -11,12 +11,15 @@ import com.kelompoksatuandsatu.preducation.utils.ResultWrapper
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class EditProfileViewModel(private val userRepo: UserRepository) :
-    ViewModel() {
+class EditProfileViewModel(private val userRepo: UserRepository) : ViewModel() {
 
-    private val _getProfile = MutableLiveData<ResultWrapper<List<UserViewParam>>>()
-    val getProfile: LiveData<ResultWrapper<List<UserViewParam>>>
+    private val _getProfile = MutableLiveData<ResultWrapper<UserViewParam>>()
+    val getProfile: LiveData<ResultWrapper<UserViewParam>>
         get() = _getProfile
+
+    private val _updateProfile = MutableLiveData<ResultWrapper<UserViewParam>>()
+    val updateProfile: LiveData<ResultWrapper<UserViewParam>>
+        get() = _updateProfile
 
     fun getUserById(userId: String? = null) {
         viewModelScope.launch(Dispatchers.IO) {
@@ -26,13 +29,10 @@ class EditProfileViewModel(private val userRepo: UserRepository) :
         }
     }
 
-    fun updateProfile(
-        userId: String,
-        userRequest: UserRequest
-    ) {
+    fun updateProfile(userId: String, userRequest: UserRequest) {
         viewModelScope.launch(Dispatchers.IO) {
             userRepo.updateUserById(userId, userRequest).collect {
-                _getProfile.postValue(it)
+                _updateProfile.postValue(it)
             }
         }
     }
