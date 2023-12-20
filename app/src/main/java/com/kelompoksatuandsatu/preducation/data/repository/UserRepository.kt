@@ -17,7 +17,7 @@ import com.kelompoksatuandsatu.preducation.model.auth.UserLogin
 import com.kelompoksatuandsatu.preducation.model.auth.forgotpassword.UserForgotPassword
 import com.kelompoksatuandsatu.preducation.model.auth.otp.postemailotp.EmailOtp
 import com.kelompoksatuandsatu.preducation.model.auth.otp.verifyotp.OtpData
-import com.kelompoksatuandsatu.preducation.model.auth.otp.verifyotp.OtpResponse
+import com.kelompoksatuandsatu.preducation.model.common.BaseResponse
 import com.kelompoksatuandsatu.preducation.model.user.Password
 import com.kelompoksatuandsatu.preducation.model.user.UserViewParam
 import com.kelompoksatuandsatu.preducation.utils.ResultWrapper
@@ -106,6 +106,7 @@ class UserRepositoryImpl(private val userDataSource: UserDataSource, private val
             emailResult.success == true
         }
     }
+
 
     override suspend fun verifyOtp(request: OtpData): Flow<ResultWrapper<BaseResponse>> {
         return proceedFlow {
