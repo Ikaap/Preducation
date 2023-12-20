@@ -43,7 +43,8 @@ class EditProfileActivity : AppCompatActivity() {
         // Set hint for each TextInputLayout
         tilName.hint = "Long Name"
         tilEmail.hint = "Email"
-        tilPhoneNumber.hint = "Phone Number"
+        tilPhoneNumber.hint = "Phone Number" +
+                ""
         tilCountry.hint = "Country"
         tilCity.hint = "City"
 
