@@ -10,7 +10,6 @@ import com.kelompoksatuandsatu.preducation.data.network.api.model.auth.login.Log
 import com.kelompoksatuandsatu.preducation.data.network.api.model.auth.otp.postemail.EmailOtpRequest
 import com.kelompoksatuandsatu.preducation.data.network.api.model.auth.otp.postemail.EmailOtpResponse
 import com.kelompoksatuandsatu.preducation.data.network.api.model.auth.otp.verifyotp.OtpRequest
-import com.kelompoksatuandsatu.preducation.data.network.api.model.auth.otp.verifyotp.OtpResponse
 import com.kelompoksatuandsatu.preducation.data.network.api.model.auth.register.RegisterRequest
 import com.kelompoksatuandsatu.preducation.data.network.api.model.auth.register.RegisterResponse
 import com.kelompoksatuandsatu.preducation.data.network.api.model.category.categoriesprogress.CategoriesProgressResponse
@@ -80,7 +79,7 @@ interface PreducationService {
 
     // profile
     @GET("api/v1/users/{id}")
-    suspend fun getUserById(@Path("id") id: String? = null): UserResponse
+    suspend fun getUserById(@Path("id") id: String): UserResponse
 
     @PATCH("api/v1/users/{id}")
     suspend fun updateUserById(@Path("id") id: String? = null, @Body userRequest: UserRequest): UserResponse
@@ -100,7 +99,7 @@ interface PreducationService {
     suspend fun postEmailOtp(@Body emailOtpRequest: EmailOtpRequest): EmailOtpResponse
 
     @POST("api/v1/auths/verify-otp")
-    suspend fun verifyOtp(@Body otpRequest: OtpRequest): OtpResponse
+    suspend fun verifyOtp(@Body otpRequest: OtpRequest): com.kelompoksatuandsatu.preducation.data.network.api.model.auth.otp.verifyotp.OtpResponse
 
     @POST("api/v1/auths/login")
     suspend fun userLogin(@Body userLoginRequest: LoginRequest): LoginResponse

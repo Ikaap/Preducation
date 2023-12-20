@@ -8,12 +8,14 @@ import com.kelompoksatuandsatu.preducation.data.network.api.model.auth.otp.poste
 import com.kelompoksatuandsatu.preducation.data.network.api.model.auth.otp.verifyotp.OtpRequest
 import com.kelompoksatuandsatu.preducation.data.network.api.model.auth.otp.verifyotp.toOtpResponse
 import com.kelompoksatuandsatu.preducation.data.network.api.model.auth.register.RegisterRequest
+import com.kelompoksatuandsatu.preducation.data.network.api.model.auth.register.toRegisterResponse
 import com.kelompoksatuandsatu.preducation.data.network.api.model.changepassword.ChangePasswordRequest
 import com.kelompoksatuandsatu.preducation.data.network.api.model.changepassword.toPasswordList
 import com.kelompoksatuandsatu.preducation.data.network.api.model.user.UserRequest
-import com.kelompoksatuandsatu.preducation.data.network.api.model.user.toUserList
+import com.kelompoksatuandsatu.preducation.data.network.api.model.user.toUserViewParam
 import com.kelompoksatuandsatu.preducation.model.auth.UserAuth
 import com.kelompoksatuandsatu.preducation.model.auth.UserLogin
+import com.kelompoksatuandsatu.preducation.model.auth.UserRegisterResponse
 import com.kelompoksatuandsatu.preducation.model.auth.forgotpassword.UserForgotPassword
 import com.kelompoksatuandsatu.preducation.model.auth.otp.postemailotp.EmailOtp
 import com.kelompoksatuandsatu.preducation.model.auth.otp.verifyotp.OtpData
@@ -25,7 +27,7 @@ import com.kelompoksatuandsatu.preducation.utils.proceedFlow
 import kotlinx.coroutines.flow.Flow
 
 interface UserRepository {
-    suspend fun getUserById(id: String? = null): Flow<ResultWrapper<UserViewParam>>
+    suspend fun getUserById(id: String): Flow<ResultWrapper<UserViewParam>>
 
     suspend fun updateUserById(id: String, userRequest: UserRequest): Flow<ResultWrapper<UserViewParam>>
     suspend fun updateUserPassword(
@@ -35,7 +37,7 @@ interface UserRepository {
 
     suspend fun performLogout(): Flow<ResultWrapper<Boolean>>
 
-    suspend fun userRegister(request: UserAuth): Flow<ResultWrapper<Boolean>>
+    suspend fun userRegister(request: UserAuth): Flow<ResultWrapper<UserRegisterResponse>>
 
     suspend fun userLogin(request: UserLogin): Flow<ResultWrapper<Boolean>>
 
@@ -48,7 +50,7 @@ interface UserRepository {
 
 class UserRepositoryImpl(private val userDataSource: UserDataSource, private val userPreferenceDataSource: UserPreferenceDataSource) : UserRepository {
 
-    override suspend fun getUserById(id: String?): Flow<ResultWrapper<UserViewParam>> {
+    override suspend fun getUserById(id: String): Flow<ResultWrapper<UserViewParam>> {
         return proceedFlow {
             userDataSource.getUserById(id).data?.toUserViewParam()!!
         }
@@ -76,7 +78,7 @@ class UserRepositoryImpl(private val userDataSource: UserDataSource, private val
         TODO("Not yet implemented")
     }
 
-    override suspend fun userRegister(request: UserAuth): Flow<ResultWrapper<Boolean>> {
+    override suspend fun userRegister(request: UserAuth): Flow<ResultWrapper<UserRegisterResponse>> {
         return proceedFlow {
             val dataRequest =
                 RegisterRequest(request.email, request.name, request.phone, request.password)
@@ -84,7 +86,7 @@ class UserRepositoryImpl(private val userDataSource: UserDataSource, private val
             if (regisResult.success) {
                 userPreferenceDataSource.saveUserToken(regisResult.data.accessToken)
             }
-            regisResult.success
+            regisResult.toRegisterResponse()
         }
     }
 
@@ -106,7 +108,6 @@ class UserRepositoryImpl(private val userDataSource: UserDataSource, private val
             emailResult.success == true
         }
     }
-
 
     override suspend fun verifyOtp(request: OtpData): Flow<ResultWrapper<BaseResponse>> {
         return proceedFlow {
