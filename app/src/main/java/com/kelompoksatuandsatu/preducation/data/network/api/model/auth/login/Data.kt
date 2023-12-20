@@ -6,9 +6,12 @@ import com.kelompoksatuandsatu.preducation.model.auth.LoginToken
 
 @Keep
 data class Data(
+    @SerializedName("_id")
+    val id: String,
     @SerializedName("accessToken")
     val accessToken: String
 )
 fun Data.toToken() = LoginToken(
+    id = this.id,
     accessToken = this.accessToken
 )
