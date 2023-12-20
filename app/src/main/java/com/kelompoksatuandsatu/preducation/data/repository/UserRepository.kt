@@ -4,6 +4,7 @@ import com.kelompoksatuandsatu.preducation.data.local.datastore.datasource.UserP
 import com.kelompoksatuandsatu.preducation.data.network.api.datasource.UserDataSource
 import com.kelompoksatuandsatu.preducation.data.network.api.model.auth.forgotpassword.ForgotPasswordRequest
 import com.kelompoksatuandsatu.preducation.data.network.api.model.auth.login.LoginRequest
+import com.kelompoksatuandsatu.preducation.data.network.api.model.auth.login.toLoginResponse
 import com.kelompoksatuandsatu.preducation.data.network.api.model.auth.otp.postemail.EmailOtpRequest
 import com.kelompoksatuandsatu.preducation.data.network.api.model.auth.otp.verifyotp.OtpRequest
 import com.kelompoksatuandsatu.preducation.data.network.api.model.auth.otp.verifyotp.toOtpResponse
@@ -15,6 +16,7 @@ import com.kelompoksatuandsatu.preducation.data.network.api.model.user.UserReque
 import com.kelompoksatuandsatu.preducation.data.network.api.model.user.toUserViewParam
 import com.kelompoksatuandsatu.preducation.model.auth.UserAuth
 import com.kelompoksatuandsatu.preducation.model.auth.UserLogin
+import com.kelompoksatuandsatu.preducation.model.auth.UserLoginResponse
 import com.kelompoksatuandsatu.preducation.model.auth.UserRegisterResponse
 import com.kelompoksatuandsatu.preducation.model.auth.forgotpassword.UserForgotPassword
 import com.kelompoksatuandsatu.preducation.model.auth.otp.postemailotp.EmailOtp
@@ -39,7 +41,7 @@ interface UserRepository {
 
     suspend fun userRegister(request: UserAuth): Flow<ResultWrapper<UserRegisterResponse>>
 
-    suspend fun userLogin(request: UserLogin): Flow<ResultWrapper<Boolean>>
+    suspend fun userLogin(request: UserLogin): Flow<ResultWrapper<UserLoginResponse>>
 
     suspend fun postEmailOtp(request: EmailOtp): Flow<ResultWrapper<Boolean>>
 
@@ -90,14 +92,14 @@ class UserRepositoryImpl(private val userDataSource: UserDataSource, private val
         }
     }
 
-    override suspend fun userLogin(request: UserLogin): Flow<ResultWrapper<Boolean>> {
+    override suspend fun userLogin(request: UserLogin): Flow<ResultWrapper<UserLoginResponse>> {
         return proceedFlow {
             val dataReq = LoginRequest(request.identifier, request.password)
             val loginResult = userDataSource.userLogin(dataReq)
             if (loginResult.success) {
                 userPreferenceDataSource.saveUserToken(loginResult.data.accessToken)
             }
-            loginResult.success
+            loginResult.toLoginResponse()
         }
     }
 
