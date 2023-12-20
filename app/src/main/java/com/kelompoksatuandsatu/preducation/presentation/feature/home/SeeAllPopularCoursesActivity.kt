@@ -12,8 +12,8 @@ import androidx.core.view.isVisible
 import com.kelompoksatuandsatu.preducation.databinding.ActivitySeeAllPopularCoursesBinding
 import com.kelompoksatuandsatu.preducation.databinding.DialogNonLoginBinding
 import com.kelompoksatuandsatu.preducation.model.course.courseall.CourseViewParam
+import com.kelompoksatuandsatu.preducation.presentation.common.adapter.CourseLinearListAdapter
 import com.kelompoksatuandsatu.preducation.presentation.common.adapter.course.AdapterLayoutMenu
-import com.kelompoksatuandsatu.preducation.presentation.common.adapter.course.CourseLinearListAdapter
 import com.kelompoksatuandsatu.preducation.presentation.feature.detailclass.DetailClassActivity
 import com.kelompoksatuandsatu.preducation.presentation.feature.register.RegisterActivity
 import com.kelompoksatuandsatu.preducation.utils.proceedWhen
@@ -29,7 +29,13 @@ class SeeAllPopularCoursesActivity : AppCompatActivity() {
 
     private val courseAdapter: CourseLinearListAdapter by lazy {
         CourseLinearListAdapter(AdapterLayoutMenu.SEEALL) {
-            navigateToDetail(it)
+            viewModel.isUserLogin.observe(this) { isLogin ->
+                if (!isLogin) {
+                    showDialog()
+                } else {
+                    navigateToDetail(it)
+                }
+            }
         }
     }
 
@@ -103,12 +109,6 @@ class SeeAllPopularCoursesActivity : AppCompatActivity() {
                     binding.layoutStateCoursePopular.tvDataEmpty.isGone = true
                 }
             )
-        }
-
-        viewModel.isUserLogin.observe(this) { isLogin ->
-            if (!isLogin) {
-                showDialog()
-            }
         }
     }
 

@@ -1,30 +1,145 @@
 package com.kelompoksatuandsatu.preducation.presentation.feature.otp
 
+import android.app.AlertDialog
+import android.content.Intent
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isVisible
 import com.kelompoksatuandsatu.preducation.R
+import com.kelompoksatuandsatu.preducation.databinding.ActivityOtpBinding
+import com.kelompoksatuandsatu.preducation.databinding.LayoutDialogSuccesOtpBinding
+import com.kelompoksatuandsatu.preducation.model.auth.otp.postemailotp.EmailOtp
+import com.kelompoksatuandsatu.preducation.model.auth.otp.verifyotp.OtpData
+import com.kelompoksatuandsatu.preducation.presentation.feature.login.LoginActivity
+import com.kelompoksatuandsatu.preducation.presentation.feature.register.RegisterActivity
+import com.kelompoksatuandsatu.preducation.utils.proceedWhen
 import com.otpview.OTPListener
-import com.otpview.OTPTextView
 import io.github.muddz.styleabletoast.StyleableToast
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class OtpActivity : AppCompatActivity() {
+
+    private val binding: ActivityOtpBinding by lazy {
+        ActivityOtpBinding.inflate(layoutInflater)
+    }
+    private val viewModel: OtpViewModel by viewModel()
+
+    private var dataOtp = OtpData("")
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_otp)
+        setContentView(binding.root)
 
-        val otpTextView = findViewById(R.id.otp_view) as OTPTextView
-        otpTextView.requestFocusOTP()
-        otpTextView.otpListener = object : OTPListener {
+        getDataEmail()
+        inputOtp()
+        observe()
+        setOnClickListener()
+    }
+
+    private fun getDataEmail() {
+        val emailData = intent.getParcelableExtra<EmailOtp>("EMAIL_OTP")
+        emailData?.let { dataRequest ->
+            binding.tvUserEmail.text = dataRequest.email
+        }
+    }
+
+    private fun inputOtp() {
+        binding.otpView.requestFocusOTP()
+        binding.otpView.otpListener = object : OTPListener {
             override fun onInteractionListener() {
             }
 
             override fun onOTPComplete(otp: String) {
-                StyleableToast.makeText(
-                    this@OtpActivity,
-                    "    Registrasi Berhasil    ",
-                    R.style.failedtoast
-                ).show()
+                dataOtp = OtpData(
+                    otp
+                )
+                viewModel.userOtp(dataOtp)
             }
+        }
+    }
+
+    private fun observe() {
+        viewModel.otpResult.observe(this) {
+            it.proceedWhen(
+                doOnSuccess = {
+                    binding.pbLoading.isVisible = false
+                    it.payload?.let { response ->
+                        StyleableToast.makeText(
+                            this,
+                            response.message,
+                            R.style.successtoast
+                        ).show()
+                        binding.otpView.showSuccess()
+                        showDialog()
+
+                        if (response.success == false) {
+                            StyleableToast.makeText(
+                                this,
+                                response.message,
+                                R.style.failedtoast
+                            ).show()
+
+                            binding.otpView.showError()
+                            binding.otpView.resetState()
+                        }
+                        if (response.message?.contains("expired") == true) {
+                            StyleableToast.makeText(
+                                this,
+                                response.message + "Please enter the OTP code again or ask for the OTP code again",
+                                R.style.failedtoast
+                            ).show()
+
+                            binding.otpView.showError()
+                            binding.otpView.resetState()
+                        }
+                    }
+                },
+                doOnLoading = {
+                    binding.pbLoading.isVisible = true
+                },
+                doOnError = {
+                    binding.pbLoading.isVisible = false
+                    it.payload?.let { response ->
+                        StyleableToast.makeText(
+                            this,
+                            response.message,
+                            R.style.failedtoast
+                        ).show()
+                    }
+                }
+            )
+        }
+    }
+
+    private fun setOnClickListener() {
+        binding.ivArrowLeft.setOnClickListener {
+            val intent = Intent(this, RegisterActivity::class.java)
+            startActivity(intent)
+        }
+
+        binding.tvResendOTPCodeVieEmail.setOnClickListener {
+            val emailData = intent.getParcelableExtra<EmailOtp>("EMAIL_OTP")
+            emailData?.let { dataRequest ->
+                viewModel.postEmailOtp(dataRequest)
+            }
+        }
+    }
+
+    private fun showDialog() {
+        val binding: LayoutDialogSuccesOtpBinding =
+            LayoutDialogSuccesOtpBinding.inflate(layoutInflater)
+        val dialog = AlertDialog.Builder(this, 0).create()
+
+        dialog.apply {
+            setView(binding.root)
+            window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        }.show()
+
+        binding.ivButtonNext.setOnClickListener {
+            val intent = Intent(this, LoginActivity::class.java)
+            startActivity(intent)
         }
     }
 }

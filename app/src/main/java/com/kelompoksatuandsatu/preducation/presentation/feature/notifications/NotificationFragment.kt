@@ -4,86 +4,98 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.kelompoksatuandsatu.preducation.R
 import com.kelompoksatuandsatu.preducation.databinding.FragmentNotificationBinding
-import com.kelompoksatuandsatu.preducation.model.notofication.NotificationItem
 import com.kelompoksatuandsatu.preducation.presentation.feature.notifications.adapter.NotificationAdapter
+import com.kelompoksatuandsatu.preducation.utils.AssetWrapper
+import com.kelompoksatuandsatu.preducation.utils.proceedWhen
+import org.koin.android.ext.android.inject
+import org.koin.androidx.viewmodel.dsl.viewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.dsl.module
 
 class NotificationFragment : Fragment() {
 
-    private var _binding: FragmentNotificationBinding? = null
-    private val binding get() = _binding!!
+    private lateinit var binding: FragmentNotificationBinding
 
-    private lateinit var notificationAdapter: NotificationAdapter
+    private val viewModel: NotificationViewModel by viewModel()
+
+    private val assetWrapper: AssetWrapper by inject()
+
+    private val viewModelModule = module {
+        viewModel { NotificationViewModel(get()) }
+    }
+
+    private val notificationAdapter: NotificationAdapter by lazy {
+        NotificationAdapter()
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentNotificationBinding.inflate(inflater, container, false)
+        binding = FragmentNotificationBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        initRecyclerView()
-        loadDummyData()
+        setupRecyclerView()
+        observeData()
+        getData()
     }
 
-    private fun initRecyclerView() {
-        binding.rvNotification.layoutManager = LinearLayoutManager(requireContext())
-        notificationAdapter = NotificationAdapter()
+    private fun getData() {
+        viewModel.getData()
+    }
+
+    private fun setupRecyclerView() {
+        binding.rvNotification.layoutManager =
+            LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
         binding.rvNotification.adapter = notificationAdapter
     }
 
-    private fun loadDummyData() {
-        val dummyData = createDummyData()
-        notificationAdapter.submitList(dummyData)
-    }
+    private fun observeData() {
+        viewModel.notifications.observe(viewLifecycleOwner) {
+            it.proceedWhen(
+                doOnSuccess = { data ->
+                    binding.rvNotification.isVisible = true
+                    binding.layoutStateNotification.root.isVisible = false
+                    binding.layoutStateNotification.pbLoading.isVisible = false
+                    binding.layoutStateNotification.tvError.isVisible = false
 
-    private fun createDummyData(): List<NotificationItem> {
-        // Create a list of dummy notifications
-        val notifications = mutableListOf<NotificationItem>()
-
-        notifications.add(
-            NotificationItem(
-                1,
-                "Today",
-                R.drawable.ic_notification_one,
-                "New Category Course!",
-                "New the 3D Design Course is Available."
+                    data.payload?.let { notificationData ->
+                        notificationAdapter.setData(notificationData)
+                    }
+                },
+                doOnLoading = {
+                    binding.rvNotification.isVisible = false
+                    binding.layoutStateNotification.root.isVisible = true
+                    binding.layoutStateNotification.pbLoading.isVisible = true
+                    binding.layoutStateNotification.tvError.isVisible = false
+                },
+                doOnError = { error ->
+                    binding.rvNotification.isVisible = false
+                    binding.layoutStateNotification.root.isVisible = true
+                    binding.layoutStateNotification.pbLoading.isVisible = false
+                    binding.layoutStateNotification.tvError.isVisible = true
+                    binding.layoutStateNotification.tvError.text = error.exception?.message
+                },
+                doOnEmpty = {
+                    binding.rvNotification.isVisible = false
+                    binding.layoutStateNotification.root.isVisible = true
+                    binding.layoutStateNotification.pbLoading.isVisible = false
+                    binding.layoutStateNotification.tvError.isVisible = true
+                    binding.layoutStateNotification.tvError.text =
+                        resources.getString(R.string.text_notification)
+                    binding.rvNotification.isVisible = false
+                }
             )
-        )
-
-        notifications.add(
-            NotificationItem(
-                2,
-                "Today",
-                R.drawable.ic_notification_two,
-                "Today’s Special Offers",
-                "You Have made a Course Payment."
-            )
-        )
-
-        notifications.add(
-            NotificationItem(
-                3,
-                "Yesterday",
-                R.drawable.ic_notification_three,
-                "Credit Card Connected!",
-                "Credit Card has been Linked."
-            )
-        )
-
-        return notifications
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
+        }
     }
 }

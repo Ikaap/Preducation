@@ -16,5 +16,3 @@ fun Data.toPaymentResponse() = PaymentResponseViewParam(
     redirectUrl = this.redirectUrl.orEmpty(),
     token = this.token.orEmpty()
 )
-//
-// fun Collection<Data>.toPaymentResponse() = this.map { it.toPaymentData() }

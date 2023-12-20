@@ -10,6 +10,7 @@ import androidx.core.view.isVisible
 import com.kelompoksatuandsatu.preducation.R
 import com.kelompoksatuandsatu.preducation.databinding.ActivityRegisterBinding
 import com.kelompoksatuandsatu.preducation.model.auth.UserAuth
+import com.kelompoksatuandsatu.preducation.model.auth.otp.postemailotp.EmailOtp
 import com.kelompoksatuandsatu.preducation.presentation.feature.login.LoginActivity
 import com.kelompoksatuandsatu.preducation.presentation.feature.otp.OtpActivity
 import com.kelompoksatuandsatu.preducation.utils.proceedWhen
@@ -23,6 +24,8 @@ class RegisterActivity : AppCompatActivity() {
     }
 
     private val viewModel: RegisterViewModel by viewModel()
+
+    private var emailOtp = EmailOtp("")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -67,6 +70,9 @@ class RegisterActivity : AppCompatActivity() {
                 password
             )
 
+            emailOtp = EmailOtp(
+                email
+            )
             viewModel.userRegister(userAuth)
         }
     }
@@ -179,6 +185,7 @@ class RegisterActivity : AppCompatActivity() {
 
     private fun navigateToOtp() {
         val intent = Intent(this, OtpActivity::class.java)
+        intent.putExtra("EMAIL_OTP", emailOtp)
         startActivity(intent)
     }
 }

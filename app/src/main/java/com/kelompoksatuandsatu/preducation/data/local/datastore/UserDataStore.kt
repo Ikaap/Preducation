@@ -1,4 +1,4 @@
-package com.kelompoksatuandsatu.preducation.data.local.datastore.datasource
+package com.kelompoksatuandsatu.preducation.data.local.datastore
 
 import android.content.Context
 import androidx.datastore.preferences.preferencesDataStore

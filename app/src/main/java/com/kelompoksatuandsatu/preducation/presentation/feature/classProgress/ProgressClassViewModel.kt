@@ -26,9 +26,9 @@ class ProgressClassViewModel(
     val courseProgress: LiveData<ResultWrapper<List<CourseProgressItemClass>>>
         get() = _courseProgress
 
-    fun getCourseProgress(category: String? = null) {
+    fun getCourseProgress(status: String? = null) {
         viewModelScope.launch(Dispatchers.IO) {
-            repositoryCourse.getCourseUserProgress(if (category == assetsWrapper.getString(R.string.all)) null else category?.lowercase())
+            repositoryCourse.getCourseUserProgress(if (status == assetsWrapper.getString(R.string.all)) null else status)
                 .collect {
                     _courseProgress.postValue(it)
 

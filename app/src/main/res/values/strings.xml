@@ -27,7 +27,7 @@
     <string name="text_logout">Logout</string>
 
     <string name="input_otp">Input OTP</string>
-    <string name="the_otp_code_number_has_been_sent_to_cimut_gmail_com">The OTP code number has been sent to \ncimut@gmail.com</string>
+    <string name="the_otp_code_number_has_been_sent_to">The OTP code number has been sent to</string>
     <string name="resend_otp_code">Resend OTP Code</string>
     <string name="your_account_is_ready_to_use_you_will_be_redirected_to_the_home_page_in_a_few_seconds">Your Account is Ready to Use. \nYou will be redirected to the \nHome Page in a Few Seconds.</string>
     <string name="congratulation">Congratulation</string>
@@ -149,7 +149,33 @@
     <string name="text_clear">Clear</string>
     <string name="text_sort">Sort</string>
     <string name="text_class_topic">Class Topic</string>
-    <string name="course_is_empty">Course is Empty</string>
+
+    <string name="text_profile_update_success">Profile updated successfully</string>
+    <string name="text_change_profile_failed">Change Profile Failed</string>
+
+    <string name="text_logout_dialog">Do you want to logout ?</string>
+    <string name="text_yes">Yes</string>
+    <string name="text_no">No</string>
+    <string name="text_error_password_empty">Password should not be empty</string>
+    <string name="text_error_password_length">Password should be at least 8 characters long</string>
+
+    <string name="edit_profile_successful">Edit Profile Successful</string>
+    <string name="text_confirm_password">Confirm Password</string>
+    <string name="text_error_long_name_empty">Name should not be empty</string>
+    <string name="text_error_long_name_invalid_characters">Name Invalid Characters</string>
+    <string name="text_error_country_invalid_characters">Country Invalid Characters</string>
+    <string name="text_error_city_invalid_characters">City Invalid Characters</string>
+    <string name="text_error_phone_number_empty">Phone Number should not be empty</string>
+    <string name="text_error_phone_number_invalid_characters">Phone Number Invalid Characters</string>
+    <string name="text_error_country_empty">Country should not be empty</string>
+    <string name="text_error_city_empty">City should not be empty</string>
+    <string name="text_error_form_not_valid">Form is not valid</string>
+
+    <string name="text_error_old_new_password_match">Old and new passwords cannot be the same.</string>
+    <string name="text_error_update_password">Failed to update password. Please try again.</string>
+    <string name="text_error_password_invalid">Password must be at least 8 characters long.</string>
+    <string name="text_error_confirm_password_mismatch">Confirm password does not match the new password.</string>
+
 
     <string name="text_error_name_cannot_empy">Name should not be empty</string>
     <string name="text_number_phone_empty">Phone number should not be empty</string>
@@ -158,5 +184,5 @@
     <string name="register_failed">Register Failed</string>
     <string name="login_success">Login Successfull</string>
     <string name="login_failed">Login Failed</string>
-
+    <string name="text_version">Versi 1.0.1</string>
 </resources>

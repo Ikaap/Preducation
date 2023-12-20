@@ -2,12 +2,14 @@ package com.kelompoksatuandsatu.preducation.presentation.common.adapter.classpro
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.appcompat.content.res.AppCompatResources.getDrawable
 import androidx.core.view.isGone
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import coil.load
+import com.kelompoksatuandsatu.preducation.R
 import com.kelompoksatuandsatu.preducation.core.ViewHolderBinder
 import com.kelompoksatuandsatu.preducation.databinding.ItemCourseCardBinding
 import com.kelompoksatuandsatu.preducation.model.progress.CourseProgressItemClass
@@ -90,6 +92,10 @@ class CourseProgressListAdapter(
                 binding.tvPriceCourse.isGone = true
                 binding.tvProgress.text = item.percentage.toString() + " % complete"
                 binding.progressBar.progress = item.percentage!!
+                if (item.percentage == 100) {
+                    val backgroundDrawable = getDrawable(itemView.context, R.drawable.bg_progress_bar_complete)
+                    binding.progressBar.setProgressDrawableTiled(backgroundDrawable)
+                }
                 binding.clProgressBar.isGone = false
                 itemView.setOnClickListener { itemClick(this) }
             }

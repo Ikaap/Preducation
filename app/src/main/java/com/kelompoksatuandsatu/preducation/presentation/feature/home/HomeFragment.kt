@@ -8,6 +8,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import androidx.appcompat.widget.SearchView
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
@@ -36,11 +37,13 @@ class HomeFragment : Fragment() {
 
     private val searchQueryListener = object : SearchView.OnQueryTextListener {
         override fun onQueryTextSubmit(query: String?): Boolean {
-            return false
+            query?.let {
+                popularCourseAdapter.filter(it)
+            }
+            return true
         }
 
         override fun onQueryTextChange(newText: String?): Boolean {
-            popularCourseAdapter.filter(newText)
             return false
         }
     }
@@ -64,7 +67,13 @@ class HomeFragment : Fragment() {
 
     private val popularCourseAdapter: CourseCardListAdapter by lazy {
         CourseCardListAdapter(AdapterLayoutMenu.HOME) {
-            navigateToDetail(it)
+            viewModel.isUserLogin.observe(viewLifecycleOwner) { isLogin ->
+                if (!isLogin) {
+                    showDialog()
+                } else {
+                    navigateToDetail(it)
+                }
+            }
         }
     }
 
@@ -96,9 +105,12 @@ class HomeFragment : Fragment() {
         binding.tvNavToSeeAllTitleCategory.setOnClickListener {
             SeeAllPopularCoursesActivity.startActivity(requireContext())
         }
-
         binding.ivToSeeAll.setOnClickListener {
             SeeAllPopularCoursesActivity.startActivity(requireContext())
+        }
+        binding.clSearchBar.findViewById<ImageView>(R.id.iv_search).setOnClickListener {
+            val query = searchView.query.toString()
+            popularCourseAdapter.filter(query)
         }
     }
 
@@ -139,10 +151,9 @@ class HomeFragment : Fragment() {
                     binding.rvCategoryCourse.isVisible = false
                     binding.shimmerCategoryCircle.isVisible = false
                     binding.layoutStateCategoryCircle.root.isGone = false
-                    binding.layoutStateCategoryCircle.ivDataEmpty.isGone = true
-                    binding.layoutStateCategoryCircle.tvError.isGone = false
-                    binding.layoutStateCategoryCircle.tvError.text = "Data Empty"
-                    binding.layoutStateCategoryCircle.tvDataEmpty.isGone = true
+                    binding.layoutStateCategoryCircle.ivDataEmpty.isGone = false
+                    binding.layoutStateCategoryCircle.tvError.isGone = true
+                    binding.layoutStateCategoryCircle.tvDataEmpty.isGone = false
                 },
                 doOnError = {
                     binding.rvCategoryCourse.isVisible = false
@@ -196,10 +207,9 @@ class HomeFragment : Fragment() {
                     binding.rvCategoryPopular.isVisible = false
                     binding.shimmerCategoryRounded.isVisible = false
                     binding.layoutStateCategoryRounded.root.isGone = false
-                    binding.layoutStateCategoryRounded.ivDataEmpty.isGone = true
-                    binding.layoutStateCategoryRounded.tvError.isGone = false
-                    binding.layoutStateCategoryRounded.tvError.text = "Data Empty"
-                    binding.layoutStateCategoryRounded.tvDataEmpty.isGone = true
+                    binding.layoutStateCategoryRounded.ivDataEmpty.isGone = false
+                    binding.layoutStateCategoryRounded.tvError.isGone = true
+                    binding.layoutStateCategoryRounded.tvDataEmpty.isGone = false
                 },
                 doOnError = {
                     binding.rvCategoryPopular.isVisible = false
@@ -242,10 +252,9 @@ class HomeFragment : Fragment() {
                     binding.rvPopularCourse.isVisible = false
                     binding.shimmerCourseCard.isVisible = false
                     binding.layoutStateCoursePopular.root.isGone = false
-                    binding.layoutStateCoursePopular.ivDataEmpty.isGone = true
-                    binding.layoutStateCoursePopular.tvError.isGone = false
-                    binding.layoutStateCoursePopular.tvError.text = "Data Empty"
-                    binding.layoutStateCoursePopular.tvDataEmpty.isGone = true
+                    binding.layoutStateCoursePopular.ivDataEmpty.isGone = false
+                    binding.layoutStateCoursePopular.tvError.isGone = true
+                    binding.layoutStateCoursePopular.tvDataEmpty.isGone = false
                 },
                 doOnError = {
                     binding.rvPopularCourse.isVisible = false
@@ -257,12 +266,6 @@ class HomeFragment : Fragment() {
                     binding.layoutStateCoursePopular.tvDataEmpty.isGone = true
                 }
             )
-        }
-
-        viewModel.isUserLogin.observe(viewLifecycleOwner) { isLogin ->
-            if (!isLogin) {
-                showDialog()
-            }
         }
     }
 
