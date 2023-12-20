@@ -12,5 +12,7 @@ data class Data(
     @SerializedName("phone")
     val phone: String?,
     @SerializedName("role")
-    val role: String?
+    val role: String?,
+    @SerializedName("accessToken")
+    val accessToken: String
 )

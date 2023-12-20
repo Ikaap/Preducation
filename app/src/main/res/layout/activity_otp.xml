@@ -17,7 +17,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
-            android:id="@+id/ic_arrow_left"
+            android:id="@+id/iv_arrow_left"
             android:layout_width="24dp"
             android:layout_height="24dp"
             android:layout_marginStart="16dp"
@@ -36,7 +36,7 @@
             android:textColor="@color/app_color_secondary"
             android:textSize="21sp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toRightOf="@+id/ic_arrow_left"
+            app:layout_constraintLeft_toRightOf="@+id/iv_arrow_left"
             app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
@@ -56,18 +56,32 @@
             android:layout_height="wrap_content"
             android:fontFamily="@font/poppins_medium"
             android:gravity="center"
-            android:text="@string/the_otp_code_number_has_been_sent_to_cimut_gmail_com"
+            android:text="@string/the_otp_code_number_has_been_sent_to"
             android:textColor="@color/app_color_secondary"
             android:textSize="14sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
+        <TextView
+            android:id="@+id/tv_user_email"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/poppins_medium"
+            android:gravity="center"
+            android:textColor="@color/app_color_secondary"
+            android:textSize="14sp"
+            tools:text="ika@gmail.com"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_The_OTP_code_number_has_been_sent"/>
+
         <com.otpview.OTPTextView
             android:id="@+id/otp_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="50dp"
             android:textColor="@android:color/black"
             app:box_margin="6dp"
             app:height="45dp"
@@ -87,6 +101,23 @@
             app:otp_text_size="20sp"
             app:width="40dp" />
 
+        <FrameLayout
+            android:id="@+id/fl_btn_loading_state"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="38dp"
+            app:layout_constraintTop_toBottomOf="@id/otp_view"
+            app:layout_constraintBottom_toTopOf="@id/tv_Resend_OTP_Code_vie_Email">
+
+            <com.google.android.material.progressindicator.CircularProgressIndicator
+                android:id="@+id/pb_loading"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:indeterminate="true"
+                android:visibility="gone" />
+        </FrameLayout>
+
         <TextView
             android:id="@+id/tv_Resend_OTP_Code_vie_Email"
             android:layout_width="wrap_content"
@@ -101,16 +132,17 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/otp_view" />
 
-        <com.google.android.material.progressindicator.CircularProgressIndicator
-            android:id="@+id/pb_loading"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:indeterminate="true"
-            android:layout_marginTop="20dp"
-            app:layout_constraintTop_toBottomOf="@id/otp_view"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"/>
+
+        <!--        <com.google.android.material.progressindicator.CircularProgressIndicator-->
+<!--            android:id="@+id/pb_loading"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_gravity="center"-->
+<!--            android:indeterminate="true"-->
+<!--            android:layout_marginTop="20dp"-->
+<!--            app:layout_constraintTop_toBottomOf="@id/otp_view"-->
+<!--            app:layout_constraintStart_toStartOf="parent"-->
+<!--            app:layout_constraintEnd_toEndOf="parent"/>-->
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
