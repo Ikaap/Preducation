@@ -8,7 +8,7 @@ import com.kelompoksatuandsatu.preducation.data.network.api.model.auth.register.
 import com.kelompoksatuandsatu.preducation.data.network.api.model.changepassword.ChangePasswordRequest
 import com.kelompoksatuandsatu.preducation.data.network.api.model.changepassword.toPasswordList
 import com.kelompoksatuandsatu.preducation.data.network.api.model.user.UserRequest
-import com.kelompoksatuandsatu.preducation.data.network.api.model.user.toUserList
+import com.kelompoksatuandsatu.preducation.data.network.api.model.user.toUserViewParam
 import com.kelompoksatuandsatu.preducation.model.auth.OtpData
 import com.kelompoksatuandsatu.preducation.model.auth.UserAuth
 import com.kelompoksatuandsatu.preducation.model.auth.UserLogin
@@ -19,9 +19,9 @@ import com.kelompoksatuandsatu.preducation.utils.proceedFlow
 import kotlinx.coroutines.flow.Flow
 
 interface UserRepository {
-    suspend fun getUserById(id: String? = null): Flow<ResultWrapper<List<UserViewParam>>>
+    suspend fun getUserById(id: String? = null): Flow<ResultWrapper<UserViewParam>>
 
-    suspend fun updateUserById(id: String, userRequest: UserRequest): Flow<ResultWrapper<List<UserViewParam>>>
+    suspend fun updateUserById(id: String, userRequest: UserRequest): Flow<ResultWrapper<UserViewParam>>
     suspend fun updateUserPassword(
         id: String,
         passwordRequest: ChangePasswordRequest
@@ -38,18 +38,18 @@ interface UserRepository {
 
 class UserRepositoryImpl(private val userDataSource: UserDataSource, private val userPreferenceDataSource: UserPreferenceDataSource) : UserRepository {
 
-    override suspend fun getUserById(id: String?): Flow<ResultWrapper<List<UserViewParam>>> {
+    override suspend fun getUserById(id: String?): Flow<ResultWrapper<UserViewParam>> {
         return proceedFlow {
-            userDataSource.getUserById(id).data?.toUserList() ?: emptyList()
+            userDataSource.getUserById(id).data?.toUserViewParam()!!
         }
     }
 
     override suspend fun updateUserById(
         id: String,
         userRequest: UserRequest
-    ): Flow<ResultWrapper<List<UserViewParam>>> {
+    ): Flow<ResultWrapper<UserViewParam>> {
         return proceedFlow {
-            userDataSource.updateUserById(id, userRequest).data?.toUserList() ?: emptyList()
+            userDataSource.updateUserById(id, userRequest).data?.toUserViewParam()!!
         }
     }
 

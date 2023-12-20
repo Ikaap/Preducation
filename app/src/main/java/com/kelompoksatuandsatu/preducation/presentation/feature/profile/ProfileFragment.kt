@@ -6,13 +6,16 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import coil.load
 import com.kelompoksatuandsatu.preducation.R
 import com.kelompoksatuandsatu.preducation.databinding.FragmentProfileBinding
 import com.kelompoksatuandsatu.preducation.presentation.feature.changepassword.ChangePasswordActivity
 import com.kelompoksatuandsatu.preducation.presentation.feature.editprofile.EditProfileActivity
 import com.kelompoksatuandsatu.preducation.presentation.feature.historypayment.TransactionActivity
 import com.kelompoksatuandsatu.preducation.presentation.feature.login.LoginActivity
+import com.kelompoksatuandsatu.preducation.utils.proceedWhen
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class ProfileFragment : Fragment() {
@@ -20,10 +23,6 @@ class ProfileFragment : Fragment() {
     private lateinit var binding: FragmentProfileBinding
 
     private val viewModel: ProfileViewModel by viewModel()
-
-    private val RESULT_LOAD_IMG = 1
-
-    var userId: String = ""
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -37,12 +36,19 @@ class ProfileFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        setDataProfile()
         setupClickListeners()
+        getData()
     }
 
     private fun setupClickListeners() {
         binding.clEditProfile.setOnClickListener {
             startActivity(Intent(requireContext(), EditProfileActivity::class.java))
+//            val userId: String? = viewModel.getUserById().toString()
+//            userId?.let {
+//                val intent = Intent(requireContext(), EditProfileActivity::class.java)
+//                intent.putExtra(EditProfileActivity.EXTRA_USER_ID, it)
+//                startActivity(intent)
         }
 
         binding.clChangePassword.setOnClickListener {
@@ -58,11 +64,38 @@ class ProfileFragment : Fragment() {
         }
     }
 
+    private fun setDataProfile() {
+        viewModel.getProfile.observe(viewLifecycleOwner) {
+            it.proceedWhen(
+                doOnLoading = {
+                    binding.root.isVisible = true
+                    binding.ivUserPhoto.isVisible = false
+                },
+                doOnError = {
+                    binding.root.isVisible = true
+                    binding.ivUserPhoto.isVisible = false
+                },
+                doOnSuccess = {
+                    binding.root.isVisible = true
+                    binding.ivUserPhoto.isVisible = true
+                    binding.tvLongName.text = it.payload?.name.orEmpty()
+                    binding.tvEmail.text = it.payload?.email.orEmpty()
+                    binding.ivUserPhoto.load(it.payload?.imageProfile.orEmpty())
+                }
+            )
+        }
+    }
+
+    private fun getData() {
+        viewModel.getUserById()
+//        val userId = arguments?.getString(EXTRA_USER_ID)
+//        userId?.let { viewModel.getUserById(it) }
+    }
     private fun performLogout() {
         AlertDialog.Builder(requireContext())
             .setMessage(getString(R.string.text_logout_dialog)) // Using getString directly
             .setPositiveButton(getString(R.string.text_yes)) { _, _ ->
-                viewModel.performLogout()
+//                viewModel.performLogout()
                 navigateToLogin()
             }
             .setNegativeButton(getString(R.string.text_no)) { _, _ ->
@@ -78,4 +111,16 @@ class ProfileFragment : Fragment() {
         }
         startActivity(intent)
     }
+
+//    companion object {
+//        const val EXTRA_USER_ID = "EXTRA_USER_ID"
+//
+//        fun newInstance(userId: String): ProfileFragment {
+//            val fragment = ProfileFragment()
+//            val args = Bundle()
+//            args.putString(EXTRA_USER_ID, userId)
+//            fragment.arguments = args
+//            return fragment
+//        }
+//    }
 }
