@@ -7,7 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.kelompoksatuandsatu.preducation.data.repository.UserRepository
 import com.kelompoksatuandsatu.preducation.model.auth.otp.postemailotp.EmailOtp
 import com.kelompoksatuandsatu.preducation.model.auth.otp.verifyotp.OtpData
-import com.kelompoksatuandsatu.preducation.model.auth.otp.verifyotp.OtpResponse
+import com.kelompoksatuandsatu.preducation.model.common.BaseResponse
 import com.kelompoksatuandsatu.preducation.utils.ResultWrapper
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -16,8 +16,8 @@ class OtpViewModel(
     private val repo: UserRepository
 ) : ViewModel() {
 
-    private val _otpResult = MutableLiveData<ResultWrapper<OtpResponse>>()
-    val otpResult: LiveData<ResultWrapper<OtpResponse>>
+    private val _otpResult = MutableLiveData<ResultWrapper<BaseResponse>>()
+    val otpResult: LiveData<ResultWrapper<BaseResponse>>
         get() = _otpResult
 
     private val _emailOtpResult = MutableLiveData<ResultWrapper<Boolean>>()

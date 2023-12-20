@@ -14,6 +14,7 @@ import com.kelompoksatuandsatu.preducation.model.auth.otp.postemailotp.EmailOtp
 import com.kelompoksatuandsatu.preducation.model.auth.otp.verifyotp.OtpData
 import com.kelompoksatuandsatu.preducation.presentation.feature.login.LoginActivity
 import com.kelompoksatuandsatu.preducation.presentation.feature.register.RegisterActivity
+import com.kelompoksatuandsatu.preducation.utils.exceptions.ApiException
 import com.kelompoksatuandsatu.preducation.utils.proceedWhen
 import com.otpview.OTPListener
 import io.github.muddz.styleabletoast.StyleableToast
@@ -73,27 +74,6 @@ class OtpActivity : AppCompatActivity() {
                         ).show()
                         binding.otpView.showSuccess()
                         showDialog()
-
-                        if (response.success == false) {
-                            StyleableToast.makeText(
-                                this,
-                                response.message,
-                                R.style.failedtoast
-                            ).show()
-
-                            binding.otpView.showError()
-                            binding.otpView.resetState()
-                        }
-                        if (response.message?.contains("expired") == true) {
-                            StyleableToast.makeText(
-                                this,
-                                response.message + "Please enter the OTP code again or ask for the OTP code again",
-                                R.style.failedtoast
-                            ).show()
-
-                            binding.otpView.showError()
-                            binding.otpView.resetState()
-                        }
                     }
                 },
                 doOnLoading = {
@@ -101,13 +81,27 @@ class OtpActivity : AppCompatActivity() {
                 },
                 doOnError = {
                     binding.pbLoading.isVisible = false
-                    it.payload?.let { response ->
-                        StyleableToast.makeText(
-                            this,
-                            response.message,
-                            R.style.failedtoast
-                        ).show()
+
+                    binding.otpView.showError()
+
+                    if (it.exception is ApiException) {
+                        if (it.exception.httpCode == 400) {
+                            StyleableToast.makeText(
+                                this,
+                                it.exception.getParsedError()?.message,
+                                R.style.failedtoast
+                            ).show()
+                            if (it.exception.getParsedError()?.message?.contains("expired") == true) {
+                                StyleableToast.makeText(
+                                    this,
+                                    it.exception.getParsedError()?.message + "Please ask for the OTP code again",
+                                    R.style.failedtoast
+                                ).show()
+                            }
+                        }
                     }
+
+                    binding.otpView.resetState()
                 }
             )
         }

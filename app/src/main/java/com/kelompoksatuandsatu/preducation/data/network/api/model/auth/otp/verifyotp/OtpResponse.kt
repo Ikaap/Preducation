@@ -2,6 +2,7 @@ package com.kelompoksatuandsatu.preducation.data.network.api.model.auth.otp.veri
 
 import androidx.annotation.Keep
 import com.google.gson.annotations.SerializedName
+import com.kelompoksatuandsatu.preducation.model.common.BaseResponse
 
 @Keep
 data class OtpResponse(
@@ -13,7 +14,7 @@ data class OtpResponse(
     val success: Boolean?
 )
 
-fun OtpResponse.toOtpResponse() = com.kelompoksatuandsatu.preducation.model.auth.otp.verifyotp.OtpResponse(
+fun OtpResponse.toOtpResponse() = BaseResponse(
     message = this.message.orEmpty(),
     status = this.status.orEmpty(),
     success = this.success ?: false
