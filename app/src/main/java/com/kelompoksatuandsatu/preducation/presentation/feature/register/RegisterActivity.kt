@@ -13,6 +13,7 @@ import com.kelompoksatuandsatu.preducation.model.auth.UserAuth
 import com.kelompoksatuandsatu.preducation.model.auth.otp.postemailotp.EmailOtp
 import com.kelompoksatuandsatu.preducation.presentation.feature.login.LoginActivity
 import com.kelompoksatuandsatu.preducation.presentation.feature.otp.OtpActivity
+import com.kelompoksatuandsatu.preducation.utils.exceptions.ApiException
 import com.kelompoksatuandsatu.preducation.utils.proceedWhen
 import io.github.muddz.styleabletoast.StyleableToast
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -157,10 +158,11 @@ class RegisterActivity : AppCompatActivity() {
     private fun observeResult() {
         viewModel.registerResult.observe(this) {
             it.proceedWhen(
-                doOnSuccess = {
+                doOnSuccess = { resultWrapper ->
+                    val response = resultWrapper.payload
                     StyleableToast.makeText(
                         this,
-                        getString(R.string.register_successfull),
+                        "${response?.message}",
                         R.style.successtoast
                     ).show()
                     navigateToOtp()
@@ -169,13 +171,15 @@ class RegisterActivity : AppCompatActivity() {
                     binding.pbLoading.isVisible = true
                     binding.signUpButton.isVisible = false
                 },
-                doOnError = {
+                doOnError = { resultWrapper ->
                     binding.pbLoading.isVisible = false
                     binding.signUpButton.isVisible = true
                     binding.signUpButton.isEnabled = true
+                    val apiException = resultWrapper.exception as? ApiException
+                    val message = apiException?.getParsedError()?.message.orEmpty()
                     StyleableToast.makeText(
                         this,
-                        getString(R.string.register_failed) + it.exception?.message.orEmpty(),
+                        "$message",
                         R.style.failedtoast
                     ).show()
                 }

@@ -9,6 +9,7 @@ import com.kelompoksatuandsatu.preducation.data.network.api.model.auth.otp.poste
 import com.kelompoksatuandsatu.preducation.data.network.api.model.auth.otp.verifyotp.OtpRequest
 import com.kelompoksatuandsatu.preducation.data.network.api.model.auth.otp.verifyotp.toOtpResponse
 import com.kelompoksatuandsatu.preducation.data.network.api.model.auth.register.RegisterRequest
+import com.kelompoksatuandsatu.preducation.data.network.api.model.auth.register.RegisterResponse
 import com.kelompoksatuandsatu.preducation.data.network.api.model.changepassword.ChangePasswordRequest
 import com.kelompoksatuandsatu.preducation.data.network.api.model.changepassword.toPasswordList
 import com.kelompoksatuandsatu.preducation.data.network.api.model.user.UserRequest
@@ -38,7 +39,7 @@ interface UserRepository {
 
     suspend fun performLogout(): Flow<ResultWrapper<Boolean>>
 
-    suspend fun userRegister(request: UserAuth): Flow<ResultWrapper<Boolean>>
+    suspend fun userRegister(request: UserAuth): Flow<ResultWrapper<RegisterResponse>>
 
     suspend fun userLogin(request: UserLogin): Flow<ResultWrapper<LoginResponse>>
 
@@ -82,15 +83,20 @@ class UserRepositoryImpl(
         TODO("Not yet implemented")
     }
 
-    override suspend fun userRegister(request: UserAuth): Flow<ResultWrapper<Boolean>> {
-        return proceedFlow {
-            val dataRequest =
-                RegisterRequest(request.email, request.name, request.phone, request.password)
-            val regisResult = userDataSource.userRegister(dataRequest)
-            if (regisResult.success) {
-                userPreferenceDataSource.saveUserToken(regisResult.data.accessToken)
+    override suspend fun userRegister(request: UserAuth): Flow<ResultWrapper<RegisterResponse>> {
+        return flow {
+            val dataRequest = RegisterRequest(request.email, request.name, request.phone, request.password)
+            try {
+                val regisResult = userDataSource.userRegister(dataRequest)
+                if (regisResult.success) {
+                    userPreferenceDataSource.saveUserToken(regisResult.data.accessToken)
+                    emit(ResultWrapper.Success(regisResult))
+                } else {
+                    throw ApiException(regisResult.message ?: "Unknown error", -1, null)
+                }
+            } catch (e: HttpException) {
+                throw ApiException(e.message(), e.code(), e.response())
             }
-            regisResult.success
         }
     }
 
