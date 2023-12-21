@@ -4,6 +4,7 @@ import com.kelompoksatuandsatu.preducation.data.local.datastore.datasource.UserP
 import com.kelompoksatuandsatu.preducation.data.network.api.datasource.UserDataSource
 import com.kelompoksatuandsatu.preducation.data.network.api.model.auth.forgotpassword.ForgotPasswordRequest
 import com.kelompoksatuandsatu.preducation.data.network.api.model.auth.login.LoginRequest
+import com.kelompoksatuandsatu.preducation.data.network.api.model.auth.login.LoginResponse
 import com.kelompoksatuandsatu.preducation.data.network.api.model.auth.otp.postemail.EmailOtpRequest
 import com.kelompoksatuandsatu.preducation.data.network.api.model.auth.otp.verifyotp.OtpRequest
 import com.kelompoksatuandsatu.preducation.data.network.api.model.auth.otp.verifyotp.toOtpResponse
@@ -21,8 +22,10 @@ import com.kelompoksatuandsatu.preducation.model.common.BaseResponse
 import com.kelompoksatuandsatu.preducation.model.user.Password
 import com.kelompoksatuandsatu.preducation.model.user.UserViewParam
 import com.kelompoksatuandsatu.preducation.utils.ResultWrapper
+import com.kelompoksatuandsatu.preducation.utils.exceptions.ApiException
 import com.kelompoksatuandsatu.preducation.utils.proceedFlow
-import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.*
+import retrofit2.HttpException
 
 interface UserRepository {
     suspend fun getUserById(id: String? = null): Flow<ResultWrapper<List<UserViewParam>>>
@@ -37,7 +40,7 @@ interface UserRepository {
 
     suspend fun userRegister(request: UserAuth): Flow<ResultWrapper<Boolean>>
 
-    suspend fun userLogin(request: UserLogin): Flow<ResultWrapper<Boolean>>
+    suspend fun userLogin(request: UserLogin): Flow<ResultWrapper<LoginResponse>>
 
     suspend fun postEmailOtp(request: EmailOtp): Flow<ResultWrapper<Boolean>>
 
@@ -91,14 +94,20 @@ class UserRepositoryImpl(
         }
     }
 
-    override suspend fun userLogin(request: UserLogin): Flow<ResultWrapper<Boolean>> {
-        return proceedFlow {
+    override suspend fun userLogin(request: UserLogin): Flow<ResultWrapper<LoginResponse>> {
+        return flow {
             val dataReq = LoginRequest(request.identifier, request.password)
-            val loginResult = userDataSource.userLogin(dataReq)
-            if (loginResult.success) {
-                userPreferenceDataSource.saveUserToken(loginResult.data.accessToken)
+            try {
+                val loginResult = userDataSource.userLogin(dataReq)
+                if (loginResult.success) {
+                    userPreferenceDataSource.saveUserToken(loginResult.data.accessToken)
+                    emit(ResultWrapper.Success(loginResult))
+                } else {
+                    throw ApiException(loginResult.message ?: "Unknown error", -1, null)
+                }
+            } catch (e: HttpException) {
+                throw ApiException(e.message(), e.code(), e.response())
             }
-            loginResult.success
         }
     }
 
