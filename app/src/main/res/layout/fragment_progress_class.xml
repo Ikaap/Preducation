@@ -62,6 +62,7 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <com.facebook.shimmer.ShimmerFrameLayout
+                    android:id="@+id/sh_loading_category_course"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     app:shimmer_duration="800"
@@ -75,7 +76,8 @@
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:orientation="horizontal">
+                            android:orientation="horizontal"
+                            android:layout_marginTop="6dp">
 
                             <include
                                 layout="@layout/item_category_circle_shimmer"
@@ -107,7 +109,8 @@
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:orientation="horizontal">
+                            android:orientation="horizontal"
+                            android:layout_marginTop="6dp">
 
                             <include
                                 layout="@layout/item_category_circle_shimmer"
@@ -159,8 +162,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:visibility="gone"
-                    app:layout_constraintTop_toBottomOf="@id/tv_title_category"
-                    tools:visibility="visible" />
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tv_title_category" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -245,38 +248,70 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/tv_title_popular_course"
-                    tools:listitem="@layout/item_category_rounded" />
+                    tools:listitem="@layout/item_category_rounded"
+                    tools:visibility="gone"/>
 
                 <include
                     android:id="@+id/layout_state_category_progress"
                     layout="@layout/layout_content_state"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
-                    android:visibility="gone"
-                    app:layout_constraintTop_toTopOf="@id/rv_category_progress"
+                    app:layout_constraintTop_toTopOf="@id/tv_title_popular_course"
                     app:layout_constraintBottom_toBottomOf="@id/rv_category_progress"
-                    tools:visibility="visible" />
+                    tools:visibility="gone"/>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/cl_course_card"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/cl_data_category_course">
+
+                <com.facebook.shimmer.ShimmerFrameLayout
+                    android:id="@+id/sh_loading_course_progress"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    app:layout_constraintStart_toStartOf="@id/rv_progress_course"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:shimmer_duration="800">
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent">
+
+                        <include layout="@layout/item_course_card_shimmer"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"/>
+
+                    </LinearLayout>
+
+                </com.facebook.shimmer.ShimmerFrameLayout>
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rv_progress_course"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
+                    android:visibility="visible"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/rv_category_progress"
-                    tools:listitem="@layout/item_course_card" />
+                    tools:listitem="@layout/item_course_card"
+                    tools:visibility="gone"/>
 
                 <include
                     android:id="@+id/layout_state_course_progress"
                     layout="@layout/layout_content_state"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:visibility="gone"
-                    app:layout_constraintTop_toTopOf="@id/rv_progress_course"
-                    tools:visibility="visible" />
+                    android:layout_height="0dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:visibility="gone"/>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 

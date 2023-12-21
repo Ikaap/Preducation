@@ -126,8 +126,6 @@
     <string name="iv_rating">iv_rating</string>
     <string name="iv_time_course">iv_time_course</string>
     <string name="tv_sign_up">Sign Up</string>
-    <string name="course_is_empty">Course is Empty</string>
-    <string name="category_is_empty">Category is Empty</string>
 
     <string name="desc_iv_logo_app">iv_logo_app</string>
     <string name="tv_reset_password">Reset Password</string>
@@ -191,7 +189,7 @@
     <string name="you_need_to_login">You need to login</string>
     <string name="empty_class_progress">You haven\'t taken any classes yet</string>
     <string name="empty_progress_category">Empty progress category</string>
-    <string name="text_data_empty">Data Empty</string>
+   <string name="text_data_empty">Data Empty</string>
     <string name="text_paid">Paid</string>
     <string name="text_on_progress">On Progress</string>
     <string name="text_dialog_finish_class_message">You are at the end of this class.\nPlease check your email after watching the video to get your certificate.</string>
