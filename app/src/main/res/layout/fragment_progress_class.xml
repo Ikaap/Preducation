@@ -9,25 +9,33 @@
     android:paddingBottom="6dp"
     tools:context="presentation.feature.classProgress.ProgressClassFragment">
 
-    <include
-        android:id="@+id/layout_common_state"
-        layout="@layout/common_layout_content_state"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cl_search_bar"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:visibility="visible"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="6dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <include
+            android:id="@+id/layout_state_search_bar"
+            layout="@layout/layout_search_bar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:layout_editor_absoluteX="0dp"
+            tools:layout_editor_absoluteY="0dp"
+            tools:visibility="visible" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginTop="24dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toBottomOf="@id/cl_search_bar">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -140,17 +148,17 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    android:layout_marginTop="8dp"
                     app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/tv_title_category"
                     app:spanCount="4"
+                    tools:visibility="gone"
                     tools:listitem="@layout/item_category_circle" />
 
                 <include
                     android:id="@+id/layout_state_category_course"
-                    layout="@layout/common_layout_content_state"
+                    layout="@layout/layout_content_state"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:visibility="gone"
@@ -163,7 +171,7 @@
                 android:id="@+id/cl_data_category_course"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="22dp"
+                android:layout_marginTop="8dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/cl_data_category">
@@ -245,7 +253,7 @@
 
                 <include
                     android:id="@+id/layout_state_category_progress"
-                    layout="@layout/common_layout_content_state"
+                    layout="@layout/layout_content_state"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
                     app:layout_constraintTop_toTopOf="@id/tv_title_popular_course"
@@ -272,9 +280,10 @@
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent">
 
-                        <include layout="@layout/item_course_card_shimmer" />
-
-                        <include layout="@layout/item_course_card_shimmer" />
+                        <include layout="@layout/item_course_card_shimmer"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"/>
 
                     </LinearLayout>
 
@@ -295,13 +304,14 @@
 
                 <include
                     android:id="@+id/layout_state_course_progress"
-                    layout="@layout/common_layout_content_state"
+                    layout="@layout/layout_content_state"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:visibility="visible"
+                    android:layout_height="0dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:visibility="gone"/>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 

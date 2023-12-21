@@ -8,15 +8,15 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.view.isGone
+import android.widget.ImageView
+import androidx.appcompat.widget.SearchView
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.kelompoksatuandsatu.preducation.R
+import com.kelompoksatuandsatu.preducation.databinding.DialogNonLoginBinding
 import com.kelompoksatuandsatu.preducation.databinding.FragmentProgressClassBinding
-import com.kelompoksatuandsatu.preducation.databinding.LayoutDialogAccessFeatureBinding
 import com.kelompoksatuandsatu.preducation.model.category.categoryclass.CategoryClass
 import com.kelompoksatuandsatu.preducation.model.progress.CourseProgressItemClass
 import com.kelompoksatuandsatu.preducation.presentation.common.adapter.category.CategoryCourseListAdapter
@@ -24,15 +24,17 @@ import com.kelompoksatuandsatu.preducation.presentation.common.adapter.category.
 import com.kelompoksatuandsatu.preducation.presentation.common.adapter.classprogress.CourseProgressListAdapter
 import com.kelompoksatuandsatu.preducation.presentation.feature.detailclass.DetailClassActivity
 import com.kelompoksatuandsatu.preducation.presentation.feature.home.SeeAllPopularCoursesActivity
-import com.kelompoksatuandsatu.preducation.presentation.feature.login.LoginActivity
-import com.kelompoksatuandsatu.preducation.utils.exceptions.ApiException
-import com.kelompoksatuandsatu.preducation.utils.exceptions.NoInternetException
+import com.kelompoksatuandsatu.preducation.presentation.feature.register.RegisterActivity
 import com.kelompoksatuandsatu.preducation.utils.proceedWhen
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class ProgressClassFragment : Fragment() {
 
     private lateinit var binding: FragmentProgressClassBinding
+
+    private val searchView: SearchView by lazy {
+        binding.clSearchBar.findViewById(R.id.sv_search)
+    }
 
     private val viewModel: ProgressClassViewModel by viewModel()
 
@@ -50,13 +52,32 @@ class ProgressClassFragment : Fragment() {
 
     private val categoryProgressAdapter: CategoryRoundedListAdapter by lazy {
         CategoryRoundedListAdapter(viewModel) {
-            viewModel.getCourseProgress(it.nameCategory.lowercase())
+            viewModel.getCourseProgress(it.nameCategory)
         }
     }
 
     private val progressCourseAdapter: CourseProgressListAdapter by lazy {
         CourseProgressListAdapter {
-            navigateCourseProgressToDetail(it)
+            viewModel.isUserLogin.observe(viewLifecycleOwner) { isLogin ->
+                if (!isLogin) {
+                    showDialog()
+                } else {
+                    navigateCourseProgressToDetail(it)
+                }
+            }
+        }
+    }
+
+    private val searchQueryListener = object : SearchView.OnQueryTextListener {
+        override fun onQueryTextSubmit(query: String?): Boolean {
+            query?.let {
+                progressCourseAdapter.filter(it)
+            }
+            return true
+        }
+
+        override fun onQueryTextChange(newText: String?): Boolean {
+            return false
         }
     }
 
@@ -64,24 +85,11 @@ class ProgressClassFragment : Fragment() {
         DetailClassActivity.startActivityProgress(requireContext(), course)
     }
 
-    private fun navigateToHome() {
-        findNavController().navigate(R.id.class_navigate_to_home)
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        viewModel.checkLogin()
-
-        viewModel.isUserLogin.observe(viewLifecycleOwner) { isLogin ->
-            if (!isLogin) {
-                showDialogNotification()
-                navigateToHome()
-            }
-        }
-
         binding = FragmentProgressClassBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -94,12 +102,13 @@ class ProgressClassFragment : Fragment() {
         showCourse()
         showCategoryProgress()
         setOnClickListener()
+        searchView.setOnQueryTextListener(searchQueryListener)
     }
-
     private fun fetchData() {
         viewModel.getCategoriesClass()
         viewModel.getCategoriesProgress()
         viewModel.getCourseProgress()
+        viewModel.checkLogin()
     }
 
     private fun setOnClickListener() {
@@ -110,11 +119,15 @@ class ProgressClassFragment : Fragment() {
         binding.ivToSeeAll.setOnClickListener {
             SeeAllPopularCoursesActivity.startActivity(requireContext())
         }
+
+        binding.clSearchBar.findViewById<ImageView>(R.id.iv_search).setOnClickListener {
+            val query = searchView.query.toString()
+            progressCourseAdapter.filter(query)
+        }
     }
 
-    private fun showDialogNotification() {
-        val binding: LayoutDialogAccessFeatureBinding =
-            LayoutDialogAccessFeatureBinding.inflate(layoutInflater)
+    private fun showDialog() {
+        val binding: DialogNonLoginBinding = DialogNonLoginBinding.inflate(layoutInflater)
         val dialog = AlertDialog.Builder(requireContext(), 0).create()
 
         dialog.apply {
@@ -122,8 +135,8 @@ class ProgressClassFragment : Fragment() {
             window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         }.show()
 
-        binding.clSignIn.setOnClickListener {
-            val intent = Intent(requireContext(), LoginActivity::class.java)
+        binding.clSignUp.setOnClickListener {
+            val intent = Intent(requireContext(), RegisterActivity::class.java)
             startActivity(intent)
         }
     }
@@ -140,62 +153,31 @@ class ProgressClassFragment : Fragment() {
             it.proceedWhen(
                 doOnSuccess = { result ->
                     binding.rvCategoryProgress.isVisible = true
-                    binding.shLoadingCategoryProgress.isVisible = false
-                    binding.layoutStateCategoryProgress.root.isVisible = false
                     binding.layoutStateCategoryProgress.tvError.isVisible = false
-                    binding.layoutStateCategoryProgress.pbLoading.isVisible = false
-                    binding.layoutStateCategoryProgress.clErrorState.isVisible = false
-                    binding.layoutStateCategoryProgress.tvErrorState.isVisible = false
-                    binding.layoutStateCategoryProgress.ivErrorState.isVisible = false
-                    binding.rvCategoryProgress.apply {
-                        layoutManager = LinearLayoutManager(
-                            requireContext(),
-                            LinearLayoutManager.HORIZONTAL,
-                            false
-                        )
-                        adapter = categoryProgressAdapter
-                    }
+                    binding.shLoadingCategoryProgress.isVisible = false
+
                     result.payload?.let { categoriesProgress ->
                         categoryProgressAdapter.setData(categoriesProgress)
                     }
                 },
                 doOnLoading = {
-                    binding.rvCategoryProgress.isVisible = false
+                    binding.layoutStateCategoryProgress.root.isVisible = true
                     binding.shLoadingCategoryProgress.isVisible = true
-                    binding.layoutStateCategoryProgress.root.isVisible = false
-                    binding.layoutStateCategoryProgress.tvError.isVisible = false
-                    binding.layoutStateCategoryProgress.pbLoading.isVisible = false
-                    binding.layoutStateCategoryProgress.clErrorState.isVisible = false
-                    binding.layoutStateCategoryProgress.tvErrorState.isVisible = false
-                    binding.layoutStateCategoryProgress.ivErrorState.isVisible = false
+                    binding.rvCategoryProgress.isVisible = false
                 },
                 doOnError = {
-                    binding.rvCategoryProgress.isVisible = false
-                    binding.shLoadingCategoryProgress.isVisible = false
                     binding.layoutStateCategoryProgress.root.isVisible = true
+                    binding.shLoadingCategoryProgress.isVisible = false
                     binding.layoutStateCategoryProgress.tvError.isVisible = true
-                    binding.layoutStateCategoryProgress.tvError.text = it.exception?.message
-                    binding.layoutStateCategoryProgress.pbLoading.isVisible = false
-                    binding.layoutStateCategoryProgress.clErrorState.isVisible = false
-                    binding.layoutStateCategoryProgress.tvErrorState.isVisible = false
-                    binding.layoutStateCategoryProgress.ivErrorState.isVisible = false
-
-                    if (it.exception is ApiException) {
-                        if (it.exception.getParsedErrorCategoriesType()?.success == false) {
-                            binding.layoutStateCategoryProgress.tvError.text =
-                                it.exception.getParsedErrorCategories()?.message
-                        }
-                    }
+                    binding.layoutStateCategoryProgress.tvError.text = it.exception?.message.orEmpty()
+                    binding.rvCategoryProgress.isVisible = false
                 },
                 doOnEmpty = {
-                    binding.rvCategoryProgress.isVisible = false
+                    binding.layoutStateCategoryProgress.root.isVisible = true
                     binding.shLoadingCategoryProgress.isVisible = false
-                    binding.layoutStateCategoryProgress.root.isVisible = false
-                    binding.layoutStateCategoryProgress.tvError.isVisible = false
-                    binding.layoutStateCategoryProgress.pbLoading.isVisible = false
-                    binding.layoutStateCategoryProgress.clErrorState.isVisible = true
-                    binding.layoutStateCategoryProgress.tvErrorState.isVisible = true
-                    binding.layoutStateCategoryProgress.ivErrorState.isVisible = false
+                    binding.layoutStateCategoryProgress.tvError.isVisible = true
+                    binding.layoutStateCategoryProgress.tvError.text = getString(R.string.empty_progress_category)
+                    binding.rvCategoryProgress.isVisible = false
                 }
             )
         }
@@ -213,74 +195,39 @@ class ProgressClassFragment : Fragment() {
             it.proceedWhen(
                 doOnSuccess = { result ->
                     binding.rvProgressCourse.isVisible = true
-                    binding.shLoadingCourseProgress.isVisible = false
                     binding.layoutStateCourseProgress.tvError.isVisible = false
-                    binding.layoutStateCourseProgress.pbLoading.isVisible = false
-                    binding.layoutStateCourseProgress.clErrorState.isVisible = false
-                    binding.layoutStateCourseProgress.tvErrorState.isVisible = false
-                    binding.layoutStateCourseProgress.ivErrorState.isVisible = false
+                    binding.shLoadingCourseProgress.isVisible = false
+
                     result.payload?.let { courseProgress ->
                         progressCourseAdapter.setData(courseProgress)
                     }
                 },
                 doOnLoading = {
-                    binding.rvProgressCourse.isVisible = false
+                    binding.layoutStateCourseProgress.root.isVisible = true
                     binding.shLoadingCourseProgress.isVisible = true
-                    binding.layoutStateCourseProgress.root.isVisible = false
-                    binding.layoutCommonState.root.isVisible = false
-                    binding.layoutStateCourseProgress.tvError.isVisible = false
-                    binding.layoutStateCourseProgress.pbLoading.isVisible = false
-                    binding.layoutStateCourseProgress.clErrorState.isVisible = false
-                    binding.layoutStateCourseProgress.tvErrorState.isVisible = false
-                    binding.layoutStateCourseProgress.ivErrorState.isVisible = false
+                    binding.rvProgressCourse.isVisible = false
                 },
                 doOnError = {
-                    binding.rvProgressCourse.isVisible = false
-                    binding.shLoadingCourseProgress.isVisible = false
                     binding.layoutStateCourseProgress.root.isVisible = true
+                    binding.shLoadingCourseProgress.isVisible = false
                     binding.layoutStateCourseProgress.tvError.isVisible = true
-                    binding.layoutStateCourseProgress.tvError.text = it.exception?.message
-                    binding.layoutStateCourseProgress.pbLoading.isVisible = false
-
-                    if (it.exception is ApiException) {
-                        binding.layoutCommonState.root.isVisible = true
-                        if (it.exception.getParsedErrorProgressClass()?.success == false) {
-                            if (it.exception.httpCode == 500) {
-                                binding.layoutCommonState.clErrorState.isGone = false
-                                binding.layoutCommonState.ivErrorState.isGone = false
-                                binding.layoutCommonState.tvErrorState.isGone = false
-                                binding.layoutCommonState.tvErrorState.text =
-                                    "Sorry, there's an error on the server"
-                                binding.layoutCommonState.ivErrorState.setImageResource(R.drawable.img_server_error)
-                            } else if (it.exception.getParsedErrorProgressClass()?.success == false) {
-                                binding.layoutCommonState.tvError.text =
-                                    it.exception.getParsedErrorProgressClass()?.message
-                            }
-                        }
-                    } else if (it.exception is NoInternetException) {
-                        if (!it.exception.isNetworkAvailable(requireContext())) {
-                            binding.layoutCommonState.root.isVisible = true
-                            binding.layoutCommonState.clErrorState.isGone = false
-                            binding.layoutCommonState.ivErrorState.isGone = false
-                            binding.layoutCommonState.tvErrorState.isGone = false
-                            binding.layoutCommonState.tvErrorState.text = "Oops!\nNo Internet Connection"
-                            binding.layoutCommonState.ivErrorState.setImageResource(R.drawable.img_no_connection)
-                        }
-                    }
+                    binding.layoutStateCourseProgress.tvError.text = it.exception?.message.orEmpty()
+                    binding.rvProgressCourse.isVisible = false
                 },
                 doOnEmpty = {
-                    binding.rvProgressCourse.isVisible = false
-                    binding.shLoadingCourseProgress.isVisible = false
                     binding.layoutStateCourseProgress.root.isVisible = true
+                    binding.shLoadingCourseProgress.isVisible = false
                     binding.layoutStateCourseProgress.tvError.isVisible = true
-                    binding.layoutStateCourseProgress.pbLoading.isVisible = false
-                    binding.layoutStateCourseProgress.clErrorState.isVisible = true
-                    binding.layoutStateCourseProgress.tvErrorState.isVisible = true
-                    binding.layoutStateCourseProgress.tvErrorState.text =
-                        "You don't have any classes yet"
-                    binding.layoutStateCourseProgress.ivErrorState.isVisible = true
+                    binding.layoutStateCourseProgress.tvError.text = getString(R.string.empty_class_progress)
+                    binding.rvProgressCourse.isVisible = false
                 }
             )
+        }
+
+        viewModel.isUserLogin.observe(viewLifecycleOwner) { isLogin ->
+            if (!isLogin) {
+                showDialog()
+            }
         }
     }
 
@@ -292,53 +239,31 @@ class ProgressClassFragment : Fragment() {
             it.proceedWhen(
                 doOnSuccess = { result ->
                     binding.rvCategoryCourse.isVisible = true
-                    binding.shLoadingCategoryCourse.isVisible = false
                     binding.layoutStateCategoryCourse.tvError.isVisible = false
-                    binding.layoutStateCategoryCourse.pbLoading.isVisible = false
-                    binding.layoutStateCategoryCourse.clErrorState.isVisible = false
-                    binding.layoutStateCategoryCourse.tvErrorState.isVisible = false
-                    binding.layoutStateCategoryCourse.ivErrorState.isVisible = false
+                    binding.shLoadingCategoryCourse.isVisible = false
+
                     result.payload?.let { categoriesCourse ->
                         categoryCourseAdapter.setData(categoriesCourse)
                     }
                 },
                 doOnLoading = {
-                    binding.rvCategoryCourse.isVisible = false
+                    binding.layoutStateCategoryCourse.root.isVisible = true
                     binding.shLoadingCategoryCourse.isVisible = true
-                    binding.layoutStateCategoryCourse.root.isVisible = false
-                    binding.layoutStateCategoryCourse.tvError.isVisible = false
-                    binding.layoutStateCategoryCourse.pbLoading.isVisible = false
-                    binding.layoutStateCategoryCourse.clErrorState.isVisible = false
-                    binding.layoutStateCategoryCourse.tvErrorState.isVisible = false
-                    binding.layoutStateCategoryCourse.ivErrorState.isVisible = false
+                    binding.rvCategoryCourse.isVisible = false
                 },
                 doOnError = {
-                    binding.rvCategoryCourse.isVisible = false
-                    binding.shLoadingCategoryCourse.isVisible = false
                     binding.layoutStateCategoryCourse.root.isVisible = true
+                    binding.shLoadingCategoryCourse.isVisible = false
                     binding.layoutStateCategoryCourse.tvError.isVisible = true
-                    binding.layoutStateCategoryCourse.tvError.text = it.exception?.message
-                    binding.layoutStateCategoryCourse.pbLoading.isVisible = false
-                    binding.layoutStateCategoryCourse.clErrorState.isVisible = false
-                    binding.layoutStateCategoryCourse.tvErrorState.isVisible = false
-                    binding.layoutStateCategoryCourse.ivErrorState.isVisible = false
-
-                    if (it.exception is ApiException) {
-                        if (it.exception.getParsedErrorCategories()?.success == false) {
-                            binding.layoutStateCategoryProgress.tvError.text =
-                                it.exception.getParsedErrorCategories()?.message
-                        }
-                    }
+                    binding.layoutStateCategoryCourse.tvError.text = it.exception?.message.orEmpty()
+                    binding.rvCategoryCourse.isVisible = false
                 },
                 doOnEmpty = {
-                    binding.rvCategoryCourse.isVisible = false
-                    binding.shLoadingCategoryCourse.isVisible = false
                     binding.layoutStateCategoryCourse.root.isVisible = true
-                    binding.layoutStateCategoryCourse.tvError.isVisible = false
-                    binding.layoutStateCategoryCourse.pbLoading.isVisible = false
-                    binding.layoutStateCategoryCourse.clErrorState.isVisible = true
-                    binding.layoutStateCategoryCourse.tvErrorState.isVisible = true
-                    binding.layoutStateCategoryCourse.ivErrorState.isVisible = false
+                    binding.shLoadingCategoryCourse.isVisible = false
+                    binding.layoutStateCategoryCourse.tvError.isVisible = true
+                    binding.layoutStateCategoryCourse.tvError.text = getString(R.string.you_need_to_login)
+                    binding.rvCategoryCourse.isVisible = false
                 }
             )
         }
