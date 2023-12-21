@@ -14,6 +14,7 @@ import com.kelompoksatuandsatu.preducation.model.auth.UserLogin
 import com.kelompoksatuandsatu.preducation.presentation.feature.forgotpasswordnew.ForgotPasswordNewActivity
 import com.kelompoksatuandsatu.preducation.presentation.feature.main.MainActivity
 import com.kelompoksatuandsatu.preducation.presentation.feature.register.RegisterActivity
+import com.kelompoksatuandsatu.preducation.utils.exceptions.ApiException
 import com.kelompoksatuandsatu.preducation.utils.proceedWhen
 import io.github.muddz.styleabletoast.StyleableToast
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -126,10 +127,11 @@ class LoginActivity : AppCompatActivity() {
     private fun observeResult() {
         viewModel.loginResult.observe(this) {
             it.proceedWhen(
-                doOnSuccess = {
+                doOnSuccess = { resultWrapper ->
+                    val response = resultWrapper.payload
                     StyleableToast.makeText(
                         this,
-                        getString(R.string.login_success),
+                        "${response?.message}",
                         R.style.successtoast
                     ).show()
                     it.payload?.let {
@@ -142,13 +144,15 @@ class LoginActivity : AppCompatActivity() {
                     binding.pbLoading.isVisible = true
                     binding.signInButton.isVisible = false
                 },
-                doOnError = {
+                doOnError = { resultWrapper ->
                     binding.pbLoading.isVisible = false
                     binding.signInButton.isVisible = true
                     binding.signInButton.isEnabled = true
+                    val apiException = resultWrapper.exception as? ApiException
+                    val message = apiException?.getParsedError()?.message.orEmpty()
                     StyleableToast.makeText(
                         this,
-                        getString(R.string.login_failed) + "${it.exception?.message.orEmpty()}",
+                        "$message",
                         R.style.failedtoast
                     ).show()
                 }
