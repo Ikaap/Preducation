@@ -107,7 +107,7 @@ class CourseFragment : Fragment() {
                 doOnSuccess = { result ->
                     binding.rvCategoryType.isVisible = true
                     binding.layoutStateCategoryType.tvError.isVisible = false
-                    binding.layoutStateCategoryType.pbLoading.isVisible = false
+                    //                   binding.layoutStateCategoryType.pbLoading.isVisible = false
 
                     result.payload?.let { categoriesType ->
                         categoryTypeClassAdapter.setData(categoriesType)
@@ -115,12 +115,12 @@ class CourseFragment : Fragment() {
                 },
                 doOnLoading = {
                     binding.layoutStateCategoryType.root.isVisible = true
-                    binding.layoutStateCategoryType.pbLoading.isVisible = true
+                    //                  binding.layoutStateCategoryType.pbLoading.isVisible = true
                     binding.rvCategoryType.isVisible = false
                 },
                 doOnError = {
                     binding.layoutStateCategoryType.root.isVisible = true
-                    binding.layoutStateCategoryType.pbLoading.isVisible = false
+                    //                   binding.layoutStateCategoryType.pbLoading.isVisible = false
                     binding.layoutStateCategoryType.tvError.isVisible = true
                     binding.layoutStateCategoryType.tvError.text = it.exception?.message.orEmpty()
                     binding.rvCategoryType.isVisible = false
@@ -141,14 +141,14 @@ class CourseFragment : Fragment() {
             it.proceedWhen(
                 doOnLoading = {
                     binding.layoutStateCourse.root.isVisible = true
-                    binding.layoutStateCourse.pbLoading.isVisible = true
+                    //                 binding.layoutStateCourse.pbLoading.isVisible = true
                     binding.layoutStateCourse.tvError.isVisible = false
                     binding.rvCourse.isVisible = false
                 },
                 doOnSuccess = { result ->
                     binding.layoutStateCourse.root.isVisible = false
                     binding.rvCourse.isVisible = true
-                    binding.layoutStateCourse.pbLoading.isVisible = false
+                    //                 binding.layoutStateCourse.pbLoading.isVisible = false
                     binding.layoutStateCourse.tvError.isVisible = false
                     result.payload?.let { data ->
                         typeCourseAdapter.setData(data)
@@ -157,7 +157,7 @@ class CourseFragment : Fragment() {
                 doOnError = {
                     binding.layoutStateCourse.root.isVisible = true
                     binding.rvCourse.isVisible = false
-                    binding.layoutStateCourse.pbLoading.isVisible = false
+                    //                  binding.layoutStateCourse.pbLoading.isVisible = false
                     binding.layoutStateCourse.tvError.isVisible = true
                 }
             )
