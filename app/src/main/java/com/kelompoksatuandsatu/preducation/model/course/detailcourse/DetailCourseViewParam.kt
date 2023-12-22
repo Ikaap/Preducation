@@ -19,7 +19,7 @@ data class DetailCourseViewParam(
     val title: String?,
     val totalDuration: Int?,
     val totalModule: Int?,
-    val totalRating: Int?,
+    val totalRating: Double?,
     val typeClass: String?,
     val updatedAt: String?,
     val thumbnail: String?

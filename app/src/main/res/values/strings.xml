@@ -185,4 +185,5 @@
     <string name="login_success">Login Successfull</string>
     <string name="login_failed">Login Failed</string>
     <string name="text_version">Versi 1.0.1</string>
+    <string name="text_data_empty">Data Empty</string>
 </resources>

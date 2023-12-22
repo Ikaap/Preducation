@@ -70,7 +70,7 @@ object AppModules {
         viewModelOf(::HomeViewModel)
         viewModelOf(::DetailClassViewModel)
         viewModelOf(::CourseViewModel)
-        viewModel { param -> PaymentViewModel(param.get(), get()) }
+        viewModel { param -> PaymentViewModel(param.get(), get(), get(), get()) }
         viewModelOf(::RegisterViewModel)
         viewModelOf(::LoginViewModel)
         viewModelOf(::ProgressClassViewModel)
