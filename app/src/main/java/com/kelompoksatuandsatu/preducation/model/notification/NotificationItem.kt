@@ -1,4 +1,4 @@
-package com.kelompoksatuandsatu.preducation.model
+package com.kelompoksatuandsatu.preducation.model.notification
 
 import com.kelompoksatuandsatu.preducation.data.network.api.model.notification.UserId
 
