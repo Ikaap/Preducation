@@ -2,7 +2,7 @@ package com.kelompoksatuandsatu.preducation.data.network.api.model.notification
 
 import androidx.annotation.Keep
 import com.google.gson.annotations.SerializedName
-import com.kelompoksatuandsatu.preducation.model.NotificationItem
+import com.kelompoksatuandsatu.preducation.model.notification.NotificationItem
 
 @Keep
 data class Data(

@@ -1,20 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginVertical="6dp"
-    android:background="@color/app_color_on_primary">
+    android:layout_margin="5dp"
+    app:cardCornerRadius="10dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/cl_button_payment"
         android:layout_width="match_parent"
-        android:layout_height="90dp"
-        android:background="@drawable/bg_item_notification"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        android:layout_height="80dp">
 
         <LinearLayout
             android:id="@+id/ll_notification"
@@ -22,22 +18,18 @@
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="16dp"
             android:orientation="horizontal"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="15dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
-            <TextView
+            <ImageView
                 android:id="@+id/tv_notification_name"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/montserrat_bold"
-                android:textAlignment="textStart"
-                android:textColor="@color/app_color_secondary"
-                android:textSize="16sp"
-                android:textStyle="bold"
-                android:maxLines="1"
-                tools:text="New Category Course!" />
+                android:layout_width="200dp"
+                android:layout_height="20dp"
+                android:contentDescription="@string/text_notifications"
+                android:scaleType="centerCrop"
+                android:background="@color/color_shimmer" />
 
             <LinearLayout
                 android:id="@+id/ll_date"
@@ -50,17 +42,13 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
 
-                <TextView
+                <ImageView
                     android:id="@+id/tv_date"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/montserrat"
-                    android:textColor="@color/app_color_secondary"
-                    android:textSize="12sp"
-                    android:textStyle="bold"
-                    android:gravity="right"
-                    tools:text="12 Desember 2023"
-                    />
+                    android:layout_width="120dp"
+                    android:layout_height="20dp"
+                    android:contentDescription="@string/text_notifications"
+                    android:scaleType="centerCrop"
+                    android:background="@color/color_shimmer" />
 
             </LinearLayout>
         </LinearLayout>
@@ -70,25 +58,22 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="16dp"
+            android:layout_marginTop="5dp"
             android:orientation="vertical"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/ll_notification">
 
-            <TextView
+            <ImageView
                 android:id="@+id/tv_notification_desc1"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:fontFamily="@font/montserrat_medium"
-                android:textAlignment="textStart"
-                android:textColor="@color/app_color_on_secondary"
-                android:textSize="14sp"
-                android:maxLines="2"
-                tools:text="New the 3D Design Course is Available Now!" />
+                android:layout_height="20dp"
+                android:contentDescription="@string/text_notifications"
+                android:scaleType="centerCrop"
+                android:background="@color/color_shimmer" />
 
         </LinearLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.cardview.widget.CardView>

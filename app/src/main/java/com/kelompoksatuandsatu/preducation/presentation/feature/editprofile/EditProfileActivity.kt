@@ -116,7 +116,6 @@ class EditProfileActivity : AppCompatActivity() {
         viewModel.getUserById()
     }
 
-
     private fun imagePicker() {
         ImagePicker.with(this)
             .cropSquare()
