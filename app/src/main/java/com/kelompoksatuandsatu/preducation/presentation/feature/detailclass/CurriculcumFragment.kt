@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.view.isGone
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -33,13 +34,12 @@ class CurriculcumFragment : Fragment() {
     private val viewModel: DetailClassViewModel by activityViewModels()
 
     private var itemVideoId: String = ""
-    private var currentVideoPosition: Int = 0
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         // Inflate the layout for this fragment
         binding = FragmentCurriculcumBinding.inflate(inflater, container, false)
         return binding.root
@@ -48,8 +48,16 @@ class CurriculcumFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+//        getData()
         observeData()
         setOnClickListener()
+    }
+
+    private fun getData() {
+        val id = viewModel.detailCourse.value?.payload?.id
+        id?.let {
+            viewModel.getCourseById(it)
+        }
     }
 
     private fun observeData() {
@@ -66,6 +74,10 @@ class CurriculcumFragment : Fragment() {
                         adapter = adapterGroupie
                     }
                     it.payload?.let {
+                        binding.clButtonEnrollClass.isVisible = it.typeClass != "FREE"
+                        if (it.chapters?.get(0)?.videos?.get(0)?.videoUrl?.isNotEmpty() == true) {
+                            binding.clButtonEnrollClass.isVisible = false
+                        }
                         val section = it.chapters?.map {
                             val section = Section()
                             section.setHeader(
@@ -79,15 +91,21 @@ class CurriculcumFragment : Fragment() {
                             )
                             val dataSection = it.videos?.map { data ->
                                 DataItem(data) {
+                                    // klik video
+                                    viewModel.onVideoItemClick(data.videoUrl.orEmpty())
+                                    viewModel.postIndexVideo(data)
+
+                                    getData()
+                                    if (it.videoUrl?.isNotEmpty() == true) {
+                                        binding.clButtonEnrollClass.isVisible = false
+                                    }
+
                                     itemVideoId = data.videoUrl.toString()
                                     Toast.makeText(
                                         requireContext(),
                                         "Item clicked : title = ${data.title} -> url = ${data.videoUrl}",
                                         Toast.LENGTH_SHORT
                                     ).show()
-                                    // klik video
-                                    viewModel.onVideoItemClick(data.videoUrl.orEmpty())
-                                    viewModel.postIndexVideo(data)
                                 }
                             }
                             if (dataSection != null) {
@@ -96,6 +114,7 @@ class CurriculcumFragment : Fragment() {
                             section
                         }
                         if (section != null) {
+                            adapterGroupie.clear()
                             adapterGroupie.addAll(section)
                         }
                     }

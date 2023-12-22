@@ -114,6 +114,7 @@ class DetailClassActivity : AppCompatActivity() {
                     binding.layoutCommonState.tvDataEmpty.isGone = true
                     binding.layoutCommonState.ivDataEmpty.isGone = true
                     it.payload?.let { data ->
+
                         binding.tvCategoryCourse.text = data.category?.name
                         binding.tvNameCourse.text = data.title
                         binding.tvTotalModulCourse.text =

@@ -34,6 +34,17 @@ class DetailClassViewModel(
         }
     }
 
+//    fun getCourseById() {
+//        viewModelScope.launch(Dispatchers.IO) {
+//            val id = detailCourse.value?.payload?.id
+//            id?.let {
+//                courseRepo.getCourseById(it).collect {
+//                    _detailCourse.postValue(it)
+//                }
+//            }
+//        }
+//    }
+
     fun postIndexVideo(index: VideoViewParam) {
         viewModelScope.launch(Dispatchers.IO) {
             val id = detailCourse.value?.payload?.id

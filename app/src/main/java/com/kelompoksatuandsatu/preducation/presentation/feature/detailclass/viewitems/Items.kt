@@ -37,8 +37,8 @@ class DataItem(
     override fun bind(viewBinding: ItemSectionDataCurriculcumBinding, position: Int) {
         viewBinding.tvVideoNumber.text = itemData.index.toString()
         viewBinding.tvTitleVideo.text = itemData.title
-        viewBinding.tvDurationVideo.text = itemData.duration.toString() + " Mins"
-//        viewBinding.tvDurationVideo.text = itemData.nextVideo.toString()
+//        viewBinding.tvDurationVideo.text = itemData.duration.toString() + " Mins"
+        viewBinding.tvDurationVideo.text = itemData.nextVideo.toString()
         viewBinding.tvVideoUrl.text = itemData.videoUrl
         if (itemData.videoUrl.isNullOrEmpty()) {
             viewBinding.ivPlayGreen.isGone = true
