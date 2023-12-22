@@ -42,9 +42,4 @@ class ProfileViewModel(
             _logoutResults.value = userRepo.userLogout().first()
         }
     }
-    fun deleteUserData() {
-        viewModelScope.launch {
-            userPreferenceDataSource.deleteAllData()
-        }
-    }
 }

@@ -41,8 +41,6 @@ interface UserRepository {
         passwordRequest: ChangePasswordRequest
     ): Flow<ResultWrapper<List<Password>>>
 
-    suspend fun performLogout(): Flow<ResultWrapper<Boolean>>
-
     suspend fun userRegister(request: UserAuth): Flow<ResultWrapper<UserRegisterResponse>>
 
     suspend fun userLogin(request: UserLogin): Flow<ResultWrapper<UserLoginResponse>>
@@ -79,10 +77,6 @@ class UserRepositoryImpl(private val userDataSource: UserDataSource, private val
         return proceedFlow {
             (userDataSource.updateUserPassword(id, passwordRequest).data?.toPasswordList() ?: emptyList())
         }
-    }
-
-    override suspend fun performLogout(): Flow<ResultWrapper<Boolean>> {
-        TODO("Not yet implemented")
     }
 
     override suspend fun userRegister(request: UserAuth): Flow<ResultWrapper<UserRegisterResponse>> {
