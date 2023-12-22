@@ -17,7 +17,7 @@ fun TextView.highLightWord(word: String, onClick: () -> Unit) {
 
         override fun updateDrawState(ds: TextPaint) {
             ds.color = ds.linkColor
-            ds.isUnderlineText = false
+            ds.isUnderlineText = true
         }
     }
     ssBuilder.setSpan(

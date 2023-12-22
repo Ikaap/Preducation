@@ -204,9 +204,9 @@
                 android:id="@+id/signUpButton"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-                android:visibility="visible"
                 android:layout_marginHorizontal="6dp"
-                android:background="@drawable/bg_button_primary">
+                android:background="@drawable/bg_button_primary"
+                android:visibility="visible">
 
                 <TextView
                     android:id="@+id/tv_sign_up"
@@ -249,31 +249,16 @@
         </FrameLayout>
 
         <!-- Login Text -->
-        <LinearLayout
-            android:id="@+id/loginTextLayout"
-            android:layout_width="match_parent"
+
+        <TextView
+            android:id="@+id/loginText"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
             android:layout_marginBottom="24dp"
-            android:gravity="center_horizontal"
-            android:orientation="horizontal">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/montserrat_medium"
-                android:text="@string/text_already_have_an_account"
-                android:textSize="16sp" />
-
-            <TextView
-                android:id="@+id/loginText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="6dp"
-                android:fontFamily="@font/montserrat_bold"
-                android:textColor="@color/app_color_primary"
-                android:textSize="16sp" />
-        </LinearLayout>
+            android:fontFamily="@font/montserrat_medium"
+            android:text="@string/text_already_have_an_account"
+            android:textSize="16sp" />
 
     </LinearLayout>
 

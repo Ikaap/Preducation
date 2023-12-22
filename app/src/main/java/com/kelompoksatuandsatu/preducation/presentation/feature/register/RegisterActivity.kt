@@ -2,8 +2,6 @@ package com.kelompoksatuandsatu.preducation.presentation.feature.register
 
 import android.content.Intent
 import android.os.Bundle
-import android.text.SpannableString
-import android.text.style.UnderlineSpan
 import android.util.Patterns
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -15,6 +13,7 @@ import com.kelompoksatuandsatu.preducation.model.auth.otp.postemailotp.EmailOtp
 import com.kelompoksatuandsatu.preducation.presentation.feature.login.LoginActivity
 import com.kelompoksatuandsatu.preducation.presentation.feature.otp.OtpActivity
 import com.kelompoksatuandsatu.preducation.utils.exceptions.ApiException
+import com.kelompoksatuandsatu.preducation.utils.highLightWord
 import com.kelompoksatuandsatu.preducation.utils.proceedWhen
 import io.github.muddz.styleabletoast.StyleableToast
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -42,22 +41,17 @@ class RegisterActivity : AppCompatActivity() {
             doRegister()
         }
 
-        val loginTextView = binding.loginText
-        val loginString = getString(R.string.text_login_here)
-        val loginSpannable = SpannableString(loginString)
-        loginSpannable.setSpan(
-            UnderlineSpan(),
-            0,
-            loginString.length,
-            0
-        )
-        loginTextView.text = loginSpannable
-        loginTextView.setOnClickListener {
-            val intent = Intent(this, LoginActivity::class.java)
-            startActivity(intent)
+        binding.loginText.highLightWord(getString(R.string.text_login_here)) {
+            navigateToLogin()
         }
     }
 
+    private fun navigateToLogin() {
+        val intent = Intent(this, LoginActivity::class.java).apply {
+            flags = Intent.FLAG_ACTIVITY_SINGLE_TOP or Intent.FLAG_ACTIVITY_CLEAR_TOP
+        }
+        startActivity(intent)
+    }
     private fun doRegister() {
         if (isFormValid()) {
             val name = binding.etName.text.toString().trim()
