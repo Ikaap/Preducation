@@ -9,6 +9,9 @@ interface UserPreferenceDataSource {
     suspend fun saveUserToken(token: String)
 
     suspend fun deleteAllData()
+
+    suspend fun saveUserId(id: String)
+    suspend fun getUserId(): String
 }
 
 class UserPreferenceDataSourceImpl(
@@ -27,7 +30,16 @@ class UserPreferenceDataSourceImpl(
         preferenceHelper.clearAllPreference()
     }
 
+    override suspend fun saveUserId(id: String) {
+        return preferenceHelper.putPreference(USER_ID_KEY, id)
+    }
+
+    override suspend fun getUserId(): String {
+        return preferenceHelper.getFirstPreference(USER_ID_KEY, "")
+    }
+
     companion object {
         val USER_TOKEN_KEY = stringPreferencesKey("USER_TOKEN_KEY")
+        val USER_ID_KEY = stringPreferencesKey("USER_ID_KEY")
     }
 }

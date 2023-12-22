@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.text.SpannableString
 import android.text.style.UnderlineSpan
 import android.util.Patterns
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import com.kelompoksatuandsatu.preducation.R
@@ -131,6 +132,10 @@ class LoginActivity : AppCompatActivity() {
                         getString(R.string.login_success),
                         R.style.successtoast
                     ).show()
+                    it.payload?.let {
+                        viewModel.saveIdUser(it.data.id)
+                        Toast.makeText(this, "user id login : ${it.data.id}", Toast.LENGTH_SHORT).show()
+                    }
                     navigateToMain()
                 },
                 doOnLoading = {

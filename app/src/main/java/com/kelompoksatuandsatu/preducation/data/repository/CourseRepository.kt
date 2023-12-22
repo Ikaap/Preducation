@@ -8,6 +8,8 @@ import com.kelompoksatuandsatu.preducation.data.network.api.model.course.coursea
 import com.kelompoksatuandsatu.preducation.data.network.api.model.course.detailcourse.progress.ProgressCourseRequest
 import com.kelompoksatuandsatu.preducation.data.network.api.model.course.detailcourse.toDetailCourse
 import com.kelompoksatuandsatu.preducation.data.network.api.model.payment.PaymentCourseRequest
+import com.kelompoksatuandsatu.preducation.data.network.api.model.payment.history.CourseItem
+import com.kelompoksatuandsatu.preducation.data.network.api.model.payment.history.toCourseItemList
 import com.kelompoksatuandsatu.preducation.data.network.api.model.payment.toPaymentResponse
 import com.kelompoksatuandsatu.preducation.data.network.api.model.progress.courseprogress.toCourseProgressList
 import com.kelompoksatuandsatu.preducation.model.category.categoryclass.CategoryClass
@@ -36,6 +38,7 @@ interface CourseRepository {
     fun getCourseUserProgress(status: String? = null): Flow<ResultWrapper<List<CourseProgressItemClass>>>
     suspend fun paymentCourse(item: DetailCourseViewParam): Flow<ResultWrapper<PaymentResponseViewParam>>
     fun getCourseById(id: String): Flow<ResultWrapper<DetailCourseViewParam>>
+    suspend fun getHistoryPayment(): Flow<ResultWrapper<List<CourseItem>>>
 }
 
 class CourseRepositoryImpl(
@@ -139,6 +142,11 @@ class CourseRepositoryImpl(
         return proceedFlow {
             val apiResult = apiDataSource.getCategoriesTypeClass()
             apiResult.data?.toCategoryTypeClassList() ?: emptyList()
+        }
+    }
+    override suspend fun getHistoryPayment(): Flow<ResultWrapper<List<CourseItem>>> {
+        return proceedFlow {
+            apiDataSource.getHistoryPayment().data?.toCourseItemList() ?: emptyList()
         }
     }
 }

@@ -5,32 +5,31 @@ import com.kelompoksatuandsatu.preducation.model.user.UserViewParam
 
 data class User(
     @SerializedName("_id")
-    val id: String,
+    val id: String?,
     @SerializedName("email")
-    val email: String,
+    val email: String?,
     @SerializedName("phone")
-    val phone: String,
+    val phone: String?,
     @SerializedName("name")
-    val name: String,
+    val name: String?,
     @SerializedName("username")
-    val username: String,
+    val username: String?,
     @SerializedName("image_profile")
-    val imageProfile: String,
+    val imageProfile: String?,
     @SerializedName("country")
-    val country: String,
+    val country: String?,
     @SerializedName("city")
-    val city: String
+    val city: String?
 )
 
-fun User.toUserRequest() = UserViewParam(
-    id = id,
-    email = email,
-    phone = phone,
-    name = name,
-    username = username,
-    imageProfile = imageProfile,
-    country = country,
-    city = city
+fun User.toUserViewParam() = UserViewParam(
+    id = this.id.orEmpty(),
+    email = this.email.orEmpty(),
+    phone = this.phone.orEmpty(),
+    name = this.name.orEmpty(),
+    imageProfile = this.imageProfile.orEmpty(),
+    country = this.country.orEmpty(),
+    city = this.city.orEmpty()
 )
 
-fun Collection<User>.toUserList() = this.map { it.toUserRequest() }
+// fun Collection<User>.toUserList() = this.map { it.toUserRequest() }

@@ -5,7 +5,6 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.util.Patterns
 import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -17,10 +16,11 @@ import com.google.android.material.textfield.TextInputLayout
 import com.kelompoksatuandsatu.preducation.R
 import com.kelompoksatuandsatu.preducation.data.network.api.model.user.UserRequest
 import com.kelompoksatuandsatu.preducation.databinding.ActivityEditProfileBinding
-import com.kelompoksatuandsatu.preducation.utils.AssetWrapper
 import com.kelompoksatuandsatu.preducation.utils.proceedWhen
 import io.github.muddz.styleabletoast.StyleableToast
-import org.koin.android.ext.android.inject
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.MultipartBody
+import okhttp3.RequestBody.Companion.asRequestBody
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.io.File
 
@@ -32,35 +32,50 @@ class EditProfileActivity : AppCompatActivity() {
 
     private val viewModel: EditProfileViewModel by viewModel()
 
-    private val assetWrapper: AssetWrapper by inject()
+    private var email = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
-        setOnClickListener()
-        showUpdateProfile()
-        setForm()
-        setDataProfile()
         getData()
+        setDataProfile()
+        setForm()
+        setOnClickListener()
     }
 
-    private fun setOnClickListener() {
-        binding.ivBack.setOnClickListener {
-            onBackPressed()
-        }
+    private fun getData() {
+        viewModel.getUserById()
+    }
 
-        binding.clButtonChange.setOnClickListener {
-            val userId = intent.getStringExtra("USER_ID")
-            if (isFormValid()) {
-                changeProfileData(userId.orEmpty())
-            } else {
-                showToast(R.string.text_error_form_not_valid)
-            }
-        }
+    private fun setDataProfile() {
+        viewModel.getProfile.observe(this) {
+            it.proceedWhen(
+                doOnSuccess = {
+                    binding.root.isVisible = true
+                    binding.ivAddPhotoUser.isVisible = true
+                    binding.clButtonChange.isVisible = true
 
-        binding.ivAddPhotoUser.setOnClickListener {
-            imagePicker()
+                    it.payload?.let {
+                        binding.etLongName.setText(it.name.orEmpty())
+                        binding.etEmail.setText(it.email.orEmpty())
+                        binding.etPhoneNumber.setText(it.phone.orEmpty())
+                        binding.etCountry.setText(it.country.orEmpty())
+                        binding.etCity.setText(it.city.orEmpty())
+                        binding.ivUserPhoto.load(it.imageProfile.orEmpty())
+
+                        email = it.email.toString()
+                    }
+                },
+                doOnLoading = {
+                    binding.root.isVisible = true
+                    binding.ivAddPhotoUser.isVisible = false
+                },
+                doOnError = {
+                    binding.root.isVisible = true
+                    binding.ivAddPhotoUser.isVisible = false
+                }
+            )
         }
     }
 
@@ -69,42 +84,63 @@ class EditProfileActivity : AppCompatActivity() {
         binding.ivAddPhotoUser.isVisible = true
         binding.tilName.isVisible = true
         binding.tilEmail.isVisible = true
+        binding.tilEmail.isEnabled = false
         binding.tilPhoneNumber.isVisible = true
         binding.tilCountry.isVisible = true
         binding.tilCity.isVisible = true
         binding.clButtonChange.isVisible = true
     }
-
-    private fun setDataProfile() {
-        viewModel.getProfile.observe(this) {
+    private fun observeData() {
+        viewModel.updateProfileResult.observe(this) {
             it.proceedWhen(
-                doOnLoading = {
-                    binding.root.isVisible = true
-//                    binding.ivAddPhotoUser.isVisible = false
-//                    binding.clButtonChange.isVisible = false
-                },
-                doOnError = {
-                    binding.root.isVisible = true
-//                    binding.ivAddPhotoUser.isVisible = false
-//                    binding.clButtonChange.isVisible = false
-                },
                 doOnSuccess = {
                     binding.root.isVisible = true
                     binding.ivAddPhotoUser.isVisible = true
                     binding.clButtonChange.isVisible = true
-//                    binding.etLongName.setText(it.payload?.name.orEmpty())
-//                    binding.etEmail.setText(it.payload?.email.orEmpty())
-//                    binding.etPhoneNumber.setText(it.payload?.phoneNumber.orEmpty())
-//                    binding.etCountry.setText(it.payload?.country.orEmpty())
-//                    binding.etCity.setText(it.payload?.city.orEmpty())
-//                    binding.ivUserPhoto.load(it.payload?.imageUrl.orEmpty())
+
+                    it.payload?.let {
+                        binding.etLongName.setText(it.name.orEmpty())
+                        binding.etEmail.setText(it.email.orEmpty())
+                        binding.etPhoneNumber.setText(it.phone.orEmpty())
+                        binding.etCountry.setText(it.country.orEmpty())
+                        binding.etCity.setText(it.city.orEmpty())
+                        binding.ivUserPhoto.load(it.imageProfile.orEmpty())
+                    }
+                },
+                doOnLoading = {
+                    binding.root.isVisible = true
+                    binding.ivAddPhotoUser.isVisible = false
+                },
+                doOnError = {
+                    binding.root.isVisible = true
+                    binding.ivAddPhotoUser.isVisible = false
                 }
             )
         }
     }
 
-    private fun getData() {
-        viewModel.getUserById()
+    private fun setOnClickListener() {
+        binding.ivBack.setOnClickListener {
+            onBackPressed()
+        }
+
+        binding.clButtonChange.setOnClickListener {
+            if (isFormValid()) {
+                changeProfileData()
+                StyleableToast.makeText(
+                    this,
+                    "Update Profile Successfully",
+                    R.style.successtoast
+                ).show()
+                observeData()
+            } else {
+                showToast(R.string.text_error_form_not_valid)
+            }
+        }
+
+        binding.ivAddPhotoUser.setOnClickListener {
+            imagePicker()
+        }
     }
 
     private fun imagePicker() {
@@ -142,16 +178,8 @@ class EditProfileActivity : AppCompatActivity() {
         }
     }
 
-    private fun showUpdateProfile() {
-        val idUser = intent.getStringExtra("USER_ID")
-        idUser?.let {
-            viewModel.getUserById()
-        }
-    }
-
-    private fun changeProfileData(userId: String) {
+    private fun changeProfileData() {
         val name = binding.etLongName.text.toString().trim()
-        val email = binding.etEmail.text.toString().trim()
         val phone = binding.etPhoneNumber.text.toString().trim()
         val country = binding.etCountry.text.toString().trim()
         val city = binding.etCity.text.toString().trim()
@@ -165,37 +193,33 @@ class EditProfileActivity : AppCompatActivity() {
             city = city
         )
 
-        viewModel.updateProfile(userId, userRequest)
+        val requestFile = getFile?.asRequestBody("image/jpeg".toMediaTypeOrNull())
+        val imageMultipart: MultipartBody.Part? =
+            requestFile?.let {
+                MultipartBody.Part.createFormData(
+                    "image",
+                    getFile?.name ?: "",
+                    it
+                )
+            }
+
+        if (imageMultipart != null) {
+            viewModel.updateProfile(userRequest)
+        } else {
+            viewModel.updateProfile(userRequest)
+        }
     }
 
     private fun isFormValid(): Boolean {
-        val email = binding.etEmail.text.toString().trim()
         val name = binding.etLongName.text.toString().trim()
         val country = binding.etCountry.text.toString().trim()
         val city = binding.etCity.text.toString().trim()
         val phoneNumber = binding.etPhoneNumber.text.toString().trim()
 
         return checkNameValidation(name) &&
-            checkEmailValidation(email) &&
             checkPhoneNumberValidation(phoneNumber) &&
             checkCountryValidation(country) &&
             checkCityValidation(city)
-    }
-
-    private fun checkEmailValidation(email: String): Boolean {
-        val tilEmail = binding.tilEmail
-        val emailEditText = binding.etEmail
-
-        return if (email.isEmpty()) {
-            showError(tilEmail, emailEditText, R.string.text_error_email_empty)
-            false
-        } else if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-            showError(tilEmail, emailEditText, R.string.text_error_email_invalid)
-            false
-        } else {
-            clearError(tilEmail, emailEditText)
-            true
-        }
     }
 
     private fun checkNameValidation(name: String): Boolean {
