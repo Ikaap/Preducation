@@ -27,7 +27,6 @@ class SplashScreenActivity : AppCompatActivity() {
     }
 
     private fun getData() {
-        viewModel.deleteDataUser()
         viewModel.checkLogin()
     }
 
