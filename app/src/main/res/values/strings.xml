@@ -20,8 +20,8 @@
     <string name="text_update">Update</string>
     <string name="text_transactions">Transactions</string>
     <string name="text_profile">Profile</string>
-    <string name="text_name_james">James S. Hernandez</string>
-    <string name="text_email_james">hernandex.redial@gmail.ac.in</string>
+    <string name="text_name_guest">Guest</string>
+    <string name="text_email_guest">guest@gmail.ac.in</string>
     <string name="text_change_password">Change Password</string>
     <string name="text_payment_history">Payment History</string>
     <string name="text_logout">Logout</string>
@@ -185,4 +185,6 @@
     <string name="login_success">Login Successfull</string>
     <string name="login_failed">Login Failed</string>
     <string name="text_version">Versi 1.0.1</string>
+    <string name="text_paid">Paid</string>
+    <string name="text_on_progress">On Progress</string>
 </resources>

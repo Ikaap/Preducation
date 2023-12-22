@@ -7,10 +7,9 @@ import kotlinx.parcelize.Parcelize
 data class UserViewParam(
     val id: String?,
     val email: String?,
-    val phone: String,
-    val name: String,
-    val username: String,
-    val imageProfile: String,
-    val country: String,
-    val city: String
+    val phone: String?,
+    val name: String?,
+    val imageProfile: String?,
+    val country: String?,
+    val city: String?
 ) : Parcelable

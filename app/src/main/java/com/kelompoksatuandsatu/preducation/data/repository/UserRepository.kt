@@ -1,5 +1,6 @@
 package com.kelompoksatuandsatu.preducation.data.repository
 
+import android.util.Log
 import com.kelompoksatuandsatu.preducation.data.local.datastore.datasource.UserPreferenceDataSource
 import com.kelompoksatuandsatu.preducation.data.network.api.datasource.UserDataSource
 import com.kelompoksatuandsatu.preducation.data.network.api.model.auth.forgotpassword.ForgotPasswordRequest
@@ -13,9 +14,11 @@ import com.kelompoksatuandsatu.preducation.data.network.api.model.auth.register.
 import com.kelompoksatuandsatu.preducation.data.network.api.model.changepassword.ChangePasswordRequest
 import com.kelompoksatuandsatu.preducation.data.network.api.model.changepassword.toPasswordList
 import com.kelompoksatuandsatu.preducation.data.network.api.model.user.UserRequest
-import com.kelompoksatuandsatu.preducation.data.network.api.model.user.toUserList
+import com.kelompoksatuandsatu.preducation.data.network.api.model.user.toUserViewParam
 import com.kelompoksatuandsatu.preducation.model.auth.UserAuth
 import com.kelompoksatuandsatu.preducation.model.auth.UserLogin
+import com.kelompoksatuandsatu.preducation.model.auth.UserLoginResponse
+import com.kelompoksatuandsatu.preducation.model.auth.UserRegisterResponse
 import com.kelompoksatuandsatu.preducation.model.auth.forgotpassword.UserForgotPassword
 import com.kelompoksatuandsatu.preducation.model.auth.otp.postemailotp.EmailOtp
 import com.kelompoksatuandsatu.preducation.model.auth.otp.verifyotp.OtpData
@@ -29,15 +32,15 @@ import kotlinx.coroutines.flow.*
 import retrofit2.HttpException
 
 interface UserRepository {
-    suspend fun getUserById(id: String? = null): Flow<ResultWrapper<List<UserViewParam>>>
+    suspend fun getUserById(id: String): Flow<ResultWrapper<UserViewParam>>
 
-    suspend fun updateUserById(id: String, userRequest: UserRequest): Flow<ResultWrapper<List<UserViewParam>>>
+    suspend fun updateUserById(id: String, userRequest: UserRequest): Flow<ResultWrapper<UserViewParam>>
     suspend fun updateUserPassword(
         id: String,
         passwordRequest: ChangePasswordRequest
     ): Flow<ResultWrapper<List<Password>>>
 
-    suspend fun performLogout(): Flow<ResultWrapper<Boolean>>
+    suspend fun userRegister(request: UserAuth): Flow<ResultWrapper<UserRegisterResponse>>
 
     suspend fun userRegister(request: UserAuth): Flow<ResultWrapper<RegisterResponse>>
 
@@ -46,27 +49,25 @@ interface UserRepository {
     suspend fun postEmailOtp(request: EmailOtp): Flow<ResultWrapper<Boolean>>
 
     suspend fun verifyOtp(request: OtpData): Flow<ResultWrapper<BaseResponse>>
+    suspend fun userLogout(): Flow<ResultWrapper<Boolean>>
 
     suspend fun userForgotPassword(request: UserForgotPassword): Flow<ResultWrapper<Boolean>>
 }
 
-class UserRepositoryImpl(
-    private val userDataSource: UserDataSource,
-    private val userPreferenceDataSource: UserPreferenceDataSource
-) : UserRepository {
+class UserRepositoryImpl(private val userDataSource: UserDataSource, private val userPreferenceDataSource: UserPreferenceDataSource) : UserRepository {
 
-    override suspend fun getUserById(id: String?): Flow<ResultWrapper<List<UserViewParam>>> {
+    override suspend fun getUserById(id: String): Flow<ResultWrapper<UserViewParam>> {
         return proceedFlow {
-            userDataSource.getUserById(id).data?.toUserList() ?: emptyList()
+            userDataSource.getUserById(id).data?.toUserViewParam()!!
         }
     }
 
     override suspend fun updateUserById(
         id: String,
         userRequest: UserRequest
-    ): Flow<ResultWrapper<List<UserViewParam>>> {
+    ): Flow<ResultWrapper<UserViewParam>> {
         return proceedFlow {
-            userDataSource.updateUserById(id, userRequest).data?.toUserList() ?: emptyList()
+            userDataSource.updateUserById(id, userRequest).data?.toUserViewParam()!!
         }
     }
 
@@ -79,9 +80,7 @@ class UserRepositoryImpl(
         }
     }
 
-    override suspend fun performLogout(): Flow<ResultWrapper<Boolean>> {
-        TODO("Not yet implemented")
-    }
+    override suspend fun userRegister(request: UserAuth): Flow<ResultWrapper<UserRegisterResponse>> {
 
     override suspend fun userRegister(request: UserAuth): Flow<ResultWrapper<RegisterResponse>> {
         return flow {
@@ -139,5 +138,18 @@ class UserRepositoryImpl(
             val forgotPasswordResult = userDataSource.userForgotPassword(dataRequest)
             forgotPasswordResult.success
         }
+    }
+    override suspend fun userLogout(): Flow<ResultWrapper<Boolean>> = flow {
+        val response = userDataSource.userLogout()
+        if (response.isSuccessful) {
+            userPreferenceDataSource.deleteAllData()
+            emit(ResultWrapper.Success(true))
+        } else {
+            emit(ResultWrapper.Error(Exception("Logout failed with response code ${response.code()}")))
+
+        }
+    }.catch { e ->
+        Log.e("UserRepository", "Error during logout", e)
+        emit(ResultWrapper.Error(e as? Exception ?: Exception("Unknown error")))
     }
 }

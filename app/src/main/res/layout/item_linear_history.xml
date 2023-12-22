@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="140dp"
+    android:layout_marginHorizontal="8dp"
+    android:layout_marginVertical="6dp"
+    app:cardCornerRadius="20dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/iv_popular_course"
+            android:layout_width="110dp"
+            android:layout_height="match_parent"
+            android:contentDescription="@string/desc_iv_popular_course"
+            android:scaleType="centerCrop"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:src="@tools:sample/avatars" />
+
+        <LinearLayout
+            android:id="@+id/ll_category_and_rating"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginTop="8dp"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/iv_popular_course"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:id="@+id/tv_category_popular"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/montserrat_bold"
+                android:textColor="@color/app_color_primary_container"
+                android:textSize="12sp"
+                tools:text="@string/tv_category_popular" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_title_and_author"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginTop="6dp"
+            android:orientation="vertical"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/iv_popular_course"
+            app:layout_constraintTop_toBottomOf="@id/ll_category_and_rating">
+
+            <TextView
+                android:id="@+id/tv_title_course"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:fontFamily="@font/montserrat_bold"
+                android:maxLines="2"
+                android:textSize="14sp"
+                tools:text="@string/tv_title_course" />
+
+        </LinearLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/cl_detail_popular_course"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginVertical="6dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/iv_popular_course"
+            app:layout_constraintTop_toBottomOf="@+id/ll_title_and_author">
+
+            <LinearLayout
+                android:id="@+id/ll_level_module"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="horizontal"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <ImageView
+                    android:id="@+id/iv_module_course"
+                    android:layout_width="6dp"
+                    android:layout_height="6dp"
+                    android:contentDescription="@string/iv_module_course"
+                    android:src="@drawable/ic_ellipse" />
+
+                <TextView
+                    android:id="@+id/tv_module_course"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="4dp"
+                    android:layout_marginEnd="6dp"
+                    android:fontFamily="@font/montserrat"
+                    android:textColor="@color/app_color_on_primary_container"
+                    android:textSize="10sp"
+                    tools:text="@string/tv_module_course" />
+
+                <ImageView
+                    android:id="@+id/iv_time_course"
+                    android:layout_width="6dp"
+                    android:layout_height="6dp"
+                    android:contentDescription="@string/iv_time_course"
+                    android:src="@drawable/ic_ellipse" />
+
+                <TextView
+                    android:id="@+id/tv_duration_course"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="4dp"
+                    android:layout_marginEnd="6dp"
+                    android:fontFamily="@font/montserrat"
+                    android:textColor="@color/app_color_on_primary_container"
+                    android:textSize="10sp"
+                    tools:text="@string/tv_duration_course" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="horizontal"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/ll_level_module">
+
+                <ImageView
+                    android:id="@+id/iv_level_course"
+                    android:layout_width="6dp"
+                    android:layout_height="6dp"
+                    android:contentDescription="@string/iv_level_course"
+                    android:src="@drawable/ic_ellipse" />
+
+                <TextView
+                    android:id="@+id/tv_level_course"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="4dp"
+                    android:layout_marginEnd="6dp"
+                    android:fontFamily="@font/montserrat"
+                    android:textColor="@color/app_color_on_primary_container"
+                    android:textSize="10sp"
+                    tools:text="@string/tv_level_course" />
+            </LinearLayout>
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/cl_type_paid"
+            android:layout_width="85dp"
+            android:layout_height="20dp"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/bg_button_paid"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@id/iv_popular_course"
+            app:layout_constraintTop_toBottomOf="@id/cl_detail_popular_course">
+
+            <TextView
+                android:id="@+id/tv_status_payment_paid"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/poppins_medium"
+                android:text="@string/text_paid"
+                android:textColor="@color/white"
+                android:textSize="10sp"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="@+id/cl_type_paid"
+                app:layout_constraintStart_toStartOf="@+id/cl_type_paid"
+                app:layout_constraintTop_toTopOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/cl_type_waiting"
+            android:layout_width="85dp"
+            android:layout_height="20dp"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/bg_button_primary"
+            android:visibility="visible"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@id/iv_popular_course"
+            app:layout_constraintTop_toBottomOf="@id/cl_detail_popular_course">
+
+            <TextView
+                android:id="@+id/tv_status_payment_waiting"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/poppins_medium"
+                android:text="@string/text_on_progress"
+                android:textColor="@color/white"
+                android:textSize="10sp"
+                android:visibility="visible"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="@+id/cl_type_waiting"
+                app:layout_constraintStart_toStartOf="@+id/cl_type_waiting"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.cardview.widget.CardView>
