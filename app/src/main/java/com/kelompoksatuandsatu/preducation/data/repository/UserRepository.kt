@@ -31,7 +31,6 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flow
 
-
 interface UserRepository {
     suspend fun getUserById(id: String): Flow<ResultWrapper<UserViewParam>>
 
