@@ -6,13 +6,17 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import coil.load
 import com.kelompoksatuandsatu.preducation.R
 import com.kelompoksatuandsatu.preducation.databinding.FragmentProfileBinding
 import com.kelompoksatuandsatu.preducation.presentation.feature.changepassword.ChangePasswordActivity
 import com.kelompoksatuandsatu.preducation.presentation.feature.editprofile.EditProfileActivity
-import com.kelompoksatuandsatu.preducation.presentation.feature.historypayment.TransactionActivity
+import com.kelompoksatuandsatu.preducation.presentation.feature.historypayment.HistoryPaymentActivity
 import com.kelompoksatuandsatu.preducation.presentation.feature.login.LoginActivity
+import com.kelompoksatuandsatu.preducation.utils.proceedWhen
+import io.github.muddz.styleabletoast.StyleableToast
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class ProfileFragment : Fragment() {
@@ -20,10 +24,6 @@ class ProfileFragment : Fragment() {
     private lateinit var binding: FragmentProfileBinding
 
     private val viewModel: ProfileViewModel by viewModel()
-
-    private val RESULT_LOAD_IMG = 1
-
-    var userId: String = ""
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -37,7 +37,44 @@ class ProfileFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        getData()
+        setDataProfile()
         setupClickListeners()
+        observeLogoutResult()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        viewModel.getUserById()
+        setDataProfile()
+    }
+
+    private fun getData() {
+        viewModel.getUserById()
+    }
+
+    private fun setDataProfile() {
+        viewModel.getProfile.observe(viewLifecycleOwner) {
+            it.proceedWhen(
+                doOnSuccess = {
+                    binding.root.isVisible = true
+                    binding.ivUserPhoto.isVisible = true
+                    it.payload?.let {
+                        binding.tvLongName.text = it.name.orEmpty()
+                        binding.tvEmail.text = it.email.orEmpty()
+                        binding.ivUserPhoto.load(it.imageProfile.orEmpty())
+                    }
+                },
+                doOnLoading = {
+                    binding.root.isVisible = true
+                    binding.ivUserPhoto.isVisible = false
+                },
+                doOnError = {
+                    binding.root.isVisible = true
+                    binding.ivUserPhoto.isVisible = false
+                }
+            )
+        }
     }
 
     private fun setupClickListeners() {
@@ -50,32 +87,71 @@ class ProfileFragment : Fragment() {
         }
 
         binding.clPaymentHistory.setOnClickListener {
-            startActivity(Intent(requireContext(), TransactionActivity::class.java))
+            startActivity(Intent(requireContext(), HistoryPaymentActivity::class.java))
         }
 
         binding.clLogout.setOnClickListener {
-            performLogout()
+            showLogoutConfirmationDialog()
         }
     }
 
-    private fun performLogout() {
+    private fun showLogoutConfirmationDialog() {
         AlertDialog.Builder(requireContext())
-            .setMessage(getString(R.string.text_logout_dialog)) // Using getString directly
+            .setMessage(getString(R.string.text_logout_dialog))
             .setPositiveButton(getString(R.string.text_yes)) { _, _ ->
-                viewModel.performLogout()
-                navigateToLogin()
+                viewModel.userLogout()
             }
             .setNegativeButton(getString(R.string.text_no)) { _, _ ->
-                // Handle negative button click if needed
             }
             .create()
             .show()
     }
 
-    private fun navigateToLogin() {
-        val intent = Intent(requireContext(), LoginActivity::class.java).apply {
-            flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+    private fun observeLogoutResult() {
+        viewModel.logoutResults.observe(viewLifecycleOwner) { result ->
+            result.proceedWhen(
+                doOnSuccess = {
+                    StyleableToast.makeText(
+                        requireContext(),
+                        "Successfully Logout",
+                        R.style.successtoast
+                    ).show()
+                    performLogout()
+                },
+                doOnError = {
+                    StyleableToast.makeText(
+                        requireContext(),
+                        "Failed to Logout",
+                        R.style.failedtoast
+                    ).show()
+                },
+                doOnLoading = {
+                    StyleableToast.makeText(
+                        requireContext(),
+                        "Loading Logout",
+                        R.style.successtoast
+                    ).show()
+                },
+                doOnEmpty = {
+                    StyleableToast.makeText(
+                        requireContext(),
+                        "Empty Logout",
+                        R.style.failedtoast
+                    ).show()
+                }
+            )
         }
+    }
+
+    private fun performLogout() {
+        val intent = Intent(requireContext(), LoginActivity::class.java)
+        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
         startActivity(intent)
+        requireActivity().finish()
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        binding
     }
 }

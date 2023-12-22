@@ -2,16 +2,18 @@ package com.kelompoksatuandsatu.preducation.presentation.feature.register
 
 import android.content.Intent
 import android.os.Bundle
-import android.text.SpannableString
-import android.text.style.UnderlineSpan
 import android.util.Patterns
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import com.kelompoksatuandsatu.preducation.R
 import com.kelompoksatuandsatu.preducation.databinding.ActivityRegisterBinding
 import com.kelompoksatuandsatu.preducation.model.auth.UserAuth
+import com.kelompoksatuandsatu.preducation.model.auth.otp.postemailotp.EmailOtp
 import com.kelompoksatuandsatu.preducation.presentation.feature.login.LoginActivity
 import com.kelompoksatuandsatu.preducation.presentation.feature.otp.OtpActivity
+import com.kelompoksatuandsatu.preducation.utils.exceptions.ApiException
+import com.kelompoksatuandsatu.preducation.utils.highLightWord
 import com.kelompoksatuandsatu.preducation.utils.proceedWhen
 import io.github.muddz.styleabletoast.StyleableToast
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -23,6 +25,8 @@ class RegisterActivity : AppCompatActivity() {
     }
 
     private val viewModel: RegisterViewModel by viewModel()
+
+    private var emailOtp = EmailOtp("")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,22 +41,17 @@ class RegisterActivity : AppCompatActivity() {
             doRegister()
         }
 
-        val loginTextView = binding.loginText
-        val loginString = getString(R.string.text_login_here)
-        val loginSpannable = SpannableString(loginString)
-        loginSpannable.setSpan(
-            UnderlineSpan(),
-            0,
-            loginString.length,
-            0
-        )
-        loginTextView.text = loginSpannable
-        loginTextView.setOnClickListener {
-            val intent = Intent(this, LoginActivity::class.java)
-            startActivity(intent)
+        binding.loginText.highLightWord(getString(R.string.text_login_here)) {
+            navigateToLogin()
         }
     }
 
+    private fun navigateToLogin() {
+        val intent = Intent(this, LoginActivity::class.java).apply {
+            flags = Intent.FLAG_ACTIVITY_SINGLE_TOP or Intent.FLAG_ACTIVITY_CLEAR_TOP
+        }
+        startActivity(intent)
+    }
     private fun doRegister() {
         if (isFormValid()) {
             val name = binding.etName.text.toString().trim()
@@ -67,6 +66,9 @@ class RegisterActivity : AppCompatActivity() {
                 password
             )
 
+            emailOtp = EmailOtp(
+                email
+            )
             viewModel.userRegister(userAuth)
         }
     }
@@ -151,25 +153,33 @@ class RegisterActivity : AppCompatActivity() {
     private fun observeResult() {
         viewModel.registerResult.observe(this) {
             it.proceedWhen(
-                doOnSuccess = {
+                doOnSuccess = { resultWrapper ->
+                    val response = resultWrapper.payload
                     StyleableToast.makeText(
                         this,
-                        getString(R.string.register_successfull),
+                        "${response?.message}",
                         R.style.successtoast
                     ).show()
+
+                    it.payload?.let {
+                        viewModel.saveIdUser(it.data.id.orEmpty())
+                        Toast.makeText(this, "user id : ${it.data.id}", Toast.LENGTH_SHORT).show()
+                    }
                     navigateToOtp()
                 },
                 doOnLoading = {
                     binding.pbLoading.isVisible = true
                     binding.signUpButton.isVisible = false
                 },
-                doOnError = {
+                doOnError = { resultWrapper ->
                     binding.pbLoading.isVisible = false
                     binding.signUpButton.isVisible = true
                     binding.signUpButton.isEnabled = true
+                    val apiException = resultWrapper.exception as? ApiException
+                    val message = apiException?.getParsedError()?.message.orEmpty()
                     StyleableToast.makeText(
                         this,
-                        getString(R.string.register_failed) + it.exception?.message.orEmpty(),
+                        "$message",
                         R.style.failedtoast
                     ).show()
                 }
@@ -179,6 +189,7 @@ class RegisterActivity : AppCompatActivity() {
 
     private fun navigateToOtp() {
         val intent = Intent(this, OtpActivity::class.java)
+        intent.putExtra("EMAIL_OTP", emailOtp)
         startActivity(intent)
     }
 }

@@ -23,6 +23,8 @@ import com.kelompoksatuandsatu.preducation.presentation.feature.classProgress.Pr
 import com.kelompoksatuandsatu.preducation.presentation.feature.course.CourseViewModel
 import com.kelompoksatuandsatu.preducation.presentation.feature.detailclass.DetailClassViewModel
 import com.kelompoksatuandsatu.preducation.presentation.feature.editprofile.EditProfileViewModel
+import com.kelompoksatuandsatu.preducation.presentation.feature.forgotpasswordnew.ForgotPasswordNewViewModel
+import com.kelompoksatuandsatu.preducation.presentation.feature.historypayment.HistoryPaymentViewModel
 import com.kelompoksatuandsatu.preducation.presentation.feature.home.HomeViewModel
 import com.kelompoksatuandsatu.preducation.presentation.feature.login.LoginViewModel
 import com.kelompoksatuandsatu.preducation.presentation.feature.notifications.NotificationViewModel
@@ -30,6 +32,7 @@ import com.kelompoksatuandsatu.preducation.presentation.feature.otp.OtpViewModel
 import com.kelompoksatuandsatu.preducation.presentation.feature.payment.PaymentViewModel
 import com.kelompoksatuandsatu.preducation.presentation.feature.profile.ProfileViewModel
 import com.kelompoksatuandsatu.preducation.presentation.feature.register.RegisterViewModel
+import com.kelompoksatuandsatu.preducation.presentation.feature.splashscreen.SplashScreenViewModel
 import com.kelompoksatuandsatu.preducation.utils.AssetWrapper
 import com.kelompoksatuandsatu.preducation.utils.PreferenceDataStoreHelper
 import com.kelompoksatuandsatu.preducation.utils.PreferenceDataStoreHelperImpl
@@ -78,6 +81,9 @@ object AppModules {
         viewModelOf(::ProfileViewModel)
         viewModelOf(::EditProfileViewModel)
         viewModelOf(::ChangePasswordViewModel)
+        viewModelOf(::ForgotPasswordNewViewModel)
+        viewModelOf(::SplashScreenViewModel)
+        viewModelOf(::HistoryPaymentViewModel)
     }
 
     private val utilsModule = module {

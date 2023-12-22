@@ -42,17 +42,26 @@ class ChangePasswordActivity : AppCompatActivity() {
         }
 
         binding.clButtonContinue.setOnClickListener {
-            val userId = intent.getStringExtra("USER_ID")
             if (isFormValid()) {
-                setUpdatePassword(userId.orEmpty())
+                setUpdatePassword()
+                StyleableToast.makeText(
+                    this,
+                    "Change Password Successfully",
+                    R.style.successtoast
+                ).show()
+                navigateToProfile()
             } else {
                 showErrorToast(R.string.text_error_form_not_valid)
             }
         }
     }
 
-    private fun setUpdatePassword(userId: String) {
-        updatePassword(userId)
+    private fun navigateToProfile() {
+        onBackPressed()
+    }
+
+    private fun setUpdatePassword() {
+        updatePassword()
         viewModel.updatedPassword.observe(this) {
             it.proceedWhen(
                 doOnError = {
@@ -74,13 +83,12 @@ class ChangePasswordActivity : AppCompatActivity() {
         }
     }
 
-    private fun updatePassword(userId: String) {
+    private fun updatePassword() {
         val newPassword = binding.etNewPassword.text.toString().trim()
         val oldPassword = binding.etOldPassword.text.toString().trim()
         val confirmPassword = binding.etConfirmPassword.text.toString().trim()
 
         viewModel.updatePassword(
-            userId,
             ChangePasswordRequest(
                 newPassword = newPassword,
                 oldPassword = oldPassword,

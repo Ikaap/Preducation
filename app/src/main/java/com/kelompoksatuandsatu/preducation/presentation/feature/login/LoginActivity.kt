@@ -2,16 +2,18 @@ package com.kelompoksatuandsatu.preducation.presentation.feature.login
 
 import android.content.Intent
 import android.os.Bundle
-import android.text.SpannableString
-import android.text.style.UnderlineSpan
 import android.util.Patterns
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import com.kelompoksatuandsatu.preducation.R
 import com.kelompoksatuandsatu.preducation.databinding.ActivityLoginBinding
 import com.kelompoksatuandsatu.preducation.model.auth.UserLogin
+import com.kelompoksatuandsatu.preducation.presentation.feature.forgotpasswordnew.ForgotPasswordNewActivity
 import com.kelompoksatuandsatu.preducation.presentation.feature.main.MainActivity
 import com.kelompoksatuandsatu.preducation.presentation.feature.register.RegisterActivity
+import com.kelompoksatuandsatu.preducation.utils.exceptions.ApiException
+import com.kelompoksatuandsatu.preducation.utils.highLightWord
 import com.kelompoksatuandsatu.preducation.utils.proceedWhen
 import io.github.muddz.styleabletoast.StyleableToast
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -37,25 +39,31 @@ class LoginActivity : AppCompatActivity() {
             doLogin()
         }
 
-        val regisTextView = binding.registerText
-        val regisString = getString(R.string.text_register_here)
-        val regisSpannable = SpannableString(regisString)
-        regisSpannable.setSpan(
-            UnderlineSpan(),
-            0,
-            regisString.length,
-            0
-        )
-        regisTextView.text = regisSpannable
-        regisTextView.setOnClickListener {
-            val intent = Intent(this, RegisterActivity::class.java)
-            startActivity(intent)
+        binding.registerText.highLightWord(getString(R.string.text_register_here)) {
+            navigateToRegister()
         }
 
         binding.tvWithoutLogin.setOnClickListener {
             val intent = Intent(this, MainActivity::class.java)
             startActivity(intent)
         }
+
+        binding.forgotPasswordText.setOnClickListener {
+            navigateToForgotPass()
+        }
+    }
+
+    private fun navigateToRegister() {
+        val intent = Intent(this, RegisterActivity::class.java).apply {
+            flags = Intent.FLAG_ACTIVITY_SINGLE_TOP or Intent.FLAG_ACTIVITY_CLEAR_TOP
+        }
+        startActivity(intent)
+    }
+    private fun navigateToForgotPass() {
+        val intent = Intent(this, ForgotPasswordNewActivity::class.java).apply {
+            flags = Intent.FLAG_ACTIVITY_SINGLE_TOP or Intent.FLAG_ACTIVITY_CLEAR_TOP
+        }
+        startActivity(intent)
     }
 
     private fun doLogin() {
@@ -119,25 +127,32 @@ class LoginActivity : AppCompatActivity() {
     private fun observeResult() {
         viewModel.loginResult.observe(this) {
             it.proceedWhen(
-                doOnSuccess = {
+                doOnSuccess = { resultWrapper ->
+                    val response = resultWrapper.payload
                     StyleableToast.makeText(
                         this,
-                        getString(R.string.login_success),
+                        "${response?.message}",
                         R.style.successtoast
                     ).show()
+                    it.payload?.let {
+                        viewModel.saveIdUser(it.data.id)
+                        Toast.makeText(this, "user id login : ${it.data.id}", Toast.LENGTH_SHORT).show()
+                    }
                     navigateToMain()
                 },
                 doOnLoading = {
                     binding.pbLoading.isVisible = true
                     binding.signInButton.isVisible = false
                 },
-                doOnError = {
+                doOnError = { resultWrapper ->
                     binding.pbLoading.isVisible = false
                     binding.signInButton.isVisible = true
                     binding.signInButton.isEnabled = true
+                    val apiException = resultWrapper.exception as? ApiException
+                    val message = apiException?.getParsedError()?.message.orEmpty()
                     StyleableToast.makeText(
                         this,
-                        getString(R.string.login_failed) + "${it.exception?.message.orEmpty()}",
+                        "$message",
                         R.style.failedtoast
                     ).show()
                 }

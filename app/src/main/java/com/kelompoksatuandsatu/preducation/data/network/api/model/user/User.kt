@@ -5,7 +5,7 @@ import com.kelompoksatuandsatu.preducation.model.user.UserViewParam
 
 data class User(
     @SerializedName("_id")
-    val _id: String?,
+    val id: String?,
     @SerializedName("email")
     val email: String?,
     @SerializedName("phone")
@@ -22,8 +22,9 @@ data class User(
     val city: String?
 )
 
-fun User.toUserRequest() = UserViewParam(
-    _id = this._id,
+
+fun User.toUserViewParam() = UserViewParam(
+    id = this.id.orEmpty(),
     email = this.email.orEmpty(),
     phone = this.phone.orEmpty(),
     name = this.name.orEmpty(),
@@ -32,4 +33,4 @@ fun User.toUserRequest() = UserViewParam(
     city = this.city.orEmpty()
 )
 
-fun Collection<User>.toUserList() = this.map { it.toUserRequest() }
+// fun Collection<User>.toUserList() = this.map { it.toUserRequest() }

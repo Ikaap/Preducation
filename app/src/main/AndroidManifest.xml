@@ -15,7 +15,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Preducation"
         android:usesCleartextTraffic="true"
-        tools:targetApi="31" >
+        tools:targetApi="31">
+        <activity
+            android:name=".presentation.feature.forgotpasswordnew.ForgotPasswordNewActivity"
+            android:exported="false" />
         <activity
             android:name=".presentation.feature.filter.FilterActivity"
             android:exported="false" />
@@ -27,8 +30,10 @@
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
+
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
+
                 <data
                     android:host="demo"
                     android:scheme="midtrans" />
@@ -36,9 +41,10 @@
         </activity>
         <activity
             android:name=".presentation.feature.splashscreen.SplashScreenActivity"
-            android:exported="true" >
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -48,37 +54,37 @@
             android:exported="false" />
         <activity
             android:name=".presentation.feature.splashscreen.SplashScreenOneActivity"
-            android:exported="false"/>
+            android:exported="false" />
         <activity
             android:name=".presentation.feature.splashscreen.SplashScreenTwoActivity"
-            android:exported="false"/>
+            android:exported="false" />
         <activity
             android:name=".presentation.feature.splashscreen.SplashScreenThreeActivity"
-            android:exported="false"/>
+            android:exported="false" />
         <activity
-            android:name="com.kelompoksatuandsatu.preducation.presentation.feature.login.LoginActivity"
+            android:name=".presentation.feature.login.LoginActivity"
             android:exported="false" />
         <activity
             android:name=".presentation.feature.register.RegisterActivity"
-            android:exported="false"/>
+            android:exported="false" />
         <activity
             android:name=".presentation.feature.otp.OtpActivity"
             android:exported="false" />
         <activity
             android:name=".presentation.feature.home.SeeAllPopularCoursesActivity"
-            android:exported="true"/>
+            android:exported="true" />
         <activity
             android:name=".presentation.feature.editprofile.EditProfileActivity"
-            android:exported="false"/>
+            android:exported="false" />
         <activity
-            android:name=".presentation.feature.historypayment.TransactionActivity"
-            android:exported="false"/>
+            android:name=".presentation.feature.historypayment.HistoryPaymentActivity"
+            android:exported="false" />
         <activity
             android:name=".presentation.feature.changepassword.ChangePasswordActivity"
-            android:exported="false"/>
+            android:exported="false" />
         <activity
             android:name=".presentation.feature.main.MainActivity"
-            android:exported="false"/>
+            android:exported="false" />
     </application>
 
 </manifest>

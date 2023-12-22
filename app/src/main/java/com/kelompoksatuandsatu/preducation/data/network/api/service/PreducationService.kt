@@ -3,10 +3,14 @@ package com.kelompoksatuandsatu.preducation.data.network.api.service
 import com.chuckerteam.chucker.api.ChuckerInterceptor
 import com.kelompoksatuandsatu.preducation.BuildConfig
 import com.kelompoksatuandsatu.preducation.data.network.api.interceptor.AuthInterceptor
+import com.kelompoksatuandsatu.preducation.data.network.api.model.auth.forgotpassword.ForgotPasswordRequest
+import com.kelompoksatuandsatu.preducation.data.network.api.model.auth.forgotpassword.ForgotPasswordResponse
 import com.kelompoksatuandsatu.preducation.data.network.api.model.auth.login.LoginRequest
 import com.kelompoksatuandsatu.preducation.data.network.api.model.auth.login.LoginResponse
-import com.kelompoksatuandsatu.preducation.data.network.api.model.auth.otp.OtpRequest
-import com.kelompoksatuandsatu.preducation.data.network.api.model.auth.otp.OtpResponse
+import com.kelompoksatuandsatu.preducation.data.network.api.model.auth.logout.LogoutResponse
+import com.kelompoksatuandsatu.preducation.data.network.api.model.auth.otp.postemail.EmailOtpRequest
+import com.kelompoksatuandsatu.preducation.data.network.api.model.auth.otp.postemail.EmailOtpResponse
+import com.kelompoksatuandsatu.preducation.data.network.api.model.auth.otp.verifyotp.OtpRequest
 import com.kelompoksatuandsatu.preducation.data.network.api.model.auth.register.RegisterRequest
 import com.kelompoksatuandsatu.preducation.data.network.api.model.auth.register.RegisterResponse
 import com.kelompoksatuandsatu.preducation.data.network.api.model.category.categoriesprogress.CategoriesProgressResponse
@@ -22,10 +26,12 @@ import com.kelompoksatuandsatu.preducation.data.network.api.model.logout.UserLog
 import com.kelompoksatuandsatu.preducation.data.network.api.model.notification.NotificationResponse
 import com.kelompoksatuandsatu.preducation.data.network.api.model.payment.PaymentCourseRequest
 import com.kelompoksatuandsatu.preducation.data.network.api.model.payment.PaymentCourseResponse
+import com.kelompoksatuandsatu.preducation.data.network.api.model.payment.history.HistoryItemResponse
 import com.kelompoksatuandsatu.preducation.data.network.api.model.progress.courseprogress.CourseProgressResponse
 import com.kelompoksatuandsatu.preducation.data.network.api.model.user.UserRequest
 import com.kelompoksatuandsatu.preducation.data.network.api.model.user.UserResponse
 import okhttp3.OkHttpClient
+import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.Body
@@ -45,10 +51,6 @@ interface PreducationService {
 
     @GET("api/v1/courses")
     suspend fun getCourseHome(@Query("category") category: String? = null): CourseResponse
-
-    // post otp
-    @POST("api/v1/auths/email-otp")
-    suspend fun getOtpToEmail(@Body email: OtpRequest): OtpResponse
 
     // notification
     @GET("api/v1/notifications")
@@ -80,7 +82,7 @@ interface PreducationService {
 
     // profile
     @GET("api/v1/users/{id}")
-    suspend fun getUserById(@Path("id") id: String? = null): UserResponse
+    suspend fun getUserById(@Path("id") id: String): UserResponse
 
     @PATCH("api/v1/users/{id}")
     suspend fun updateUserById(@Path("id") id: String? = null, @Body userRequest: UserRequest): UserResponse
@@ -88,12 +90,19 @@ interface PreducationService {
     @PATCH("api/v1/users/update-password/{id}")
     suspend fun updateUserPassword(@Path("id") id: String? = null, @Body changePasswordRequest: ChangePasswordRequest): ChangePasswordResponse
 
-    @GET("api/v1/payments")
+    // @GET("api/v1/payments")
     // suspend fun getHistoryPayment()//: HistoryPaymentResponse
 
     //     auth
     @POST("api/v1/auths/register")
     suspend fun userRegister(@Body userRegisterRequest: RegisterRequest): RegisterResponse
+
+    // post email for otp
+    @POST("api/v1/auths/email-otp")
+    suspend fun postEmailOtp(@Body emailOtpRequest: EmailOtpRequest): EmailOtpResponse
+
+    @POST("api/v1/auths/verify-otp")
+    suspend fun verifyOtp(@Body otpRequest: OtpRequest): com.kelompoksatuandsatu.preducation.data.network.api.model.auth.otp.verifyotp.OtpResponse
 
     @POST("api/v1/auths/login")
     suspend fun userLogin(@Body userLoginRequest: LoginRequest): LoginResponse
@@ -101,8 +110,15 @@ interface PreducationService {
     @DELETE("api/v1/auths/logout")
     suspend fun logout(): UserLogoutResponse
 
-    // @POST("api/v1/auths/forgot-password")
-    // suspend fun userForgotPassword(@Body userForgotPassword: UserForgotPasswordRequest)//:UserForgotPasswordResponse
+    @POST("api/v1/auths/forgot-password")
+    suspend fun userForgotPassword(@Body userForgotPassword: ForgotPasswordRequest): ForgotPasswordResponse
+
+    @GET("api/v1/payments")
+    suspend fun getHistoryPayment(): HistoryItemResponse
+
+    @DELETE("api/v1/auths/logout")
+    suspend fun userLogout(): Response<LogoutResponse>
+
     // @POST("api/v1/auths/email-otp")
     // suspend fun userPostOtp(@Body userForgotPassword: UserForgotPasswordRequest)//:UserForgotPasswordResponse
 
@@ -121,6 +137,7 @@ interface PreducationService {
                 .build()
             val retrofit = Retrofit.Builder()
                 .baseUrl(BuildConfig.BASE_URL)
+//                .baseUrl(BuildConfig.BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
                 .client(okHttpClient)
                 .build()

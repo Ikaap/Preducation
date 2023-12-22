@@ -71,7 +71,7 @@
             </com.google.android.material.textfield.TextInputLayout>
 
         </LinearLayout>
-      
+
         <!-- Password Input -->
         <LinearLayout
             android:id="@+id/formPasswordLayout"
@@ -190,30 +190,15 @@
         </FrameLayout>
 
         <!-- Register Text -->
-        <LinearLayout
-            android:id="@+id/registerTextLayout"
-            android:layout_width="match_parent"
+
+        <TextView
+            android:id="@+id/registerText"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
-            android:orientation="horizontal">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/montserrat_medium"
-                android:text="@string/text_don_t_have_an_account_yet"
-                android:textSize="16sp" />
-
-            <TextView
-                android:id="@+id/registerText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="6dp"
-                android:fontFamily="@font/montserrat_bold"
-                android:textAlignment="center"
-                android:textColor="@color/app_color_primary"
-                android:textSize="16sp" />
-        </LinearLayout>
+            android:fontFamily="@font/montserrat_medium"
+            android:text="@string/text_don_t_have_an_account_yet"
+            android:textSize="16sp" />
 
         <!-- Without Login Text -->
         <TextView

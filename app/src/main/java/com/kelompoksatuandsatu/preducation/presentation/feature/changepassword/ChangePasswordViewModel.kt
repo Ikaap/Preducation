@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.kelompoksatuandsatu.preducation.data.local.datastore.datasource.UserPreferenceDataSource
 import com.kelompoksatuandsatu.preducation.data.network.api.model.changepassword.ChangePasswordRequest
 import com.kelompoksatuandsatu.preducation.data.repository.UserRepository
 import com.kelompoksatuandsatu.preducation.model.user.Password
@@ -12,7 +13,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class ChangePasswordViewModel(
-    private val repo: UserRepository
+    private val repo: UserRepository,
+    private val userPreferenceDataSource: UserPreferenceDataSource
 ) : ViewModel() {
 
     private val _updatedPassword =
@@ -22,10 +24,10 @@ class ChangePasswordViewModel(
         get() = _updatedPassword
 
     fun updatePassword(
-        userId: String,
         passwordRequest: ChangePasswordRequest
     ) {
         viewModelScope.launch(Dispatchers.IO) {
+            val userId = userPreferenceDataSource.getUserId()
             repo.updateUserPassword(
                 userId,
                 passwordRequest

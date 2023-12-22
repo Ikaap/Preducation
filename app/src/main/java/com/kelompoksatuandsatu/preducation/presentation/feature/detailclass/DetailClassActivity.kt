@@ -266,6 +266,15 @@ class DetailClassActivity : AppCompatActivity() {
                     binding.clButtonNext.isGone = true
                     binding.clButtonOtherClass.isGone = true
                 }
+                binding.ivPlayVideo.isGone = false
+                binding.clButtonNext.isGone = false
+                binding.clButtonOtherClass.isGone = false
+            }
+
+            PlayerConstants.PlayerState.PAUSED -> {
+                binding.ivPlayVideo.isGone = false
+                binding.clButtonNext.isGone = false
+                binding.clButtonOtherClass.isGone = false
             }
 
             PlayerConstants.PlayerState.PLAYING -> {
