@@ -17,8 +17,6 @@ import com.kelompoksatuandsatu.preducation.data.network.api.model.user.UserReque
 import com.kelompoksatuandsatu.preducation.data.network.api.model.user.toUserViewParam
 import com.kelompoksatuandsatu.preducation.model.auth.UserAuth
 import com.kelompoksatuandsatu.preducation.model.auth.UserLogin
-import com.kelompoksatuandsatu.preducation.model.auth.UserLoginResponse
-import com.kelompoksatuandsatu.preducation.model.auth.UserRegisterResponse
 import com.kelompoksatuandsatu.preducation.model.auth.forgotpassword.UserForgotPassword
 import com.kelompoksatuandsatu.preducation.model.auth.otp.postemailotp.EmailOtp
 import com.kelompoksatuandsatu.preducation.model.auth.otp.verifyotp.OtpData
@@ -39,8 +37,6 @@ interface UserRepository {
         id: String,
         passwordRequest: ChangePasswordRequest
     ): Flow<ResultWrapper<List<Password>>>
-
-    suspend fun userRegister(request: UserAuth): Flow<ResultWrapper<UserRegisterResponse>>
 
     suspend fun userRegister(request: UserAuth): Flow<ResultWrapper<RegisterResponse>>
 
@@ -79,8 +75,6 @@ class UserRepositoryImpl(private val userDataSource: UserDataSource, private val
             (userDataSource.updateUserPassword(id, passwordRequest).data?.toPasswordList() ?: emptyList())
         }
     }
-
-    override suspend fun userRegister(request: UserAuth): Flow<ResultWrapper<UserRegisterResponse>> {
 
     override suspend fun userRegister(request: UserAuth): Flow<ResultWrapper<RegisterResponse>> {
         return flow {
@@ -146,7 +140,6 @@ class UserRepositoryImpl(private val userDataSource: UserDataSource, private val
             emit(ResultWrapper.Success(true))
         } else {
             emit(ResultWrapper.Error(Exception("Logout failed with response code ${response.code()}")))
-
         }
     }.catch { e ->
         Log.e("UserRepository", "Error during logout", e)

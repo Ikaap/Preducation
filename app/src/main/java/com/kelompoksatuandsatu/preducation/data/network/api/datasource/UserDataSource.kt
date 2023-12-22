@@ -51,7 +51,6 @@ class UserDataSourceImpl(private val service: PreducationService) : UserDataSour
     }
 
     override suspend fun verifyOtp(otpRequest: OtpRequest): com.kelompoksatuandsatu.preducation.data.network.api.model.auth.otp.verifyotp.OtpResponse {
-
         return service.verifyOtp(otpRequest)
     }
 
@@ -68,9 +67,5 @@ class UserDataSourceImpl(private val service: PreducationService) : UserDataSour
     }
     override suspend fun userLogout(): Response<LogoutResponse> {
         return service.userLogout()
-    }
-
-    override suspend fun userForgotPassword(forgotPasswordRequest: ForgotPasswordRequest): ForgotPasswordResponse {
-        return service.userForgotPassword(forgotPasswordRequest)
     }
 }
