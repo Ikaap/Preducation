@@ -29,6 +29,7 @@ class ProfileViewModel(
             Log.d("USER ID PROFILE", "getUserById: $userId")
             userRepo.getUserById(userId).collect {
                 _getProfile.postValue(it)
+
             }
         }
     }

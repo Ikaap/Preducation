@@ -79,6 +79,7 @@ class UserRepositoryImpl(private val userDataSource: UserDataSource, private val
     }
 
     override suspend fun userRegister(request: UserAuth): Flow<ResultWrapper<UserRegisterResponse>> {
+
         return proceedFlow {
             val dataRequest =
                 RegisterRequest(request.email, request.name, request.phone, request.password)
@@ -87,6 +88,7 @@ class UserRepositoryImpl(private val userDataSource: UserDataSource, private val
                 userPreferenceDataSource.saveUserToken(regisResult.data.accessToken)
             }
             regisResult.toRegisterResponse()
+
         }
     }
 
@@ -131,6 +133,7 @@ class UserRepositoryImpl(private val userDataSource: UserDataSource, private val
             emit(ResultWrapper.Success(true))
         } else {
             emit(ResultWrapper.Error(Exception("Logout failed with response code ${response.code()}")))
+
         }
     }.catch { e ->
         Log.e("UserRepository", "Error during logout", e)
