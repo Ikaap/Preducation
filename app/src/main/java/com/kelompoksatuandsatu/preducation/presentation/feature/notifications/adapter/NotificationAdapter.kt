@@ -6,7 +6,8 @@ import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.kelompoksatuandsatu.preducation.databinding.ItemListNotificationBinding
-import com.kelompoksatuandsatu.preducation.model.NotificationItem
+import com.kelompoksatuandsatu.preducation.model.notification.NotificationItem
+import java.util.regex.Pattern
 
 class NotificationAdapter() : RecyclerView.Adapter<NotificationItemViewHolder>() {
 
@@ -49,8 +50,20 @@ class NotificationAdapter() : RecyclerView.Adapter<NotificationItemViewHolder>()
 class NotificationItemViewHolder(private val binding: ItemListNotificationBinding) :
     RecyclerView.ViewHolder(binding.root) {
 
+    private val datePattern = Pattern.compile("(\\d{4}-\\d{2}-\\d{2})")
+
     fun bind(notificationItem: NotificationItem) {
         binding.tvNotificationName.text = notificationItem.title
         binding.tvNotificationDesc1.text = notificationItem.description
+        binding.tvDate.text = notificationItem.createdAt?.let { extractDate(it) }
+    }
+
+    private fun extractDate(timestamp: String): String {
+        val matcher = datePattern.matcher(timestamp)
+        return if (matcher.find()) {
+            matcher.group(1) ?: ""
+        } else {
+            ""
+        }
     }
 }
