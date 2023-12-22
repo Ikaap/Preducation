@@ -29,7 +29,6 @@ import com.kelompoksatuandsatu.preducation.utils.proceedFlow
 import kotlinx.coroutines.flow.*
 import retrofit2.HttpException
 
-
 interface UserRepository {
     suspend fun getUserById(id: String): Flow<ResultWrapper<UserViewParam>>
 

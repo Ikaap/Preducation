@@ -38,7 +38,6 @@ class EditProfileActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
-
         getData()
         setDataProfile()
         setForm()
