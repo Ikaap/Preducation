@@ -5,7 +5,7 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class UserViewParam(
-    val _id: String?,
+    val id: String?,
     val email: String?,
     val phone: String?,
     val name: String?,

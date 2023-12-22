@@ -22,7 +22,6 @@ data class User(
     val city: String?
 )
 
-
 fun User.toUserViewParam() = UserViewParam(
     id = this.id.orEmpty(),
     email = this.email.orEmpty(),
