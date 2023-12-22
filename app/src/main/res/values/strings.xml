@@ -49,7 +49,7 @@
     <string name="_40_complete">40% complete</string>
 
     <string name="text_password_min_8_character">Password min 8 character</string>
-    <string name="text_already_have_an_account">Already have an Account ?</string>
+    <string name="text_already_have_an_account">Already have an Account ? Login Here</string>
     <string name="text_login_here">Login Here</string>
     <string name="text_sign_up">Sign Up</string>
     <string name="text_create_a_password">Create a Password</string>
@@ -61,7 +61,7 @@
     <string name="text_password">Password</string>
     <string name="text_forgot_password">Forgot Password</string>
     <string name="text_sign_in">Sign In</string>
-    <string name="text_don_t_have_an_account_yet">Don\'t have an account yet ?</string>
+    <string name="text_don_t_have_an_account_yet">Don\'t have an account yet ? Register Here</string>
     <string name="text_enter_without_logging_in">Enter Without Logging In</string>
     <string name="text_sorry_wrong_password">Sorry, wrong password</string>
     <string name="text_register_here">Register Here</string>

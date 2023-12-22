@@ -2,8 +2,6 @@ package com.kelompoksatuandsatu.preducation.presentation.feature.login
 
 import android.content.Intent
 import android.os.Bundle
-import android.text.SpannableString
-import android.text.style.UnderlineSpan
 import android.util.Patterns
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
@@ -14,6 +12,7 @@ import com.kelompoksatuandsatu.preducation.presentation.feature.forgotpasswordne
 import com.kelompoksatuandsatu.preducation.presentation.feature.main.MainActivity
 import com.kelompoksatuandsatu.preducation.presentation.feature.register.RegisterActivity
 import com.kelompoksatuandsatu.preducation.utils.exceptions.ApiException
+import com.kelompoksatuandsatu.preducation.utils.highLightWord
 import com.kelompoksatuandsatu.preducation.utils.proceedWhen
 import io.github.muddz.styleabletoast.StyleableToast
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -39,19 +38,8 @@ class LoginActivity : AppCompatActivity() {
             doLogin()
         }
 
-        val regisTextView = binding.registerText
-        val regisString = getString(R.string.text_register_here)
-        val regisSpannable = SpannableString(regisString)
-        regisSpannable.setSpan(
-            UnderlineSpan(),
-            0,
-            regisString.length,
-            0
-        )
-        regisTextView.text = regisSpannable
-        regisTextView.setOnClickListener {
-            val intent = Intent(this, RegisterActivity::class.java)
-            startActivity(intent)
+        binding.registerText.highLightWord(getString(R.string.text_register_here)) {
+            navigateToRegister()
         }
 
         binding.tvWithoutLogin.setOnClickListener {
@@ -60,9 +48,21 @@ class LoginActivity : AppCompatActivity() {
         }
 
         binding.forgotPasswordText.setOnClickListener {
-            val intent = Intent(this, ForgotPasswordNewActivity::class.java)
-            startActivity(intent)
+            navigateToForgotPass()
         }
+    }
+
+    private fun navigateToRegister() {
+        val intent = Intent(this, RegisterActivity::class.java).apply {
+            flags = Intent.FLAG_ACTIVITY_SINGLE_TOP or Intent.FLAG_ACTIVITY_CLEAR_TOP
+        }
+        startActivity(intent)
+    }
+    private fun navigateToForgotPass() {
+        val intent = Intent(this, ForgotPasswordNewActivity::class.java).apply {
+            flags = Intent.FLAG_ACTIVITY_SINGLE_TOP or Intent.FLAG_ACTIVITY_CLEAR_TOP
+        }
+        startActivity(intent)
     }
 
     private fun doLogin() {
