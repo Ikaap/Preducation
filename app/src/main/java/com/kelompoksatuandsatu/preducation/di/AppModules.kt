@@ -24,6 +24,7 @@ import com.kelompoksatuandsatu.preducation.presentation.feature.course.CourseVie
 import com.kelompoksatuandsatu.preducation.presentation.feature.detailclass.DetailClassViewModel
 import com.kelompoksatuandsatu.preducation.presentation.feature.editprofile.EditProfileViewModel
 import com.kelompoksatuandsatu.preducation.presentation.feature.forgotpasswordnew.ForgotPasswordNewViewModel
+import com.kelompoksatuandsatu.preducation.presentation.feature.historypayment.HistoryPaymentViewModel
 import com.kelompoksatuandsatu.preducation.presentation.feature.home.HomeViewModel
 import com.kelompoksatuandsatu.preducation.presentation.feature.login.LoginViewModel
 import com.kelompoksatuandsatu.preducation.presentation.feature.notifications.NotificationViewModel
@@ -80,6 +81,7 @@ object AppModules {
         viewModelOf(::EditProfileViewModel)
         viewModelOf(::ChangePasswordViewModel)
         viewModelOf(::ForgotPasswordNewViewModel)
+        viewModelOf(::HistoryPaymentViewModel)
     }
 
     private val utilsModule = module {

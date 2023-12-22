@@ -77,7 +77,7 @@
             android:name=".presentation.feature.editprofile.EditProfileActivity"
             android:exported="false" />
         <activity
-            android:name=".presentation.feature.historypayment.TransactionActivity"
+            android:name=".presentation.feature.historypayment.HistoryPaymentActivity"
             android:exported="false" />
         <activity
             android:name=".presentation.feature.changepassword.ChangePasswordActivity"

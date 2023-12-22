@@ -1,5 +1,6 @@
 package com.kelompoksatuandsatu.preducation.data.repository
 
+import android.util.Log
 import com.kelompoksatuandsatu.preducation.data.local.datastore.datasource.UserPreferenceDataSource
 import com.kelompoksatuandsatu.preducation.data.network.api.datasource.UserDataSource
 import com.kelompoksatuandsatu.preducation.data.network.api.model.auth.forgotpassword.ForgotPasswordRequest
@@ -27,6 +28,8 @@ import com.kelompoksatuandsatu.preducation.model.user.UserViewParam
 import com.kelompoksatuandsatu.preducation.utils.ResultWrapper
 import com.kelompoksatuandsatu.preducation.utils.proceedFlow
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.flow
 
 interface UserRepository {
     suspend fun getUserById(id: String): Flow<ResultWrapper<UserViewParam>>
@@ -46,6 +49,7 @@ interface UserRepository {
     suspend fun postEmailOtp(request: EmailOtp): Flow<ResultWrapper<Boolean>>
 
     suspend fun verifyOtp(request: OtpData): Flow<ResultWrapper<BaseResponse>>
+    suspend fun userLogout(): Flow<ResultWrapper<Boolean>>
 
     suspend fun userForgotPassword(request: UserForgotPassword): Flow<ResultWrapper<Boolean>>
 }
@@ -125,5 +129,17 @@ class UserRepositoryImpl(private val userDataSource: UserDataSource, private val
             val forgotPasswordResult = userDataSource.userForgotPassword(dataRequest)
             forgotPasswordResult.success
         }
+    }
+    override suspend fun userLogout(): Flow<ResultWrapper<Boolean>> = flow {
+        val response = userDataSource.userLogout()
+        if (response.isSuccessful) {
+            userPreferenceDataSource.deleteAllData()
+            emit(ResultWrapper.Success(true))
+        } else {
+            emit(ResultWrapper.Error(Exception("Logout failed with response code ${response.code()}")))
+        }
+    }.catch { e ->
+        Log.e("UserRepository", "Error during logout", e)
+        emit(ResultWrapper.Error(e as? Exception ?: Exception("Unknown error")))
     }
 }

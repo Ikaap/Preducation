@@ -4,6 +4,7 @@ import com.kelompoksatuandsatu.preducation.data.network.api.model.auth.forgotpas
 import com.kelompoksatuandsatu.preducation.data.network.api.model.auth.forgotpassword.ForgotPasswordResponse
 import com.kelompoksatuandsatu.preducation.data.network.api.model.auth.login.LoginRequest
 import com.kelompoksatuandsatu.preducation.data.network.api.model.auth.login.LoginResponse
+import com.kelompoksatuandsatu.preducation.data.network.api.model.auth.logout.LogoutResponse
 import com.kelompoksatuandsatu.preducation.data.network.api.model.auth.otp.postemail.EmailOtpRequest
 import com.kelompoksatuandsatu.preducation.data.network.api.model.auth.otp.postemail.EmailOtpResponse
 import com.kelompoksatuandsatu.preducation.data.network.api.model.auth.otp.verifyotp.OtpRequest
@@ -11,11 +12,11 @@ import com.kelompoksatuandsatu.preducation.data.network.api.model.auth.register.
 import com.kelompoksatuandsatu.preducation.data.network.api.model.auth.register.RegisterResponse
 import com.kelompoksatuandsatu.preducation.data.network.api.model.changepassword.ChangePasswordRequest
 import com.kelompoksatuandsatu.preducation.data.network.api.model.changepassword.ChangePasswordResponse
-import com.kelompoksatuandsatu.preducation.data.network.api.model.logout.UserLogoutResponse
 import com.kelompoksatuandsatu.preducation.data.network.api.model.user.UserRequest
 import com.kelompoksatuandsatu.preducation.data.network.api.model.user.UserResponse
 import com.kelompoksatuandsatu.preducation.data.network.api.service.PreducationService
 import com.kelompoksatuandsatu.preducation.model.auth.otp.verifyotp.OtpResponse
+import retrofit2.Response
 
 interface UserDataSource {
     suspend fun userRegister(userRegisterRequest: RegisterRequest): RegisterResponse
@@ -29,8 +30,7 @@ interface UserDataSource {
     suspend fun getUserById(id: String): UserResponse
     suspend fun updateUserById(id: String, userRequest: UserRequest): UserResponse
     suspend fun updateUserPassword(id: String, passwordRequest: ChangePasswordRequest): ChangePasswordResponse
-    suspend fun performLogout(): UserLogoutResponse
-
+    suspend fun userLogout(): Response<LogoutResponse>
     suspend fun userForgotPassword(forgotPasswordRequest: ForgotPasswordRequest): ForgotPasswordResponse
 }
 
@@ -62,11 +62,10 @@ class UserDataSourceImpl(private val service: PreducationService) : UserDataSour
         return service.updateUserPassword(id, passwordRequest)
     }
 
-    override suspend fun performLogout(): UserLogoutResponse {
-        return service.logout()
-    }
-
     override suspend fun userForgotPassword(forgotPasswordRequest: ForgotPasswordRequest): ForgotPasswordResponse {
         return service.userForgotPassword(forgotPasswordRequest)
+    }
+    override suspend fun userLogout(): Response<LogoutResponse> {
+        return service.userLogout()
     }
 }

@@ -13,9 +13,10 @@ import com.kelompoksatuandsatu.preducation.R
 import com.kelompoksatuandsatu.preducation.databinding.FragmentProfileBinding
 import com.kelompoksatuandsatu.preducation.presentation.feature.changepassword.ChangePasswordActivity
 import com.kelompoksatuandsatu.preducation.presentation.feature.editprofile.EditProfileActivity
-import com.kelompoksatuandsatu.preducation.presentation.feature.historypayment.TransactionActivity
+import com.kelompoksatuandsatu.preducation.presentation.feature.historypayment.HistoryPaymentActivity
 import com.kelompoksatuandsatu.preducation.presentation.feature.login.LoginActivity
 import com.kelompoksatuandsatu.preducation.utils.proceedWhen
+import io.github.muddz.styleabletoast.StyleableToast
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class ProfileFragment : Fragment() {
@@ -39,6 +40,7 @@ class ProfileFragment : Fragment() {
         getData()
         setDataProfile()
         setupClickListeners()
+        observeLogoutResult()
     }
 
     override fun onResume() {
@@ -85,33 +87,71 @@ class ProfileFragment : Fragment() {
         }
 
         binding.clPaymentHistory.setOnClickListener {
-            startActivity(Intent(requireContext(), TransactionActivity::class.java))
+            startActivity(Intent(requireContext(), HistoryPaymentActivity::class.java))
         }
 
         binding.clLogout.setOnClickListener {
-            performLogout()
+            showLogoutConfirmationDialog()
         }
     }
 
-    private fun performLogout() {
+    private fun showLogoutConfirmationDialog() {
         AlertDialog.Builder(requireContext())
-            .setMessage(getString(R.string.text_logout_dialog)) // Using getString directly
+            .setMessage(getString(R.string.text_logout_dialog))
             .setPositiveButton(getString(R.string.text_yes)) { _, _ ->
-//                viewModel.performLogout()
-                viewModel.deleteUserData()
-                navigateToLogin()
+                viewModel.userLogout()
             }
             .setNegativeButton(getString(R.string.text_no)) { _, _ ->
-                // Handle negative button click if needed
             }
             .create()
             .show()
     }
 
-    private fun navigateToLogin() {
-        val intent = Intent(requireContext(), LoginActivity::class.java).apply {
-            flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+    private fun observeLogoutResult() {
+        viewModel.logoutResults.observe(viewLifecycleOwner) { result ->
+            result.proceedWhen(
+                doOnSuccess = {
+                    StyleableToast.makeText(
+                        requireContext(),
+                        "Successfully Logout",
+                        R.style.successtoast
+                    ).show()
+                    performLogout()
+                },
+                doOnError = {
+                    StyleableToast.makeText(
+                        requireContext(),
+                        "Failed to Logout",
+                        R.style.failedtoast
+                    ).show()
+                },
+                doOnLoading = {
+                    StyleableToast.makeText(
+                        requireContext(),
+                        "Loading Logout",
+                        R.style.successtoast
+                    ).show()
+                },
+                doOnEmpty = {
+                    StyleableToast.makeText(
+                        requireContext(),
+                        "Empty Logout",
+                        R.style.failedtoast
+                    ).show()
+                }
+            )
         }
+    }
+
+    private fun performLogout() {
+        val intent = Intent(requireContext(), LoginActivity::class.java)
+        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
         startActivity(intent)
+        requireActivity().finish()
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        binding
     }
 }
