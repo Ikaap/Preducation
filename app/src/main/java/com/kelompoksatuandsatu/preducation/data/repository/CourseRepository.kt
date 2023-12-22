@@ -118,9 +118,14 @@ class CourseRepositoryImpl(
 
     override suspend fun paymentCourse(item: DetailCourseViewParam): Flow<ResultWrapper<PaymentResponseViewParam>> {
         return proceedFlow {
-            val paymentItemRequest = PaymentCourseRequest(item.id, item.title, item.price)
-
-            apiDataSource.paymentCourse(paymentItemRequest).data?.toPaymentResponse()!!
+            val ppn = item.price?.times(0.11)!!.toInt()
+            val paymentItemRequest = PaymentCourseRequest(item.id, item.title, item.price - ppn)
+            apiDataSource.paymentCourse(paymentItemRequest).toPaymentResponse()
+        }.catch {
+            emit(ResultWrapper.Error(Exception(it)))
+        }.onStart {
+            emit(ResultWrapper.Loading())
+            delay(2000)
         }
     }
 

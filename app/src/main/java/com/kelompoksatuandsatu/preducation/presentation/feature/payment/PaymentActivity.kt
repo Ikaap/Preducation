@@ -17,14 +17,20 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.os.bundleOf
 import androidx.core.view.isGone
+import androidx.core.view.isVisible
 import coil.load
+import com.kelompoksatuandsatu.preducation.R
 import com.kelompoksatuandsatu.preducation.databinding.ActivityPaymentBinding
 import com.kelompoksatuandsatu.preducation.databinding.LayoutDialogSuccessPaymentBinding
+import com.kelompoksatuandsatu.preducation.model.auth.otp.postemailotp.EmailOtp
 import com.kelompoksatuandsatu.preducation.model.course.detailcourse.DetailCourseViewParam
 import com.kelompoksatuandsatu.preducation.presentation.feature.detailclass.DetailClassActivity
 import com.kelompoksatuandsatu.preducation.presentation.feature.main.MainActivity
+import com.kelompoksatuandsatu.preducation.presentation.feature.otp.OtpActivity
+import com.kelompoksatuandsatu.preducation.utils.exceptions.ApiException
 import com.kelompoksatuandsatu.preducation.utils.proceedWhen
 import com.kelompoksatuandsatu.preducation.utils.toCurrencyFormat
+import io.github.muddz.styleabletoast.StyleableToast
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 
@@ -40,13 +46,20 @@ class PaymentActivity : AppCompatActivity() {
 
     private var url: String = ""
 
+    private var emailData = EmailOtp("")
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
+        getEmail()
         setClickListener()
         getDataCourse(viewModel.course)
         observeData()
+    }
+
+    private fun getEmail() {
+        viewModel.getUserById()
     }
 
     private fun setClickListener() {
@@ -68,30 +81,72 @@ class PaymentActivity : AppCompatActivity() {
             binding.tvTotalHourCourse.text = detailCourse.totalDuration.toString() + " Mins"
             binding.tvLevelCourse.text = detailCourse.level + " Level"
             binding.tvCoursePrice.text = detailCourse.price?.toCurrencyFormat()
-            // ppn ada tidak ?
+            val ppnValue = it.price?.times(0.11)!!.toInt()
+            binding.tvCoursePpn.text = ppnValue.toCurrencyFormat()
+            val totalPayment = it.price - ppnValue
+            binding.tvCourseTotalPayment.text = totalPayment.toCurrencyFormat()
         }
     }
 
     private fun observeData() {
+        viewModel.getUserData.observe(this) {
+            it.proceedWhen(
+                doOnSuccess = {
+                    it.payload.let {
+                        emailData = EmailOtp(it?.email)
+                    }
+                }
+            )
+        }
         viewModel.paymentResult.observe(this) {
             it.proceedWhen(
                 doOnSuccess = {
+                    binding.layoutStatePayment.root.isVisible = false
+                    binding.layoutStatePayment.tvError.isVisible = false
+                    binding.layoutStatePayment.pbLoading.isVisible = false
                     it.payload?.let {
                         Toast.makeText(
                             this,
-                            "token : ${it.token}, url : ${it.redirectUrl}",
+                            "token : ${it.data?.token}, url : ${it.data?.redirectUrl}",
                             Toast.LENGTH_SHORT
                         ).show()
-                        url = it.redirectUrl.orEmpty()
+                        url = it.data?.redirectUrl.orEmpty()
                         openUrlFromWebView(url)
                     }
                 },
                 doOnError = { e ->
-                    Toast.makeText(this, "error: ${e.exception?.message}", Toast.LENGTH_SHORT)
-                        .show()
+                    binding.layoutStatePayment.root.isVisible = true
+                    binding.layoutStatePayment.tvError.isVisible = true
+                    binding.layoutStatePayment.tvError.text = e.exception?.message
+                    binding.layoutStatePayment.pbLoading.isVisible = false
+
+                    // get error from api response
+                    if (it.exception is ApiException) {
+                        if (it.exception.httpCode == 400) {
+                            StyleableToast.makeText(
+                                this,
+                                it.exception.getParsedErrorPayment()?.message + "\nPlease check your email to get the OTP code",
+                                R.style.failedtoast
+                            ).show()
+
+                            // post email otp
+                            viewModel.postEmailOtp(emailData)
+                            Toast.makeText(this, "email : ${emailData.email}", Toast.LENGTH_SHORT).show()
+                            val intent = Intent(this, OtpActivity::class.java)
+                            startActivity(intent)
+                        }
+                    }
                 },
                 doOnEmpty = {
-                    Toast.makeText(this, "kosong", Toast.LENGTH_SHORT).show()
+                    binding.layoutStatePayment.root.isVisible = true
+                    binding.layoutStatePayment.tvError.isVisible = true
+                    binding.layoutStatePayment.tvError.text = it.exception?.message
+                    binding.layoutStatePayment.pbLoading.isVisible = false
+                },
+                doOnLoading = {
+                    binding.layoutStatePayment.root.isVisible = true
+                    binding.layoutStatePayment.tvError.isVisible = false
+                    binding.layoutStatePayment.pbLoading.isVisible = true
                 }
             )
         }
@@ -155,6 +210,7 @@ class PaymentActivity : AppCompatActivity() {
         binding.clButtonStartStudy.setOnClickListener {
             val intent = Intent(this, DetailClassActivity::class.java)
             startActivity(intent)
+            viewModel.getCourseById()
         }
 
         dialog.apply {
