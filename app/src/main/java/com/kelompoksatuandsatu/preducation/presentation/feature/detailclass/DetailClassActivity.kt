@@ -101,7 +101,10 @@ class DetailClassActivity : AppCompatActivity() {
 
     private fun showDetailClass() {
         val idCourse = intent.getStringExtra("EXTRA_COURSE_ID")
-        idCourse?.let { viewModel.getCourseById(it) }
+        val idCourseDetail = intent.getStringExtra("EXTRA_DETAIL_COURSE_ID")
+
+        val selectedId = idCourseDetail ?: idCourse
+        selectedId?.let { viewModel.getCourseById(it) }
     }
 
     private fun observeData() {
@@ -379,6 +382,7 @@ class DetailClassActivity : AppCompatActivity() {
 
     companion object {
         const val EXTRA_COURSE_ID = "EXTRA_COURSE_ID"
+        const val EXTRA_DETAIL_COURSE_ID = "EXTRA_DETAIL_COURSE_ID"
         fun startActivity(context: Context, course: CourseViewParam) {
             val id = course.id
             val intent = Intent(context, DetailClassActivity::class.java)

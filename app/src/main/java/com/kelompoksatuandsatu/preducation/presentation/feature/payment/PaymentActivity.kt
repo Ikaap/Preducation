@@ -131,7 +131,8 @@ class PaymentActivity : AppCompatActivity() {
 
                             // post email otp
                             viewModel.postEmailOtp(emailData)
-                            Toast.makeText(this, "email : ${emailData.email}", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(this, "email : ${emailData.email}", Toast.LENGTH_SHORT)
+                                .show()
                             val intent = Intent(this, OtpActivity::class.java)
                             startActivity(intent)
                         }
@@ -208,9 +209,8 @@ class PaymentActivity : AppCompatActivity() {
         }
 
         binding.clButtonStartStudy.setOnClickListener {
-            val intent = Intent(this, DetailClassActivity::class.java)
-            startActivity(intent)
             viewModel.getCourseById()
+            observeDataDetailClass()
         }
 
         dialog.apply {
@@ -219,7 +219,24 @@ class PaymentActivity : AppCompatActivity() {
         }.show()
     }
 
+    private fun observeDataDetailClass() {
+        viewModel.detailCourse.observe(this) {
+            it.proceedWhen(
+                doOnSuccess = {
+                    it.payload?.let {
+                        val intent = Intent(this, DetailClassActivity::class.java).apply {
+                            flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+                        }
+                        intent.putExtra(EXTRA_DETAIL_COURSE_ID, it.id)
+                        startActivity(intent)
+                    }
+                }
+            )
+        }
+    }
+
     companion object {
         const val EXTRA_DETAIL_COURSE = "EXTRA_DETAIL_COURSE"
+        const val EXTRA_DETAIL_COURSE_ID = "EXTRA_DETAIL_COURSE_ID"
     }
 }

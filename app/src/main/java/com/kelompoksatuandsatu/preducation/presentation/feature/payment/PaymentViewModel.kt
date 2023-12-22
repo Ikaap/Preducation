@@ -66,8 +66,8 @@ class PaymentViewModel(
     }
 
     private val _detailCourse = MutableLiveData<ResultWrapper<DetailCourseViewParam>>()
-//    val detailCourse: LiveData<ResultWrapper<DetailCourseViewParam>>
-//        get() = _detailCourse
+    val detailCourse: LiveData<ResultWrapper<DetailCourseViewParam>>
+        get() = _detailCourse
 
     fun getCourseById() {
         viewModelScope.launch(Dispatchers.IO) {
