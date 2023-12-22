@@ -32,6 +32,7 @@ import com.kelompoksatuandsatu.preducation.presentation.feature.otp.OtpViewModel
 import com.kelompoksatuandsatu.preducation.presentation.feature.payment.PaymentViewModel
 import com.kelompoksatuandsatu.preducation.presentation.feature.profile.ProfileViewModel
 import com.kelompoksatuandsatu.preducation.presentation.feature.register.RegisterViewModel
+import com.kelompoksatuandsatu.preducation.presentation.feature.splashscreen.SplashScreenViewModel
 import com.kelompoksatuandsatu.preducation.utils.AssetWrapper
 import com.kelompoksatuandsatu.preducation.utils.PreferenceDataStoreHelper
 import com.kelompoksatuandsatu.preducation.utils.PreferenceDataStoreHelperImpl
@@ -81,6 +82,7 @@ object AppModules {
         viewModelOf(::EditProfileViewModel)
         viewModelOf(::ChangePasswordViewModel)
         viewModelOf(::ForgotPasswordNewViewModel)
+        viewModelOf(::SplashScreenViewModel)
         viewModelOf(::HistoryPaymentViewModel)
     }
 
