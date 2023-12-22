@@ -9,6 +9,7 @@ import com.kelompoksatuandsatu.preducation.data.network.api.model.course.detailc
 import com.kelompoksatuandsatu.preducation.data.network.api.model.course.detailcourse.progress.ProgressCourseResponse
 import com.kelompoksatuandsatu.preducation.data.network.api.model.payment.PaymentCourseRequest
 import com.kelompoksatuandsatu.preducation.data.network.api.model.payment.PaymentCourseResponse
+import com.kelompoksatuandsatu.preducation.data.network.api.model.payment.history.HistoryItemResponse
 import com.kelompoksatuandsatu.preducation.data.network.api.model.progress.courseprogress.CourseProgressResponse
 import com.kelompoksatuandsatu.preducation.data.network.api.service.PreducationService
 
@@ -24,6 +25,7 @@ interface CourseDataSource {
     suspend fun postIndexCourseById(id: String, progressRequest: ProgressCourseRequest): ProgressCourseResponse
 
     suspend fun paymentCourse(paymentCourseRequest: PaymentCourseRequest): PaymentCourseResponse
+    suspend fun getHistoryPayment(): HistoryItemResponse
 }
 class CourseDataSourceImpl(
     private val service: PreducationService
@@ -65,5 +67,9 @@ class CourseDataSourceImpl(
         progressRequest: ProgressCourseRequest
     ): ProgressCourseResponse {
         return service.postIndexCourseById(id, progressRequest)
+    }
+
+    override suspend fun getHistoryPayment(): HistoryItemResponse {
+        return service.getHistoryPayment()
     }
 }

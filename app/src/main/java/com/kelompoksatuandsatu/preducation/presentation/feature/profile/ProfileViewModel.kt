@@ -10,6 +10,7 @@ import com.kelompoksatuandsatu.preducation.data.repository.UserRepository
 import com.kelompoksatuandsatu.preducation.model.user.UserViewParam
 import com.kelompoksatuandsatu.preducation.utils.ResultWrapper
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 
 class ProfileViewModel(
@@ -32,15 +33,15 @@ class ProfileViewModel(
         }
     }
 
-    fun performLogout() {
+    private val _logoutResults = MutableLiveData<ResultWrapper<Boolean>>()
+    val logoutResults: LiveData<ResultWrapper<Boolean>>
+        get() = _logoutResults
+
+    fun userLogout() {
         viewModelScope.launch {
-            try {
-                userRepo.performLogout()
-            } catch (e: Exception) {
-            }
+            _logoutResults.value = userRepo.userLogout().first()
         }
     }
-
     fun deleteUserData() {
         viewModelScope.launch {
             userPreferenceDataSource.deleteAllData()

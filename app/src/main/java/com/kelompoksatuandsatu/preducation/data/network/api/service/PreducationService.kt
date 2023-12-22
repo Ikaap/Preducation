@@ -7,6 +7,7 @@ import com.kelompoksatuandsatu.preducation.data.network.api.model.auth.forgotpas
 import com.kelompoksatuandsatu.preducation.data.network.api.model.auth.forgotpassword.ForgotPasswordResponse
 import com.kelompoksatuandsatu.preducation.data.network.api.model.auth.login.LoginRequest
 import com.kelompoksatuandsatu.preducation.data.network.api.model.auth.login.LoginResponse
+import com.kelompoksatuandsatu.preducation.data.network.api.model.auth.logout.LogoutResponse
 import com.kelompoksatuandsatu.preducation.data.network.api.model.auth.otp.postemail.EmailOtpRequest
 import com.kelompoksatuandsatu.preducation.data.network.api.model.auth.otp.postemail.EmailOtpResponse
 import com.kelompoksatuandsatu.preducation.data.network.api.model.auth.otp.verifyotp.OtpRequest
@@ -25,10 +26,12 @@ import com.kelompoksatuandsatu.preducation.data.network.api.model.logout.UserLog
 import com.kelompoksatuandsatu.preducation.data.network.api.model.notification.NotificationResponse
 import com.kelompoksatuandsatu.preducation.data.network.api.model.payment.PaymentCourseRequest
 import com.kelompoksatuandsatu.preducation.data.network.api.model.payment.PaymentCourseResponse
+import com.kelompoksatuandsatu.preducation.data.network.api.model.payment.history.HistoryItemResponse
 import com.kelompoksatuandsatu.preducation.data.network.api.model.progress.courseprogress.CourseProgressResponse
 import com.kelompoksatuandsatu.preducation.data.network.api.model.user.UserRequest
 import com.kelompoksatuandsatu.preducation.data.network.api.model.user.UserResponse
 import okhttp3.OkHttpClient
+import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.Body
@@ -110,6 +113,12 @@ interface PreducationService {
     @POST("api/v1/auths/forgot-password")
     suspend fun userForgotPassword(@Body userForgotPassword: ForgotPasswordRequest): ForgotPasswordResponse
 
+    @GET("api/v1/payments")
+    suspend fun getHistoryPayment(): HistoryItemResponse
+
+    @DELETE("api/v1/auths/logout")
+    suspend fun userLogout(): Response<LogoutResponse>
+
     // @POST("api/v1/auths/email-otp")
     // suspend fun userPostOtp(@Body userForgotPassword: UserForgotPasswordRequest)//:UserForgotPasswordResponse
 
@@ -128,6 +137,7 @@ interface PreducationService {
                 .build()
             val retrofit = Retrofit.Builder()
                 .baseUrl(BuildConfig.BASE_URL)
+//                .baseUrl(BuildConfig.BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
                 .client(okHttpClient)
                 .build()
