@@ -1,6 +1,5 @@
 package com.kelompoksatuandsatu.preducation.presentation.feature.detailclass.viewitems
 
-import android.util.Log
 import android.view.View
 import androidx.core.view.isGone
 import com.kelompoksatuandsatu.preducation.R
@@ -37,8 +36,7 @@ class DataItem(
     override fun bind(viewBinding: ItemSectionDataCurriculcumBinding, position: Int) {
         viewBinding.tvVideoNumber.text = itemData.index.toString()
         viewBinding.tvTitleVideo.text = itemData.title
-//        viewBinding.tvDurationVideo.text = itemData.duration.toString() + " Mins"
-        viewBinding.tvDurationVideo.text = itemData.nextVideo.toString()
+        viewBinding.tvDurationVideo.text = itemData.duration.toString() + " Mins"
         viewBinding.tvVideoUrl.text = itemData.videoUrl
         if (itemData.videoUrl.isNullOrEmpty()) {
             viewBinding.ivPlayGreen.isGone = true
@@ -60,17 +58,11 @@ class DataItem(
             if (indexNow.toInt() == 1 || itemData.isWatch == true) {
                 viewBinding.root.setOnClickListener {
                     onItemClick.invoke(itemData)
-                    Log.d(TAG, "Ini index ke : $indexNow")
-                    Log.d(TAG, "nilai i  kondisi satu : $i")
-                    Log.d(TAG, "Ini index setelah increment : $indexNow")
                 }
                 continue
             } else if (itemData.nextVideo == true) {
                 viewBinding.root.setOnClickListener {
                     onItemClick.invoke(itemData)
-                    Log.d(TAG, "Ini index ke : $indexNow")
-                    Log.d(TAG, "nilai i  kondisi satu : $i")
-                    Log.d(TAG, "Ini index setelah increment : $indexNow")
                 }
             }
             break

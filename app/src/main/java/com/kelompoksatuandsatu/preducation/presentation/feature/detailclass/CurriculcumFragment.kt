@@ -1,6 +1,9 @@
 package com.kelompoksatuandsatu.preducation.presentation.feature.detailclass
 
+import android.app.AlertDialog
 import android.content.Intent
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -13,11 +16,13 @@ import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import coil.load
 import com.google.android.material.bottomsheet.BottomSheetDialog
+import com.kelompoksatuandsatu.preducation.databinding.DialogNonLoginBinding
 import com.kelompoksatuandsatu.preducation.databinding.FragmentCurriculcumBinding
 import com.kelompoksatuandsatu.preducation.databinding.LayoutDialogBuyClassBinding
 import com.kelompoksatuandsatu.preducation.presentation.feature.detailclass.viewitems.DataItem
 import com.kelompoksatuandsatu.preducation.presentation.feature.detailclass.viewitems.HeaderItem
 import com.kelompoksatuandsatu.preducation.presentation.feature.payment.PaymentActivity
+import com.kelompoksatuandsatu.preducation.presentation.feature.register.RegisterActivity
 import com.kelompoksatuandsatu.preducation.utils.proceedWhen
 import com.kelompoksatuandsatu.preducation.utils.toCurrencyFormat
 import com.xwray.groupie.GroupieAdapter
@@ -78,6 +83,13 @@ class CurriculcumFragment : Fragment() {
                         if (it.chapters?.get(0)?.videos?.get(0)?.videoUrl?.isNotEmpty() == true) {
                             binding.clButtonEnrollClass.isVisible = false
                         }
+
+                        var totalVid = 0
+                        it.chapters?.forEach {
+                            totalVid += it.videos?.size ?: 0
+                        }
+                        Toast.makeText(requireContext(), "total vid : $totalVid", Toast.LENGTH_SHORT).show()
+
                         val section = it.chapters?.map {
                             val section = Section()
                             section.setHeader(
@@ -94,6 +106,12 @@ class CurriculcumFragment : Fragment() {
                                     // klik video
                                     viewModel.onVideoItemClick(data.videoUrl.orEmpty())
                                     viewModel.postIndexVideo(data)
+
+                                    // Check if the clicked video is the last one
+//                                    if (viewModel.postIndexVideo(data) == totalVid) {
+//                                        showLastVideoDialog()
+//                                        Toast.makeText(requireContext(), "SELAMAT", Toast.LENGTH_SHORT).show()
+//                                    }
 
                                     getData()
                                     if (it.videoUrl?.isNotEmpty() == true) {
@@ -147,6 +165,21 @@ class CurriculcumFragment : Fragment() {
                     binding.layoutCommonState.ivDataEmpty.isGone = true
                 }
             )
+        }
+    }
+
+    private fun showLastVideoDialog() {
+        val binding: DialogNonLoginBinding = DialogNonLoginBinding.inflate(layoutInflater)
+        val dialog = AlertDialog.Builder(requireContext(), 0).create()
+
+        dialog.apply {
+            setView(binding.root)
+            window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        }.show()
+
+        binding.clSignUp.setOnClickListener {
+            val intent = Intent(requireContext(), RegisterActivity::class.java)
+            startActivity(intent)
         }
     }
 
