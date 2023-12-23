@@ -75,11 +75,42 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
                 android:orientation="horizontal"
+                android:visibility="invisible"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tv_title_popular_course"
                 tools:listitem="@layout/item_category_rounded" />
+
+            <com.facebook.shimmer.ShimmerFrameLayout
+                android:id="@+id/shimmer_category_rounded"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="visible"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_title_popular_course"
+                app:shimmer_base_color="@color/color_shimmer"
+                app:shimmer_direction="left_to_right"
+                app:shimmer_repeat_mode="restart"
+                app:shimmer_shape="linear">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent">
+
+                    <include layout="@layout/item_category_shimmer_rounded" />
+
+                    <include layout="@layout/item_category_shimmer_rounded" />
+
+                    <include layout="@layout/item_category_shimmer_rounded" />
+
+                    <include layout="@layout/item_category_shimmer_rounded" />
+
+                </LinearLayout>
+
+
+            </com.facebook.shimmer.ShimmerFrameLayout>
 
             <include
                 android:id="@+id/layout_state_category_type"
@@ -88,8 +119,7 @@
                 android:layout_height="50dp"
                 android:visibility="gone"
                 app:layout_constraintTop_toTopOf="@id/rv_category_type"
-                app:layout_constraintBottom_toBottomOf="@id/rv_category_type"
-                tools:visibility="visible" />
+                app:layout_constraintBottom_toBottomOf="@id/rv_category_type" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -100,6 +130,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginTop="4dp"
+        android:visibility="invisible"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -107,13 +138,42 @@
         app:layout_constraintTop_toBottomOf="@id/cl_class_progress"
         tools:listitem="@layout/item_linear_course" />
 
+    <com.facebook.shimmer.ShimmerFrameLayout
+        android:id="@+id/shimmer_course_linear"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="visible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/cl_class_progress"
+        app:shimmer_base_color="@color/color_shimmer"
+        app:shimmer_direction="top_to_bottom"
+        app:shimmer_repeat_mode="restart">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <include layout="@layout/item_linear_course_shimmer" />
+
+            <include layout="@layout/item_linear_course_shimmer" />
+
+            <include layout="@layout/item_linear_course_shimmer" />
+
+            <include layout="@layout/item_linear_course_shimmer" />
+
+        </LinearLayout>
+
+
+    </com.facebook.shimmer.ShimmerFrameLayout>
+
     <include
         android:id="@+id/layout_state_course"
         layout="@layout/layout_content_state"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:visibility="gone"
-        app:layout_constraintTop_toTopOf="@id/rv_course"
-        tools:visibility="visible" />
+        app:layout_constraintTop_toTopOf="@id/rv_course"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
