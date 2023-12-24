@@ -26,8 +26,7 @@ class CourseViewModel(
 
     fun getCourseTopic(typeClass: String? = null) {
         viewModelScope.launch(Dispatchers.IO) {
-//            repositoryCourse.getCourseHome(if (category == assetsWrapper.getString(R.string.all))null else category?.lowercase())
-            repositoryCourse.getCourseTopic(if (typeClass == assetsWrapper.getString(R.string.all))null else typeClass?.lowercase())
+            repositoryCourse.getCourseHome(if (typeClass == "All") null else typeClass?.toLowerCase())
                 .collect {
                     _course.postValue(it)
                 }
