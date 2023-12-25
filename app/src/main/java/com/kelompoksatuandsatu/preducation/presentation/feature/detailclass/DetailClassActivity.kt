@@ -6,7 +6,6 @@ import android.content.Intent
 import android.content.pm.ActivityInfo
 import android.content.res.Configuration
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
@@ -22,14 +21,15 @@ import com.kelompoksatuandsatu.preducation.databinding.ActivityDetailClassBindin
 import com.kelompoksatuandsatu.preducation.model.course.courseall.CourseViewParam
 import com.kelompoksatuandsatu.preducation.model.progress.CourseProgressItemClass
 import com.kelompoksatuandsatu.preducation.presentation.feature.detailclass.adapter.ViewPagerAdapter
-import com.kelompoksatuandsatu.preducation.presentation.feature.main.MainActivity
+import com.kelompoksatuandsatu.preducation.utils.exceptions.ApiException
+import com.kelompoksatuandsatu.preducation.utils.exceptions.NoInternetException
 import com.kelompoksatuandsatu.preducation.utils.proceedWhen
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.PlayerConstants
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.AbstractYouTubePlayerListener
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.FullscreenListener
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.options.IFramePlayerOptions
-import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.utils.loadOrCueVideo
+import io.github.muddz.styleabletoast.StyleableToast
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class DetailClassActivity : AppCompatActivity() {
@@ -74,29 +74,6 @@ class DetailClassActivity : AppCompatActivity() {
         binding.ivBack.setOnClickListener {
             onBackPressed()
         }
-        binding.clButtonOtherClass.setOnClickListener {
-            navigateToMain()
-        }
-        binding.clButtonNext.setOnClickListener {
-            val nextVideoId = viewModel.getNextVideoId()
-
-            if (nextVideoId != null) {
-                Toast.makeText(this, "ID video selanjutnya: $nextVideoId", Toast.LENGTH_SHORT)
-                    .show()
-                youTubePlayer.loadOrCueVideo(
-                    lifecycle,
-                    extractYouTubeVideoId(nextVideoId).orEmpty(),
-                    0f
-                )
-            } else {
-                Toast.makeText(this, "Tidak ada video selanjutnya", Toast.LENGTH_SHORT).show()
-            }
-        }
-    }
-
-    private fun navigateToMain() {
-        val intent = Intent(this, MainActivity::class.java)
-        startActivity(intent)
     }
 
     private fun showDetailClass() {
@@ -116,7 +93,12 @@ class DetailClassActivity : AppCompatActivity() {
                     binding.layoutCommonState.tvError.isGone = true
                     binding.layoutCommonState.tvDataEmpty.isGone = true
                     binding.layoutCommonState.ivDataEmpty.isGone = true
+                    binding.layoutCommonState.clServerError.isGone = true
+                    binding.layoutCommonState.ivServerError.isGone = true
+                    binding.layoutCommonState.clNoConnection.isGone = true
+                    binding.layoutCommonState.ivNoConnection.isGone = true
                     it.payload?.let { data ->
+
                         binding.tvCategoryCourse.text = data.category?.name
                         binding.tvNameCourse.text = data.title
                         binding.tvTotalModulCourse.text =
@@ -133,6 +115,10 @@ class DetailClassActivity : AppCompatActivity() {
                     binding.layoutCommonState.tvError.isGone = true
                     binding.layoutCommonState.tvDataEmpty.isGone = true
                     binding.layoutCommonState.ivDataEmpty.isGone = true
+                    binding.layoutCommonState.clServerError.isGone = true
+                    binding.layoutCommonState.ivServerError.isGone = true
+                    binding.layoutCommonState.clNoConnection.isGone = true
+                    binding.layoutCommonState.ivNoConnection.isGone = true
                 },
                 doOnEmpty = {
                     binding.shimmerDataCourse.isGone = true
@@ -142,6 +128,10 @@ class DetailClassActivity : AppCompatActivity() {
                     binding.layoutCommonState.tvError.text = "data kosong"
                     binding.layoutCommonState.tvDataEmpty.isGone = true
                     binding.layoutCommonState.ivDataEmpty.isGone = true
+                    binding.layoutCommonState.clServerError.isGone = true
+                    binding.layoutCommonState.ivServerError.isGone = true
+                    binding.layoutCommonState.clNoConnection.isGone = true
+                    binding.layoutCommonState.ivNoConnection.isGone = true
                 },
                 doOnError = {
                     binding.shimmerDataCourse.isGone = true
@@ -151,7 +141,38 @@ class DetailClassActivity : AppCompatActivity() {
                     binding.layoutCommonState.tvError.text = it.exception?.message.toString()
                     binding.layoutCommonState.tvDataEmpty.isGone = true
                     binding.layoutCommonState.ivDataEmpty.isGone = true
-                    Log.d("EROR", "${it.message}")
+
+                    if (it.exception is ApiException) {
+                        if (it.exception.getParsedErrorDetailClass()?.success == false) {
+                            if (it.exception.httpCode == 500) {
+                                binding.layoutCommonState.clServerError.isGone = false
+                                binding.layoutCommonState.ivServerError.isGone = false
+                                StyleableToast.makeText(
+                                    this,
+                                    "SERVER ERROR",
+                                    R.style.failedtoast
+                                ).show()
+                            } else if (it.exception.getParsedErrorDetailClass()?.success == false) {
+                                binding.layoutCommonState.tvError.text =
+                                    it.exception.getParsedErrorDetailClass()?.message
+                                StyleableToast.makeText(
+                                    this,
+                                    it.exception.getParsedErrorDetailClass()?.message,
+                                    R.style.failedtoast
+                                ).show()
+                            }
+                        }
+                    } else if (it.exception is NoInternetException) {
+                        if (!it.exception.isNetworkAvailable(this)) {
+                            binding.layoutCommonState.clNoConnection.isGone = false
+                            binding.layoutCommonState.ivNoConnection.isGone = false
+                            StyleableToast.makeText(
+                                this,
+                                "tidak ada internet",
+                                R.style.failedtoast
+                            ).show()
+                        }
+                    }
                 }
             )
         }
@@ -220,8 +241,6 @@ class DetailClassActivity : AppCompatActivity() {
                 binding.ivPlayVideo.setOnClickListener {
                     youTubePlayer.play()
                     binding.ivPlayVideo.isGone = true
-                    binding.clButtonNext.isGone = true
-                    binding.clButtonOtherClass.isGone = true
                 }
 
                 youTubePlayer.addListener(object : AbstractYouTubePlayerListener() {
@@ -248,42 +267,15 @@ class DetailClassActivity : AppCompatActivity() {
     private fun setImagePlayVisibility(state: PlayerConstants.PlayerState) {
         when (state) {
             PlayerConstants.PlayerState.ENDED -> {
-                if (isFullScreen) {
-                    binding.ivPlayVideo.isGone = false
-                    binding.clButtonNext.isGone = false
-                    binding.clButtonOtherClass.isGone = false
-                } else {
-                    binding.ivPlayVideo.isGone = false
-                    binding.clButtonNext.isGone = true
-                    binding.clButtonOtherClass.isGone = true
-                }
-            }
-
-            PlayerConstants.PlayerState.PAUSED -> {
-                if (isFullScreen) {
-                    binding.ivPlayVideo.isGone = false
-                    binding.clButtonNext.isGone = false
-                    binding.clButtonOtherClass.isGone = false
-                } else {
-                    binding.ivPlayVideo.isGone = false
-                    binding.clButtonNext.isGone = true
-                    binding.clButtonOtherClass.isGone = true
-                }
                 binding.ivPlayVideo.isGone = false
-                binding.clButtonNext.isGone = false
-                binding.clButtonOtherClass.isGone = false
             }
 
             PlayerConstants.PlayerState.PAUSED -> {
                 binding.ivPlayVideo.isGone = false
-                binding.clButtonNext.isGone = false
-                binding.clButtonOtherClass.isGone = false
             }
 
             PlayerConstants.PlayerState.PLAYING -> {
                 binding.ivPlayVideo.isGone = true
-                binding.clButtonNext.isGone = true
-                binding.clButtonOtherClass.isGone = true
             }
 
             else -> {}
@@ -316,9 +308,6 @@ class DetailClassActivity : AppCompatActivity() {
         binding.flFullScreen.removeAllViews()
         binding.clDataCourse.visibility = View.VISIBLE
         binding.viewBackground.visibility = View.VISIBLE
-
-        binding.clButtonNext.isGone = true
-        binding.clButtonOtherClass.isGone = true
 
         val constraintSet = ConstraintSet()
         constraintSet.clone(binding.clYoutubePlayer)

@@ -131,8 +131,7 @@ class PaymentActivity : AppCompatActivity() {
 
                             // post email otp
                             viewModel.postEmailOtp(emailData)
-                            Toast.makeText(this, "email : ${emailData.email}", Toast.LENGTH_SHORT)
-                                .show()
+                            Toast.makeText(this, "email : ${emailData.email}", Toast.LENGTH_SHORT).show()
                             val intent = Intent(this, OtpActivity::class.java)
                             startActivity(intent)
                         }

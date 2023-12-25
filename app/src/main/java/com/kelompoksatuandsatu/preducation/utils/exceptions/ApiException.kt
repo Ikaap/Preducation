@@ -2,6 +2,7 @@ package com.kelompoksatuandsatu.preducation.utils.exceptions
 
 import com.google.gson.Gson
 import com.kelompoksatuandsatu.preducation.data.network.api.model.common.BaseResponse
+import com.kelompoksatuandsatu.preducation.data.network.api.model.course.detailcourse.DetailCourseResponse
 import com.kelompoksatuandsatu.preducation.data.network.api.model.payment.PaymentCourseResponse
 import retrofit2.Response
 
@@ -26,6 +27,17 @@ class ApiException(
         val body = errorResponse?.errorBody()?.string().orEmpty()
         return try {
             val bodyObj = Gson().fromJson(body, PaymentCourseResponse::class.java)
+            bodyObj
+        } catch (e: Exception) {
+            e.printStackTrace()
+            null
+        }
+    }
+    
+    fun getParsedErrorDetailClass(): DetailCourseResponse? {
+        val body = errorResponse?.errorBody()?.string().orEmpty()
+        return try {
+            val bodyObj = Gson().fromJson(body, DetailCourseResponse::class.java)
             bodyObj
         } catch (e: Exception) {
             e.printStackTrace()
