@@ -115,7 +115,6 @@ class EditProfileActivity : AppCompatActivity() {
                     binding.root.isVisible = true
                     binding.ivAddPhotoUser.isVisible = false
                 }
-
             )
         }
     }

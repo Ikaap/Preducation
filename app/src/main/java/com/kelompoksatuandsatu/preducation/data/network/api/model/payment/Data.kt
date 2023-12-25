@@ -2,7 +2,6 @@ package com.kelompoksatuandsatu.preducation.data.network.api.model.payment
 
 import androidx.annotation.Keep
 import com.google.gson.annotations.SerializedName
-import com.kelompoksatuandsatu.preducation.model.payment.PaymentResponseViewParam
 
 @Keep
 data class Data(
@@ -12,7 +11,7 @@ data class Data(
     val token: String?
 )
 
-fun Data.toPaymentResponse() = PaymentResponseViewParam(
-    redirectUrl = this.redirectUrl.orEmpty(),
-    token = this.token.orEmpty()
-)
+// fun Data.toPaymentResponse() = PaymentResponseViewParam(
+//    redirectUrl = this.redirectUrl.orEmpty(),
+//    token = this.token.orEmpty()
+// )

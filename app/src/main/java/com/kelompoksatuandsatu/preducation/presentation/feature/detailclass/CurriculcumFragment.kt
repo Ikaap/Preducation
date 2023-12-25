@@ -1,12 +1,16 @@
 package com.kelompoksatuandsatu.preducation.presentation.feature.detailclass
 
+import android.app.AlertDialog
 import android.content.Intent
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.view.isGone
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -14,6 +18,7 @@ import coil.load
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.kelompoksatuandsatu.preducation.databinding.FragmentCurriculcumBinding
 import com.kelompoksatuandsatu.preducation.databinding.LayoutDialogBuyClassBinding
+import com.kelompoksatuandsatu.preducation.databinding.LayoutDialogFinishClassBinding
 import com.kelompoksatuandsatu.preducation.presentation.feature.detailclass.viewitems.DataItem
 import com.kelompoksatuandsatu.preducation.presentation.feature.detailclass.viewitems.HeaderItem
 import com.kelompoksatuandsatu.preducation.presentation.feature.payment.PaymentActivity
@@ -33,13 +38,12 @@ class CurriculcumFragment : Fragment() {
     private val viewModel: DetailClassViewModel by activityViewModels()
 
     private var itemVideoId: String = ""
-    private var currentVideoPosition: Int = 0
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         // Inflate the layout for this fragment
         binding = FragmentCurriculcumBinding.inflate(inflater, container, false)
         return binding.root
@@ -48,8 +52,16 @@ class CurriculcumFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+//        getData()
         observeData()
         setOnClickListener()
+    }
+
+    private fun getData() {
+        val id = viewModel.detailCourse.value?.payload?.id
+        id?.let {
+            viewModel.getCourseById(it)
+        }
     }
 
     private fun observeData() {
@@ -66,6 +78,17 @@ class CurriculcumFragment : Fragment() {
                         adapter = adapterGroupie
                     }
                     it.payload?.let {
+                        binding.clButtonEnrollClass.isVisible = it.typeClass != "FREE"
+                        if (it.chapters?.get(0)?.videos?.get(0)?.videoUrl?.isNotEmpty() == true) {
+                            binding.clButtonEnrollClass.isVisible = false
+                        }
+
+                        var totalVid = 0
+                        it.chapters?.forEach {
+                            totalVid += it.videos?.size ?: 0
+                        }
+                        Toast.makeText(requireContext(), "total vid : $totalVid", Toast.LENGTH_SHORT).show()
+
                         val section = it.chapters?.map {
                             val section = Section()
                             section.setHeader(
@@ -79,15 +102,23 @@ class CurriculcumFragment : Fragment() {
                             )
                             val dataSection = it.videos?.map { data ->
                                 DataItem(data) {
-                                    itemVideoId = data.videoUrl.toString()
-                                    Toast.makeText(
-                                        requireContext(),
-                                        "Item clicked : title = ${data.title} -> url = ${data.videoUrl}",
-                                        Toast.LENGTH_SHORT
-                                    ).show()
                                     // klik video
                                     viewModel.onVideoItemClick(data.videoUrl.orEmpty())
                                     viewModel.postIndexVideo(data)
+
+                                    Toast.makeText(requireContext(), "index yang di klik = ${data.index}", Toast.LENGTH_SHORT).show()
+
+                                    // Check if the clicked video is the last one
+                                    if (data.index == totalVid) {
+                                        showLastVideoDialog()
+                                        Toast.makeText(requireContext(), "SELAMAT", Toast.LENGTH_SHORT).show()
+                                    }
+
+                                    getData()
+                                    if (it.videoUrl?.isNotEmpty() == true) {
+                                        binding.clButtonEnrollClass.isVisible = false
+                                    }
+                                    itemVideoId = data.videoUrl.toString()
                                 }
                             }
                             if (dataSection != null) {
@@ -96,6 +127,7 @@ class CurriculcumFragment : Fragment() {
                             section
                         }
                         if (section != null) {
+                            adapterGroupie.clear()
                             adapterGroupie.addAll(section)
                         }
                     }
@@ -128,6 +160,20 @@ class CurriculcumFragment : Fragment() {
                     binding.layoutCommonState.ivDataEmpty.isGone = true
                 }
             )
+        }
+    }
+
+    private fun showLastVideoDialog() {
+        val binding: LayoutDialogFinishClassBinding = LayoutDialogFinishClassBinding.inflate(layoutInflater)
+        val dialog = AlertDialog.Builder(requireContext(), 0).create()
+
+        dialog.apply {
+            setView(binding.root)
+            window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        }.show()
+
+        binding.clContinue.setOnClickListener {
+            dialog.dismiss()
         }
     }
 
