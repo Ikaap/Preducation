@@ -97,7 +97,7 @@
             android:id="@+id/layout_state_course_popular"
             layout="@layout/common_layout_content_state"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
+            android:layout_height="match_parent"
             android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

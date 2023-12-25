@@ -1,20 +1,24 @@
 package com.kelompoksatuandsatu.preducation.presentation.feature.home
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kelompoksatuandsatu.preducation.data.local.datastore.datasource.UserPreferenceDataSource
 import com.kelompoksatuandsatu.preducation.data.repository.CourseRepository
+import com.kelompoksatuandsatu.preducation.data.repository.UserRepository
 import com.kelompoksatuandsatu.preducation.model.category.categoryclass.CategoryClass
 import com.kelompoksatuandsatu.preducation.model.course.courseall.CourseViewParam
+import com.kelompoksatuandsatu.preducation.model.user.UserViewParam
 import com.kelompoksatuandsatu.preducation.utils.ResultWrapper
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class HomeViewModel(
     private val courseRepo: CourseRepository,
-    private val userPreferenceDataSource: UserPreferenceDataSource
+    private val userPreferenceDataSource: UserPreferenceDataSource,
+    private val userRepo: UserRepository
 ) : ViewModel() {
 
     private val _categoriesClass = MutableLiveData<ResultWrapper<List<CategoryClass>>>()
@@ -32,6 +36,24 @@ class HomeViewModel(
     private val _isUserLogin = MutableLiveData<Boolean>()
     val isUserLogin: LiveData<Boolean>
         get() = _isUserLogin
+
+    private val _getProfile = MutableLiveData<ResultWrapper<UserViewParam>>()
+    val getProfile: LiveData<ResultWrapper<UserViewParam>>
+        get() = _getProfile
+
+    private val _isFilterEmpty = MutableLiveData<Boolean>()
+    val isFilterEmpty: LiveData<Boolean>
+        get() = _isFilterEmpty
+
+    fun getUserById() {
+        viewModelScope.launch(Dispatchers.IO) {
+            val userId = userPreferenceDataSource.getUserId()
+            Log.d("USER ID PROFILE", "getUserById: $userId")
+            userRepo.getUserById(userId).collect {
+                _getProfile.postValue(it)
+            }
+        }
+    }
 
     fun checkLogin() {
         viewModelScope.launch(Dispatchers.IO) {

@@ -30,7 +30,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/montserrat_bold"
-                android:text="@string/text_header_name"
+                android:text="@string/text_header_name_non_login"
                 android:textSize="20sp" />
 
             <TextView
@@ -152,7 +152,7 @@
                         android:id="@+id/layout_state_category_circle"
                         layout="@layout/common_layout_content_state"
                         android:layout_width="match_parent"
-                        android:layout_height="0dp"
+                        android:layout_height="match_parent"
                         android:visibility="gone"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
@@ -257,7 +257,7 @@
                         android:id="@+id/layout_state_category_rounded"
                         layout="@layout/common_layout_content_state"
                         android:layout_width="match_parent"
-                        android:layout_height="0dp"
+                        android:layout_height="match_parent"
                         android:visibility="gone"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
@@ -314,7 +314,7 @@
                         android:id="@+id/layout_state_course_popular"
                         layout="@layout/common_layout_content_state"
                         android:layout_width="match_parent"
-                        android:layout_height="0dp"
+                        android:layout_height="match_parent"
                         android:visibility="gone"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
