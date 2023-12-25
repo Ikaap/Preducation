@@ -94,7 +94,7 @@ class OtpActivity : AppCompatActivity() {
                             if (it.exception.getParsedError()?.message?.contains("expired") == true) {
                                 StyleableToast.makeText(
                                     this,
-                                    it.exception.getParsedError()?.message + ", Please ask for the OTP code again",
+                                    it.exception.getParsedError()?.message + "Please ask for the OTP code again",
                                     R.style.failedtoast
                                 ).show()
                             }

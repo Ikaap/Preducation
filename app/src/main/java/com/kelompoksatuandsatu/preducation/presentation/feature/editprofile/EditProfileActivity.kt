@@ -341,6 +341,7 @@ class EditProfileActivity : AppCompatActivity() {
         StyleableToast.makeText(this, getString(messageResId), R.style.successtoast).show()
     }
 
+
     companion object {
         fun startActivity(context: Context) {
             val intent = Intent(context, EditProfileActivity::class.java)
