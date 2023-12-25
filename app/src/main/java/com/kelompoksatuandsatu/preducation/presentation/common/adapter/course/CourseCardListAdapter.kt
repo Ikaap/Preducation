@@ -2,6 +2,8 @@ package com.kelompoksatuandsatu.preducation.presentation.common.adapter.course
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
@@ -36,6 +38,12 @@ class CourseCardListAdapter(
     )
 
     private var originalList: List<CourseViewParam> = emptyList()
+    private val _isFilterEmpty = MutableLiveData<Boolean>()
+    val isFilterEmpty: LiveData<Boolean> get() = _isFilterEmpty
+
+    init {
+        _isFilterEmpty.value = false
+    }
 
     fun setData(data: List<CourseViewParam>) {
         originalList = data
@@ -74,6 +82,8 @@ class CourseCardListAdapter(
                 course.title?.replace("\\s+".toRegex(), "")?.toLowerCase(Locale.getDefault())?.contains(lowercaseQuery) == true
             }
         }
+        _isFilterEmpty.value = filteredList.isEmpty()
+
         dataDiffer.submitList(filteredList)
     }
 }

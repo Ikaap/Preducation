@@ -107,7 +107,8 @@
     <string name="tv_rating_popular_course">4.7</string>
     <string name="desc_ic_arrow_left">ic_arrow_left</string>
     <string name="tv_header_see_all_popular_course">Popular Course</string>
-    <string name="text_header_name">Hi, Ronald A.Martin</string>
+    <string name="text_header_name">Hi, %s</string>
+    <string name="text_header_name_non_login">Hi, Guest</string>
     <string name="text_header_greeting">What would you like to learn today ?\nSearch Below.</string>
     <string name="tv_title_course">Belajar data cleaning dan sorting\ndengan Phyton</string>
     <string name="tv_level_course">Advanced Level</string>
