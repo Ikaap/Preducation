@@ -188,4 +188,5 @@
     <string name="text_data_empty">Data Empty</string>
     <string name="text_paid">Paid</string>
     <string name="text_on_progress">On Progress</string>
+    <string name="text_dialog_finish_class_message">You are at the end of this class.\nPlease check your email after watching the video to get your certificate.</string>
 </resources>

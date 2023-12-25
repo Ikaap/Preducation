@@ -23,6 +23,7 @@ import com.kelompoksatuandsatu.preducation.model.course.courseall.CourseViewPara
 import com.kelompoksatuandsatu.preducation.model.progress.CourseProgressItemClass
 import com.kelompoksatuandsatu.preducation.presentation.feature.detailclass.adapter.ViewPagerAdapter
 import com.kelompoksatuandsatu.preducation.utils.exceptions.ApiException
+import com.kelompoksatuandsatu.preducation.utils.exceptions.NoInternetException
 import com.kelompoksatuandsatu.preducation.utils.proceedWhen
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.PlayerConstants
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer
@@ -126,15 +127,28 @@ class DetailClassActivity : AppCompatActivity() {
                     binding.layoutCommonState.tvError.text = it.exception?.message.toString()
                     binding.layoutCommonState.tvDataEmpty.isGone = true
                     binding.layoutCommonState.ivDataEmpty.isGone = true
-                    Log.d("EROR", "${it.message}")
 
                     if (it.exception is ApiException) {
-                        if (it.exception.getParsedErrorDetailClass()?.success == false) {
+                        if (it.exception.httpCode == 500) {
+                            StyleableToast.makeText(
+                                this,
+                                "SERVER ERROR",
+                                R.style.failedtoast
+                            ).show()
+                        } else if (it.exception.getParsedErrorDetailClass()?.success == false){
                             binding.layoutCommonState.tvError.text =
                                 it.exception.getParsedErrorDetailClass()?.message
                             StyleableToast.makeText(
                                 this,
                                 it.exception.getParsedErrorDetailClass()?.message,
+                                R.style.failedtoast
+                            ).show()
+                        }
+                    } else if (it.exception is NoInternetException) {
+                        if (!it.exception.isNetworkAvailable(this)) {
+                            StyleableToast.makeText(
+                                this,
+                                "tidak ada internet",
                                 R.style.failedtoast
                             ).show()
                         }

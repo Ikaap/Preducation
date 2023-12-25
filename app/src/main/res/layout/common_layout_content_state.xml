@@ -72,4 +72,6 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
+<!--    atur untuk yang no internet sm http code 500-->
+
 </androidx.constraintlayout.widget.ConstraintLayout>
