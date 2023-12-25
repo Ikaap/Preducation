@@ -16,13 +16,12 @@ import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import coil.load
 import com.google.android.material.bottomsheet.BottomSheetDialog
-import com.kelompoksatuandsatu.preducation.databinding.DialogNonLoginBinding
 import com.kelompoksatuandsatu.preducation.databinding.FragmentCurriculcumBinding
 import com.kelompoksatuandsatu.preducation.databinding.LayoutDialogBuyClassBinding
+import com.kelompoksatuandsatu.preducation.databinding.LayoutDialogFinishClassBinding
 import com.kelompoksatuandsatu.preducation.presentation.feature.detailclass.viewitems.DataItem
 import com.kelompoksatuandsatu.preducation.presentation.feature.detailclass.viewitems.HeaderItem
 import com.kelompoksatuandsatu.preducation.presentation.feature.payment.PaymentActivity
-import com.kelompoksatuandsatu.preducation.presentation.feature.register.RegisterActivity
 import com.kelompoksatuandsatu.preducation.utils.proceedWhen
 import com.kelompoksatuandsatu.preducation.utils.toCurrencyFormat
 import com.xwray.groupie.GroupieAdapter
@@ -107,23 +106,19 @@ class CurriculcumFragment : Fragment() {
                                     viewModel.onVideoItemClick(data.videoUrl.orEmpty())
                                     viewModel.postIndexVideo(data)
 
+                                    Toast.makeText(requireContext(), "index yang di klik = ${data.index}", Toast.LENGTH_SHORT).show()
+
                                     // Check if the clicked video is the last one
-//                                    if (viewModel.postIndexVideo(data) == totalVid) {
-//                                        showLastVideoDialog()
-//                                        Toast.makeText(requireContext(), "SELAMAT", Toast.LENGTH_SHORT).show()
-//                                    }
+                                    if (data.index == totalVid) {
+                                        showLastVideoDialog()
+                                        Toast.makeText(requireContext(), "SELAMAT", Toast.LENGTH_SHORT).show()
+                                    }
 
                                     getData()
                                     if (it.videoUrl?.isNotEmpty() == true) {
                                         binding.clButtonEnrollClass.isVisible = false
                                     }
-
                                     itemVideoId = data.videoUrl.toString()
-                                    Toast.makeText(
-                                        requireContext(),
-                                        "Item clicked : title = ${data.title} -> url = ${data.videoUrl}",
-                                        Toast.LENGTH_SHORT
-                                    ).show()
                                 }
                             }
                             if (dataSection != null) {
@@ -169,7 +164,7 @@ class CurriculcumFragment : Fragment() {
     }
 
     private fun showLastVideoDialog() {
-        val binding: DialogNonLoginBinding = DialogNonLoginBinding.inflate(layoutInflater)
+        val binding: LayoutDialogFinishClassBinding = LayoutDialogFinishClassBinding.inflate(layoutInflater)
         val dialog = AlertDialog.Builder(requireContext(), 0).create()
 
         dialog.apply {
@@ -177,9 +172,8 @@ class CurriculcumFragment : Fragment() {
             window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         }.show()
 
-        binding.clSignUp.setOnClickListener {
-            val intent = Intent(requireContext(), RegisterActivity::class.java)
-            startActivity(intent)
+        binding.clContinue.setOnClickListener {
+            dialog.dismiss()
         }
     }
 

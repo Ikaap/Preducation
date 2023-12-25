@@ -6,7 +6,6 @@ import android.content.Intent
 import android.content.pm.ActivityInfo
 import android.content.res.Configuration
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
@@ -23,6 +22,7 @@ import com.kelompoksatuandsatu.preducation.model.course.courseall.CourseViewPara
 import com.kelompoksatuandsatu.preducation.model.progress.CourseProgressItemClass
 import com.kelompoksatuandsatu.preducation.presentation.feature.detailclass.adapter.ViewPagerAdapter
 import com.kelompoksatuandsatu.preducation.utils.exceptions.ApiException
+import com.kelompoksatuandsatu.preducation.utils.exceptions.NoInternetException
 import com.kelompoksatuandsatu.preducation.utils.proceedWhen
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.PlayerConstants
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer
@@ -90,6 +90,10 @@ class DetailClassActivity : AppCompatActivity() {
                     binding.layoutCommonState.tvError.isGone = true
                     binding.layoutCommonState.tvDataEmpty.isGone = true
                     binding.layoutCommonState.ivDataEmpty.isGone = true
+                    binding.layoutCommonState.clServerError.isGone = true
+                    binding.layoutCommonState.ivServerError.isGone = true
+                    binding.layoutCommonState.clNoConnection.isGone = true
+                    binding.layoutCommonState.ivNoConnection.isGone = true
                     it.payload?.let { data ->
 
                         binding.tvCategoryCourse.text = data.category?.name
@@ -108,6 +112,10 @@ class DetailClassActivity : AppCompatActivity() {
                     binding.layoutCommonState.tvError.isGone = true
                     binding.layoutCommonState.tvDataEmpty.isGone = true
                     binding.layoutCommonState.ivDataEmpty.isGone = true
+                    binding.layoutCommonState.clServerError.isGone = true
+                    binding.layoutCommonState.ivServerError.isGone = true
+                    binding.layoutCommonState.clNoConnection.isGone = true
+                    binding.layoutCommonState.ivNoConnection.isGone = true
                 },
                 doOnEmpty = {
                     binding.shimmerDataCourse.isGone = true
@@ -117,6 +125,10 @@ class DetailClassActivity : AppCompatActivity() {
                     binding.layoutCommonState.tvError.text = "data kosong"
                     binding.layoutCommonState.tvDataEmpty.isGone = true
                     binding.layoutCommonState.ivDataEmpty.isGone = true
+                    binding.layoutCommonState.clServerError.isGone = true
+                    binding.layoutCommonState.ivServerError.isGone = true
+                    binding.layoutCommonState.clNoConnection.isGone = true
+                    binding.layoutCommonState.ivNoConnection.isGone = true
                 },
                 doOnError = {
                     binding.shimmerDataCourse.isGone = true
@@ -126,15 +138,34 @@ class DetailClassActivity : AppCompatActivity() {
                     binding.layoutCommonState.tvError.text = it.exception?.message.toString()
                     binding.layoutCommonState.tvDataEmpty.isGone = true
                     binding.layoutCommonState.ivDataEmpty.isGone = true
-                    Log.d("EROR", "${it.message}")
 
                     if (it.exception is ApiException) {
                         if (it.exception.getParsedErrorDetailClass()?.success == false) {
-                            binding.layoutCommonState.tvError.text =
-                                it.exception.getParsedErrorDetailClass()?.message
+                            if (it.exception.httpCode == 500) {
+                                binding.layoutCommonState.clServerError.isGone = false
+                                binding.layoutCommonState.ivServerError.isGone = false
+                                StyleableToast.makeText(
+                                    this,
+                                    "SERVER ERROR",
+                                    R.style.failedtoast
+                                ).show()
+                            } else if (it.exception.getParsedErrorDetailClass()?.success == false) {
+                                binding.layoutCommonState.tvError.text =
+                                    it.exception.getParsedErrorDetailClass()?.message
+                                StyleableToast.makeText(
+                                    this,
+                                    it.exception.getParsedErrorDetailClass()?.message,
+                                    R.style.failedtoast
+                                ).show()
+                            }
+                        }
+                    } else if (it.exception is NoInternetException) {
+                        if (!it.exception.isNetworkAvailable(this)) {
+                            binding.layoutCommonState.clNoConnection.isGone = false
+                            binding.layoutCommonState.ivNoConnection.isGone = false
                             StyleableToast.makeText(
                                 this,
-                                it.exception.getParsedErrorDetailClass()?.message,
+                                "tidak ada internet",
                                 R.style.failedtoast
                             ).show()
                         }

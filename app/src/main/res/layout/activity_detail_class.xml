@@ -7,6 +7,17 @@
     android:layout_height="match_parent"
     tools:context=".presentation.feature.detailclass.DetailClassActivity">
 
+    <include
+        android:id="@+id/layout_common_state"
+        layout="@layout/common_layout_content_state"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/cl_youtube_player"
         android:layout_width="match_parent"
@@ -234,18 +245,6 @@
                 <include layout="@layout/layout_shimmer_data_detail_course" />
 
             </com.facebook.shimmer.ShimmerFrameLayout>
-
-            <include
-                android:id="@+id/layout_common_state"
-                layout="@layout/common_layout_content_state"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="16dp"
-                android:layout_marginTop="38dp"
-                android:visibility="gone"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/cl_button_section_class"
