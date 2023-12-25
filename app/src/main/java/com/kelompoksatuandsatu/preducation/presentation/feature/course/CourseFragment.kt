@@ -1,5 +1,6 @@
 package com.kelompoksatuandsatu.preducation.presentation.feature.course
 
+import android.app.Activity
 import android.app.AlertDialog
 import android.content.Intent
 import android.graphics.Color
@@ -10,7 +11,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.appcompat.widget.SearchView
-import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -72,6 +72,10 @@ class CourseFragment : Fragment() {
         DetailClassActivity.startActivity(requireContext(), course)
     }
 
+    fun updateViewBasedOnCategory(selectedCategory: String?) {
+        viewModel.getCourseTopic(selectedCategory)
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -93,12 +97,25 @@ class CourseFragment : Fragment() {
 
     private fun setOnClickListener() {
         binding.tvFilter.setOnClickListener {
-            startActivity(Intent(requireContext(), FilterActivity::class.java))
+            val intent = Intent(requireContext(), FilterActivity::class.java)
+            startActivityForResult(intent, FILTER_REQUEST_CODE)
         }
 
         binding.clSearchBar.findViewById<ImageView>(R.id.iv_search).setOnClickListener {
             val query = searchView.query.toString()
             typeCourseAdapter.filter(query)
+        }
+    }
+
+    companion object {
+        const val FILTER_REQUEST_CODE = 123
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == FILTER_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
+            val selectedCategory = data?.getStringExtra("selectedCategory")
+            updateViewBasedOnCategory(selectedCategory)
         }
     }
 
