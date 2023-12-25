@@ -4,19 +4,16 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.kelompoksatuandsatu.preducation.R
 import com.kelompoksatuandsatu.preducation.data.local.datastore.datasource.UserPreferenceDataSource
 import com.kelompoksatuandsatu.preducation.data.repository.CourseRepository
 import com.kelompoksatuandsatu.preducation.model.category.categoryprogress.CategoryType
 import com.kelompoksatuandsatu.preducation.model.course.courseall.CourseViewParam
-import com.kelompoksatuandsatu.preducation.utils.AssetWrapper
 import com.kelompoksatuandsatu.preducation.utils.ResultWrapper
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class CourseViewModel(
     private val repositoryCourse: CourseRepository,
-    private val assetsWrapper: AssetWrapper,
     private val userPreferenceDataSource: UserPreferenceDataSource
 ) : ViewModel() {
 
