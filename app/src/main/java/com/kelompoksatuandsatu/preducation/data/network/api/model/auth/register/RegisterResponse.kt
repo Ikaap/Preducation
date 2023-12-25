@@ -18,5 +18,4 @@ fun RegisterResponse.toRegisterResponse() = UserRegisterResponse(
     data = this.data,
     message = this.message.orEmpty(),
     success = this.success
-
 )

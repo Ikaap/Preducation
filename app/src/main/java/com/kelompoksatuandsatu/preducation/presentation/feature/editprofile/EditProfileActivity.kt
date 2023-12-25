@@ -115,7 +115,6 @@ class EditProfileActivity : AppCompatActivity() {
                     binding.root.isVisible = true
                     binding.ivAddPhotoUser.isVisible = false
                 }
-
             )
         }
     }
@@ -341,6 +340,7 @@ class EditProfileActivity : AppCompatActivity() {
     private fun showToast(messageResId: Int) {
         StyleableToast.makeText(this, getString(messageResId), R.style.successtoast).show()
     }
+
 
     companion object {
         fun startActivity(context: Context) {

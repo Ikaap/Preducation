@@ -108,6 +108,9 @@ class UserRepositoryImpl(private val userDataSource: UserDataSource, private val
                 throw ApiException(e.message(), e.code(), e.response())
             }
         }
+    }.catch { e ->
+        Log.e("UserRepository", "Error during logout", e)
+        emit(ResultWrapper.Error(e as? Exception ?: Exception("Unknown error")))
     }
 
     override suspend fun postEmailOtp(request: EmailOtp): Flow<ResultWrapper<Boolean>> {
