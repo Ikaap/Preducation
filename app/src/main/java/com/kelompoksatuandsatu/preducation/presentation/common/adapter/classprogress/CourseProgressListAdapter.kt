@@ -4,6 +4,8 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.appcompat.content.res.AppCompatResources.getDrawable
 import androidx.core.view.isGone
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
@@ -12,6 +14,7 @@ import com.kelompoksatuandsatu.preducation.R
 import com.kelompoksatuandsatu.preducation.core.ViewHolderBinder
 import com.kelompoksatuandsatu.preducation.databinding.ItemCourseCardBinding
 import com.kelompoksatuandsatu.preducation.model.progress.CourseProgressItemClass
+import java.util.Locale
 
 class CourseProgressListAdapter(
     private val itemClick: (CourseProgressItemClass) -> Unit
@@ -33,7 +36,16 @@ class CourseProgressListAdapter(
         }
     )
 
+    private var originalList: List<CourseProgressItemClass> = emptyList()
+    private val _isFilterEmpty = MutableLiveData<Boolean>()
+    val isFilterEmpty: LiveData<Boolean> get() = _isFilterEmpty
+
+    init {
+        _isFilterEmpty.value = false
+    }
+
     fun setData(data: List<CourseProgressItemClass>) {
+        originalList = data
         dataDiffer.submitList(data)
         notifyItemChanged(0, data.size)
     }
@@ -57,6 +69,20 @@ class CourseProgressListAdapter(
 
     override fun onBindViewHolder(holder: ClassCourseItemViewHolder, position: Int) {
         (holder as ViewHolderBinder<CourseProgressItemClass>).bind(dataDiffer.currentList[position])
+    }
+
+    fun filter(query: CharSequence?) {
+        val filteredList = if (query.isNullOrBlank()) {
+            originalList
+        } else {
+            val lowercaseQuery = query.toString().replace("\\s+".toRegex(), "").toLowerCase(Locale.getDefault())
+            originalList.filter { course ->
+                course.courseId?.title?.replace("\\s+".toRegex(), "")?.toLowerCase(Locale.getDefault())?.contains(lowercaseQuery) == true
+            }
+        }
+        _isFilterEmpty.value = filteredList.isEmpty()
+
+        dataDiffer.submitList(filteredList)
     }
 
     class ClassCourseItemViewHolder(
