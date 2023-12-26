@@ -1,16 +1,15 @@
-package com.kelompoksatuandsatu.preducation.presentation.common.adapter
+package com.kelompoksatuandsatu.preducation.presentation.common.adapter.course
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.kelompoksatuandsatu.preducation.core.ViewHolderBinder
 import com.kelompoksatuandsatu.preducation.databinding.ItemLinearCourseBinding
 import com.kelompoksatuandsatu.preducation.model.course.courseall.CourseViewParam
-import com.kelompoksatuandsatu.preducation.presentation.common.adapter.course.AdapterLayoutMenu
-import com.kelompoksatuandsatu.preducation.presentation.common.adapter.course.CourseLinearItemViewHolder
-import com.kelompoksatuandsatu.preducation.presentation.common.adapter.course.HomeCourseLinearItemViewHolder
 import java.util.Locale
 
 class CourseLinearListAdapter(
@@ -34,7 +33,16 @@ class CourseLinearListAdapter(
         }
     )
 
+    private var originalList: List<CourseViewParam> = emptyList()
+    private val _isFilterEmpty = MutableLiveData<Boolean>()
+    val isFilterEmpty: LiveData<Boolean> get() = _isFilterEmpty
+
+    init {
+        _isFilterEmpty.value = false
+    }
+
     fun setData(data: List<CourseViewParam>) {
+        originalList = data
         dataDiffer.submitList(data)
         notifyItemChanged(0, data.size)
     }
@@ -79,13 +87,15 @@ class CourseLinearListAdapter(
 
     fun filter(query: CharSequence?) {
         val filteredList = if (query.isNullOrBlank()) {
-            dataDiffer.currentList
+            originalList
         } else {
-            dataDiffer.currentList.filter { course ->
-                course.title?.toLowerCase(Locale.getDefault())
-                    ?.contains(query.toString().toLowerCase(Locale.getDefault())) == true
+            val lowercaseQuery = query.toString().replace("\\s+".toRegex(), "").toLowerCase(Locale.getDefault())
+            originalList.filter { course ->
+                course.title?.replace("\\s+".toRegex(), "")?.toLowerCase(Locale.getDefault())?.contains(lowercaseQuery) == true
             }
         }
+        _isFilterEmpty.value = filteredList.isEmpty()
+
         dataDiffer.submitList(filteredList)
     }
 }

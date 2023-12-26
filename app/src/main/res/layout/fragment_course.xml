@@ -115,7 +115,7 @@
 
             <include
                 android:id="@+id/layout_state_category_type"
-                layout="@layout/layout_content_state"
+                layout="@layout/common_layout_content_state"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:visibility="gone"
@@ -171,7 +171,7 @@
 
     <include
         android:id="@+id/layout_state_course"
-        layout="@layout/layout_content_state"
+        layout="@layout/common_layout_content_state"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:visibility="gone"
