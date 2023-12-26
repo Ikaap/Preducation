@@ -29,7 +29,11 @@ interface UserDataSource {
 
     suspend fun getUserById(id: String): UserResponse
     suspend fun updateUserById(id: String, userRequest: UserRequest): UserResponse
-    suspend fun updateUserPassword(id: String, passwordRequest: ChangePasswordRequest): ChangePasswordResponse
+    suspend fun updateUserPassword(
+        id: String,
+        passwordRequest: ChangePasswordRequest
+    ): ChangePasswordResponse
+
     suspend fun userLogout(): Response<LogoutResponse>
     suspend fun userForgotPassword(forgotPasswordRequest: ForgotPasswordRequest): ForgotPasswordResponse
 }
@@ -42,6 +46,7 @@ class UserDataSourceImpl(private val service: PreducationService) : UserDataSour
     override suspend fun userLogin(userLoginRequest: LoginRequest): LoginResponse {
         return service.userLogin(userLoginRequest)
     }
+
     override suspend fun getUserById(id: String): UserResponse {
         return service.getUserById(id)
     }
@@ -58,13 +63,17 @@ class UserDataSourceImpl(private val service: PreducationService) : UserDataSour
         return service.updateUserById(id, userRequest)
     }
 
-    override suspend fun updateUserPassword(id: String, passwordRequest: ChangePasswordRequest): ChangePasswordResponse {
+    override suspend fun updateUserPassword(
+        id: String,
+        passwordRequest: ChangePasswordRequest
+    ): ChangePasswordResponse {
         return service.updateUserPassword(id, passwordRequest)
     }
 
     override suspend fun userForgotPassword(forgotPasswordRequest: ForgotPasswordRequest): ForgotPasswordResponse {
         return service.userForgotPassword(forgotPasswordRequest)
     }
+
     override suspend fun userLogout(): Response<LogoutResponse> {
         return service.userLogout()
     }
