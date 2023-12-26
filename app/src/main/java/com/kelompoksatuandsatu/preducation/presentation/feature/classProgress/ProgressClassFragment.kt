@@ -72,6 +72,7 @@ class ProgressClassFragment : Fragment() {
         override fun onQueryTextSubmit(query: String?): Boolean {
             query?.let {
                 progressCourseAdapter.filter(it)
+                observeIsFilterEmpty()
             }
             return true
         }
@@ -123,6 +124,7 @@ class ProgressClassFragment : Fragment() {
         binding.clSearchBar.findViewById<ImageView>(R.id.iv_search).setOnClickListener {
             val query = searchView.query.toString()
             progressCourseAdapter.filter(query)
+            observeIsFilterEmpty()
         }
     }
 
@@ -141,6 +143,21 @@ class ProgressClassFragment : Fragment() {
         }
     }
 
+    private fun observeIsFilterEmpty() {
+        progressCourseAdapter.isFilterEmpty.observe(viewLifecycleOwner) { isFilterEmpty ->
+            if (isFilterEmpty) {
+                binding.layoutStateCourseProgress.root.isVisible = true
+                binding.layoutStateCourseProgress.tvError.isVisible = false
+                binding.layoutStateCourseProgress.pbLoading.isVisible = false
+                binding.layoutStateCourseProgress.clDataEmpty.isVisible = true
+                binding.layoutStateCourseProgress.tvDataEmpty.isVisible = true
+                binding.layoutStateCourseProgress.ivDataEmpty.isVisible = false
+            } else {
+                binding.layoutStateCourseProgress.root.isVisible = false
+            }
+        }
+    }
+
     private fun showCategoryProgress() {
         binding.rvCategoryProgress.adapter = categoryProgressAdapter
         binding.rvCategoryProgress.layoutManager = LinearLayoutManager(
@@ -153,31 +170,56 @@ class ProgressClassFragment : Fragment() {
             it.proceedWhen(
                 doOnSuccess = { result ->
                     binding.rvCategoryProgress.isVisible = true
-                    binding.layoutStateCategoryProgress.tvError.isVisible = false
+                    binding.rvCategoryProgress.adapter = categoryProgressAdapter
                     binding.shLoadingCategoryProgress.isVisible = false
-
+                    binding.layoutStateCategoryProgress.root.isVisible = false
+                    binding.layoutStateCategoryProgress.tvError.isVisible = false
+                    binding.layoutStateCategoryProgress.pbLoading.isVisible = false
+                    binding.layoutStateCategoryProgress.clDataEmpty.isVisible = false
+                    binding.layoutStateCategoryProgress.tvDataEmpty.isVisible = false
+                    binding.layoutStateCategoryProgress.ivDataEmpty.isVisible = false
                     result.payload?.let { categoriesProgress ->
                         categoryProgressAdapter.setData(categoriesProgress)
                     }
+                    binding.rvCategoryProgress.apply {
+                        binding.rvCategoryProgress.layoutManager = LinearLayoutManager(
+                            requireContext(),
+                            LinearLayoutManager.HORIZONTAL,
+                            false
+                        )
+                        adapter = categoryProgressAdapter
+                    }
                 },
                 doOnLoading = {
-                    binding.layoutStateCategoryProgress.root.isVisible = true
-                    binding.shLoadingCategoryProgress.isVisible = true
                     binding.rvCategoryProgress.isVisible = false
+                    binding.shLoadingCategoryProgress.isVisible = true
+                    binding.layoutStateCategoryProgress.root.isVisible = false
+                    binding.layoutStateCategoryProgress.tvError.isVisible = false
+                    binding.layoutStateCategoryProgress.pbLoading.isVisible = false
+                    binding.layoutStateCategoryProgress.clDataEmpty.isVisible = false
+                    binding.layoutStateCategoryProgress.tvDataEmpty.isVisible = false
+                    binding.layoutStateCategoryProgress.ivDataEmpty.isVisible = false
                 },
                 doOnError = {
-                    binding.layoutStateCategoryProgress.root.isVisible = true
-                    binding.shLoadingCategoryProgress.isVisible = false
-                    binding.layoutStateCategoryProgress.tvError.isVisible = true
-                    binding.layoutStateCategoryProgress.tvError.text = it.exception?.message.orEmpty()
                     binding.rvCategoryProgress.isVisible = false
+                    binding.shLoadingCategoryProgress.isVisible = false
+                    binding.layoutStateCategoryProgress.root.isVisible = true
+                    binding.layoutStateCategoryProgress.tvError.isVisible = true
+                    binding.layoutStateCategoryProgress.tvError.text = it.exception?.message
+                    binding.layoutStateCategoryProgress.pbLoading.isVisible = false
+                    binding.layoutStateCategoryProgress.clDataEmpty.isVisible = false
+                    binding.layoutStateCategoryProgress.tvDataEmpty.isVisible = false
+                    binding.layoutStateCategoryProgress.ivDataEmpty.isVisible = false
                 },
                 doOnEmpty = {
-                    binding.layoutStateCategoryProgress.root.isVisible = true
-                    binding.shLoadingCategoryProgress.isVisible = false
-                    binding.layoutStateCategoryProgress.tvError.isVisible = true
-                    binding.layoutStateCategoryProgress.tvError.text = getString(R.string.empty_progress_category)
                     binding.rvCategoryProgress.isVisible = false
+                    binding.shLoadingCategoryProgress.isVisible = false
+                    binding.layoutStateCategoryProgress.root.isVisible = false
+                    binding.layoutStateCategoryProgress.tvError.isVisible = false
+                    binding.layoutStateCategoryProgress.pbLoading.isVisible = false
+                    binding.layoutStateCategoryProgress.clDataEmpty.isVisible = true
+                    binding.layoutStateCategoryProgress.tvDataEmpty.isVisible = true
+                    binding.layoutStateCategoryProgress.ivDataEmpty.isVisible = false
                 }
             )
         }
@@ -195,31 +237,47 @@ class ProgressClassFragment : Fragment() {
             it.proceedWhen(
                 doOnSuccess = { result ->
                     binding.rvProgressCourse.isVisible = true
-                    binding.layoutStateCourseProgress.tvError.isVisible = false
+                    binding.rvProgressCourse.adapter = progressCourseAdapter
                     binding.shLoadingCourseProgress.isVisible = false
-
+                    binding.layoutStateCourseProgress.tvError.isVisible = false
+                    binding.layoutStateCourseProgress.pbLoading.isVisible = false
+                    binding.layoutStateCourseProgress.clDataEmpty.isVisible = false
+                    binding.layoutStateCourseProgress.tvDataEmpty.isVisible = false
+                    binding.layoutStateCourseProgress.ivDataEmpty.isVisible = false
                     result.payload?.let { courseProgress ->
                         progressCourseAdapter.setData(courseProgress)
                     }
                 },
                 doOnLoading = {
-                    binding.layoutStateCourseProgress.root.isVisible = true
-                    binding.shLoadingCourseProgress.isVisible = true
                     binding.rvProgressCourse.isVisible = false
+                    binding.shLoadingCourseProgress.isVisible = true
+                    binding.layoutStateCourseProgress.root.isVisible = false
+                    binding.layoutStateCourseProgress.tvError.isVisible = false
+                    binding.layoutStateCourseProgress.pbLoading.isVisible = false
+                    binding.layoutStateCourseProgress.clDataEmpty.isVisible = false
+                    binding.layoutStateCourseProgress.tvDataEmpty.isVisible = false
+                    binding.layoutStateCourseProgress.ivDataEmpty.isVisible = false
                 },
                 doOnError = {
-                    binding.layoutStateCourseProgress.root.isVisible = true
-                    binding.shLoadingCourseProgress.isVisible = false
-                    binding.layoutStateCourseProgress.tvError.isVisible = true
-                    binding.layoutStateCourseProgress.tvError.text = it.exception?.message.orEmpty()
                     binding.rvProgressCourse.isVisible = false
+                    binding.shLoadingCourseProgress.isVisible = false
+                    binding.layoutStateCourseProgress.root.isVisible = true
+                    binding.layoutStateCourseProgress.tvError.isVisible = true
+                    binding.layoutStateCourseProgress.tvError.text = it.exception?.message
+                    binding.layoutStateCourseProgress.pbLoading.isVisible = false
+                    binding.layoutStateCourseProgress.clDataEmpty.isVisible = false
+                    binding.layoutStateCourseProgress.tvDataEmpty.isVisible = false
+                    binding.layoutStateCourseProgress.ivDataEmpty.isVisible = false
                 },
                 doOnEmpty = {
-                    binding.layoutStateCourseProgress.root.isVisible = true
-                    binding.shLoadingCourseProgress.isVisible = false
-                    binding.layoutStateCourseProgress.tvError.isVisible = true
-                    binding.layoutStateCourseProgress.tvError.text = getString(R.string.empty_class_progress)
                     binding.rvProgressCourse.isVisible = false
+                    binding.shLoadingCourseProgress.isVisible = false
+                    binding.layoutStateCourseProgress.root.isVisible = true
+                    binding.layoutStateCourseProgress.tvError.isVisible = false
+                    binding.layoutStateCourseProgress.pbLoading.isVisible = false
+                    binding.layoutStateCourseProgress.clDataEmpty.isVisible = true
+                    binding.layoutStateCourseProgress.tvDataEmpty.isVisible = true
+                    binding.layoutStateCourseProgress.ivDataEmpty.isVisible = false
                 }
             )
         }
@@ -239,31 +297,47 @@ class ProgressClassFragment : Fragment() {
             it.proceedWhen(
                 doOnSuccess = { result ->
                     binding.rvCategoryCourse.isVisible = true
-                    binding.layoutStateCategoryCourse.tvError.isVisible = false
+                    binding.rvCategoryCourse.adapter = categoryCourseAdapter
                     binding.shLoadingCategoryCourse.isVisible = false
-
+                    binding.layoutStateCategoryCourse.tvError.isVisible = false
+                    binding.layoutStateCategoryCourse.pbLoading.isVisible = false
+                    binding.layoutStateCategoryCourse.clDataEmpty.isVisible = false
+                    binding.layoutStateCategoryCourse.tvDataEmpty.isVisible = false
+                    binding.layoutStateCategoryCourse.ivDataEmpty.isVisible = false
                     result.payload?.let { categoriesCourse ->
                         categoryCourseAdapter.setData(categoriesCourse)
                     }
                 },
                 doOnLoading = {
-                    binding.layoutStateCategoryCourse.root.isVisible = true
-                    binding.shLoadingCategoryCourse.isVisible = true
                     binding.rvCategoryCourse.isVisible = false
+                    binding.shLoadingCategoryCourse.isVisible = true
+                    binding.layoutStateCategoryCourse.root.isVisible = false
+                    binding.layoutStateCategoryCourse.tvError.isVisible = false
+                    binding.layoutStateCategoryCourse.pbLoading.isVisible = false
+                    binding.layoutStateCategoryCourse.clDataEmpty.isVisible = false
+                    binding.layoutStateCategoryCourse.tvDataEmpty.isVisible = false
+                    binding.layoutStateCategoryCourse.ivDataEmpty.isVisible = false
                 },
                 doOnError = {
-                    binding.layoutStateCategoryCourse.root.isVisible = true
-                    binding.shLoadingCategoryCourse.isVisible = false
-                    binding.layoutStateCategoryCourse.tvError.isVisible = true
-                    binding.layoutStateCategoryCourse.tvError.text = it.exception?.message.orEmpty()
                     binding.rvCategoryCourse.isVisible = false
+                    binding.shLoadingCategoryCourse.isVisible = false
+                    binding.layoutStateCategoryCourse.root.isVisible = true
+                    binding.layoutStateCategoryCourse.tvError.isVisible = true
+                    binding.layoutStateCategoryCourse.tvError.text = it.exception?.message
+                    binding.layoutStateCategoryCourse.pbLoading.isVisible = false
+                    binding.layoutStateCategoryCourse.clDataEmpty.isVisible = false
+                    binding.layoutStateCategoryCourse.tvDataEmpty.isVisible = false
+                    binding.layoutStateCategoryCourse.ivDataEmpty.isVisible = false
                 },
                 doOnEmpty = {
-                    binding.layoutStateCategoryCourse.root.isVisible = true
-                    binding.shLoadingCategoryCourse.isVisible = false
-                    binding.layoutStateCategoryCourse.tvError.isVisible = true
-                    binding.layoutStateCategoryCourse.tvError.text = getString(R.string.you_need_to_login)
                     binding.rvCategoryCourse.isVisible = false
+                    binding.shLoadingCategoryCourse.isVisible = false
+                    binding.layoutStateCategoryCourse.root.isVisible = true
+                    binding.layoutStateCategoryCourse.tvError.isVisible = false
+                    binding.layoutStateCategoryCourse.pbLoading.isVisible = false
+                    binding.layoutStateCategoryCourse.clDataEmpty.isVisible = true
+                    binding.layoutStateCategoryCourse.tvDataEmpty.isVisible = true
+                    binding.layoutStateCategoryCourse.ivDataEmpty.isVisible = false
                 }
             )
         }
