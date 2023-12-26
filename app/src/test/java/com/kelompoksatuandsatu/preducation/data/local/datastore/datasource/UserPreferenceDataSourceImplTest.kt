@@ -26,7 +26,7 @@ class UserPreferenceDataSourceImplTest {
     @Test
     fun getUserToken() {
         runTest {
-            coEvery { preferenceDataStoreHelper.getFirstPreference(any(), "") } returns ""
+            coEvery { preferenceDataStoreHelper.getFirstPreference(any(), "") } returns "token user"
             val result = userPreferenceDataSource.getUserToken()
             coVerify { preferenceDataStoreHelper.getFirstPreference(any(), "") }
             assertEquals(result, "")
@@ -36,9 +36,9 @@ class UserPreferenceDataSourceImplTest {
     @Test
     fun saveUserToken() {
         runTest {
-            coEvery { preferenceDataStoreHelper.putPreference(any(), "") } returns Unit
-            val result = userPreferenceDataSource.saveUserToken("")
-            coVerify { preferenceDataStoreHelper.putPreference(any(), "") }
+            coEvery { preferenceDataStoreHelper.putPreference(any(), Unit) } returns Unit
+            val result = userPreferenceDataSource.saveUserToken("token user")
+            coVerify { preferenceDataStoreHelper.putPreference(any(), Unit) }
             assertEquals(result, Unit)
         }
     }
@@ -56,9 +56,9 @@ class UserPreferenceDataSourceImplTest {
     @Test
     fun saveUserId() {
         runTest {
-            coEvery { preferenceDataStoreHelper.putPreference(any(), "") } returns Unit
-            val result = userPreferenceDataSource.saveUserId("")
-            coVerify { preferenceDataStoreHelper.putPreference(any(), "") }
+            coEvery { preferenceDataStoreHelper.putPreference(any(), Unit) } returns Unit
+            val result = userPreferenceDataSource.saveUserId("id user")
+            coVerify { preferenceDataStoreHelper.putPreference(any(), Unit) }
             assertEquals(result, Unit)
         }
     }
@@ -66,7 +66,7 @@ class UserPreferenceDataSourceImplTest {
     @Test
     fun getUserId() {
         runTest {
-            coEvery { preferenceDataStoreHelper.getFirstPreference(any(), "") } returns ""
+            coEvery { preferenceDataStoreHelper.getFirstPreference(any(), "") } returns "user id"
             val result = userPreferenceDataSource.getUserId()
             coVerify { preferenceDataStoreHelper.getFirstPreference(any(), "") }
             assertEquals(result, "")
