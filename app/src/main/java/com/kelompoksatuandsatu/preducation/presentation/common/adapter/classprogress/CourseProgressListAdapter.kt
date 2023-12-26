@@ -4,10 +4,11 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.appcompat.content.res.AppCompatResources.getDrawable
 import androidx.core.view.isGone
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import coil.load
 import com.kelompoksatuandsatu.preducation.R
 import com.kelompoksatuandsatu.preducation.core.ViewHolderBinder
@@ -35,7 +36,16 @@ class CourseProgressListAdapter(
         }
     )
 
+    private var originalList: List<CourseProgressItemClass> = emptyList()
+    private val _isFilterEmpty = MutableLiveData<Boolean>()
+    val isFilterEmpty: LiveData<Boolean> get() = _isFilterEmpty
+
+    init {
+        _isFilterEmpty.value = false
+    }
+
     fun setData(data: List<CourseProgressItemClass>) {
+        originalList = data
         dataDiffer.submitList(data)
         notifyItemChanged(0, data.size)
     }
@@ -63,13 +73,15 @@ class CourseProgressListAdapter(
 
     fun filter(query: CharSequence?) {
         val filteredList = if (query.isNullOrBlank()) {
-            dataDiffer.currentList
+            originalList
         } else {
-            dataDiffer.currentList.filter { course ->
-                course.courseId?.title?.toLowerCase(Locale.getDefault())
-                    ?.contains(query.toString().toLowerCase(Locale.getDefault())) == true
+            val lowercaseQuery = query.toString().replace("\\s+".toRegex(), "").toLowerCase(Locale.getDefault())
+            originalList.filter { course ->
+                course.courseId?.title?.replace("\\s+".toRegex(), "")?.toLowerCase(Locale.getDefault())?.contains(lowercaseQuery) == true
             }
         }
+        _isFilterEmpty.value = filteredList.isEmpty()
+
         dataDiffer.submitList(filteredList)
     }
 
