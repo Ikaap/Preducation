@@ -18,7 +18,7 @@ import com.kelompoksatuandsatu.preducation.R
 import com.kelompoksatuandsatu.preducation.databinding.DialogNonLoginBinding
 import com.kelompoksatuandsatu.preducation.databinding.FragmentCourseBinding
 import com.kelompoksatuandsatu.preducation.model.course.courseall.CourseViewParam
-import com.kelompoksatuandsatu.preducation.presentation.common.adapter.CourseLinearListAdapter
+import com.kelompoksatuandsatu.preducation.presentation.common.adapter.course.CourseLinearListAdapter
 import com.kelompoksatuandsatu.preducation.presentation.common.adapter.category.CategoryRoundedCourseListAdapter
 import com.kelompoksatuandsatu.preducation.presentation.common.adapter.course.AdapterLayoutMenu
 import com.kelompoksatuandsatu.preducation.presentation.feature.detailclass.DetailClassActivity
@@ -59,6 +59,7 @@ class CourseFragment : Fragment() {
         override fun onQueryTextSubmit(query: String?): Boolean {
             query?.let {
                 typeCourseAdapter.filter(it)
+                observeIsFilterEmpty()
             }
             return true
         }
@@ -104,6 +105,22 @@ class CourseFragment : Fragment() {
         binding.clSearchBar.findViewById<ImageView>(R.id.iv_search).setOnClickListener {
             val query = searchView.query.toString()
             typeCourseAdapter.filter(query)
+            observeIsFilterEmpty()
+        }
+    }
+
+    private fun observeIsFilterEmpty() {
+        typeCourseAdapter.isFilterEmpty.observe(viewLifecycleOwner) { isFilterEmpty ->
+            if (isFilterEmpty) {
+                binding.layoutStateCourse.root.isVisible = true
+                binding.layoutStateCourse.tvError.isVisible = false
+                binding.layoutStateCourse.pbLoading.isVisible = false
+                binding.layoutStateCourse.clDataEmpty.isVisible = true
+                binding.layoutStateCourse.tvDataEmpty.isVisible = true
+                binding.layoutStateCourse.ivDataEmpty.isVisible = false
+            } else {
+                binding.layoutStateCourse.root.isVisible = false
+            }
         }
     }
 
@@ -131,30 +148,56 @@ class CourseFragment : Fragment() {
             it.proceedWhen(
                 doOnSuccess = { result ->
                     binding.rvCategoryType.isVisible = true
-                    binding.layoutStateCategoryType.tvError.isVisible = false
+                    binding.rvCategoryType.adapter = categoryTypeClassAdapter
                     binding.shimmerCategoryRounded.isVisible = false
-
+                    binding.layoutStateCategoryType.root.isVisible = false
+                    binding.layoutStateCategoryType.tvError.isVisible = false
+                    binding.layoutStateCategoryType.pbLoading.isVisible = false
+                    binding.layoutStateCategoryType.clDataEmpty.isVisible = false
+                    binding.layoutStateCategoryType.tvDataEmpty.isVisible = false
+                    binding.layoutStateCategoryType.ivDataEmpty.isVisible = false
+                    binding.rvCategoryType.apply {
+                        binding.rvCategoryType.layoutManager = LinearLayoutManager(
+                            requireContext(),
+                            LinearLayoutManager.HORIZONTAL,
+                            false
+                        )
+                        adapter = categoryTypeClassAdapter
+                    }
                     result.payload?.let { categoriesType ->
                         categoryTypeClassAdapter.setData(categoriesType)
                     }
                 },
                 doOnLoading = {
-                    binding.layoutStateCategoryType.root.isVisible = true
-                    binding.shimmerCategoryRounded.isVisible = true
                     binding.rvCategoryType.isVisible = false
+                    binding.shimmerCategoryRounded.isVisible = true
+                    binding.layoutStateCategoryType.root.isVisible = false
+                    binding.layoutStateCategoryType.tvError.isVisible = false
+                    binding.layoutStateCategoryType.pbLoading.isVisible = false
+                    binding.layoutStateCategoryType.clDataEmpty.isVisible = false
+                    binding.layoutStateCategoryType.tvDataEmpty.isVisible = false
+                    binding.layoutStateCategoryType.ivDataEmpty.isVisible = false
                 },
                 doOnError = {
-                    binding.layoutStateCategoryType.root.isVisible = true
-                    binding.shimmerCategoryRounded.isVisible = false
-                    binding.layoutStateCategoryType.tvError.isVisible = true
-                    binding.layoutStateCategoryType.tvError.text = it.exception?.message.orEmpty()
                     binding.rvCategoryType.isVisible = false
+                    binding.shimmerCategoryRounded.isVisible = false
+                    binding.layoutStateCategoryType.root.isVisible = true
+                    binding.layoutStateCategoryType.tvError.isVisible = true
+                    binding.layoutStateCategoryType.tvError.text = it.exception?.message
+                    binding.layoutStateCategoryType.pbLoading.isVisible = false
+                    binding.layoutStateCategoryType.clDataEmpty.isVisible = false
+                    binding.layoutStateCategoryType.tvDataEmpty.isVisible = false
+                    binding.layoutStateCategoryType.ivDataEmpty.isVisible = false
                 },
                 doOnEmpty = {
                     binding.rvCategoryType.isVisible = false
                     binding.shimmerCategoryRounded.isVisible = false
-                    binding.layoutStateCategoryType.root.isVisible = true
+                    binding.layoutStateCategoryType.root.isVisible = false
                     binding.layoutStateCategoryType.tvError.isVisible = false
+                    binding.layoutStateCategoryType.pbLoading.isVisible = false
+                    binding.layoutStateCategoryType.clDataEmpty.isVisible = true
+                    binding.layoutStateCategoryType.tvDataEmpty.isVisible = true
+                    binding.layoutStateCategoryType.ivDataEmpty.isVisible = false
                 }
             )
         }
@@ -171,31 +214,48 @@ class CourseFragment : Fragment() {
         viewModel.course.observe(viewLifecycleOwner) {
             it.proceedWhen(
                 doOnLoading = {
-                    binding.layoutStateCourse.root.isVisible = true
-                    binding.shimmerCourseLinear.isVisible = true
-                    binding.layoutStateCourse.tvError.isVisible = false
                     binding.rvCourse.isVisible = false
+                    binding.shimmerCourseLinear.isVisible = true
+                    binding.layoutStateCourse.root.isVisible = false
+                    binding.layoutStateCourse.tvError.isVisible = false
+                    binding.layoutStateCourse.pbLoading.isVisible = false
+                    binding.layoutStateCourse.clDataEmpty.isVisible = false
+                    binding.layoutStateCourse.tvDataEmpty.isVisible = false
+                    binding.layoutStateCourse.ivDataEmpty.isVisible = false
                 },
                 doOnSuccess = { result ->
-                    binding.layoutStateCourse.root.isVisible = false
                     binding.rvCourse.isVisible = true
+                    binding.rvCourse.adapter = typeCourseAdapter
                     binding.shimmerCourseLinear.isVisible = false
                     binding.layoutStateCourse.tvError.isVisible = false
+                    binding.layoutStateCourse.pbLoading.isVisible = false
+                    binding.layoutStateCourse.clDataEmpty.isVisible = false
+                    binding.layoutStateCourse.tvDataEmpty.isVisible = false
+                    binding.layoutStateCourse.ivDataEmpty.isVisible = false
                     result.payload?.let { data ->
                         typeCourseAdapter.setData(data)
                     }
                 },
                 doOnError = {
-                    binding.layoutStateCourse.root.isVisible = true
                     binding.rvCourse.isVisible = false
                     binding.shimmerCourseLinear.isVisible = false
+                    binding.layoutStateCourse.root.isVisible = true
                     binding.layoutStateCourse.tvError.isVisible = true
+                    binding.layoutStateCourse.tvError.text = it.exception?.message
+                    binding.layoutStateCourse.pbLoading.isVisible = false
+                    binding.layoutStateCourse.clDataEmpty.isVisible = false
+                    binding.layoutStateCourse.tvDataEmpty.isVisible = false
+                    binding.layoutStateCourse.ivDataEmpty.isVisible = false
                 },
                 doOnEmpty = {
                     binding.rvCourse.isVisible = false
                     binding.shimmerCourseLinear.isVisible = false
                     binding.layoutStateCourse.root.isVisible = true
                     binding.layoutStateCourse.tvError.isVisible = false
+                    binding.layoutStateCourse.pbLoading.isVisible = false
+                    binding.layoutStateCourse.clDataEmpty.isVisible = true
+                    binding.layoutStateCourse.tvDataEmpty.isVisible = true
+                    binding.layoutStateCourse.ivDataEmpty.isVisible = false
                 }
             )
         }
