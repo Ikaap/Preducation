@@ -62,7 +62,7 @@ class HomeFragment : Fragment() {
 
     private val categoryCoursePopularAdapter: CategoryRoundedHomeListAdapter by lazy {
         CategoryRoundedHomeListAdapter(viewModel) {
-            viewModel.getCourse(it.name)
+            viewModel.getCourse(it.name, null)
         }
     }
 

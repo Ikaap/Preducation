@@ -21,9 +21,9 @@ class CourseViewModel(
     val course: LiveData<ResultWrapper<List<CourseViewParam>>>
         get() = _course
 
-    fun getCourseTopic(typeClass: String? = null) {
+    fun getCourse(category: String? = null, typeClass: String? = null) {
         viewModelScope.launch(Dispatchers.IO) {
-            repositoryCourse.getCourseHome(if (typeClass == "All") null else typeClass?.toLowerCase())
+            repositoryCourse.getCourseHome(category, if (typeClass == "All") null else typeClass?.toLowerCase())
                 .collect {
                     _course.postValue(it)
                 }

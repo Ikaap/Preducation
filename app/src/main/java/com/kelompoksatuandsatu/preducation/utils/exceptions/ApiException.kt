@@ -33,7 +33,7 @@ class ApiException(
             null
         }
     }
-    
+
     fun getParsedErrorDetailClass(): DetailCourseResponse? {
         val body = errorResponse?.errorBody()?.string().orEmpty()
         return try {
