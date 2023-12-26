@@ -78,9 +78,9 @@ class HomeViewModel(
         }
     }
 
-    fun getCourse(category: String? = null) {
+    fun getCourse(category: String? = null, typeClass: String? = null) {
         viewModelScope.launch(Dispatchers.IO) {
-            courseRepo.getCourseHome(if (category == "All") null else category?.toLowerCase())
+            courseRepo.getCourseHome(if (category == "All") null else category?.toLowerCase(), typeClass)
                 .collect {
                     _coursePopular.postValue(it)
                 }

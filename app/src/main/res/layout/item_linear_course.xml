@@ -15,7 +15,7 @@
         <ImageView
             android:id="@+id/iv_popular_course"
             android:layout_width="110dp"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:contentDescription="@string/desc_iv_popular_course"
             android:scaleType="centerCrop"
             app:layout_constraintBottom_toBottomOf="parent"

@@ -173,8 +173,9 @@
         android:id="@+id/layout_state_course"
         layout="@layout/common_layout_content_state"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:visibility="gone"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:visibility="visible"
         app:layout_constraintTop_toTopOf="@id/rv_course"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
