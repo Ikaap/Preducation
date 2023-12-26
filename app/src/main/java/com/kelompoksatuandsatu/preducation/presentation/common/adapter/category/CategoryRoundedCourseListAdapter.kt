@@ -54,8 +54,10 @@ class CategoryRoundedCourseListAdapter(
             selectedPosition = holder.bindingAdapterPosition
             notifyItemChanged(lastSelectedPosition)
             notifyItemChanged(selectedPosition)
-            if (position != 0) {
-                viewModel.getCourseTopic(dataDiffer.currentList[position].nameCategory)
+            if (position == 0) {
+                viewModel.getCourse()
+            } else {
+                viewModel.getCourse(null, dataDiffer.currentList[position].nameCategory)
             }
         }
         updateItemBackground(holder, position)

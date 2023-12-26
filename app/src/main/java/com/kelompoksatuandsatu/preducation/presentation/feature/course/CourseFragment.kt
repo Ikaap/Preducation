@@ -18,9 +18,9 @@ import com.kelompoksatuandsatu.preducation.R
 import com.kelompoksatuandsatu.preducation.databinding.DialogNonLoginBinding
 import com.kelompoksatuandsatu.preducation.databinding.FragmentCourseBinding
 import com.kelompoksatuandsatu.preducation.model.course.courseall.CourseViewParam
-import com.kelompoksatuandsatu.preducation.presentation.common.adapter.course.CourseLinearListAdapter
 import com.kelompoksatuandsatu.preducation.presentation.common.adapter.category.CategoryRoundedCourseListAdapter
 import com.kelompoksatuandsatu.preducation.presentation.common.adapter.course.AdapterLayoutMenu
+import com.kelompoksatuandsatu.preducation.presentation.common.adapter.course.CourseLinearListAdapter
 import com.kelompoksatuandsatu.preducation.presentation.feature.detailclass.DetailClassActivity
 import com.kelompoksatuandsatu.preducation.presentation.feature.filter.FilterActivity
 import com.kelompoksatuandsatu.preducation.presentation.feature.register.RegisterActivity
@@ -47,7 +47,7 @@ class CourseFragment : Fragment() {
 
     private val categoryTypeClassAdapter: CategoryRoundedCourseListAdapter by lazy {
         CategoryRoundedCourseListAdapter(viewModel) {
-            viewModel.getCourseTopic(it.nameCategory.lowercase())
+            viewModel.getCourse(null, it.nameCategory.lowercase())
         }
     }
 
@@ -74,7 +74,7 @@ class CourseFragment : Fragment() {
     }
 
     fun updateViewBasedOnCategory(selectedCategory: String?) {
-        viewModel.getCourseTopic(selectedCategory)
+        viewModel.getCourse(selectedCategory, null)
     }
 
     override fun onCreateView(
@@ -277,7 +277,7 @@ class CourseFragment : Fragment() {
     }
 
     private fun fetchData() {
-        viewModel.getCourseTopic()
+        viewModel.getCourse()
         viewModel.getCategoriesTypeClass()
         viewModel.checkLogin()
     }
