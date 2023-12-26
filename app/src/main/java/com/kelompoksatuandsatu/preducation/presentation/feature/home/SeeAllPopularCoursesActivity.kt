@@ -9,16 +9,13 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
-import com.kelompoksatuandsatu.preducation.R
 import com.kelompoksatuandsatu.preducation.databinding.ActivitySeeAllPopularCoursesBinding
 import com.kelompoksatuandsatu.preducation.databinding.DialogNonLoginBinding
 import com.kelompoksatuandsatu.preducation.model.course.courseall.CourseViewParam
-import com.kelompoksatuandsatu.preducation.presentation.common.adapter.course.AdapterLayoutMenu
 import com.kelompoksatuandsatu.preducation.presentation.common.adapter.course.CourseLinearListAdapter
+import com.kelompoksatuandsatu.preducation.presentation.common.adapter.course.AdapterLayoutMenu
 import com.kelompoksatuandsatu.preducation.presentation.feature.detailclass.DetailClassActivity
 import com.kelompoksatuandsatu.preducation.presentation.feature.register.RegisterActivity
-import com.kelompoksatuandsatu.preducation.utils.exceptions.ApiException
-import com.kelompoksatuandsatu.preducation.utils.exceptions.NoInternetException
 import com.kelompoksatuandsatu.preducation.utils.proceedWhen
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -56,10 +53,8 @@ class SeeAllPopularCoursesActivity : AppCompatActivity() {
         val categoryName = intent.getStringExtra("CATEGORY_NAME")
         getData(categoryName)
         observeData()
-        setOnClickListener()
-    }
 
-    private fun setOnClickListener() {
+        viewModel.checkLogin()
         binding.ivBack.setOnClickListener {
             onBackPressed()
         }
@@ -67,81 +62,51 @@ class SeeAllPopularCoursesActivity : AppCompatActivity() {
 
     private fun getData(categoryName: String?) {
         viewModel.getCourse(categoryName)
-        viewModel.checkLogin()
     }
 
     private fun observeData() {
-        viewModel.coursePopular.observe(this) { resultWrapper ->
-            resultWrapper.proceedWhen(
+        viewModel.coursePopular.observe(this) {
+            it.proceedWhen(
                 doOnSuccess = {
                     binding.rvCourse.isVisible = true
-                    binding.rvCourse.adapter = courseAdapter
                     binding.shimmerCourseCard.isVisible = false
-                    binding.layoutStateCoursePopular.tvError.isVisible = false
-                    binding.layoutStateCoursePopular.pbLoading.isVisible = false
-                    binding.layoutStateCoursePopular.clErrorState.isVisible = false
-                    binding.layoutStateCoursePopular.tvErrorState.isVisible = false
-                    binding.layoutStateCoursePopular.ivErrorState.isVisible = false
-                    it.payload?.let {
-                        courseAdapter.setData(it)
+                    binding.layoutStateCoursePopular.root.isGone = true
+                    binding.layoutStateCoursePopular.ivDataEmpty.isGone = true
+                    binding.layoutStateCoursePopular.tvError.isGone = true
+                    binding.layoutStateCoursePopular.tvDataEmpty.isGone = true
+                    binding.rvCourse.apply {
+                        isVisible = true
+                        adapter = courseAdapter
+                    }
+                    it.payload?.let { data ->
+                        courseAdapter.setData(data)
                     }
                 },
                 doOnLoading = {
                     binding.rvCourse.isVisible = false
                     binding.shimmerCourseCard.isVisible = true
-                    binding.layoutStateCoursePopular.root.isVisible = false
-                    binding.layoutCommonState.root.isVisible = true
-                    binding.layoutStateCoursePopular.tvError.isVisible = false
-                    binding.layoutStateCoursePopular.pbLoading.isVisible = false
-                    binding.layoutStateCoursePopular.clErrorState.isVisible = false
-                    binding.layoutStateCoursePopular.tvErrorState.isVisible = false
-                    binding.layoutStateCoursePopular.ivErrorState.isVisible = false
-                },
-                doOnError = {
-                    binding.rvCourse.isVisible = false
-                    binding.shimmerCourseCard.isVisible = false
-                    binding.layoutStateCoursePopular.root.isVisible = true
-                    binding.layoutStateCoursePopular.tvError.isVisible = true
-                    binding.layoutStateCoursePopular.tvError.text = it.exception?.message
-                    binding.layoutStateCoursePopular.pbLoading.isVisible = false
-                    binding.layoutStateCoursePopular.clErrorState.isVisible = false
-                    binding.layoutStateCoursePopular.tvErrorState.isVisible = false
-                    binding.layoutStateCoursePopular.ivErrorState.isVisible = false
-
-                    if (it.exception is ApiException) {
-                        binding.layoutCommonState.root.isVisible = true
-                        if (it.exception.getParsedErrorCourse()?.success == false) {
-                            binding.layoutCommonState.tvError.text =
-                                it.exception.getParsedErrorCourse()?.message
-                            if (it.exception.httpCode == 500) {
-                                binding.layoutCommonState.clErrorState.isGone = false
-                                binding.layoutCommonState.ivErrorState.isGone = false
-                                binding.layoutCommonState.tvErrorState.isGone = false
-                                binding.layoutCommonState.tvErrorState.text = "Sorry, there's an error on the server"
-                                binding.layoutCommonState.ivErrorState.setImageResource(R.drawable.img_server_error)
-                            }
-                        }
-                    } else if (it.exception is NoInternetException) {
-                        if (!it.exception.isNetworkAvailable(this)) {
-                            binding.layoutCommonState.root.isVisible = true
-                            binding.layoutCommonState.clErrorState.isGone = false
-                            binding.layoutCommonState.ivErrorState.isGone = false
-                            binding.layoutCommonState.tvErrorState.isGone = false
-                            binding.layoutCommonState.tvErrorState.text = "Oops!\nYou're not connection"
-                            binding.layoutCommonState.ivErrorState.setImageResource(R.drawable.img_no_connection)
-                        }
-                    }
+                    binding.layoutStateCoursePopular.root.isGone = true
+                    binding.layoutStateCoursePopular.ivDataEmpty.isGone = true
+                    binding.layoutStateCoursePopular.tvError.isGone = true
+                    binding.layoutStateCoursePopular.tvDataEmpty.isGone = true
                 },
                 doOnEmpty = {
                     binding.rvCourse.isVisible = false
                     binding.shimmerCourseCard.isVisible = false
-                    binding.layoutStateCoursePopular.root.isVisible = true
-                    binding.layoutStateCoursePopular.tvError.isVisible = false
-                    binding.layoutStateCoursePopular.pbLoading.isVisible = false
-                    binding.layoutStateCoursePopular.clErrorState.isVisible = true
-                    binding.layoutStateCoursePopular.tvErrorState.isVisible = true
-                    binding.layoutStateCoursePopular.tvErrorState.text = "Class not found !"
-                    binding.layoutStateCoursePopular.ivErrorState.isVisible = true
+                    binding.layoutStateCoursePopular.root.isGone = false
+                    binding.layoutStateCoursePopular.ivDataEmpty.isGone = true
+                    binding.layoutStateCoursePopular.tvError.isGone = false
+                    binding.layoutStateCoursePopular.tvError.text = "Data Empty"
+                    binding.layoutStateCoursePopular.tvDataEmpty.isGone = true
+                },
+                doOnError = {
+                    binding.rvCourse.isVisible = false
+                    binding.shimmerCourseCard.isVisible = false
+                    binding.layoutStateCoursePopular.root.isGone = false
+                    binding.layoutStateCoursePopular.ivDataEmpty.isGone = true
+                    binding.layoutStateCoursePopular.tvError.isGone = false
+                    binding.layoutStateCoursePopular.tvError.text = it.exception?.message
+                    binding.layoutStateCoursePopular.tvDataEmpty.isGone = true
                 }
             )
         }
