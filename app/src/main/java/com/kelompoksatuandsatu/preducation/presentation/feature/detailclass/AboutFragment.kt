@@ -8,9 +8,13 @@ import androidx.core.view.isGone
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.kelompoksatuandsatu.preducation.R
 import com.kelompoksatuandsatu.preducation.databinding.FragmentAboutBinding
 import com.kelompoksatuandsatu.preducation.presentation.feature.detailclass.adapter.DescriptionItemAdapter
+import com.kelompoksatuandsatu.preducation.utils.exceptions.ApiException
+import com.kelompoksatuandsatu.preducation.utils.exceptions.NoInternetException
 import com.kelompoksatuandsatu.preducation.utils.proceedWhen
+import io.github.muddz.styleabletoast.StyleableToast
 
 class AboutFragment : Fragment() {
 
@@ -101,6 +105,38 @@ class AboutFragment : Fragment() {
                         it.exception?.message + "${it.payload?.id}"
                     binding.layoutCommonStateRecommended.tvDataEmpty.isGone = true
                     binding.layoutCommonStateRecommended.ivDataEmpty.isGone = true
+
+                    if (it.exception is ApiException) {
+                        if (it.exception.getParsedErrorCourse()?.success == false) {
+                            if (it.exception.httpCode == 500) {
+                                binding.layoutCommonState.clServerError.isGone = false
+                                binding.layoutCommonState.ivServerError.isGone = false
+                                StyleableToast.makeText(
+                                    requireContext(),
+                                    "SERVER ERROR",
+                                    R.style.failedtoast
+                                ).show()
+                            } else if (it.exception.getParsedErrorCourse()?.success == false) {
+                                binding.layoutCommonState.tvError.text =
+                                    it.exception.getParsedErrorCourse()?.message
+                                StyleableToast.makeText(
+                                    requireContext(),
+                                    it.exception.getParsedErrorCourse()?.message,
+                                    R.style.failedtoast
+                                ).show()
+                            }
+                        }
+                    } else if (it.exception is NoInternetException) {
+                        if (!it.exception.isNetworkAvailable(requireContext())) {
+                            binding.layoutCommonState.clNoConnection.isGone = false
+                            binding.layoutCommonState.ivNoConnection.isGone = false
+                            StyleableToast.makeText(
+                                requireContext(),
+                                "tidak ada internet",
+                                R.style.failedtoast
+                            ).show()
+                        }
+                    }
                 },
                 doOnEmpty = {
                     binding.shimmerAboutDesc.isGone = true

@@ -4,11 +4,14 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Patterns
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import com.kelompoksatuandsatu.preducation.R
 import com.kelompoksatuandsatu.preducation.databinding.ActivityForgotPasswordNewBinding
 import com.kelompoksatuandsatu.preducation.model.auth.forgotpassword.UserForgotPassword
 import com.kelompoksatuandsatu.preducation.presentation.feature.login.LoginActivity
+import com.kelompoksatuandsatu.preducation.utils.exceptions.ApiException
+import com.kelompoksatuandsatu.preducation.utils.exceptions.NoInternetException
 import com.kelompoksatuandsatu.preducation.utils.proceedWhen
 import io.github.muddz.styleabletoast.StyleableToast
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -89,6 +92,37 @@ class ForgotPasswordNewActivity : AppCompatActivity() {
                         getString(R.string.invalid_or_expired_link) + "${it.exception?.message.orEmpty()}",
                         R.style.failedtoast
                     ).show()
+                    if (it.exception is ApiException) {
+                        if (it.exception.getParsedErrorForgetPassword()?.success == false) {
+                            if (it.exception.httpCode == 500) {
+                                binding.layoutCommonState.clServerError.isGone = false
+                                binding.layoutCommonState.ivServerError.isGone = false
+                                StyleableToast.makeText(
+                                    this,
+                                    "SERVER ERROR",
+                                    R.style.failedtoast
+                                ).show()
+                            } else if (it.exception.getParsedErrorForgetPassword()?.success == false) {
+                                binding.layoutCommonState.tvError.text =
+                                    it.exception.getParsedErrorForgetPassword()?.message
+                                StyleableToast.makeText(
+                                    this,
+                                    it.exception.getParsedErrorForgetPassword()?.message,
+                                    R.style.failedtoast
+                                ).show()
+                            }
+                        }
+                    } else if (it.exception is NoInternetException) {
+                        if (!it.exception.isNetworkAvailable(this)) {
+                            binding.layoutCommonState.clNoConnection.isGone = false
+                            binding.layoutCommonState.ivNoConnection.isGone = false
+                            StyleableToast.makeText(
+                                this,
+                                "tidak ada internet",
+                                R.style.failedtoast
+                            ).show()
+                        }
+                    }
                 }
             )
         }
