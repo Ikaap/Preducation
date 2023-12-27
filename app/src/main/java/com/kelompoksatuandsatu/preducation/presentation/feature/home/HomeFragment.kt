@@ -8,6 +8,9 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
+import androidx.appcompat.widget.SearchView
+import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -22,8 +25,11 @@ import com.kelompoksatuandsatu.preducation.presentation.common.adapter.course.Ad
 import com.kelompoksatuandsatu.preducation.presentation.common.adapter.course.CourseCardListAdapter
 import com.kelompoksatuandsatu.preducation.presentation.feature.detailclass.DetailClassActivity
 import com.kelompoksatuandsatu.preducation.presentation.feature.register.RegisterActivity
+import com.kelompoksatuandsatu.preducation.utils.exceptions.ApiException
+import com.kelompoksatuandsatu.preducation.utils.exceptions.NoInternetException
 import com.kelompoksatuandsatu.preducation.presentation.feature.search.SearchActivity
 import com.kelompoksatuandsatu.preducation.utils.proceedWhen
+import io.github.muddz.styleabletoast.StyleableToast
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class HomeFragment : Fragment() {
@@ -80,6 +86,7 @@ class HomeFragment : Fragment() {
         setOnClickListener()
         getData()
         observeData()
+        searchView.setOnQueryTextListener(searchQueryListener)
     }
 
     private fun setOnClickListener() {
@@ -164,6 +171,38 @@ class HomeFragment : Fragment() {
                     binding.layoutStateCategoryCircle.clDataEmpty.isVisible = false
                     binding.layoutStateCategoryCircle.tvDataEmpty.isVisible = false
                     binding.layoutStateCategoryCircle.ivDataEmpty.isVisible = false
+
+                    if (it.exception is ApiException) {
+                        if (it.exception.getParsedErrorCategories()?.success == false) {
+                            if (it.exception.httpCode == 500) {
+                                binding.layoutCommonState.clServerError.isGone = false
+                                binding.layoutCommonState.ivServerError.isGone = false
+                                StyleableToast.makeText(
+                                    requireContext(),
+                                    "SERVER ERROR",
+                                    R.style.failedtoast
+                                ).show()
+                            } else if (it.exception.getParsedErrorCategories()?.success == false) {
+                                binding.layoutCommonState.tvError.text =
+                                    it.exception.getParsedErrorCategories()?.message
+                                StyleableToast.makeText(
+                                    requireContext(),
+                                    it.exception.getParsedErrorCategories()?.message,
+                                    R.style.failedtoast
+                                ).show()
+                            }
+                        }
+                    } else if (it.exception is NoInternetException) {
+                        if (!it.exception.isNetworkAvailable(requireContext())) {
+                            binding.layoutCommonState.clNoConnection.isGone = false
+                            binding.layoutCommonState.ivNoConnection.isGone = false
+                            StyleableToast.makeText(
+                                requireContext(),
+                                "tidak ada internet",
+                                R.style.failedtoast
+                            ).show()
+                        }
+                    }
                 },
                 doOnEmpty = {
                     binding.rvCategoryCourse.isVisible = false
@@ -225,6 +264,38 @@ class HomeFragment : Fragment() {
                     binding.layoutStateCategoryRounded.clDataEmpty.isVisible = false
                     binding.layoutStateCategoryRounded.tvDataEmpty.isVisible = false
                     binding.layoutStateCategoryRounded.ivDataEmpty.isVisible = false
+
+                    if (it.exception is ApiException) {
+                        if (it.exception.getParsedErrorCategories()?.success == false) {
+                            if (it.exception.httpCode == 500) {
+                                binding.layoutCommonState.clServerError.isGone = false
+                                binding.layoutCommonState.ivServerError.isGone = false
+                                StyleableToast.makeText(
+                                    requireContext(),
+                                    "SERVER ERROR",
+                                    R.style.failedtoast
+                                ).show()
+                            } else if (it.exception.getParsedErrorCategories()?.success == false) {
+                                binding.layoutCommonState.tvError.text =
+                                    it.exception.getParsedErrorCategories()?.message
+                                StyleableToast.makeText(
+                                    requireContext(),
+                                    it.exception.getParsedErrorCategories()?.message,
+                                    R.style.failedtoast
+                                ).show()
+                            }
+                        }
+                    } else if (it.exception is NoInternetException) {
+                        if (!it.exception.isNetworkAvailable(requireContext())) {
+                            binding.layoutCommonState.clNoConnection.isGone = false
+                            binding.layoutCommonState.ivNoConnection.isGone = false
+                            StyleableToast.makeText(
+                                requireContext(),
+                                "tidak ada internet",
+                                R.style.failedtoast
+                            ).show()
+                        }
+                    }
                 },
                 doOnEmpty = {
                     binding.rvCategoryPopular.isVisible = false
@@ -274,6 +345,38 @@ class HomeFragment : Fragment() {
                     binding.layoutStateCoursePopular.clDataEmpty.isVisible = false
                     binding.layoutStateCoursePopular.tvDataEmpty.isVisible = false
                     binding.layoutStateCoursePopular.ivDataEmpty.isVisible = false
+
+                    if (it.exception is ApiException) {
+                        if (it.exception.getParsedErrorCourse()?.success == false) {
+                            if (it.exception.httpCode == 500) {
+                                binding.layoutCommonState.clServerError.isGone = false
+                                binding.layoutCommonState.ivServerError.isGone = false
+                                StyleableToast.makeText(
+                                    requireContext(),
+                                    "SERVER ERROR",
+                                    R.style.failedtoast
+                                ).show()
+                            } else if (it.exception.getParsedErrorCourse()?.success == false) {
+                                binding.layoutCommonState.tvError.text =
+                                    it.exception.getParsedErrorCourse()?.message
+                                StyleableToast.makeText(
+                                    requireContext(),
+                                    it.exception.getParsedErrorCourse()?.message,
+                                    R.style.failedtoast
+                                ).show()
+                            }
+                        }
+                    } else if (it.exception is NoInternetException) {
+                        if (!it.exception.isNetworkAvailable(requireContext())) {
+                            binding.layoutCommonState.clNoConnection.isGone = false
+                            binding.layoutCommonState.ivNoConnection.isGone = false
+                            StyleableToast.makeText(
+                                requireContext(),
+                                "tidak ada internet",
+                                R.style.failedtoast
+                            ).show()
+                        }
+                    }
                 },
                 doOnEmpty = {
                     binding.rvPopularCourse.isVisible = false

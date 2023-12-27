@@ -8,6 +8,8 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.widget.SearchView
+import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
@@ -24,7 +26,11 @@ import com.kelompoksatuandsatu.preducation.presentation.common.adapter.classprog
 import com.kelompoksatuandsatu.preducation.presentation.feature.detailclass.DetailClassActivity
 import com.kelompoksatuandsatu.preducation.presentation.feature.home.SeeAllPopularCoursesActivity
 import com.kelompoksatuandsatu.preducation.presentation.feature.login.LoginActivity
+import com.kelompoksatuandsatu.preducation.presentation.feature.register.RegisterActivity
+import com.kelompoksatuandsatu.preducation.utils.exceptions.ApiException
+import com.kelompoksatuandsatu.preducation.utils.exceptions.NoInternetException
 import com.kelompoksatuandsatu.preducation.utils.proceedWhen
+import io.github.muddz.styleabletoast.StyleableToast
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class ProgressClassFragment : Fragment() {
@@ -247,11 +253,50 @@ class ProgressClassFragment : Fragment() {
                     binding.layoutStateCourseProgress.root.isVisible = true
                     binding.layoutStateCourseProgress.tvError.isVisible = false
                     binding.layoutStateCourseProgress.pbLoading.isVisible = false
+                    binding.layoutStateCourseProgress.tvError.isVisible = true
+
+                    if (it.exception is ApiException) {
+                        if (it.exception.getParsedErrorProgressClass()?.success == false) {
+                            if (it.exception.httpCode == 500) {
+                                binding.layoutCommonState.clServerError.isGone = false
+                                binding.layoutCommonState.ivServerError.isGone = false
+                                StyleableToast.makeText(
+                                    requireContext(),
+                                    "SERVER ERROR",
+                                    R.style.failedtoast
+                                ).show()
+                            } else if (it.exception.getParsedErrorProgressClass()?.success == false) {
+                                binding.layoutCommonState.tvError.text =
+                                    it.exception.getParsedErrorProgressClass()?.message
+                                StyleableToast.makeText(
+                                    requireContext(),
+                                    it.exception.getParsedErrorProgressClass()?.message,
+                                    R.style.failedtoast
+                                ).show()
+                            }
+                        }
+                    } else if (it.exception is NoInternetException) {
+                        if (!it.exception.isNetworkAvailable(requireContext())) {
+                            binding.layoutCommonState.clNoConnection.isGone = false
+                            binding.layoutCommonState.ivNoConnection.isGone = false
+                            StyleableToast.makeText(
+                                requireContext(),
+                                "tidak ada internet",
+                                R.style.failedtoast
+                            ).show()
+                        }
+                    }
                     binding.layoutStateCourseProgress.clDataEmpty.isVisible = true
                     binding.layoutStateCourseProgress.tvDataEmpty.isVisible = true
                     binding.layoutStateCourseProgress.ivDataEmpty.isVisible = false
                 }
             )
+        }
+
+        viewModel.isUserLogin.observe(viewLifecycleOwner) { isLogin ->
+            if (!isLogin) {
+                showDialog()
+            }
         }
     }
 

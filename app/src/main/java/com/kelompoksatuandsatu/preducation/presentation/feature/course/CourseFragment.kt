@@ -8,6 +8,8 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.widget.SearchView
+import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
@@ -23,6 +25,11 @@ import com.kelompoksatuandsatu.preducation.presentation.common.adapter.course.Co
 import com.kelompoksatuandsatu.preducation.presentation.feature.detailclass.DetailClassActivity
 import com.kelompoksatuandsatu.preducation.presentation.feature.filter.FilterFragment
 import com.kelompoksatuandsatu.preducation.presentation.feature.register.RegisterActivity
+import com.kelompoksatuandsatu.preducation.presentation.feature.filter.FilterActivity
+import com.kelompoksatuandsatu.preducation.presentation.feature.register.RegisterActivity
+import com.kelompoksatuandsatu.preducation.utils.exceptions.ApiException
+import com.kelompoksatuandsatu.preducation.utils.exceptions.NoInternetException
+import com.kelompoksatuandsatu.preducation.presentation.feature.login.LoginActivity
 import com.kelompoksatuandsatu.preducation.presentation.feature.search.SearchActivity
 import com.kelompoksatuandsatu.preducation.utils.proceedWhen
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -52,6 +59,24 @@ class CourseFragment : Fragment(), FilterFragment.OnFilterListener {
     private val categoryTypeClassAdapter: CategoryRoundedCourseListAdapter by lazy {
         CategoryRoundedCourseListAdapter(viewModel) {
             viewModel.getCourse(null, it.nameCategory.lowercase())
+        }
+    }
+
+    private val searchView: SearchView by lazy {
+        binding.clSearchBar.findViewById(R.id.sv_search)
+    }
+
+    private val searchQueryListener = object : SearchView.OnQueryTextListener {
+        override fun onQueryTextSubmit(query: String?): Boolean {
+            query?.let {
+                typeCourseAdapter.filter(it)
+//                observeIsFilterEmpty()
+            }
+            return true
+        }
+
+        override fun onQueryTextChange(newText: String?): Boolean {
+            return false
         }
     }
 
@@ -171,6 +196,38 @@ class CourseFragment : Fragment(), FilterFragment.OnFilterListener {
                     binding.layoutStateCategoryType.clDataEmpty.isVisible = true
                     binding.layoutStateCategoryType.tvDataEmpty.isVisible = true
                     binding.layoutStateCategoryType.ivDataEmpty.isVisible = false
+
+                    if (it.exception is ApiException) {
+                        if (it.exception.getParsedErrorCategoriesType()?.success == false) {
+                            if (it.exception.httpCode == 500) {
+                                binding.layoutCommonState.clServerError.isGone = false
+                                binding.layoutCommonState.ivServerError.isGone = false
+                                StyleableToast.makeText(
+                                    requireContext(),
+                                    "SERVER ERROR",
+                                    R.style.failedtoast
+                                ).show()
+                            } else if (it.exception.getParsedErrorCategoriesType()?.success == false) {
+                                binding.layoutCommonState.tvError.text =
+                                    it.exception.getParsedErrorCategoriesType()?.message
+                                StyleableToast.makeText(
+                                    requireContext(),
+                                    it.exception.getParsedErrorCategoriesType()?.message,
+                                    R.style.failedtoast
+                                ).show()
+                            }
+                        }
+                    } else if (it.exception is NoInternetException) {
+                        if (!it.exception.isNetworkAvailable(requireContext())) {
+                            binding.layoutCommonState.clNoConnection.isGone = false
+                            binding.layoutCommonState.ivNoConnection.isGone = false
+                            StyleableToast.makeText(
+                                requireContext(),
+                                "tidak ada internet",
+                                R.style.failedtoast
+                            ).show()
+                        }
+                    }
                 }
             )
         }
@@ -229,6 +286,39 @@ class CourseFragment : Fragment(), FilterFragment.OnFilterListener {
                     binding.layoutStateCourse.clDataEmpty.isVisible = true
                     binding.layoutStateCourse.tvDataEmpty.isVisible = true
                     binding.layoutStateCourse.ivDataEmpty.isVisible = false
+                    binding.layoutStateCourse.tvError.isVisible = true
+
+                    if (it.exception is ApiException) {
+                        if (it.exception.getParsedErrorCourse()?.success == false) {
+                            if (it.exception.httpCode == 500) {
+                                binding.layoutCommonState.clServerError.isGone = false
+                                binding.layoutCommonState.ivServerError.isGone = false
+                                StyleableToast.makeText(
+                                    requireContext(),
+                                    "SERVER ERROR",
+                                    R.style.failedtoast
+                                ).show()
+                            } else if (it.exception.getParsedErrorCourse()?.success == false) {
+                                binding.layoutCommonState.tvError.text =
+                                    it.exception.getParsedErrorCourse()?.message
+                                StyleableToast.makeText(
+                                    requireContext(),
+                                    it.exception.getParsedErrorCourse()?.message,
+                                    R.style.failedtoast
+                                ).show()
+                            }
+                        }
+                    } else if (it.exception is NoInternetException) {
+                        if (!it.exception.isNetworkAvailable(requireContext())) {
+                            binding.layoutCommonState.clNoConnection.isGone = false
+                            binding.layoutCommonState.ivNoConnection.isGone = false
+                            StyleableToast.makeText(
+                                requireContext(),
+                                "tidak ada internet",
+                                R.style.failedtoast
+                            ).show()
+                        }
+                    }
                 }
             )
         }
@@ -244,7 +334,7 @@ class CourseFragment : Fragment(), FilterFragment.OnFilterListener {
         }.show()
 
         binding.clSignIn.setOnClickListener {
-            val intent = Intent(requireContext(), RegisterActivity::class.java)
+            val intent = Intent(requireContext(), LoginActivity::class.java)
             startActivity(intent)
         }
     }

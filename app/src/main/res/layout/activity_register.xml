@@ -10,13 +10,28 @@
     tools:ignore="ScrollViewCount">
 
     <LinearLayout
+        android:id="@+id/registerLayout1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingHorizontal="16dp">
+
+        <include
+            android:id="@+id/layout_common_state"
+            layout="@layout/common_layout_content_state"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone" />
+
+    <LinearLayout
         android:id="@+id/registerLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:paddingHorizontal="16dp">
 
-        <!-- Logo -->
+
+    <!-- Logo -->
         <ImageView
             android:id="@+id/logo"
             android:layout_width="210dp"
@@ -260,6 +275,7 @@
             android:text="@string/text_already_have_an_account"
             android:textSize="16sp" />
 
+    </LinearLayout>
     </LinearLayout>
 
 </androidx.core.widget.NestedScrollView>

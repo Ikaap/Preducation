@@ -8,6 +8,21 @@
     android:padding="16dp"
     tools:context="com.kelompoksatuandsatu.preducation.presentation.feature.login.LoginActivity">
 
+
+    <LinearLayout
+        android:id="@+id/loginLayout1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingHorizontal="16dp">
+
+        <include
+            android:id="@+id/layout_common_state"
+            layout="@layout/common_layout_content_state"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone" />
+
     <LinearLayout
         android:id="@+id/loginLayout"
         android:layout_width="match_parent"
@@ -211,6 +226,7 @@
             android:text="@string/text_enter_without_logging_in"
             android:textSize="16sp" />
 
+    </LinearLayout>
     </LinearLayout>
 
 </androidx.core.widget.NestedScrollView>
