@@ -134,12 +134,22 @@ class CourseRepositoryImpl(
 //            val apiResult = apiDataSource.getCategoriesProgress()
 //            apiResult.data?.toCategoryProgressList() ?: emptyList()
             apiDataSource.getCategoriesProgress().data?.toCategoryProgressList() ?: emptyList()
+        }.catch {
+            emit(ResultWrapper.Error(Exception(it)))
+        }.onStart {
+            emit(ResultWrapper.Loading())
+            delay(2000)
         }
     }
 
     override fun getCourseUserProgress(status: String?): Flow<ResultWrapper<List<CourseProgressItemClass>>> {
         return proceedFlow {
             apiDataSource.getCourseUserProgress(status).data?.toCourseProgressList() ?: emptyList()
+        }.catch {
+            emit(ResultWrapper.Error(Exception(it)))
+        }.onStart {
+            emit(ResultWrapper.Loading())
+            delay(2000)
         }
     }
 
