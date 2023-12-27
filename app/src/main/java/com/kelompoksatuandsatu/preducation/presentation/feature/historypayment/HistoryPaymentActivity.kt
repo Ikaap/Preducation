@@ -9,13 +9,12 @@ import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.kelompoksatuandsatu.preducation.R
-import com.kelompoksatuandsatu.preducation.data.network.api.model.payment.history.CourseItem
 import com.kelompoksatuandsatu.preducation.databinding.ActivityTransactionBinding
 import com.kelompoksatuandsatu.preducation.presentation.common.adapter.history.HistoryPaymentListAdapter
-import com.kelompoksatuandsatu.preducation.presentation.feature.detailclass.DetailClassActivity
 import com.kelompoksatuandsatu.preducation.utils.exceptions.ApiException
 import com.kelompoksatuandsatu.preducation.utils.exceptions.NoInternetException
 import com.kelompoksatuandsatu.preducation.utils.proceedWhen
+import io.github.muddz.styleabletoast.StyleableToast
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class HistoryPaymentActivity : AppCompatActivity() {
@@ -25,15 +24,7 @@ class HistoryPaymentActivity : AppCompatActivity() {
     private val viewModel: HistoryPaymentViewModel by viewModel()
 
     private val historyAdapter: HistoryPaymentListAdapter by lazy {
-        HistoryPaymentListAdapter {
-            navigateToDetail(it)
-        }
-    }
-
-    private fun navigateToDetail(it: CourseItem) {
-        val intent = Intent(this, DetailClassActivity::class.java)
-        intent.putExtra(EXTRA_DETAIL_COURSE_ID, it.courseId?.id)
-        startActivity(intent)
+        HistoryPaymentListAdapter {}
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -65,13 +56,6 @@ class HistoryPaymentActivity : AppCompatActivity() {
         viewModel.payment.observe(this) {
             it.proceedWhen(
                 doOnSuccess = {
-                    binding.layoutStateHistory.root.isGone = true
-                    binding.layoutStateHistory.pbLoading.isGone = true
-                    binding.layoutStateHistory.tvError.isGone = true
-                    binding.layoutStateHistory.clErrorState.isGone = true
-                    binding.layoutStateHistory.tvErrorState.isGone = true
-                    binding.layoutStateHistory.ivErrorState.isGone = true
-
                     binding.rvHistory.apply {
                         isVisible = true
                         adapter = historyAdapter
@@ -86,52 +70,42 @@ class HistoryPaymentActivity : AppCompatActivity() {
                     }
                 },
                 doOnLoading = {
+                    binding.root.isVisible = true
                     binding.rvHistory.isVisible = false
-                    binding.layoutStateHistory.root.isGone = false
-                    binding.layoutStateHistory.pbLoading.isGone = false
-                    binding.layoutStateHistory.tvError.isGone = true
-                    binding.layoutStateHistory.clErrorState.isGone = true
-                    binding.layoutStateHistory.tvErrorState.isGone = true
-                    binding.layoutStateHistory.ivErrorState.isGone = true
-                },
-                doOnEmpty = {
-                    binding.rvHistory.isVisible = false
-                    binding.layoutStateHistory.root.isGone = false
-                    binding.layoutStateHistory.pbLoading.isGone = true
-                    binding.layoutStateHistory.tvError.isGone = true
-                    binding.layoutStateHistory.clErrorState.isGone = false
-                    binding.layoutStateHistory.tvErrorState.isGone = false
-                    binding.layoutStateHistory.tvErrorState.text = "Data empty"
-                    binding.layoutStateHistory.ivErrorState.isGone = false
                 },
                 doOnError = {
+                    binding.root.isVisible = true
                     binding.rvHistory.isVisible = false
-                    binding.layoutStateHistory.root.isGone = false
-                    binding.layoutStateHistory.pbLoading.isGone = true
-                    binding.layoutStateHistory.tvError.isGone = false
-                    binding.layoutStateHistory.tvError.text = it.exception?.message.toString()
 
                     if (it.exception is ApiException) {
                         if (it.exception.getParsedErrorHistoryPayment()?.success == false) {
-                            binding.layoutStateHistory.tvError.text =
-                                it.exception.getParsedErrorHistoryPayment()?.message
                             if (it.exception.httpCode == 500) {
-                                binding.layoutStateHistory.clErrorState.isGone = false
-                                binding.layoutStateHistory.ivErrorState.isGone = false
-                                binding.layoutStateHistory.tvErrorState.isGone = false
-                                binding.layoutStateHistory.tvErrorState.text =
-                                    "Sorry, there's an error on the server"
-                                binding.layoutStateHistory.ivErrorState.setImageResource(R.drawable.img_server_error)
+                                binding.layoutCommonState.clServerError.isGone = false
+                                binding.layoutCommonState.ivServerError.isGone = false
+                                StyleableToast.makeText(
+                                    this,
+                                    "SERVER ERROR",
+                                    R.style.failedtoast
+                                ).show()
+                            } else if (it.exception.getParsedErrorHistoryPayment()?.success == false) {
+                                binding.layoutCommonState.tvError.text =
+                                    it.exception.getParsedErrorHistoryPayment()?.message
+                                StyleableToast.makeText(
+                                    this,
+                                    it.exception.getParsedErrorHistoryPayment()?.message,
+                                    R.style.failedtoast
+                                ).show()
                             }
                         }
                     } else if (it.exception is NoInternetException) {
                         if (!it.exception.isNetworkAvailable(this)) {
-                            binding.layoutStateHistory.clErrorState.isGone = false
-                            binding.layoutStateHistory.ivErrorState.isGone = false
-                            binding.layoutStateHistory.tvErrorState.isGone = false
-                            binding.layoutStateHistory.tvErrorState.text =
-                                "Oops!\nYou're not connection"
-                            binding.layoutStateHistory.ivErrorState.setImageResource(R.drawable.img_no_connection)
+                            binding.layoutCommonState.clNoConnection.isGone = false
+                            binding.layoutCommonState.ivNoConnection.isGone = false
+                            StyleableToast.makeText(
+                                this,
+                                "tidak ada internet",
+                                R.style.failedtoast
+                            ).show()
                         }
                     }
                 }
@@ -144,8 +118,6 @@ class HistoryPaymentActivity : AppCompatActivity() {
     }
 
     companion object {
-        const val EXTRA_DETAIL_COURSE_ID = "EXTRA_DETAIL_COURSE_ID"
-
         fun startActivity(context: Context) {
             val intent = Intent(context, HistoryPaymentActivity::class.java)
             context.startActivity(intent)

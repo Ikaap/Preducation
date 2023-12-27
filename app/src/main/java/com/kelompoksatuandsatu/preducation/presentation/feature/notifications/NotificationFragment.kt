@@ -1,26 +1,22 @@
 package com.kelompoksatuandsatu.preducation.presentation.feature.notifications
 
 import android.annotation.SuppressLint
-import android.app.AlertDialog
-import android.content.Intent
-import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import android.widget.Toast.makeText
+import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.kelompoksatuandsatu.preducation.R
 import com.kelompoksatuandsatu.preducation.databinding.FragmentNotificationBinding
-import com.kelompoksatuandsatu.preducation.databinding.LayoutDialogAccessFeatureBinding
 import com.kelompoksatuandsatu.preducation.presentation.feature.notifications.adapter.NotificationAdapter
-import com.kelompoksatuandsatu.preducation.presentation.feature.register.RegisterActivity
 import com.kelompoksatuandsatu.preducation.utils.AssetWrapper
 import com.kelompoksatuandsatu.preducation.utils.exceptions.ApiException
+import com.kelompoksatuandsatu.preducation.utils.exceptions.NoInternetException
 import com.kelompoksatuandsatu.preducation.utils.proceedWhen
 import io.github.muddz.styleabletoast.StyleableToast
 import org.koin.android.ext.android.inject
@@ -37,15 +33,11 @@ class NotificationFragment : Fragment() {
     private val assetWrapper: AssetWrapper by inject()
 
     private val viewModelModule = module {
-        viewModel { NotificationViewModel(get(), get()) }
+        viewModel { NotificationViewModel(get()) }
     }
 
     private val notificationAdapter: NotificationAdapter by lazy {
         NotificationAdapter()
-    }
-
-    private fun navigateToMain() {
-        findNavController().navigate(R.id.notification_navigate_to_home)
     }
 
     override fun onCreateView(
@@ -53,15 +45,6 @@ class NotificationFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        viewModel.checkLogin()
-
-        viewModel.isUserLogin.observe(viewLifecycleOwner) { isLogin ->
-            if (!isLogin) {
-                showDialogNotification()
-                navigateToMain()
-            }
-        }
-
         binding = FragmentNotificationBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -105,7 +88,7 @@ class NotificationFragment : Fragment() {
                 doOnLoading = {
                     binding.rvNotification.isVisible = false
                     binding.shimmerNotification.isVisible = true
-                    binding.layoutStateNotification.root.isVisible = false
+                    binding.layoutStateNotification.root.isVisible = true
                     binding.layoutStateNotification.tvError.isVisible = false
                 },
                 doOnError = { error ->
@@ -177,21 +160,6 @@ class NotificationFragment : Fragment() {
                     binding.rvNotification.isVisible = false
                 }
             )
-        }
-    }
-
-    private fun showDialogNotification() {
-        val binding: LayoutDialogAccessFeatureBinding = LayoutDialogAccessFeatureBinding.inflate(layoutInflater)
-        val dialog = AlertDialog.Builder(requireContext(), 0).create()
-
-        dialog.apply {
-            setView(binding.root)
-            window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-        }.show()
-
-        binding.clSignUp.setOnClickListener {
-            val intent = Intent(requireContext(), RegisterActivity::class.java)
-            startActivity(intent)
         }
     }
 }

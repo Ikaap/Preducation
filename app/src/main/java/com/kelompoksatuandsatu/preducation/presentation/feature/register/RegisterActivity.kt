@@ -3,7 +3,9 @@ package com.kelompoksatuandsatu.preducation.presentation.feature.register
 import android.content.Intent
 import android.os.Bundle
 import android.util.Patterns
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import com.kelompoksatuandsatu.preducation.R
 import com.kelompoksatuandsatu.preducation.databinding.ActivityRegisterBinding
@@ -154,14 +156,17 @@ class RegisterActivity : AppCompatActivity() {
     private fun observeResult() {
         viewModel.registerResult.observe(this) {
             it.proceedWhen(
-                doOnSuccess = {
+                doOnSuccess = { resultWrapper ->
+                    val response = resultWrapper.payload
                     StyleableToast.makeText(
                         this,
-                        "Register Successful",
+                        "${response?.message}",
                         R.style.successtoast
                     ).show()
+
                     it.payload?.let {
                         viewModel.saveIdUser(it.data.id.orEmpty())
+                        Toast.makeText(this, "user id : ${it.data.id}", Toast.LENGTH_SHORT).show()
                     }
                     navigateToOtp()
                 },
@@ -169,29 +174,45 @@ class RegisterActivity : AppCompatActivity() {
                     binding.pbLoading.isVisible = true
                     binding.signUpButton.isVisible = false
                 },
-                doOnError = {
+                doOnError = { resultWrapper ->
                     binding.pbLoading.isVisible = false
                     binding.signUpButton.isVisible = true
+                    binding.signUpButton.isEnabled = true
 
+                    val apiException = resultWrapper.exception as? ApiException
+                    val message = apiException?.getParsedError()?.message.orEmpty()
+                    StyleableToast.makeText(
+                        this,
+                        "$message",
+                        R.style.failedtoast
+                    ).show()
                     if (it.exception is ApiException) {
-                        if (it.exception.httpCode == 400) {
-                            StyleableToast.makeText(
-                                this,
-                                it.exception.getParsedErrorResister()?.message,
-                                R.style.failedtoast
-                            ).show()
-                        } else if (it.exception.httpCode == 500) {
-                            StyleableToast.makeText(
-                                this,
-                                "Server Error",
-                                R.style.failedtoast
-                            ).show()
+                        if (it.exception.getParsedErrorResister()?.success == false) {
+                            if (it.exception.httpCode == 500) {
+                                binding.layoutCommonState.clServerError.isGone = false
+                                binding.layoutCommonState.ivServerError.isGone = false
+                                StyleableToast.makeText(
+                                    this,
+                                    "SERVER ERROR",
+                                    R.style.failedtoast
+                                ).show()
+                            } else if (it.exception.getParsedErrorResister()?.success == false) {
+                                binding.layoutCommonState.tvError.text =
+                                    it.exception.getParsedErrorResister()?.message
+                                StyleableToast.makeText(
+                                    this,
+                                    it.exception.getParsedErrorResister()?.message,
+                                    R.style.failedtoast
+                                ).show()
+                            }
                         }
                     } else if (it.exception is NoInternetException) {
                         if (!it.exception.isNetworkAvailable(this)) {
+                            binding.layoutCommonState.clNoConnection.isGone = false
+                            binding.layoutCommonState.ivNoConnection.isGone = false
                             StyleableToast.makeText(
                                 this,
-                                "No Internet",
+                                "tidak ada internet",
                                 R.style.failedtoast
                             ).show()
                         }

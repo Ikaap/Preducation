@@ -3,7 +3,9 @@ package com.kelompoksatuandsatu.preducation.presentation.feature.login
 import android.content.Intent
 import android.os.Bundle
 import android.util.Patterns
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import com.kelompoksatuandsatu.preducation.R
 import com.kelompoksatuandsatu.preducation.databinding.ActivityLoginBinding
@@ -59,7 +61,6 @@ class LoginActivity : AppCompatActivity() {
         }
         startActivity(intent)
     }
-
     private fun navigateToForgotPass() {
         val intent = Intent(this, ForgotPasswordNewActivity::class.java).apply {
             flags = Intent.FLAG_ACTIVITY_SINGLE_TOP or Intent.FLAG_ACTIVITY_CLEAR_TOP
@@ -76,6 +77,7 @@ class LoginActivity : AppCompatActivity() {
                 email,
                 password
             )
+
             viewModel.userLogin(userAuth)
         }
     }
@@ -127,14 +129,16 @@ class LoginActivity : AppCompatActivity() {
     private fun observeResult() {
         viewModel.loginResult.observe(this) {
             it.proceedWhen(
-                doOnSuccess = {
+                doOnSuccess = { resultWrapper ->
+                    val response = resultWrapper.payload
                     StyleableToast.makeText(
                         this,
-                        "Login Successful",
+                        "${response?.message}",
                         R.style.successtoast
                     ).show()
                     it.payload?.let {
                         viewModel.saveIdUser(it.data.id)
+                        Toast.makeText(this, "user id login : ${it.data.id}", Toast.LENGTH_SHORT).show()
                     }
                     navigateToMain()
                 },
@@ -142,36 +146,47 @@ class LoginActivity : AppCompatActivity() {
                     binding.pbLoading.isVisible = true
                     binding.signInButton.isVisible = false
                 },
-                doOnError = {
+                doOnError = { resultWrapper ->
                     binding.pbLoading.isVisible = false
                     binding.signInButton.isVisible = true
                     binding.signInButton.isEnabled = true
+                    binding.loginLayout.isVisible = false
+
+                    val apiException = resultWrapper.exception as? ApiException
+                    val message = apiException?.getParsedError()?.message.orEmpty()
+                    StyleableToast.makeText(
+                        this,
+                        "$message",
+                        R.style.failedtoast
+                    ).show()
 
                     if (it.exception is ApiException) {
-                        if (it.exception.httpCode == 400) {
-                            StyleableToast.makeText(
-                                this,
-                                it.exception.getParsedErrorLogin()?.message,
-                                R.style.failedtoast
-                            ).show()
-                        } else if (it.exception.httpCode == 404) {
-                            StyleableToast.makeText(
-                                this,
-                                it.exception.getParsedErrorLogin()?.message,
-                                R.style.failedtoast
-                            ).show()
-                        } else if (it.exception.httpCode == 500) {
-                            StyleableToast.makeText(
-                                this,
-                                "Server Error",
-                                R.style.failedtoast
-                            ).show()
+                        if (it.exception.getParsedErrorLogin()?.success == false) {
+                            if (it.exception.httpCode == 500) {
+                                binding.layoutCommonState.clServerError.isGone = false
+                                binding.layoutCommonState.ivServerError.isGone = false
+                                StyleableToast.makeText(
+                                    this,
+                                    "SERVER ERROR",
+                                    R.style.failedtoast
+                                ).show()
+                            } else if (it.exception.getParsedErrorLogin()?.success == false) {
+                                binding.layoutCommonState.tvError.text =
+                                    it.exception.getParsedErrorLogin()?.message
+                                StyleableToast.makeText(
+                                    this,
+                                    it.exception.getParsedErrorLogin()?.message,
+                                    R.style.failedtoast
+                                ).show()
+                            }
                         }
                     } else if (it.exception is NoInternetException) {
                         if (!it.exception.isNetworkAvailable(this)) {
+                            binding.layoutCommonState.clNoConnection.isGone = false
+                            binding.layoutCommonState.ivNoConnection.isGone = false
                             StyleableToast.makeText(
                                 this,
-                                "No Internet",
+                                "tidak ada internet",
                                 R.style.failedtoast
                             ).show()
                         }
