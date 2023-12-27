@@ -3,12 +3,15 @@ package com.kelompoksatuandsatu.preducation.presentation.feature.editprofile
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.drawable.BitmapDrawable
 import android.net.Uri
 import android.os.Bundle
 import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.net.toFile
+import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import coil.load
 import com.github.dhaval2404.imagepicker.ImagePicker
@@ -16,12 +19,12 @@ import com.google.android.material.textfield.TextInputLayout
 import com.kelompoksatuandsatu.preducation.R
 import com.kelompoksatuandsatu.preducation.data.network.api.model.user.UserRequest
 import com.kelompoksatuandsatu.preducation.databinding.ActivityEditProfileBinding
+import com.kelompoksatuandsatu.preducation.utils.exceptions.ApiException
+import com.kelompoksatuandsatu.preducation.utils.exceptions.NoInternetException
 import com.kelompoksatuandsatu.preducation.utils.proceedWhen
 import io.github.muddz.styleabletoast.StyleableToast
-import okhttp3.MediaType.Companion.toMediaTypeOrNull
-import okhttp3.MultipartBody
-import okhttp3.RequestBody.Companion.asRequestBody
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import java.io.ByteArrayOutputStream
 import java.io.File
 
 class EditProfileActivity : AppCompatActivity() {
@@ -114,6 +117,38 @@ class EditProfileActivity : AppCompatActivity() {
                 doOnError = {
                     binding.root.isVisible = true
                     binding.ivAddPhotoUser.isVisible = false
+
+                    if (it.exception is ApiException) {
+                        if (it.exception.getParsedErrorProfile()?.success == false) {
+                            if (it.exception.httpCode == 500) {
+                                binding.layoutCommonState.clServerError.isGone = false
+                                binding.layoutCommonState.ivServerError.isGone = false
+                                StyleableToast.makeText(
+                                    this,
+                                    "SERVER ERROR",
+                                    R.style.failedtoast
+                                ).show()
+                            } else if (it.exception.getParsedErrorProfile()?.success == false) {
+                                binding.layoutCommonState.tvError.text =
+                                    it.exception.getParsedErrorProfile()?.message
+                                StyleableToast.makeText(
+                                    this,
+                                    it.exception.getParsedErrorProfile()?.message,
+                                    R.style.failedtoast
+                                ).show()
+                            }
+                        }
+                    } else if (it.exception is NoInternetException) {
+                        if (!it.exception.isNetworkAvailable(this)) {
+                            binding.layoutCommonState.clNoConnection.isGone = false
+                            binding.layoutCommonState.ivNoConnection.isGone = false
+                            StyleableToast.makeText(
+                                this,
+                                "tidak ada internet",
+                                R.style.failedtoast
+                            ).show()
+                        }
+                    }
                 }
             )
         }
@@ -181,6 +216,8 @@ class EditProfileActivity : AppCompatActivity() {
     private fun changeProfileData() {
         val name = binding.etLongName.text.toString().trim()
         val phone = binding.etPhoneNumber.text.toString().trim()
+        val imageBytes: ByteArray? = getFile?.let { getImageBytes() }
+        val imageProfile: String? = imageBytes?.let { encodeImageToBase64(it) }
         val country = binding.etCountry.text.toString().trim()
         val city = binding.etCity.text.toString().trim()
 
@@ -188,25 +225,28 @@ class EditProfileActivity : AppCompatActivity() {
             email = email,
             phone = phone,
             name = name,
-            imageProfile = null,
+            imageProfile = imageProfile,
             country = country,
             city = city
         )
 
-        val requestFile = getFile?.asRequestBody("image/jpeg".toMediaTypeOrNull())
-        val imageMultipart: MultipartBody.Part? =
-            requestFile?.let {
-                MultipartBody.Part.createFormData(
-                    "image",
-                    getFile?.name ?: "",
-                    it
-                )
-            }
+        viewModel.updateProfile(userRequest)
+    }
 
-        if (imageMultipart != null) {
-            viewModel.updateProfile(userRequest)
-        } else {
-            viewModel.updateProfile(userRequest)
+    private fun getImageBytes(): ByteArray? {
+        val drawable = binding.ivUserPhoto.drawable
+        val bitmap = (drawable as? BitmapDrawable)?.bitmap
+
+        return bitmap?.let { bitmap ->
+            val stream = ByteArrayOutputStream()
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream)
+            stream.toByteArray()
+        }
+    }
+
+    private fun encodeImageToBase64(imageBytes: ByteArray?): String? {
+        return imageBytes?.let {
+            android.util.Base64.encodeToString(it, android.util.Base64.DEFAULT)
         }
     }
 
