@@ -12,10 +12,10 @@ import com.kelompoksatuandsatu.preducation.data.network.api.model.auth.register.
 import com.kelompoksatuandsatu.preducation.data.network.api.model.auth.register.RegisterResponse
 import com.kelompoksatuandsatu.preducation.data.network.api.model.changepassword.ChangePasswordRequest
 import com.kelompoksatuandsatu.preducation.data.network.api.model.changepassword.ChangePasswordResponse
-import com.kelompoksatuandsatu.preducation.data.network.api.model.user.UserRequest
 import com.kelompoksatuandsatu.preducation.data.network.api.model.user.UserResponse
 import com.kelompoksatuandsatu.preducation.data.network.api.service.PreducationService
-import com.kelompoksatuandsatu.preducation.model.auth.otp.verifyotp.OtpResponse
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import retrofit2.Response
 
 interface UserDataSource {
@@ -28,8 +28,21 @@ interface UserDataSource {
     suspend fun verifyOtp(otpRequest: OtpRequest): com.kelompoksatuandsatu.preducation.data.network.api.model.auth.otp.verifyotp.OtpResponse
 
     suspend fun getUserById(id: String): UserResponse
-    suspend fun updateUserById(id: String, userRequest: UserRequest): UserResponse
-    suspend fun updateUserPassword(id: String, passwordRequest: ChangePasswordRequest): ChangePasswordResponse
+    suspend fun updateUserById(
+        id: String,
+        name: RequestBody?,
+        email: RequestBody?,
+        phone: RequestBody?,
+        country: RequestBody?,
+        city: RequestBody?,
+        imageProfile: MultipartBody.Part?
+    ): UserResponse
+
+    suspend fun updateUserPassword(
+        id: String,
+        passwordRequest: ChangePasswordRequest
+    ): ChangePasswordResponse
+
     suspend fun userLogout(): Response<LogoutResponse>
     suspend fun userForgotPassword(forgotPasswordRequest: ForgotPasswordRequest): ForgotPasswordResponse
 }
@@ -42,6 +55,7 @@ class UserDataSourceImpl(private val service: PreducationService) : UserDataSour
     override suspend fun userLogin(userLoginRequest: LoginRequest): LoginResponse {
         return service.userLogin(userLoginRequest)
     }
+
     override suspend fun getUserById(id: String): UserResponse {
         return service.getUserById(id)
     }
@@ -54,17 +68,29 @@ class UserDataSourceImpl(private val service: PreducationService) : UserDataSour
         return service.verifyOtp(otpRequest)
     }
 
-    override suspend fun updateUserById(id: String, userRequest: UserRequest): UserResponse {
-        return service.updateUserById(id, userRequest)
+    override suspend fun updateUserById(
+        id: String,
+        name: RequestBody?,
+        email: RequestBody?,
+        phone: RequestBody?,
+        country: RequestBody?,
+        city: RequestBody?,
+        imageProfile: MultipartBody.Part?
+    ): UserResponse {
+        return service.updateUserById(id, name, email, phone, country, city, imageProfile)
     }
 
-    override suspend fun updateUserPassword(id: String, passwordRequest: ChangePasswordRequest): ChangePasswordResponse {
+    override suspend fun updateUserPassword(
+        id: String,
+        passwordRequest: ChangePasswordRequest
+    ): ChangePasswordResponse {
         return service.updateUserPassword(id, passwordRequest)
     }
 
     override suspend fun userForgotPassword(forgotPasswordRequest: ForgotPasswordRequest): ForgotPasswordResponse {
         return service.userForgotPassword(forgotPasswordRequest)
     }
+
     override suspend fun userLogout(): Response<LogoutResponse> {
         return service.userLogout()
     }

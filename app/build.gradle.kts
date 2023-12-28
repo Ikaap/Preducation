@@ -156,4 +156,8 @@ dependencies {
 
     // image picker
     implementation("com.github.dhaval2404:imagepicker:2.1")
+
+    // form data
+    implementation("com.squareup.retrofit2:retrofit:2.9.0")
+    implementation("com.squareup.retrofit2:converter-gson:2.9.0")
 }
