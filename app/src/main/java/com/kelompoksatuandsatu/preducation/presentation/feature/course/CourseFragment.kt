@@ -67,6 +67,17 @@ class CourseFragment : Fragment() {
         override fun onQueryTextChange(newText: String?): Boolean {
             return false
         }
+
+//        override fun onFilterApplied(
+//            search: String?,
+//            type: String?,
+//            category: List<Int>?,
+//        ) {
+//            searchQuery = search
+//            selectedType = type
+//            selectedCategories = category
+//            viewModel.getCourseTopic(searchQuery, selectedType, category)
+//        }
     }
 
     private fun navigateToDetail(course: CourseViewParam) {

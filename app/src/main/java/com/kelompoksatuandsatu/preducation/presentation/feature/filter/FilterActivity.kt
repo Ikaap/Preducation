@@ -106,4 +106,14 @@ class FilterActivity : AppCompatActivity() {
         setResult(Activity.RESULT_OK, resultIntent)
         finish()
     }
+
+    private fun applyFilter() {
+        val searchQuery = viewModel.searchQuery.value
+        val selectedType = viewModel.selectedType.value
+        val selectedCategories = viewModel.selectedCategories.value
+
+//        filterListener?.onFilterApplied(selectedCategories, searchQuery, selectedType)
+//        dismiss()
+    }
+
 }
