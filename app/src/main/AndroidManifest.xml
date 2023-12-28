@@ -88,7 +88,7 @@
         <activity
             android:name=".presentation.feature.main.MainActivity"
             android:exported="false"
-            android:windowSoftInputMode="adjustPan" />
+            android:windowSoftInputMode="adjustPan"/>
     </application>
 
 </manifest>

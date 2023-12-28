@@ -85,10 +85,11 @@ class CourseFragment : Fragment() {
         DetailClassActivity.startActivity(requireContext(), course)
     }
 
+
     private fun navigateToSearch(course: CourseViewParam) {
         SearchActivity.startActivity(requireContext(), course)
     }
-
+    
     fun updateViewBasedOnCategory(selectedCategory: String?) {
         viewModel.getCourse(selectedCategory, null)
     }

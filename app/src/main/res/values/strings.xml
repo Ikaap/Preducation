@@ -190,9 +190,13 @@
     <string name="news">News</string>
     <string name="hot">Hot</string>
     <string name="web_development">Web Development</string>
-    <string name="text_data_empty">Data Empty</string>
+
+    <string name="you_need_to_login">You need to login</string>
+    <string name="empty_class_progress">You haven\'t taken any classes yet</string>
+    <string name="empty_progress_category">Empty progress category</string>
+   <string name="text_data_empty">Data Empty</string>
+
     <string name="text_paid">Paid</string>
     <string name="text_on_progress">On Progress</string>
     <string name="text_dialog_finish_class_message">You are at the end of this class.\nPlease check your email after watching the video to get your certificate.</string>
-
 </resources>

@@ -7,13 +7,11 @@ import androidx.core.view.isGone
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import coil.load
 import com.kelompoksatuandsatu.preducation.R
 import com.kelompoksatuandsatu.preducation.core.ViewHolderBinder
 import com.kelompoksatuandsatu.preducation.databinding.ItemCourseCardBinding
 import com.kelompoksatuandsatu.preducation.model.progress.CourseProgressItemClass
-import java.util.Locale
 
 class CourseProgressListAdapter(
     private val itemClick: (CourseProgressItemClass) -> Unit
@@ -59,18 +57,6 @@ class CourseProgressListAdapter(
 
     override fun onBindViewHolder(holder: ClassCourseItemViewHolder, position: Int) {
         (holder as ViewHolderBinder<CourseProgressItemClass>).bind(dataDiffer.currentList[position])
-    }
-
-    fun filter(query: CharSequence?) {
-        val filteredList = if (query.isNullOrBlank()) {
-            dataDiffer.currentList
-        } else {
-            dataDiffer.currentList.filter { course ->
-                course.courseId?.title?.toLowerCase(Locale.getDefault())
-                    ?.contains(query.toString().toLowerCase(Locale.getDefault())) == true
-            }
-        }
-        dataDiffer.submitList(filteredList)
     }
 
     class ClassCourseItemViewHolder(
