@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.kelompoksatuandsatu.preducation.databinding.ActivityTransactionBinding
 import com.kelompoksatuandsatu.preducation.presentation.common.adapter.history.HistoryPaymentListAdapter
+import com.kelompoksatuandsatu.preducation.presentation.feature.login.LoginActivity
 import com.kelompoksatuandsatu.preducation.utils.proceedWhen
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -26,6 +27,16 @@ class HistoryPaymentActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityTransactionBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        viewModel.checkLogin()
+        viewModel.isUserLogin.observe(this) { isLogin ->
+            if (!isLogin) {
+                val intent = Intent(this, LoginActivity::class.java)
+                startActivity(intent)
+
+                return@observe
+            }
+        }
 
         setupRecyclerView()
         getData()
