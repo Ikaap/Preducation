@@ -320,6 +320,12 @@ class CourseFragment : Fragment(), FilterFragment.OnFilterListener {
                 }
             )
         }
+
+        viewModel.isUserLogin.observe(viewLifecycleOwner) { isLogin ->
+            if (!isLogin) {
+                showDialog()
+            }
+        }
     }
 
     private fun showDialogNotification() {
