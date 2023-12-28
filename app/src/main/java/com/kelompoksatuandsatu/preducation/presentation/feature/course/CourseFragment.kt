@@ -1,5 +1,6 @@
 package com.kelompoksatuandsatu.preducation.presentation.feature.course
 
+import android.app.Activity
 import android.app.AlertDialog
 import android.content.Intent
 import android.graphics.Color
@@ -8,6 +9,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import androidx.appcompat.widget.SearchView
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
@@ -110,30 +112,8 @@ class CourseFragment : Fragment(), FilterFragment.OnFilterListener {
         }
 
         binding.clSearchBar.setOnClickListener {
-            val query = searchView.query.toString()
-            typeCourseAdapter.filter(query)
-            observeIsFilterEmpty()
-        }
-    }
-
-    private fun navigateToFilter() {
-        val filterFragment = FilterFragment()
-        filterFragment.setFilterListener(this)
-        filterFragment.show(requireActivity().supportFragmentManager, "filter")
-    }
-
-    private fun observeIsFilterEmpty() {
-        typeCourseAdapter.isFilterEmpty.observe(viewLifecycleOwner) { isFilterEmpty ->
-            if (isFilterEmpty) {
-                binding.layoutStateCourse.root.isVisible = true
-                binding.layoutStateCourse.tvError.isVisible = false
-                binding.layoutStateCourse.pbLoading.isVisible = false
-                binding.layoutStateCourse.clDataEmpty.isVisible = true
-                binding.layoutStateCourse.tvDataEmpty.isVisible = true
-                binding.layoutStateCourse.ivDataEmpty.isVisible = false
-            } else {
-                binding.layoutStateCourse.root.isVisible = false
-            }
+            val intent = Intent(requireContext(), SearchActivity::class.java)
+            startActivity(intent)
         }
     }
 

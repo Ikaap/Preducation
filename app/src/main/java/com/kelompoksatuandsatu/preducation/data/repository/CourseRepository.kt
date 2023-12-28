@@ -29,7 +29,7 @@ import kotlinx.coroutines.flow.onStart
 
 interface CourseRepository {
     fun getCategoriesClass(): Flow<ResultWrapper<List<CategoryClass>>>
-    fun getCourseHome(category: String? = null, typeClass: String? = null): Flow<ResultWrapper<List<CourseViewParam>>>
+    fun getCourseHome(category: String? = null, typeClass: String? = null, title: String? = null): Flow<ResultWrapper<List<CourseViewParam>>>
 
     fun getCourseHome(category: List<String>? = null, typeClass: String? = null): Flow<ResultWrapper<List<CourseViewParam>>>
 
@@ -63,9 +63,9 @@ class CourseRepositoryImpl(
         }
     }
 
-    override fun getCourseHome(category: String?, typeClass: String?): Flow<ResultWrapper<List<CourseViewParam>>> {
+    override fun getCourseHome(category: String?, typeClass: String?, title: String?): Flow<ResultWrapper<List<CourseViewParam>>> {
         return proceedFlow {
-            apiDataSource.getCourseHome(category, typeClass).data?.toCourseList() ?: emptyList()
+            apiDataSource.getCourseHome(category, typeClass, title).data?.toCourseList() ?: emptyList()
         }.map {
             if (it.payload?.isEmpty() == true) {
                 ResultWrapper.Empty(it.payload)
