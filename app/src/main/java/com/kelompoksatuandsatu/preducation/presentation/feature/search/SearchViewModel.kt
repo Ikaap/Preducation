@@ -23,7 +23,7 @@ class SearchViewModel(
     val course: LiveData<ResultWrapper<List<CourseViewParam>>>
         get() = _course
 
-    fun getCourse(category: String? = null, typeClass: String? = null) {
+    fun getCourse(category: String? = null, typeClass: String? = null, title: String? = null) {
         viewModelScope.launch(Dispatchers.IO) {
             repositoryCourse.getCourseHome(category, if (typeClass == "All") null else typeClass?.toLowerCase())
                 .collect {

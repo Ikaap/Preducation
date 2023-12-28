@@ -9,12 +9,9 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import androidx.appcompat.widget.SearchView
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.kelompoksatuandsatu.preducation.R
 import com.kelompoksatuandsatu.preducation.databinding.DialogNonLoginBinding
 import com.kelompoksatuandsatu.preducation.databinding.FragmentCourseBinding
 import com.kelompoksatuandsatu.preducation.model.course.courseall.CourseViewParam
@@ -52,44 +49,10 @@ class CourseFragment : Fragment() {
         }
     }
 
-    private val searchView: SearchView by lazy {
-        binding.clSearchBar.findViewById(R.id.sv_search)
-    }
-
-    private val searchQueryListener = object : SearchView.OnQueryTextListener {
-        override fun onQueryTextSubmit(query: String?): Boolean {
-            query?.let {
-                typeCourseAdapter.filter(it)
-                observeIsFilterEmpty()
-            }
-            return true
-        }
-
-        override fun onQueryTextChange(newText: String?): Boolean {
-            return false
-        }
-
-//        override fun onFilterApplied(
-//            search: String?,
-//            type: String?,
-//            category: List<Int>?,
-//        ) {
-//            searchQuery = search
-//            selectedType = type
-//            selectedCategories = category
-//            viewModel.getCourseTopic(searchQuery, selectedType, category)
-//        }
-    }
-
     private fun navigateToDetail(course: CourseViewParam) {
         DetailClassActivity.startActivity(requireContext(), course)
     }
 
-
-    private fun navigateToSearch(course: CourseViewParam) {
-        SearchActivity.startActivity(requireContext(), course)
-    }
-    
     fun updateViewBasedOnCategory(selectedCategory: String?) {
         viewModel.getCourse(selectedCategory, null)
     }
@@ -110,7 +73,6 @@ class CourseFragment : Fragment() {
         showCategoryType()
         fetchData()
         setOnClickListener()
-        searchView.setOnQueryTextListener(searchQueryListener)
     }
 
     private fun setOnClickListener() {
@@ -120,25 +82,8 @@ class CourseFragment : Fragment() {
         }
 
         binding.clSearchBar.setOnClickListener {
-            navigateToSearch()
-            val query = searchView.query.toString()
-            typeCourseAdapter.filter(query)
-            observeIsFilterEmpty()
-        }
-    }
-
-    private fun observeIsFilterEmpty() {
-        typeCourseAdapter.isFilterEmpty.observe(viewLifecycleOwner) { isFilterEmpty ->
-            if (isFilterEmpty) {
-                binding.layoutStateCourse.root.isVisible = true
-                binding.layoutStateCourse.tvError.isVisible = false
-                binding.layoutStateCourse.pbLoading.isVisible = false
-                binding.layoutStateCourse.clDataEmpty.isVisible = true
-                binding.layoutStateCourse.tvDataEmpty.isVisible = true
-                binding.layoutStateCourse.ivDataEmpty.isVisible = false
-            } else {
-                binding.layoutStateCourse.root.isVisible = false
-            }
+            val intent = Intent(requireContext(), SearchActivity::class.java)
+            startActivity(intent)
         }
     }
 
