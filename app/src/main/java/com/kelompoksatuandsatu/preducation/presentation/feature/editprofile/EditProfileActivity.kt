@@ -1,17 +1,13 @@
 package com.kelompoksatuandsatu.preducation.presentation.feature.editprofile
 
-import android.app.Activity
 import android.content.Context
 import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.widget.EditText
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.net.toFile
 import androidx.core.view.isVisible
 import coil.load
-import com.github.dhaval2404.imagepicker.ImagePicker
+// import com.github.dhaval2404.imagepicker.ImagePicker
 import com.google.android.material.textfield.TextInputLayout
 import com.kelompoksatuandsatu.preducation.R
 import com.kelompoksatuandsatu.preducation.data.network.api.model.user.UserRequest
@@ -138,19 +134,19 @@ class EditProfileActivity : AppCompatActivity() {
             }
         }
 
-        binding.ivAddPhotoUser.setOnClickListener {
-            imagePicker()
-        }
+//        binding.ivAddPhotoUser.setOnClickListener {
+//            imagePicker()
+//        }
     }
 
-    private fun imagePicker() {
-        ImagePicker.with(this)
-            .cropSquare()
-            .galleryOnly()
-            .compress(1024)
-            .maxResultSize(1080, 1080)
-            .start()
-    }
+//    private fun imagePicker() {
+//        ImagePicker.with(this)
+//            .cropSquare()
+//            .galleryOnly()
+//            .compress(1024)
+//            .maxResultSize(1080, 1080)
+//            .start()
+//    }
 
     private var getFile: File? = null
 
@@ -166,16 +162,16 @@ class EditProfileActivity : AppCompatActivity() {
             data
         )
 
-        if (resultCode == Activity.RESULT_OK) {
-            val uri: Uri? = data?.data
-            val img = uri?.toFile()
-            binding.ivUserPhoto.load(uri)
-            getFile = img
-        } else if (resultCode == ImagePicker.RESULT_ERROR) {
-            Toast.makeText(this, ImagePicker.getError(data), Toast.LENGTH_SHORT).show()
-        } else {
-            Toast.makeText(this, "Task Cancelled", Toast.LENGTH_SHORT).show()
-        }
+//        if (resultCode == Activity.RESULT_OK) {
+//            val uri: Uri? = data?.data
+//            val img = uri?.toFile()
+//            binding.ivUserPhoto.load(uri)
+//            getFile = img
+//        } else if (resultCode == ImagePicker.RESULT_ERROR) {
+//            Toast.makeText(this, ImagePicker.getError(data), Toast.LENGTH_SHORT).show()
+//        } else {
+//            Toast.makeText(this, "Task Cancelled", Toast.LENGTH_SHORT).show()
+//        }
     }
 
     private fun changeProfileData() {

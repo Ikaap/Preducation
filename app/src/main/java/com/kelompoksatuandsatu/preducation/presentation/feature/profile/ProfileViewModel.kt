@@ -42,4 +42,15 @@ class ProfileViewModel(
             _logoutResults.value = userRepo.userLogout().first()
         }
     }
+
+    private val _isUserLogin = MutableLiveData<Boolean>()
+    val isUserLogin: LiveData<Boolean>
+        get() = _isUserLogin
+
+    fun checkLogin() {
+        viewModelScope.launch(Dispatchers.IO) {
+            val userStatus = userPreferenceDataSource.getUserToken().firstOrNull() != null
+            _isUserLogin.postValue(userStatus)
+        }
+    }
 }

@@ -30,6 +30,17 @@ class ProfileFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        viewModel.checkLogin()
+
+        viewModel.isUserLogin.observe(viewLifecycleOwner) { isLogin ->
+            if (!isLogin) {
+                val intent = Intent(requireContext(), LoginActivity::class.java)
+                startActivity(intent)
+
+                return@observe
+            }
+        }
+
         binding = FragmentProfileBinding.inflate(inflater, container, false)
         return binding.root
     }
