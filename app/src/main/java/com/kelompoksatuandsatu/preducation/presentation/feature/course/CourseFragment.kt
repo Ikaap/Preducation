@@ -24,6 +24,7 @@ import com.kelompoksatuandsatu.preducation.presentation.common.adapter.course.Co
 import com.kelompoksatuandsatu.preducation.presentation.feature.detailclass.DetailClassActivity
 import com.kelompoksatuandsatu.preducation.presentation.feature.filter.FilterActivity
 import com.kelompoksatuandsatu.preducation.presentation.feature.register.RegisterActivity
+import com.kelompoksatuandsatu.preducation.presentation.feature.search.SearchActivity
 import com.kelompoksatuandsatu.preducation.utils.proceedWhen
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -67,12 +68,28 @@ class CourseFragment : Fragment() {
         override fun onQueryTextChange(newText: String?): Boolean {
             return false
         }
+
+//        override fun onFilterApplied(
+//            search: String?,
+//            type: String?,
+//            category: List<Int>?,
+//        ) {
+//            searchQuery = search
+//            selectedType = type
+//            selectedCategories = category
+//            viewModel.getCourseTopic(searchQuery, selectedType, category)
+//        }
     }
 
     private fun navigateToDetail(course: CourseViewParam) {
         DetailClassActivity.startActivity(requireContext(), course)
     }
 
+
+    private fun navigateToSearch(course: CourseViewParam) {
+        SearchActivity.startActivity(requireContext(), course)
+    }
+    
     fun updateViewBasedOnCategory(selectedCategory: String?) {
         viewModel.getCourse(selectedCategory, null)
     }
@@ -102,7 +119,8 @@ class CourseFragment : Fragment() {
             startActivityForResult(intent, FILTER_REQUEST_CODE)
         }
 
-        binding.clSearchBar.findViewById<ImageView>(R.id.iv_search).setOnClickListener {
+        binding.clSearchBar.setOnClickListener {
+            navigateToSearch()
             val query = searchView.query.toString()
             typeCourseAdapter.filter(query)
             observeIsFilterEmpty()

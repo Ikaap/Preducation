@@ -159,8 +159,18 @@ class CourseRepositoryImpl(
 
     override fun getCategoriesTypeClass(): Flow<ResultWrapper<List<CategoryType>>> {
         return proceedFlow {
-            val apiResult = apiDataSource.getCategoriesTypeClass()
-            apiResult.data?.toCategoryTypeClassList() ?: emptyList()
+            apiDataSource.getCategoriesTypeClass().data?.toCategoryTypeClassList() ?: emptyList()
+        }.map {
+            if (it.payload?.isEmpty() == true) {
+                ResultWrapper.Empty(it.payload)
+            } else {
+                it
+            }
+        }.catch {
+            emit(ResultWrapper.Error(Exception(it)))
+        }.onStart {
+            emit(ResultWrapper.Loading())
+            delay(2000)
         }
     }
     override suspend fun getHistoryPayment(): Flow<ResultWrapper<List<CourseItem>>> {

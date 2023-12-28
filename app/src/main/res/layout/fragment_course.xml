@@ -174,9 +174,9 @@
         layout="@layout/common_layout_content_state"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        app:layout_constraintBottom_toBottomOf="parent"
         android:visibility="visible"
         app:layout_constraintTop_toTopOf="@id/rv_course"
+        app:layout_constraintBottom_toBottomOf="parent"
         tools:visibility="gone"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

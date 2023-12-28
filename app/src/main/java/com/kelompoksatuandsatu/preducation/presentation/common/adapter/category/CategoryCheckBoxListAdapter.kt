@@ -15,9 +15,6 @@ class CategoryCheckBoxListAdapter(
     private val itemClick: (CategoryClass) -> Unit
 ) : RecyclerView.Adapter<CategoryCheckBoxListAdapter.CheckBoxFilterItemViewHolder>() {
 
-    private var selectedPosition = 0
-    private var lastSelectedPosition = 0
-
     private val dataDiffer = AsyncListDiffer(
         this,
         object : DiffUtil.ItemCallback<CategoryClass>() {
@@ -47,22 +44,17 @@ class CategoryCheckBoxListAdapter(
 
     override fun onBindViewHolder(holder: CheckBoxFilterItemViewHolder, position: Int) {
         holder.bind(dataDiffer.currentList[position])
-        holder.binding.root.setOnClickListener { v ->
-            lastSelectedPosition = selectedPosition
-            selectedPosition = holder.bindingAdapterPosition
-            notifyItemChanged(lastSelectedPosition)
-            notifyItemChanged(selectedPosition)
-            if (position == 0) {
-                viewModel.getCourse()
-            } else {
-                viewModel.getCourse(dataDiffer.currentList[position].name)
-            }
+        holder.itemView.setOnClickListener {
+            val category = dataDiffer.currentList[position]
+            itemClick(category)
+            viewModel.getCourse(category.name)
         }
         updateItemCheckBox(holder, position)
     }
 
     private fun updateItemCheckBox(holder: CheckBoxFilterItemViewHolder, position: Int) {
-        holder.binding.cbCategory.isChecked = selectedPosition == position
+        holder.binding.cbCategory.isChecked = viewModel.isSelectedCategory(dataDiffer.currentList[position])
+
     }
 
     fun setData(data: List<CategoryClass>) {
@@ -74,11 +66,10 @@ class CategoryCheckBoxListAdapter(
         val viewModel: FilterViewModel,
         val itemClick: (CategoryClass) -> Unit
     ) : RecyclerView.ViewHolder(binding.root), ViewHolderBinder<CategoryClass> {
-        private var currentCategory: String? = null
 
         override fun bind(item: CategoryClass) {
-            currentCategory = item.name
-            binding.cbCategory.text = currentCategory
+            binding.cbCategory.text = item.name
+
             itemView.setOnClickListener { itemClick(item) }
         }
     }
