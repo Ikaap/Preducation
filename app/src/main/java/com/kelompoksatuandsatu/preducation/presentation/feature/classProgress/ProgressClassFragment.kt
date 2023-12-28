@@ -8,13 +8,10 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import androidx.appcompat.widget.SearchView
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.kelompoksatuandsatu.preducation.R
 import com.kelompoksatuandsatu.preducation.databinding.DialogNonLoginBinding
 import com.kelompoksatuandsatu.preducation.databinding.FragmentProgressClassBinding
 import com.kelompoksatuandsatu.preducation.model.category.categoryclass.CategoryClass
@@ -32,10 +29,6 @@ class ProgressClassFragment : Fragment() {
 
     private lateinit var binding: FragmentProgressClassBinding
 
-    private val searchView: SearchView by lazy {
-        binding.clSearchBar.findViewById(R.id.sv_search)
-    }
-
     private val viewModel: ProgressClassViewModel by viewModel()
 
     private val categoryCourseAdapter: CategoryCourseListAdapter by lazy {
@@ -52,7 +45,7 @@ class ProgressClassFragment : Fragment() {
 
     private val categoryProgressAdapter: CategoryRoundedListAdapter by lazy {
         CategoryRoundedListAdapter(viewModel) {
-            viewModel.getCourseProgress(it.nameCategory)
+            viewModel.getCourseProgress(it.nameCategory.lowercase())
         }
     }
 
@@ -65,20 +58,6 @@ class ProgressClassFragment : Fragment() {
                     navigateCourseProgressToDetail(it)
                 }
             }
-        }
-    }
-
-    private val searchQueryListener = object : SearchView.OnQueryTextListener {
-        override fun onQueryTextSubmit(query: String?): Boolean {
-            query?.let {
-                progressCourseAdapter.filter(it)
-                observeIsFilterEmpty()
-            }
-            return true
-        }
-
-        override fun onQueryTextChange(newText: String?): Boolean {
-            return false
         }
     }
 
@@ -103,7 +82,6 @@ class ProgressClassFragment : Fragment() {
         showCourse()
         showCategoryProgress()
         setOnClickListener()
-        searchView.setOnQueryTextListener(searchQueryListener)
     }
     private fun fetchData() {
         viewModel.getCategoriesClass()
@@ -120,12 +98,6 @@ class ProgressClassFragment : Fragment() {
         binding.ivToSeeAll.setOnClickListener {
             SeeAllPopularCoursesActivity.startActivity(requireContext())
         }
-
-        binding.clSearchBar.findViewById<ImageView>(R.id.iv_search).setOnClickListener {
-            val query = searchView.query.toString()
-            progressCourseAdapter.filter(query)
-            observeIsFilterEmpty()
-        }
     }
 
     private fun showDialog() {
@@ -140,21 +112,6 @@ class ProgressClassFragment : Fragment() {
         binding.clSignUp.setOnClickListener {
             val intent = Intent(requireContext(), RegisterActivity::class.java)
             startActivity(intent)
-        }
-    }
-
-    private fun observeIsFilterEmpty() {
-        progressCourseAdapter.isFilterEmpty.observe(viewLifecycleOwner) { isFilterEmpty ->
-            if (isFilterEmpty) {
-                binding.layoutStateCourseProgress.root.isVisible = true
-                binding.layoutStateCourseProgress.tvError.isVisible = false
-                binding.layoutStateCourseProgress.pbLoading.isVisible = false
-                binding.layoutStateCourseProgress.clDataEmpty.isVisible = true
-                binding.layoutStateCourseProgress.tvDataEmpty.isVisible = true
-                binding.layoutStateCourseProgress.ivDataEmpty.isVisible = false
-            } else {
-                binding.layoutStateCourseProgress.root.isVisible = false
-            }
         }
     }
 
