@@ -10,5 +10,6 @@ data class CategoryClass(
     val imageCategory: String,
     val isActive: Boolean,
     val name: String,
-    val v: Int
+    val v: Int,
+    var isSelected: Boolean = false
 ) : Parcelable

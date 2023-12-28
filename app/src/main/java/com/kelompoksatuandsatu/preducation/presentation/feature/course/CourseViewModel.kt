@@ -52,4 +52,16 @@ class CourseViewModel(
             _isUserLogin.postValue(userStatus)
         }
     }
+
+    private val _searchQuery = MutableLiveData<String>()
+    val searchQuery: LiveData<String>
+        get() = _searchQuery
+
+    private val _selectedType = MutableLiveData<String>()
+    val selectedType: LiveData<String>
+        get() = _selectedType
+
+    private val _selectedCategories = MutableLiveData<List<Int>>()
+    val selectedCategories: LiveData<List<Int>?>
+        get() = _selectedCategories
 }
