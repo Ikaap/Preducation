@@ -31,5 +31,3 @@ fun User.toUserViewParam() = UserViewParam(
     country = this.country.orEmpty(),
     city = this.city.orEmpty()
 )
-
-// fun Collection<User>.toUserList() = this.map { it.toUserRequest() }
