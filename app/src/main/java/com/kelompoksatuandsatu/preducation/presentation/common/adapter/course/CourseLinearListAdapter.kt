@@ -2,15 +2,12 @@ package com.kelompoksatuandsatu.preducation.presentation.common.adapter.course
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.kelompoksatuandsatu.preducation.core.ViewHolderBinder
 import com.kelompoksatuandsatu.preducation.databinding.ItemLinearCourseBinding
 import com.kelompoksatuandsatu.preducation.model.course.courseall.CourseViewParam
-import java.util.Locale
 
 class CourseLinearListAdapter(
     var adapterLayoutMenu: AdapterLayoutMenu,
