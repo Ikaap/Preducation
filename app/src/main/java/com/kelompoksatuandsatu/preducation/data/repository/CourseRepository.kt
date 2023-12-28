@@ -29,7 +29,7 @@ import kotlinx.coroutines.flow.onStart
 
 interface CourseRepository {
     fun getCategoriesClass(): Flow<ResultWrapper<List<CategoryClass>>>
-    fun getCourseHome(category: String? = null): Flow<ResultWrapper<List<CourseViewParam>>>
+    fun getCourseHome(category: String? = null, typeClass: String? = null): Flow<ResultWrapper<List<CourseViewParam>>>
 
     fun getCourseTopic(typeClass: String?): Flow<ResultWrapper<List<CourseViewParam>>>
     suspend fun postIndexCourseById(id: String, request: VideoViewParam): Flow<ResultWrapper<Boolean>>
@@ -61,9 +61,9 @@ class CourseRepositoryImpl(
         }
     }
 
-    override fun getCourseHome(category: String?): Flow<ResultWrapper<List<CourseViewParam>>> {
+    override fun getCourseHome(category: String?, typeClass: String?): Flow<ResultWrapper<List<CourseViewParam>>> {
         return proceedFlow {
-            apiDataSource.getCourseHome(category).data?.toCourseList() ?: emptyList()
+            apiDataSource.getCourseHome(category, typeClass).data?.toCourseList() ?: emptyList()
         }.map {
             if (it.payload?.isEmpty() == true) {
                 ResultWrapper.Empty(it.payload)
@@ -131,15 +131,29 @@ class CourseRepositoryImpl(
 
     override fun getCategoriesProgress(): Flow<ResultWrapper<List<CategoryType>>> {
         return proceedFlow {
-//            val apiResult = apiDataSource.getCategoriesProgress()
-//            apiResult.data?.toCategoryProgressList() ?: emptyList()
             apiDataSource.getCategoriesProgress().data?.toCategoryProgressList() ?: emptyList()
+        }.catch {
+            emit(ResultWrapper.Error(Exception(it)))
+        }.onStart {
+            emit(ResultWrapper.Loading())
+            delay(2000)
         }
     }
 
     override fun getCourseUserProgress(status: String?): Flow<ResultWrapper<List<CourseProgressItemClass>>> {
         return proceedFlow {
             apiDataSource.getCourseUserProgress(status).data?.toCourseProgressList() ?: emptyList()
+        }.map {
+            if (it.payload?.isEmpty() == true) {
+                ResultWrapper.Empty(it.payload)
+            } else {
+                it
+            }
+        }.catch {
+            emit(ResultWrapper.Error(Exception(it)))
+        }.onStart {
+            emit(ResultWrapper.Loading())
+            delay(3000)
         }
     }
 

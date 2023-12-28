@@ -1,5 +1,6 @@
 package com.kelompoksatuandsatu.preducation.presentation.feature.course
 
+import android.app.Activity
 import android.app.AlertDialog
 import android.content.Intent
 import android.graphics.Color
@@ -8,6 +9,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import androidx.appcompat.widget.SearchView
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
@@ -16,9 +18,9 @@ import com.kelompoksatuandsatu.preducation.R
 import com.kelompoksatuandsatu.preducation.databinding.DialogNonLoginBinding
 import com.kelompoksatuandsatu.preducation.databinding.FragmentCourseBinding
 import com.kelompoksatuandsatu.preducation.model.course.courseall.CourseViewParam
-import com.kelompoksatuandsatu.preducation.presentation.common.adapter.CourseLinearListAdapter
 import com.kelompoksatuandsatu.preducation.presentation.common.adapter.category.CategoryRoundedCourseListAdapter
 import com.kelompoksatuandsatu.preducation.presentation.common.adapter.course.AdapterLayoutMenu
+import com.kelompoksatuandsatu.preducation.presentation.common.adapter.course.CourseLinearListAdapter
 import com.kelompoksatuandsatu.preducation.presentation.feature.detailclass.DetailClassActivity
 import com.kelompoksatuandsatu.preducation.presentation.feature.filter.FilterActivity
 import com.kelompoksatuandsatu.preducation.presentation.feature.register.RegisterActivity
@@ -45,7 +47,7 @@ class CourseFragment : Fragment() {
 
     private val categoryTypeClassAdapter: CategoryRoundedCourseListAdapter by lazy {
         CategoryRoundedCourseListAdapter(viewModel) {
-            viewModel.getCourseTopic(it.nameCategory.lowercase())
+            viewModel.getCourse(null, it.nameCategory.lowercase())
         }
     }
 
@@ -55,11 +57,14 @@ class CourseFragment : Fragment() {
 
     private val searchQueryListener = object : SearchView.OnQueryTextListener {
         override fun onQueryTextSubmit(query: String?): Boolean {
-            return false
+            query?.let {
+                typeCourseAdapter.filter(it)
+                observeIsFilterEmpty()
+            }
+            return true
         }
 
         override fun onQueryTextChange(newText: String?): Boolean {
-            typeCourseAdapter.filter(newText)
             return false
         }
     }
@@ -68,11 +73,15 @@ class CourseFragment : Fragment() {
         DetailClassActivity.startActivity(requireContext(), course)
     }
 
+    fun updateViewBasedOnCategory(selectedCategory: String?) {
+        viewModel.getCourse(selectedCategory, null)
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View {
+    ): View? {
         binding = FragmentCourseBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -84,13 +93,46 @@ class CourseFragment : Fragment() {
         showCategoryType()
         fetchData()
         setOnClickListener()
-
-//        searchView.setOnQueryTextListener(searchQueryListener)
+        searchView.setOnQueryTextListener(searchQueryListener)
     }
 
     private fun setOnClickListener() {
         binding.tvFilter.setOnClickListener {
-            startActivity(Intent(requireContext(), FilterActivity::class.java))
+            val intent = Intent(requireContext(), FilterActivity::class.java)
+            startActivityForResult(intent, FILTER_REQUEST_CODE)
+        }
+
+        binding.clSearchBar.findViewById<ImageView>(R.id.iv_search).setOnClickListener {
+            val query = searchView.query.toString()
+            typeCourseAdapter.filter(query)
+            observeIsFilterEmpty()
+        }
+    }
+
+    private fun observeIsFilterEmpty() {
+        typeCourseAdapter.isFilterEmpty.observe(viewLifecycleOwner) { isFilterEmpty ->
+            if (isFilterEmpty) {
+                binding.layoutStateCourse.root.isVisible = true
+                binding.layoutStateCourse.tvError.isVisible = false
+                binding.layoutStateCourse.pbLoading.isVisible = false
+                binding.layoutStateCourse.clDataEmpty.isVisible = true
+                binding.layoutStateCourse.tvDataEmpty.isVisible = true
+                binding.layoutStateCourse.ivDataEmpty.isVisible = false
+            } else {
+                binding.layoutStateCourse.root.isVisible = false
+            }
+        }
+    }
+
+    companion object {
+        const val FILTER_REQUEST_CODE = 123
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == FILTER_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
+            val selectedCategory = data?.getStringExtra("selectedCategory")
+            updateViewBasedOnCategory(selectedCategory)
         }
     }
 
@@ -106,24 +148,56 @@ class CourseFragment : Fragment() {
             it.proceedWhen(
                 doOnSuccess = { result ->
                     binding.rvCategoryType.isVisible = true
+                    binding.rvCategoryType.adapter = categoryTypeClassAdapter
+                    binding.shimmerCategoryRounded.isVisible = false
+                    binding.layoutStateCategoryType.root.isVisible = false
                     binding.layoutStateCategoryType.tvError.isVisible = false
                     binding.layoutStateCategoryType.pbLoading.isVisible = false
-
+                    binding.layoutStateCategoryType.clDataEmpty.isVisible = false
+                    binding.layoutStateCategoryType.tvDataEmpty.isVisible = false
+                    binding.layoutStateCategoryType.ivDataEmpty.isVisible = false
+                    binding.rvCategoryType.apply {
+                        binding.rvCategoryType.layoutManager = LinearLayoutManager(
+                            requireContext(),
+                            LinearLayoutManager.HORIZONTAL,
+                            false
+                        )
+                        adapter = categoryTypeClassAdapter
+                    }
                     result.payload?.let { categoriesType ->
                         categoryTypeClassAdapter.setData(categoriesType)
                     }
                 },
                 doOnLoading = {
-                    binding.layoutStateCategoryType.root.isVisible = true
-                    binding.layoutStateCategoryType.pbLoading.isVisible = true
                     binding.rvCategoryType.isVisible = false
+                    binding.shimmerCategoryRounded.isVisible = true
+                    binding.layoutStateCategoryType.root.isVisible = false
+                    binding.layoutStateCategoryType.tvError.isVisible = false
+                    binding.layoutStateCategoryType.pbLoading.isVisible = false
+                    binding.layoutStateCategoryType.clDataEmpty.isVisible = false
+                    binding.layoutStateCategoryType.tvDataEmpty.isVisible = false
+                    binding.layoutStateCategoryType.ivDataEmpty.isVisible = false
                 },
                 doOnError = {
-                    binding.layoutStateCategoryType.root.isVisible = true
-                    binding.layoutStateCategoryType.pbLoading.isVisible = false
-                    binding.layoutStateCategoryType.tvError.isVisible = true
-                    binding.layoutStateCategoryType.tvError.text = it.exception?.message.orEmpty()
                     binding.rvCategoryType.isVisible = false
+                    binding.shimmerCategoryRounded.isVisible = false
+                    binding.layoutStateCategoryType.root.isVisible = true
+                    binding.layoutStateCategoryType.tvError.isVisible = true
+                    binding.layoutStateCategoryType.tvError.text = it.exception?.message
+                    binding.layoutStateCategoryType.pbLoading.isVisible = false
+                    binding.layoutStateCategoryType.clDataEmpty.isVisible = false
+                    binding.layoutStateCategoryType.tvDataEmpty.isVisible = false
+                    binding.layoutStateCategoryType.ivDataEmpty.isVisible = false
+                },
+                doOnEmpty = {
+                    binding.rvCategoryType.isVisible = false
+                    binding.shimmerCategoryRounded.isVisible = false
+                    binding.layoutStateCategoryType.root.isVisible = false
+                    binding.layoutStateCategoryType.tvError.isVisible = false
+                    binding.layoutStateCategoryType.pbLoading.isVisible = false
+                    binding.layoutStateCategoryType.clDataEmpty.isVisible = true
+                    binding.layoutStateCategoryType.tvDataEmpty.isVisible = true
+                    binding.layoutStateCategoryType.ivDataEmpty.isVisible = false
                 }
             )
         }
@@ -140,25 +214,48 @@ class CourseFragment : Fragment() {
         viewModel.course.observe(viewLifecycleOwner) {
             it.proceedWhen(
                 doOnLoading = {
-                    binding.layoutStateCourse.root.isVisible = true
-                    binding.layoutStateCourse.pbLoading.isVisible = true
-                    binding.layoutStateCourse.tvError.isVisible = false
                     binding.rvCourse.isVisible = false
+                    binding.shimmerCourseLinear.isVisible = true
+                    binding.layoutStateCourse.root.isVisible = false
+                    binding.layoutStateCourse.tvError.isVisible = false
+                    binding.layoutStateCourse.pbLoading.isVisible = false
+                    binding.layoutStateCourse.clDataEmpty.isVisible = false
+                    binding.layoutStateCourse.tvDataEmpty.isVisible = false
+                    binding.layoutStateCourse.ivDataEmpty.isVisible = false
                 },
                 doOnSuccess = { result ->
-                    binding.layoutStateCourse.root.isVisible = false
                     binding.rvCourse.isVisible = true
-                    binding.layoutStateCourse.pbLoading.isVisible = false
+                    binding.rvCourse.adapter = typeCourseAdapter
+                    binding.shimmerCourseLinear.isVisible = false
                     binding.layoutStateCourse.tvError.isVisible = false
+                    binding.layoutStateCourse.pbLoading.isVisible = false
+                    binding.layoutStateCourse.clDataEmpty.isVisible = false
+                    binding.layoutStateCourse.tvDataEmpty.isVisible = false
+                    binding.layoutStateCourse.ivDataEmpty.isVisible = false
                     result.payload?.let { data ->
                         typeCourseAdapter.setData(data)
                     }
                 },
                 doOnError = {
-                    binding.layoutStateCourse.root.isVisible = true
                     binding.rvCourse.isVisible = false
-                    binding.layoutStateCourse.pbLoading.isVisible = false
+                    binding.shimmerCourseLinear.isVisible = false
+                    binding.layoutStateCourse.root.isVisible = true
                     binding.layoutStateCourse.tvError.isVisible = true
+                    binding.layoutStateCourse.tvError.text = it.exception?.message
+                    binding.layoutStateCourse.pbLoading.isVisible = false
+                    binding.layoutStateCourse.clDataEmpty.isVisible = false
+                    binding.layoutStateCourse.tvDataEmpty.isVisible = false
+                    binding.layoutStateCourse.ivDataEmpty.isVisible = false
+                },
+                doOnEmpty = {
+                    binding.rvCourse.isVisible = false
+                    binding.shimmerCourseLinear.isVisible = false
+                    binding.layoutStateCourse.root.isVisible = true
+                    binding.layoutStateCourse.tvError.isVisible = false
+                    binding.layoutStateCourse.pbLoading.isVisible = false
+                    binding.layoutStateCourse.clDataEmpty.isVisible = true
+                    binding.layoutStateCourse.tvDataEmpty.isVisible = true
+                    binding.layoutStateCourse.ivDataEmpty.isVisible = false
                 }
             )
         }
@@ -180,7 +277,7 @@ class CourseFragment : Fragment() {
     }
 
     private fun fetchData() {
-        viewModel.getCourseTopic()
+        viewModel.getCourse()
         viewModel.getCategoriesTypeClass()
         viewModel.checkLogin()
     }
