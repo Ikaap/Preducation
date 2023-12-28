@@ -34,6 +34,7 @@ import com.kelompoksatuandsatu.preducation.presentation.feature.payment.PaymentV
 import com.kelompoksatuandsatu.preducation.presentation.feature.profile.ProfileViewModel
 import com.kelompoksatuandsatu.preducation.presentation.feature.register.RegisterViewModel
 import com.kelompoksatuandsatu.preducation.presentation.feature.splashscreen.SplashScreenViewModel
+import com.kelompoksatuandsatu.preducation.presentation.feature.search.SearchViewModel
 import com.kelompoksatuandsatu.preducation.utils.AssetWrapper
 import com.kelompoksatuandsatu.preducation.utils.PreferenceDataStoreHelper
 import com.kelompoksatuandsatu.preducation.utils.PreferenceDataStoreHelperImpl
@@ -86,6 +87,7 @@ object AppModules {
         viewModelOf(::SplashScreenViewModel)
         viewModelOf(::HistoryPaymentViewModel)
         viewModel { FilterViewModel(get()) }
+        viewModelOf(::SearchViewModel)
     }
 
     private val utilsModule = module {
