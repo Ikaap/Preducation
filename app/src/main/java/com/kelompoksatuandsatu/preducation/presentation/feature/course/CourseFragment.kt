@@ -222,6 +222,12 @@ class CourseFragment : Fragment() {
                 }
             )
         }
+
+        viewModel.isUserLogin.observe(viewLifecycleOwner) { isLogin ->
+            if (!isLogin) {
+                showDialog()
+            }
+        }
     }
 
     private fun showDialog() {

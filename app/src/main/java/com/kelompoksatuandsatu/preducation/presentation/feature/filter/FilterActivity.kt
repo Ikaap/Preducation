@@ -115,5 +115,4 @@ class FilterActivity : AppCompatActivity() {
 //        filterListener?.onFilterApplied(selectedCategories, searchQuery, selectedType)
 //        dismiss()
     }
-
 }
