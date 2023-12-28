@@ -92,7 +92,6 @@ class ProfileFragment : Fragment() {
                 doOnError = {
                     binding.root.isVisible = true
                     binding.ivUserPhoto.isVisible = false
-                    binding.clDataPersonal.isVisible = false
 
                     if (it.exception is ApiException) {
                         if (it.exception.getParsedErrorProfile()?.success == false) {

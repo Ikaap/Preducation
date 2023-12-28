@@ -6,12 +6,13 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kelompoksatuandsatu.preducation.data.local.datastore.datasource.UserPreferenceDataSource
-import com.kelompoksatuandsatu.preducation.data.network.api.model.user.UserRequest
 import com.kelompoksatuandsatu.preducation.data.repository.UserRepository
 import com.kelompoksatuandsatu.preducation.model.user.UserViewParam
 import com.kelompoksatuandsatu.preducation.utils.ResultWrapper
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
 
 class EditProfileViewModel(
     private val userRepo: UserRepository,
@@ -35,11 +36,27 @@ class EditProfileViewModel(
             }
         }
     }
-    fun updateProfile(userRequest: UserRequest) {
+
+    fun updateProfile(
+        name: RequestBody?,
+        email: RequestBody?,
+        phone: RequestBody?,
+        country: RequestBody?,
+        city: RequestBody?,
+        imageProfile: MultipartBody.Part?
+    ) {
         viewModelScope.launch(Dispatchers.IO) {
             val userId = userPreferenceDataSource.getUserId()
             Log.d("USER ID EDIT PROFILE", "getUserById: $userId")
-            userRepo.updateUserById(userId, userRequest).collect {
+            userRepo.updateUserById(
+                userId,
+                name,
+                email,
+                phone,
+                country,
+                city,
+                imageProfile
+            ).collect {
                 _updateProfile.postValue(it)
             }
         }
