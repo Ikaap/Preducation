@@ -51,4 +51,7 @@ class FilterViewModel(
     val selectedCategories: LiveData<List<Int>?>
         get() = _selectedCategories
 
+    fun isSelectedCategory(category: CategoryClass): Boolean {
+        return category.isSelected
+    }
 }

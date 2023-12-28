@@ -86,7 +86,7 @@ class NotificationFragment : Fragment() {
                 doOnLoading = {
                     binding.rvNotification.isVisible = false
                     binding.shimmerNotification.isVisible = true
-                    binding.layoutStateNotification.root.isVisible = true
+                    binding.layoutStateNotification.root.isVisible = false
                     binding.layoutStateNotification.tvError.isVisible = false
                 },
                 doOnError = { error ->

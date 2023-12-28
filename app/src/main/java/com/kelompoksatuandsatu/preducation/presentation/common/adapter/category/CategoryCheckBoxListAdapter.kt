@@ -54,7 +54,6 @@ class CategoryCheckBoxListAdapter(
 
     private fun updateItemCheckBox(holder: CheckBoxFilterItemViewHolder, position: Int) {
         holder.binding.cbCategory.isChecked = viewModel.isSelectedCategory(dataDiffer.currentList[position])
-
     }
 
     fun setData(data: List<CategoryClass>) {
