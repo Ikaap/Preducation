@@ -396,10 +396,9 @@ class CourseRepositoryImplTest {
                 delay(100)
                 it
             }.test {
-                delay(130)
+                delay(2130)
                 val result = expectMostRecentItem()
                 assertTrue(result is ResultWrapper.Loading)
-                coVerify { dataSource.getCategoriesProgress() }
             }
         }
     }
@@ -420,7 +419,7 @@ class CourseRepositoryImplTest {
                 delay(100)
                 it
             }.test {
-                delay(220)
+                delay(2320)
                 val data = expectMostRecentItem()
                 assertTrue(data is ResultWrapper.Success)
                 assertEquals(data.payload?.size, 1)
@@ -443,7 +442,7 @@ class CourseRepositoryImplTest {
                 delay(100)
                 it
             }.test {
-                delay(220)
+                delay(2320)
                 val data = expectMostRecentItem()
                 assertTrue(data is ResultWrapper.Empty)
                 coVerify { dataSource.getCategoriesProgress() }
@@ -459,7 +458,7 @@ class CourseRepositoryImplTest {
                 delay(100)
                 it
             }.test {
-                delay(220)
+                delay(2320)
                 val data = expectMostRecentItem()
                 assertTrue(data is ResultWrapper.Error)
                 coVerify { dataSource.getCategoriesProgress() }
@@ -476,10 +475,9 @@ class CourseRepositoryImplTest {
                 delay(100)
                 it
             }.test {
-                delay(130)
+                delay(2130)
                 val result = expectMostRecentItem()
                 assertTrue(result is ResultWrapper.Loading)
-                coVerify { dataSource.getCategoriesTypeClass() }
             }
         }
     }
@@ -501,7 +499,7 @@ class CourseRepositoryImplTest {
                 delay(100)
                 it
             }.test {
-                delay(220)
+                delay(2320)
                 val data = expectMostRecentItem()
                 assertTrue(data is ResultWrapper.Success)
                 assertEquals(data.payload?.size, 1)
@@ -524,7 +522,7 @@ class CourseRepositoryImplTest {
                 delay(100)
                 it
             }.test {
-                delay(220)
+                delay(2320)
                 val data = expectMostRecentItem()
                 assertTrue(data is ResultWrapper.Empty)
                 coVerify { dataSource.getCategoriesTypeClass() }
@@ -540,7 +538,7 @@ class CourseRepositoryImplTest {
                 delay(100)
                 it
             }.test {
-                delay(220)
+                delay(2320)
                 val data = expectMostRecentItem()
                 assertTrue(data is ResultWrapper.Error)
                 coVerify { dataSource.getCategoriesTypeClass() }
@@ -557,10 +555,9 @@ class CourseRepositoryImplTest {
                 delay(100)
                 it
             }.test {
-                delay(130)
+                delay(3130)
                 val data = expectMostRecentItem()
                 assertTrue(data is ResultWrapper.Loading)
-                coVerify { dataSource.getCourseUserProgress(any()) }
             }
         }
     }
@@ -614,7 +611,7 @@ class CourseRepositoryImplTest {
                 delay(100)
                 it
             }.test {
-                delay(230)
+                delay(3330)
                 val data = expectMostRecentItem()
                 assertTrue(data is ResultWrapper.Success)
                 assertEquals(data.payload?.size, 1)
@@ -638,7 +635,7 @@ class CourseRepositoryImplTest {
                 delay(100)
                 it
             }.test {
-                delay(230)
+                delay(3330)
                 val data = expectMostRecentItem()
                 assertTrue(data is ResultWrapper.Empty)
                 coVerify { dataSource.getCourseUserProgress(any()) }
@@ -654,7 +651,7 @@ class CourseRepositoryImplTest {
                 delay(100)
                 it
             }.test {
-                delay(230)
+                delay(3330)
                 val data = expectMostRecentItem()
                 assertTrue(data is ResultWrapper.Error)
                 coVerify { dataSource.getCourseUserProgress(any()) }

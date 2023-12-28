@@ -188,10 +188,6 @@
     <string name="login_success">Login Successfull</string>
     <string name="login_failed">Login Failed</string>
     <string name="text_version">Versi 1.0.1</string>
-    <string name="course">Course</string>
-    <string name="news">News</string>
-    <string name="hot">Hot</string>
-    <string name="web_development">Web Development</string>
     <string name="you_need_to_login">You need to login</string>
     <string name="empty_class_progress">You haven\'t taken any classes yet</string>
     <string name="empty_progress_category">Empty progress category</string>
