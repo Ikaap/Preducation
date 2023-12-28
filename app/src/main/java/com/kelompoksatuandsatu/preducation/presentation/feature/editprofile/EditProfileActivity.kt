@@ -3,8 +3,6 @@ package com.kelompoksatuandsatu.preducation.presentation.feature.editprofile
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
-import android.graphics.Bitmap
-import android.graphics.drawable.BitmapDrawable
 import android.net.Uri
 import android.os.Bundle
 import android.widget.EditText
@@ -17,14 +15,16 @@ import coil.load
 import com.github.dhaval2404.imagepicker.ImagePicker
 import com.google.android.material.textfield.TextInputLayout
 import com.kelompoksatuandsatu.preducation.R
-import com.kelompoksatuandsatu.preducation.data.network.api.model.user.UserRequest
 import com.kelompoksatuandsatu.preducation.databinding.ActivityEditProfileBinding
 import com.kelompoksatuandsatu.preducation.utils.exceptions.ApiException
 import com.kelompoksatuandsatu.preducation.utils.exceptions.NoInternetException
 import com.kelompoksatuandsatu.preducation.utils.proceedWhen
 import io.github.muddz.styleabletoast.StyleableToast
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.MultipartBody
+import okhttp3.RequestBody.Companion.asRequestBody
+import okhttp3.RequestBody.Companion.toRequestBody
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import java.io.ByteArrayOutputStream
 import java.io.File
 
 class EditProfileActivity : AppCompatActivity() {
@@ -93,6 +93,7 @@ class EditProfileActivity : AppCompatActivity() {
         binding.tilCity.isVisible = true
         binding.clButtonChange.isVisible = true
     }
+
     private fun observeData() {
         viewModel.updateProfileResult.observe(this) {
             it.proceedWhen(
@@ -178,6 +179,8 @@ class EditProfileActivity : AppCompatActivity() {
         }
     }
 
+    private var getFile: File? = null
+
     private fun imagePicker() {
         ImagePicker.with(this)
             .cropSquare()
@@ -187,19 +190,9 @@ class EditProfileActivity : AppCompatActivity() {
             .start()
     }
 
-    private var getFile: File? = null
-
     @Deprecated("Deprecated in Java")
-    override fun onActivityResult(
-        requestCode: Int,
-        resultCode: Int,
-        data: Intent?
-    ) {
-        super.onActivityResult(
-            requestCode,
-            resultCode,
-            data
-        )
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
 
         if (resultCode == Activity.RESULT_OK) {
             val uri: Uri? = data?.data
@@ -214,39 +207,29 @@ class EditProfileActivity : AppCompatActivity() {
     }
 
     private fun changeProfileData() {
-        val name = binding.etLongName.text.toString().trim()
-        val phone = binding.etPhoneNumber.text.toString().trim()
-        val imageBytes: ByteArray? = getFile?.let { getImageBytes() }
-        val imageProfile: String? = imageBytes?.let { encodeImageToBase64(it) }
-        val country = binding.etCountry.text.toString().trim()
-        val city = binding.etCity.text.toString().trim()
+        val imageFile = getFile
+        if (imageFile != null) {
+            val imageRequestBody =
+                imageFile.asRequestBody("multipart/form-data".toMediaTypeOrNull())
+            val imageMultipart: MultipartBody.Part = MultipartBody.Part.createFormData(
+                "imageProfile",
+                imageFile.name,
+                imageRequestBody
+            )
+            // Logika pengiriman data profil
+            val name = binding.etLongName.text.toString().trim()
+            val phone = binding.etPhoneNumber.text.toString().trim()
+            val country = binding.etCountry.text.toString().trim()
+            val city = binding.etCity.text.toString().trim()
 
-        val userRequest = UserRequest(
-            email = email,
-            phone = phone,
-            name = name,
-            imageProfile = imageProfile,
-            country = country,
-            city = city
-        )
-
-        viewModel.updateProfile(userRequest)
-    }
-
-    private fun getImageBytes(): ByteArray? {
-        val drawable = binding.ivUserPhoto.drawable
-        val bitmap = (drawable as? BitmapDrawable)?.bitmap
-
-        return bitmap?.let { bitmap ->
-            val stream = ByteArrayOutputStream()
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream)
-            stream.toByteArray()
-        }
-    }
-
-    private fun encodeImageToBase64(imageBytes: ByteArray?): String? {
-        return imageBytes?.let {
-            android.util.Base64.encodeToString(it, android.util.Base64.DEFAULT)
+            viewModel.updateProfile(
+                name.toRequestBody("multipart/form-data".toMediaTypeOrNull()),
+                email.toRequestBody("multipart/form-data".toMediaTypeOrNull()),
+                phone.toRequestBody("multipart/form-data".toMediaTypeOrNull()),
+                country.toRequestBody("multipart/form-data".toMediaTypeOrNull()),
+                city.toRequestBody("multipart/form-data".toMediaTypeOrNull()),
+                imageMultipart
+            )
         }
     }
 
@@ -272,7 +255,7 @@ class EditProfileActivity : AppCompatActivity() {
                 false
             }
 
-            !Regex("^[A-Za-z]+$").matches(name) -> {
+            !Regex("^[A-Za-z]+(?:\\s[A-Za-z]+)*\$").matches(name) -> {
                 showError(
                     tilLongName,
                     longNameEditText,
