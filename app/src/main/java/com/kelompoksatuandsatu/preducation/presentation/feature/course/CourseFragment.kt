@@ -9,7 +9,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import androidx.appcompat.widget.SearchView
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
@@ -60,7 +59,7 @@ class CourseFragment : Fragment() {
         override fun onQueryTextSubmit(query: String?): Boolean {
             query?.let {
                 typeCourseAdapter.filter(it)
-                observeIsFilterEmpty()
+//                observeIsFilterEmpty()
             }
             return true
         }
@@ -119,7 +118,7 @@ class CourseFragment : Fragment() {
         }
 
         binding.clSearchBar.setOnClickListener {
-            navigateToSearch()
+            // navigateToSearch()
             val query = searchView.query.toString()
             typeCourseAdapter.filter(query)
             observeIsFilterEmpty()
