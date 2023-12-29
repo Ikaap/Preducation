@@ -24,13 +24,12 @@ import com.kelompoksatuandsatu.preducation.presentation.common.adapter.course.Ad
 import com.kelompoksatuandsatu.preducation.presentation.common.adapter.course.CourseLinearListAdapter
 import com.kelompoksatuandsatu.preducation.presentation.feature.detailclass.DetailClassActivity
 import com.kelompoksatuandsatu.preducation.presentation.feature.filter.FilterFragment
-import com.kelompoksatuandsatu.preducation.presentation.feature.register.RegisterActivity
-import com.kelompoksatuandsatu.preducation.presentation.feature.filter.FilterActivity
 import com.kelompoksatuandsatu.preducation.presentation.feature.login.LoginActivity
 import com.kelompoksatuandsatu.preducation.presentation.feature.search.SearchActivity
 import com.kelompoksatuandsatu.preducation.utils.exceptions.ApiException
 import com.kelompoksatuandsatu.preducation.utils.exceptions.NoInternetException
 import com.kelompoksatuandsatu.preducation.utils.proceedWhen
+import io.github.muddz.styleabletoast.StyleableToast
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class CourseFragment : Fragment(), FilterFragment.OnFilterListener {
@@ -68,7 +67,7 @@ class CourseFragment : Fragment(), FilterFragment.OnFilterListener {
     private val searchQueryListener = object : SearchView.OnQueryTextListener {
         override fun onQueryTextSubmit(query: String?): Boolean {
             query?.let {
-                typeCourseAdapter.filter(it)
+//                typeCourseAdapter.filter(it)
 //                observeIsFilterEmpty()
             }
             return true
