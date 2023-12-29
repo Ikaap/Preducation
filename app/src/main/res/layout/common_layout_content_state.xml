@@ -5,8 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:paddingHorizontal="10dp"
-    android:background="@color/app_color_on_primary"
-    android:elevation="6dp">
+    android:background="@color/app_color_on_primary">
 
     <com.google.android.material.progressindicator.CircularProgressIndicator
         android:id="@+id/pb_loading"

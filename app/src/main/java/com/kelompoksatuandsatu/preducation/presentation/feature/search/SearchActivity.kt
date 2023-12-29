@@ -99,7 +99,6 @@ class SearchActivity : AppCompatActivity() {
     }
 
     private fun fetchData() {
-        viewModel.getCourse()
         viewModel.checkLogin()
     }
 
