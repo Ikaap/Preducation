@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Preducation</string>
+    <string name="text_create_new_password">Buat Password Baru</string>
+    <string name="iv_back">kembali</string>
+    <string name="text_create_your_new_password">Buat Password Baru Anda</string>
+    <string name="text_old_password">Password Lama</string>
+    <string name="text_new_password">Password Baru</string>
+    <string name="text_continue">Lanjutkan</string>
+    <string name="text_edit_profile">Edit Profil</string>
+    <string name="text_add_user">Tambahkan User</string>
+    <string name="text_long_name">Nama Panjang</string>
+    <string name="text_email">Email</string>
+    <string name="text_62">+62</string>
+    <string name="text_update">Perbarui</string>
+    <string name="text_transactions">Transaksi</string>
+    <string name="text_profile">Profil</string>
+    <string name="text_name_guest">Tamu</string>
+    <string name="text_email_guest">guest@gmail.ac.in</string>
+    <string name="text_change_password">Ubah Password</string>
+    <string name="text_payment_history">Histori Pembayaran</string>
+    <string name="text_logout">Keluar</string>
+    <string name="input_otp">Masukkan OTP</string>
+    <string name="the_otp_code_number_has_been_sent_to">Nomor kode OTP telah dikirimkan ke</string>
+    <string name="resend_otp_code">Kirim Ulang Kode OTP</string>
+    <string name="your_account_is_ready_to_use_you_will_be_redirected_to_the_home_page_in_a_few_seconds">Akun Anda siap digunakan. \nAnda akan diarahkan ke Halaman Utama dalam beberapa detik.</string>
+    <string name="congratulation">Selamat</string>
+
+    <string name="search">Cari</string>
+    <string name="class_in_progress">Kelas Sedang Berlangsung</string>
+    <string name="see_all">LIHAT SEMUA</string>
+    <string name="all">Semua</string>
+    <string name="progress">Progres</string>
+    <string name="done">Selesai</string>
+    <string name="categories">Kategori</string>
+    <string name="android_development">Pengembangan Android</string>
+    <string name="data_science">Ilmu Data</string>
+    <string name="_4_6">4.6</string>
+    <string name="belajar_data_cleaning_dengan_nshorting_dengan_python" translatable="false">Belajar membersihkan data dengan \nmenyortir dengan Python</string>
+    <string name="_19_moduls">• 19 Modul</string>
+    <string name="_60_hours">• 60 Jam</string>
+    <string name="advanced_level">• Tingkat Lanjut</string>
+    <string name="_40_complete">40% selesai</string>
+
+    <string name="text_password_min_8_character">Password minimal 8 karakter</string>
+    <string name="text_create_a_password">Buat Password</string>
+    <string name="text_phone_number">Nomor Telepon</string>
+    <string name="text_name">Nama</string>
+    <string name="text_getting_started">Mulai.!</string>
+
+    <string name="text_login">Masuk</string>
+    <string name="text_password">Password</string>
+    <string name="text_forgot_password">Lupa Password</string>
+    <string name="text_sign_in">Masuk</string>
+    <string name="text_enter_without_logging_in">Masuk Tanpa Masuk</string>
+    <string name="text_sorry_wrong_password">Maaf, password salah</string>
+
+    <string name="text_about">Tentang</string>
+    <string name="text_curriculcum">Kurikulum</string>
+    <!-- TODO: Hapus atau ubah teks pengganti ini -->
+    <string name="hello_blank_fragment">Halo fragmen kosong</string>
+    <string name="text_join_group_telegram">Gabung Grup Telegram</string>
+    <string name="text_about_class">Tentang Kelas</string>
+    <string name="text_this_class_is_intended_for">Kelas ini ditujukan untuk</string>
+    <string name="text_enroll_course">Daftar Kelas</string>
+    <string name="text_enroll_this_course">Daftarkan kelas ini?</string>
+    <string name="text_yes_enroll">Ya, daftarkan</string>
+    <string name="text_cancel">Batal</string>
+    <string name="text_next">Selanjutnya</string>
+    <string name="text_other_classes">Kelas Lainnya</string>
+
+    <string name="text_payment_details">Detail Pembayaran</string>
+    <string name="text_price">Harga</string>
+    <string name="text_ppn_11">PPN 11%</string>
+    <string name="text_total_payment">Total Pembayaran</string>
+    <string name="text_bank_transfer">Transfer Bank</string>
+    <string name="text_credit_card">Kartu Kredit</string>
+    <string name="text_card_number">Nomor Kartu</string>
+    <string name="text_card_holder_name">Nama Pemegang Kartu</string>
+    <string name="text_cvv">CVV</string>
+    <string name="text_expiry_date">Tanggal Kadaluarsa</string>
+    <string name="text_congratulations">Selamat</string>
+    <string name="text_your_payment_is_successfully_purchase_a_new_course">Pembayaran Anda berhasil. Beli kelas baru</string>
+    <string name="text_start_study">Mulai Belajar</string>
+    <string name="text_back_to_home">Kembali ke Beranda</string>
+
+    <string name="desc_search">gambar pencarian</string>
+    <string name="text_search">teks pencarian</string>
+    <string name="tv_search">Cari...</string>
+    <string name="text_title_category">Kategori</string>
+    <string name="text_to_see_all">Lihat Semua</string>
+    <string name="desc_iv_category_course">deskripsi gambar kategori kursus</string>
+    <string name="text_popular_course">Kursus Populer</string>
+    <string name="desc_iv_popular_course">iv_popular_course</string>
+    <string name="tv_category_popular">Ilmu Data</string>
+    <string name="tv_rating_popular_course">4.7</string>
+    <string name="desc_ic_arrow_left">ic_arrow_left</string>
+    <string name="tv_header_see_all_popular_course">Kursus Populer</string>
+    <string name="text_header_name">Hai, %s</string>
+    <string name="text_header_name_non_login">Hai, Tamu</string>
+    <string name="text_header_greeting">Apa yang ingin Anda pelajari hari ini?\nCari di bawah ini.</string>
+    <string name="tv_title_course">Belajar membersihkan dan menyortir\ndata dengan Python</string>
+    <string name="tv_level_course">Tingkat Lanjut</string>
+    <string name="tv_module_course">19 Modul</string>
+    <string name="tv_duration_course">60 Jam</string>
+    <string name="tv_price_course">Rp 249.000</string>
+    <string name="desc_dialog_icon">iv_dialog_non_login</string>
+    <string name="dialog_title">Maaf</string>
+    <string name="dialog_message">Anda harus membuat akun untuk mengakses\nfitur ini</string>
+    <string name="dialog_sign_up_button">Daftar</string>
+    <string name="iv_arrow_right">iv_arrow_right</string>
+    <string name="popular_course_not_found">Kursus populer tidak ditemukan!</string>
+    <string name="iv_level_course">iv_level_course</string>
+    <string name="iv_module_course">iv_module_course</string>
+    <string name="iv_rating">iv_rating</string>
+    <string name="iv_time_course">iv_time_course</string>
+
+    <string name="desc_iv_logo_app">iv_logo_app</string>
+    <string name="tv_reset_password">Reset Password</string>
+    <string name="tv_title_email">Surel</string>
+    <string name="tv_send_email">Kirim</string>
+    <string name="desc_arrow_right">arrow_right</string>
+    <string name="text_error_email_empty">Surel tidak boleh kosong</string>
+    <string name="text_error_email_invalid">Masukkan format surel yang valid</string>
+    <string name="reset_password_successful">Reset Password Berhasil</string>
+    <string name="invalid_or_expired_link">Tautan tidak valid atau sudah kadaluarsa</string>
+    <string name="text_home">Beranda</string>
+    <string name="text_notification">Pemberitahuan</string>
+    <string name="text_class">Kelas</string>
+    <string name="text_course">Kursus</string>
+    <string name="text_preducation">Preducation</string>
+    <string name="text_online_learning">Pembelajaran Online</string>
+    <string name="text_notifications">Pemberitahuan</string>
+    <string name="text_premium">Premium</string>
+    <string name="text_freemium">Freemium</string>
+    <string name="text_filter">Filter</string>
+    <string name="text_today">Hari Ini</string>
+    <string name="text_clear">Bersihkan</string>
+    <string name="text_sort">Urutkan</string>
+    <string name="text_class_topic">Topik Kelas</string>
+
+    <string name="text_profile_update_success">Profil berhasil diperbarui</string>
+    <string name="text_change_profile_failed">Gagal mengubah profil</string>
+
+    <string name="text_logout_dialog">Apakah Anda ingin keluar?</string>
+    <string name="text_yes">Ya</string>
+    <string name="text_no">Tidak</string>
+    <string name="text_error_password_empty">Password tidak boleh kosong</string>
+    <string name="text_error_password_length">Password harus minimal 8 karakter</string>
+
+    <string name="edit_profile_successful">Perubahan profil berhasil</string>
+    <string name="text_confirm_password">Konfirmasi Password</string>
+    <string name="text_error_long_name_empty">Nama tidak boleh kosong</string>
+    <string name="text_error_long_name_invalid_characters">Nama mengandung karakter yang tidak valid</string>
+    <string name="text_error_country_invalid_characters">Negara mengandung karakter yang tidak valid</string>
+    <string name="text_error_city_invalid_characters">Kota mengandung karakter yang tidak valid</string>
+    <string name="text_error_phone_number_empty">Nomor telepon tidak boleh kosong</string>
+    <string name="text_error_phone_number_invalid_characters">Nomor telepon mengandung karakter yang tidak valid</string>
+    <string name="text_error_country_empty">Negara tidak boleh kosong</string>
+    <string name="text_error_city_empty">Kota tidak boleh kosong</string>
+    <string name="text_error_form_not_valid">Formulir tidak valid</string>
+
+    <string name="text_error_old_new_password_match">Password lama dan baru tidak boleh sama.</string>
+    <string name="text_error_update_password">Gagal memperbarui password. Silakan coba lagi.</string>
+    <string name="text_error_password_invalid">Password harus minimal 8 karakter.</string>
+    <string name="text_error_confirm_password_mismatch">Konfirmasi password tidak cocok dengan password baru.</string>
+
+    <string name="text_error_name_cannot_empy">Nama tidak boleh kosong</string>
+    <string name="text_number_phone_empty">Nomor telepon tidak boleh kosong</string>
+    <string name="text_number_phone_invalid">Masukkan format nomor telepon yang valid</string>
+    <string name="register_successfull">Pendaftaran berhasil</string>
+    <string name="register_failed">Pendaftaran gagal</string>
+    <string name="login_success">Login berhasil</string>
+    <string name="login_failed">Login gagal</string>
+    <string name="text_version">Versi 1.0.1</string>
+    <string name="course">Kursus</string>
+    <string name="news">Berita</string>
+    <string name="hot">Panas</string>
+    <string name="web_development">Pengembangan Web</string>
+
+    <string name="you_need_to_login">Anda harus login</string>
+    <string name="empty_class_progress">Anda belum mengambil kelas apa pun</string>
+    <string name="empty_progress_category">Kategori kemajuan kosong</string>
+    <string name="text_data_empty">Data Kosong</string>
+
+    <string name="text_paid">Bayar</string>
+    <string name="text_on_progress">Dalam Proses</string>
+    <string name="text_dialog_finish_class_message">Anda sudah berada di akhir kelas ini. Silahkan periksa email anda setelah menonton video untuk mendapatkan sertifikat anda.</string>
+    <string name="text_to_access_this_feature_please_log_in_first">Untuk mengakses fitur ini, silakan login terlebih dahulu</string>
+</resources>

@@ -9,22 +9,39 @@
         android:id="@+id/navigation_home"
         android:name="com.kelompoksatuandsatu.preducation.presentation.feature.home.HomeFragment"
         android:label="fragment_home"
-        tools:layout="@layout/fragment_home" />
+        tools:layout="@layout/fragment_home" >
+    </fragment>
     <fragment
         android:id="@+id/navigation_notification"
         android:name="com.kelompoksatuandsatu.preducation.presentation.feature.notifications.NotificationFragment"
-        android:label="NotificationFragment" />
+        android:label="NotificationFragment" >
+        <action
+            android:id="@+id/notification_navigate_to_home"
+            app:destination="@id/navigation_home" />
+    </fragment>
     <fragment
         android:id="@+id/navigation_class"
         android:name="com.kelompoksatuandsatu.preducation.presentation.feature.classProgress.ProgressClassFragment"
-        android:label="ProgressClassFragment" />
+        android:label="ProgressClassFragment" >
+        <action
+            android:id="@+id/class_navigate_to_home"
+            app:destination="@id/navigation_home" />
+    </fragment>
     <fragment
         android:id="@+id/navigation_course"
         android:name="com.kelompoksatuandsatu.preducation.presentation.feature.course.CourseFragment"
         android:label="fragment_course"
-        tools:layout="@layout/fragment_course" />
+        tools:layout="@layout/fragment_course" >
+        <action
+            android:id="@+id/course_navigate_to_home"
+            app:destination="@id/navigation_home" />
+    </fragment>
     <fragment
         android:id="@+id/navigation_profile"
         android:name="com.kelompoksatuandsatu.preducation.presentation.feature.profile.ProfileFragment"
-        android:label="ProfileFragment" />
+        android:label="ProfileFragment" >
+        <action
+            android:id="@+id/profile_navigate_to_home"
+            app:destination="@id/navigation_home" />
+    </fragment>
 </navigation>

@@ -1,6 +1,8 @@
 package com.kelompoksatuandsatu.preducation.presentation.feature.profile
 
 import android.content.Intent
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -8,9 +10,11 @@ import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import coil.load
 import com.kelompoksatuandsatu.preducation.R
 import com.kelompoksatuandsatu.preducation.databinding.FragmentProfileBinding
+import com.kelompoksatuandsatu.preducation.databinding.LayoutDialogAccessFeatureBinding
 import com.kelompoksatuandsatu.preducation.presentation.feature.changepassword.ChangePasswordActivity
 import com.kelompoksatuandsatu.preducation.presentation.feature.editprofile.EditProfileActivity
 import com.kelompoksatuandsatu.preducation.presentation.feature.historypayment.HistoryPaymentActivity
@@ -25,11 +29,24 @@ class ProfileFragment : Fragment() {
 
     private val viewModel: ProfileViewModel by viewModel()
 
+    private fun navigateToMain() {
+        findNavController().navigate(R.id.profile_navigate_to_home)
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        viewModel.checkLogin()
+
+        viewModel.isUserLogin.observe(viewLifecycleOwner) { isLogin ->
+            if (!isLogin) {
+                showDialogNotification()
+                navigateToMain()
+            }
+        }
+
         binding = FragmentProfileBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -150,6 +167,20 @@ class ProfileFragment : Fragment() {
         requireActivity().finish()
     }
 
+    private fun showDialogNotification() {
+        val binding: LayoutDialogAccessFeatureBinding = LayoutDialogAccessFeatureBinding.inflate(layoutInflater)
+        val dialog = android.app.AlertDialog.Builder(requireContext(), 0).create()
+
+        dialog.apply {
+            setView(binding.root)
+            window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        }.show()
+
+        binding.clSignIn.setOnClickListener {
+            val intent = Intent(requireContext(), LoginActivity::class.java)
+            startActivity(intent)
+        }
+    }
     override fun onDestroyView() {
         super.onDestroyView()
         binding
