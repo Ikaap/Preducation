@@ -22,51 +22,35 @@ class CourseViewModel(
     val course: LiveData<ResultWrapper<List<CourseViewParam>>>
         get() = _course
 
-    private val _categoriesClass = MutableLiveData<ResultWrapper<List<CategoryClass>>>()
-    val categoriesClass: LiveData<ResultWrapper<List<CategoryClass>>>
-        get() = _categoriesClass
+    private val _categories = MutableLiveData<ResultWrapper<List<CategoryClass>>>()
+    val categories: LiveData<ResultWrapper<List<CategoryClass>>>
+        get() = _categories
 
-    private val _searchQuery = MutableLiveData<String>()
-    val searchQuery: LiveData<String>
-        get() = _searchQuery
-
-    private val _categoriesTypeClass = MutableLiveData<ResultWrapper<List<CategoryType>>>()
-    val categoriesTypeClass: LiveData<ResultWrapper<List<CategoryType>>>
-        get() = _categoriesTypeClass
-
-    private val _selectedType = MutableLiveData<String>()
-    val selectedType: LiveData<String>
-        get() = _selectedType
-
-    private val _selectedCategories = MutableLiveData<List<CategoryClass>>()
-    val selectedCategories: LiveData<List<CategoryClass>?>
-        get() = _selectedCategories
-
-    fun getCourse(category: List<String>? = null, typeClass: String? = null) {
+    fun getCourse(category: List<String>? = null, typeClass: String? = null, title: String? = null) {
         viewModelScope.launch(Dispatchers.IO) {
-            repositoryCourse.getCourseHome(category = category, if (typeClass == "All") null else typeClass?.toLowerCase())
+            repositoryCourse.getCourseHome(category = category, typeClass = if (typeClass == "All") null else typeClass?.toLowerCase(), title = title)
                 .collect {
                     _course.postValue(it)
                 }
         }
     }
 
-    fun addSelectedCategory(category: CategoryClass) {
-        val updatedData = _selectedCategories.value.orEmpty().toMutableList()
-        updatedData.add(category)
-        _selectedCategories.value = updatedData.distinct()
-    }
-
-    fun deleteSelectedCategory(category: CategoryClass) {
-        val updatedData = _selectedCategories.value.orEmpty().toMutableList()
-        updatedData.remove(category)
-        _selectedCategories.value = updatedData.distinct()
-    }
+    private val _categoriesTypeClass = MutableLiveData<ResultWrapper<List<CategoryType>>>()
+    val categoriesTypeClass: LiveData<ResultWrapper<List<CategoryType>>>
+        get() = _categoriesTypeClass
 
     fun getCategoriesTypeClass() {
         viewModelScope.launch(Dispatchers.IO) {
             repositoryCourse.getCategoriesTypeClass().collect {
                 _categoriesTypeClass.postValue(it)
+            }
+        }
+    }
+
+    fun getCategories() {
+        viewModelScope.launch(Dispatchers.IO) {
+            repositoryCourse.getCategoriesClass().collect {
+                _categories.postValue(it)
             }
         }
     }
@@ -82,11 +66,19 @@ class CourseViewModel(
         }
     }
 
-    fun getCategoriesClass() {
-        viewModelScope.launch(Dispatchers.IO) {
-            repositoryCourse.getCategoriesClass().collect {
-                _categoriesClass.postValue(it)
-            }
-        }
+    private val _selectedType = MutableLiveData<String>()
+    val selectedType: LiveData<String>
+        get() = _selectedType
+
+    private val _selectedCategories = MutableLiveData<List<CategoryClass>>()
+    val selectedCategories: LiveData<List<CategoryClass>?>
+        get() = _selectedCategories
+
+    fun addSelectedCategory(category: CategoryClass) {
+        _selectedCategories.value = (_selectedCategories.value.orEmpty() + category).distinct()
+    }
+
+    fun deleteSelectedCategory(category: CategoryClass) {
+        _selectedCategories.value = (_selectedCategories.value.orEmpty() - category).distinct()
     }
 }
