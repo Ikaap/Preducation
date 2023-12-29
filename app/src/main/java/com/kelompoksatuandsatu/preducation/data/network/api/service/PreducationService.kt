@@ -64,7 +64,7 @@ interface PreducationService {
     suspend fun getCourseHome(@Query("category") category: List<String>? = null, @Query("typeClass") typeClass: String? = null): CourseResponse
 
     @GET("api/v1/courses")
-    suspend fun getCourseHome(@Query("category") category: List<String>? = null, @Query("typeClass") typeClass: String? = null): CourseResponse
+    suspend fun getCourseHome(@Query("category") category: List<String>? = null, @Query("typeClass") typeClass: String? = null, @Query("title") title: String? = null): CourseResponse
 
     // notification
     @GET("api/v1/notifications")
