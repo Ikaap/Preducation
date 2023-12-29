@@ -1,22 +1,29 @@
 package com.kelompoksatuandsatu.preducation.presentation.feature.editprofile
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.widget.EditText
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.net.toFile
+import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import coil.load
-// import com.github.dhaval2404.imagepicker.ImagePicker
+import com.github.dhaval2404.imagepicker.ImagePicker
 import com.google.android.material.textfield.TextInputLayout
 import com.kelompoksatuandsatu.preducation.R
-import com.kelompoksatuandsatu.preducation.data.network.api.model.user.UserRequest
 import com.kelompoksatuandsatu.preducation.databinding.ActivityEditProfileBinding
+import com.kelompoksatuandsatu.preducation.utils.exceptions.ApiException
+import com.kelompoksatuandsatu.preducation.utils.exceptions.NoInternetException
 import com.kelompoksatuandsatu.preducation.utils.proceedWhen
 import io.github.muddz.styleabletoast.StyleableToast
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.asRequestBody
+import okhttp3.RequestBody.Companion.toRequestBody
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.io.File
 
@@ -86,6 +93,7 @@ class EditProfileActivity : AppCompatActivity() {
         binding.tilCity.isVisible = true
         binding.clButtonChange.isVisible = true
     }
+
     private fun observeData() {
         viewModel.updateProfileResult.observe(this) {
             it.proceedWhen(
@@ -110,6 +118,38 @@ class EditProfileActivity : AppCompatActivity() {
                 doOnError = {
                     binding.root.isVisible = true
                     binding.ivAddPhotoUser.isVisible = false
+
+                    if (it.exception is ApiException) {
+                        if (it.exception.getParsedErrorProfile()?.success == false) {
+                            if (it.exception.httpCode == 500) {
+                                binding.layoutCommonState.clServerError.isGone = false
+                                binding.layoutCommonState.ivServerError.isGone = false
+                                StyleableToast.makeText(
+                                    this,
+                                    "SERVER ERROR",
+                                    R.style.failedtoast
+                                ).show()
+                            } else if (it.exception.getParsedErrorProfile()?.success == false) {
+                                binding.layoutCommonState.tvError.text =
+                                    it.exception.getParsedErrorProfile()?.message
+                                StyleableToast.makeText(
+                                    this,
+                                    it.exception.getParsedErrorProfile()?.message,
+                                    R.style.failedtoast
+                                ).show()
+                            }
+                        }
+                    } else if (it.exception is NoInternetException) {
+                        if (!it.exception.isNetworkAvailable(this)) {
+                            binding.layoutCommonState.clNoConnection.isGone = false
+                            binding.layoutCommonState.ivNoConnection.isGone = false
+                            StyleableToast.makeText(
+                                this,
+                                "tidak ada internet",
+                                R.style.failedtoast
+                            ).show()
+                        }
+                    }
                 }
             )
         }
@@ -134,75 +174,62 @@ class EditProfileActivity : AppCompatActivity() {
             }
         }
 
-//        binding.ivAddPhotoUser.setOnClickListener {
-//            imagePicker()
-//        }
+        binding.ivAddPhotoUser.setOnClickListener {
+            imagePicker()
+        }
     }
-
-//    private fun imagePicker() {
-//        ImagePicker.with(this)
-//            .cropSquare()
-//            .galleryOnly()
-//            .compress(1024)
-//            .maxResultSize(1080, 1080)
-//            .start()
-//    }
 
     private var getFile: File? = null
 
-    @Deprecated("Deprecated in Java")
-    override fun onActivityResult(
-        requestCode: Int,
-        resultCode: Int,
-        data: Intent?
-    ) {
-        super.onActivityResult(
-            requestCode,
-            resultCode,
-            data
-        )
+    private fun imagePicker() {
+        ImagePicker.with(this)
+            .cropSquare()
+            .galleryOnly()
+            .compress(1024)
+            .maxResultSize(1080, 1080)
+            .start()
+    }
 
-//        if (resultCode == Activity.RESULT_OK) {
-//            val uri: Uri? = data?.data
-//            val img = uri?.toFile()
-//            binding.ivUserPhoto.load(uri)
-//            getFile = img
-//        } else if (resultCode == ImagePicker.RESULT_ERROR) {
-//            Toast.makeText(this, ImagePicker.getError(data), Toast.LENGTH_SHORT).show()
-//        } else {
-//            Toast.makeText(this, "Task Cancelled", Toast.LENGTH_SHORT).show()
-//        }
+    @Deprecated("Deprecated in Java")
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if (resultCode == Activity.RESULT_OK) {
+            val uri: Uri? = data?.data
+            val img = uri?.toFile()
+            binding.ivUserPhoto.load(uri)
+            getFile = img
+        } else if (resultCode == ImagePicker.RESULT_ERROR) {
+            Toast.makeText(this, ImagePicker.getError(data), Toast.LENGTH_SHORT).show()
+        } else {
+            Toast.makeText(this, "Task Cancelled", Toast.LENGTH_SHORT).show()
+        }
     }
 
     private fun changeProfileData() {
-        val name = binding.etLongName.text.toString().trim()
-        val phone = binding.etPhoneNumber.text.toString().trim()
-        val country = binding.etCountry.text.toString().trim()
-        val city = binding.etCity.text.toString().trim()
+        val imageFile = getFile
+        if (imageFile != null) {
+            val imageRequestBody =
+                imageFile.asRequestBody("multipart/form-data".toMediaTypeOrNull())
+            val imageMultipart: MultipartBody.Part = MultipartBody.Part.createFormData(
+                "imageProfile",
+                imageFile.name,
+                imageRequestBody
+            )
+            // Logika pengiriman data profil
+            val name = binding.etLongName.text.toString().trim()
+            val phone = binding.etPhoneNumber.text.toString().trim()
+            val country = binding.etCountry.text.toString().trim()
+            val city = binding.etCity.text.toString().trim()
 
-        val userRequest = UserRequest(
-            email = email,
-            phone = phone,
-            name = name,
-            imageProfile = null,
-            country = country,
-            city = city
-        )
-
-        val requestFile = getFile?.asRequestBody("image/jpeg".toMediaTypeOrNull())
-        val imageMultipart: MultipartBody.Part? =
-            requestFile?.let {
-                MultipartBody.Part.createFormData(
-                    "image",
-                    getFile?.name ?: "",
-                    it
-                )
-            }
-
-        if (imageMultipart != null) {
-            viewModel.updateProfile(userRequest)
-        } else {
-            viewModel.updateProfile(userRequest)
+            viewModel.updateProfile(
+                name.toRequestBody("multipart/form-data".toMediaTypeOrNull()),
+                email.toRequestBody("multipart/form-data".toMediaTypeOrNull()),
+                phone.toRequestBody("multipart/form-data".toMediaTypeOrNull()),
+                country.toRequestBody("multipart/form-data".toMediaTypeOrNull()),
+                city.toRequestBody("multipart/form-data".toMediaTypeOrNull()),
+                imageMultipart
+            )
         }
     }
 
@@ -228,7 +255,7 @@ class EditProfileActivity : AppCompatActivity() {
                 false
             }
 
-            !Regex("^[A-Za-z]+$").matches(name) -> {
+            !Regex("^[A-Za-z]+(?:\\s[A-Za-z]+)*\$").matches(name) -> {
                 showError(
                     tilLongName,
                     longNameEditText,

@@ -13,7 +13,6 @@ import com.kelompoksatuandsatu.preducation.data.network.api.model.auth.register.
 import com.kelompoksatuandsatu.preducation.data.network.api.model.auth.register.RegisterResponse
 import com.kelompoksatuandsatu.preducation.data.network.api.model.changepassword.ChangePasswordRequest
 import com.kelompoksatuandsatu.preducation.data.network.api.model.changepassword.toPasswordList
-import com.kelompoksatuandsatu.preducation.data.network.api.model.user.UserRequest
 import com.kelompoksatuandsatu.preducation.data.network.api.model.user.toUserViewParam
 import com.kelompoksatuandsatu.preducation.model.auth.UserAuth
 import com.kelompoksatuandsatu.preducation.model.auth.UserLogin
@@ -26,13 +25,25 @@ import com.kelompoksatuandsatu.preducation.model.user.UserViewParam
 import com.kelompoksatuandsatu.preducation.utils.ResultWrapper
 import com.kelompoksatuandsatu.preducation.utils.exceptions.ApiException
 import com.kelompoksatuandsatu.preducation.utils.proceedFlow
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.*
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import retrofit2.HttpException
 
 interface UserRepository {
     suspend fun getUserById(id: String): Flow<ResultWrapper<UserViewParam>>
 
-    suspend fun updateUserById(id: String, userRequest: UserRequest): Flow<ResultWrapper<UserViewParam>>
+    suspend fun updateUserById(
+        id: String,
+        name: RequestBody?,
+        email: RequestBody?,
+        phone: RequestBody?,
+        country: RequestBody?,
+        city: RequestBody?,
+        imageProfile: MultipartBody.Part?
+    ): Flow<ResultWrapper<UserViewParam>>
+
     suspend fun updateUserPassword(
         id: String,
         passwordRequest: ChangePasswordRequest
@@ -50,7 +61,10 @@ interface UserRepository {
     suspend fun userForgotPassword(request: UserForgotPassword): Flow<ResultWrapper<Boolean>>
 }
 
-class UserRepositoryImpl(private val userDataSource: UserDataSource, private val userPreferenceDataSource: UserPreferenceDataSource) : UserRepository {
+class UserRepositoryImpl(
+    private val userDataSource: UserDataSource,
+    private val userPreferenceDataSource: UserPreferenceDataSource
+) : UserRepository {
 
     override suspend fun getUserById(id: String): Flow<ResultWrapper<UserViewParam>> {
         return proceedFlow {
@@ -60,10 +74,28 @@ class UserRepositoryImpl(private val userDataSource: UserDataSource, private val
 
     override suspend fun updateUserById(
         id: String,
-        userRequest: UserRequest
+        name: RequestBody?,
+        email: RequestBody?,
+        phone: RequestBody?,
+        country: RequestBody?,
+        city: RequestBody?,
+        imageProfile: MultipartBody.Part?
     ): Flow<ResultWrapper<UserViewParam>> {
         return proceedFlow {
-            userDataSource.updateUserById(id, userRequest).data?.toUserViewParam()!!
+            userDataSource.updateUserById(
+                id,
+                name,
+                email,
+                phone,
+                country,
+                city,
+                imageProfile
+            ).data?.toUserViewParam()!!
+        }.catch {
+            emit(ResultWrapper.Error(Exception(it)))
+        }.onStart {
+            emit(ResultWrapper.Loading())
+            delay(2000)
         }
     }
 
@@ -72,13 +104,17 @@ class UserRepositoryImpl(private val userDataSource: UserDataSource, private val
         passwordRequest: ChangePasswordRequest
     ): Flow<ResultWrapper<List<Password>>> {
         return proceedFlow {
-            (userDataSource.updateUserPassword(id, passwordRequest).data?.toPasswordList() ?: emptyList())
+            (
+                userDataSource.updateUserPassword(id, passwordRequest).data?.toPasswordList()
+                    ?: emptyList()
+                )
         }
     }
 
     override suspend fun userRegister(request: UserAuth): Flow<ResultWrapper<RegisterResponse>> {
         return flow {
-            val dataRequest = RegisterRequest(request.email, request.name, request.phone, request.password)
+            val dataRequest =
+                RegisterRequest(request.email, request.name, request.phone, request.password)
             try {
                 val regisResult = userDataSource.userRegister(dataRequest)
                 if (regisResult.success) {
@@ -133,6 +169,7 @@ class UserRepositoryImpl(private val userDataSource: UserDataSource, private val
             forgotPasswordResult.success
         }
     }
+
     override suspend fun userLogout(): Flow<ResultWrapper<Boolean>> = flow {
         val response = userDataSource.userLogout()
         if (response.isSuccessful) {

@@ -6,6 +6,7 @@ import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import com.kelompoksatuandsatu.preducation.R
 import com.kelompoksatuandsatu.preducation.databinding.ActivityOtpBinding
@@ -15,6 +16,7 @@ import com.kelompoksatuandsatu.preducation.model.auth.otp.verifyotp.OtpData
 import com.kelompoksatuandsatu.preducation.presentation.feature.login.LoginActivity
 import com.kelompoksatuandsatu.preducation.presentation.feature.register.RegisterActivity
 import com.kelompoksatuandsatu.preducation.utils.exceptions.ApiException
+import com.kelompoksatuandsatu.preducation.utils.exceptions.NoInternetException
 import com.kelompoksatuandsatu.preducation.utils.proceedWhen
 import com.otpview.OTPListener
 import io.github.muddz.styleabletoast.StyleableToast
@@ -100,8 +102,39 @@ class OtpActivity : AppCompatActivity() {
                             }
                         }
                     }
-
                     binding.otpView.resetState()
+
+                    if (it.exception is ApiException) {
+                        if (it.exception.getParsedErrorOtp()?.success == false) {
+                            if (it.exception.httpCode == 500) {
+                                binding.layoutCommonState.clServerError.isGone = false
+                                binding.layoutCommonState.ivServerError.isGone = false
+                                StyleableToast.makeText(
+                                    this,
+                                    "SERVER ERROR",
+                                    R.style.failedtoast
+                                ).show()
+                            } else if (it.exception.getParsedErrorOtp()?.success == false) {
+                                binding.layoutCommonState.tvError.text =
+                                    it.exception.getParsedErrorOtp()?.message
+                                StyleableToast.makeText(
+                                    this,
+                                    it.exception.getParsedErrorOtp()?.message,
+                                    R.style.failedtoast
+                                ).show()
+                            }
+                        }
+                    } else if (it.exception is NoInternetException) {
+                        if (!it.exception.isNetworkAvailable(this)) {
+                            binding.layoutCommonState.clNoConnection.isGone = false
+                            binding.layoutCommonState.ivNoConnection.isGone = false
+                            StyleableToast.makeText(
+                                this,
+                                "tidak ada internet",
+                                R.style.failedtoast
+                            ).show()
+                        }
+                    }
                 }
             )
         }

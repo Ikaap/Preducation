@@ -28,17 +28,20 @@ import com.kelompoksatuandsatu.preducation.data.network.api.model.payment.Paymen
 import com.kelompoksatuandsatu.preducation.data.network.api.model.payment.PaymentCourseResponse
 import com.kelompoksatuandsatu.preducation.data.network.api.model.payment.history.HistoryItemResponse
 import com.kelompoksatuandsatu.preducation.data.network.api.model.progress.courseprogress.CourseProgressResponse
-import com.kelompoksatuandsatu.preducation.data.network.api.model.user.UserRequest
 import com.kelompoksatuandsatu.preducation.data.network.api.model.user.UserResponse
+import okhttp3.MultipartBody
 import okhttp3.OkHttpClient
+import okhttp3.RequestBody
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.Body
 import retrofit2.http.DELETE
 import retrofit2.http.GET
+import retrofit2.http.Multipart
 import retrofit2.http.PATCH
 import retrofit2.http.POST
+import retrofit2.http.Part
 import retrofit2.http.Path
 import retrofit2.http.Query
 import java.util.concurrent.TimeUnit
@@ -87,8 +90,17 @@ interface PreducationService {
     @GET("api/v1/users/{id}")
     suspend fun getUserById(@Path("id") id: String): UserResponse
 
+    @Multipart
     @PATCH("api/v1/users/{id}")
-    suspend fun updateUserById(@Path("id") id: String? = null, @Body userRequest: UserRequest): UserResponse
+    suspend fun updateUserById(
+        @Path("id") id: String? = null,
+        @Part("name") name: RequestBody?,
+        @Part("email") email: RequestBody?,
+        @Part("phone") phone: RequestBody?,
+        @Part("country") country: RequestBody?,
+        @Part("city") city: RequestBody?,
+        @Part imageProfile: MultipartBody.Part?
+    ): UserResponse
 
     @PATCH("api/v1/users/update-password/{id}")
     suspend fun updateUserPassword(@Path("id") id: String? = null, @Body changePasswordRequest: ChangePasswordRequest): ChangePasswordResponse
@@ -140,7 +152,6 @@ interface PreducationService {
                 .build()
             val retrofit = Retrofit.Builder()
                 .baseUrl(BuildConfig.BASE_URL)
-//                .baseUrl(BuildConfig.BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
                 .client(okHttpClient)
                 .build()

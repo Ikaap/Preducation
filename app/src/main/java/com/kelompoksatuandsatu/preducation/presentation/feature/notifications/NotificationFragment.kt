@@ -10,9 +10,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import android.widget.Toast.makeText
+import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.kelompoksatuandsatu.preducation.R
 import com.kelompoksatuandsatu.preducation.databinding.FragmentNotificationBinding
@@ -21,12 +22,12 @@ import com.kelompoksatuandsatu.preducation.presentation.feature.login.LoginActiv
 import com.kelompoksatuandsatu.preducation.presentation.feature.notifications.adapter.NotificationAdapter
 import com.kelompoksatuandsatu.preducation.utils.AssetWrapper
 import com.kelompoksatuandsatu.preducation.utils.exceptions.ApiException
+import com.kelompoksatuandsatu.preducation.utils.exceptions.NoInternetException
 import com.kelompoksatuandsatu.preducation.utils.proceedWhen
 import io.github.muddz.styleabletoast.StyleableToast
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import org.koin.dsl.module
 
 class NotificationFragment : Fragment() {
 
@@ -36,16 +37,8 @@ class NotificationFragment : Fragment() {
 
     private val assetWrapper: AssetWrapper by inject()
 
-    private val viewModelModule = module {
-        viewModel { NotificationViewModel(get(), get()) }
-    }
-
     private val notificationAdapter: NotificationAdapter by lazy {
         NotificationAdapter()
-    }
-
-    private fun navigateToMain() {
-        findNavController().navigate(R.id.notification_navigate_to_home)
     }
 
     override fun onCreateView(
@@ -53,15 +46,6 @@ class NotificationFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        viewModel.checkLogin()
-
-        viewModel.isUserLogin.observe(viewLifecycleOwner) { isLogin ->
-            if (!isLogin) {
-                showDialogNotification()
-                navigateToMain()
-            }
-        }
-
         binding = FragmentNotificationBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -131,6 +115,38 @@ class NotificationFragment : Fragment() {
                                     view?.setBackgroundResource(R.style.failedtoast)
                                 }.show()
                             }
+                        }
+                    }
+
+                    if (it.exception is ApiException) {
+                        if (it.exception.getParsedErrorNotifications()?.success == false) {
+                            if (it.exception.httpCode == 500) {
+                                binding.layoutCommonState.clServerError.isGone = false
+                                binding.layoutCommonState.ivServerError.isGone = false
+                                StyleableToast.makeText(
+                                    requireContext(),
+                                    "SERVER ERROR",
+                                    R.style.failedtoast
+                                ).show()
+                            } else if (it.exception.getParsedErrorNotifications()?.success == false) {
+                                binding.layoutCommonState.tvError.text =
+                                    it.exception.getParsedErrorNotifications()?.message
+                                StyleableToast.makeText(
+                                    requireContext(),
+                                    it.exception.getParsedErrorNotifications()?.message,
+                                    R.style.failedtoast
+                                ).show()
+                            }
+                        }
+                    } else if (it.exception is NoInternetException) {
+                        if (!it.exception.isNetworkAvailable(requireContext())) {
+                            binding.layoutCommonState.clNoConnection.isGone = false
+                            binding.layoutCommonState.ivNoConnection.isGone = false
+                            StyleableToast.makeText(
+                                requireContext(),
+                                "tidak ada internet",
+                                R.style.failedtoast
+                            ).show()
                         }
                     }
                 },
