@@ -8,8 +8,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import androidx.appcompat.widget.SearchView
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -24,29 +22,12 @@ import com.kelompoksatuandsatu.preducation.presentation.common.adapter.course.Ad
 import com.kelompoksatuandsatu.preducation.presentation.common.adapter.course.CourseCardListAdapter
 import com.kelompoksatuandsatu.preducation.presentation.feature.detailclass.DetailClassActivity
 import com.kelompoksatuandsatu.preducation.presentation.feature.register.RegisterActivity
+import com.kelompoksatuandsatu.preducation.presentation.feature.search.SearchActivity
 import com.kelompoksatuandsatu.preducation.utils.proceedWhen
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class HomeFragment : Fragment() {
     private lateinit var binding: FragmentHomeBinding
-
-    private val searchView: SearchView by lazy {
-        binding.clSearchBar.findViewById(R.id.sv_search)
-    }
-
-    private val searchQueryListener = object : SearchView.OnQueryTextListener {
-        override fun onQueryTextSubmit(query: String?): Boolean {
-            query?.let {
-                popularCourseAdapter.filter(it)
-                observeIsFilterEmpty()
-            }
-            return true
-        }
-
-        override fun onQueryTextChange(newText: String?): Boolean {
-            return false
-        }
-    }
 
     private val categoryCourseAdapter: CategoryCourseListAdapter by lazy {
         CategoryCourseListAdapter { selectedCategory ->
@@ -99,7 +80,6 @@ class HomeFragment : Fragment() {
         setOnClickListener()
         getData()
         observeData()
-        searchView.setOnQueryTextListener(searchQueryListener)
     }
 
     private fun setOnClickListener() {
@@ -109,10 +89,9 @@ class HomeFragment : Fragment() {
         binding.ivToSeeAll.setOnClickListener {
             SeeAllPopularCoursesActivity.startActivity(requireContext())
         }
-        binding.clSearchBar.findViewById<ImageView>(R.id.iv_search).setOnClickListener {
-            val query = searchView.query.toString()
-            popularCourseAdapter.filter(query)
-            observeIsFilterEmpty()
+        binding.clSearchBar.setOnClickListener {
+            val intent = Intent(requireContext(), SearchActivity::class.java)
+            startActivity(intent)
         }
     }
 
@@ -146,21 +125,6 @@ class HomeFragment : Fragment() {
                     binding.tvHeaderName.text = welcomeMessageNonLogin
                 }
             )
-        }
-    }
-
-    private fun observeIsFilterEmpty() {
-        popularCourseAdapter.isFilterEmpty.observe(viewLifecycleOwner) { isFilterEmpty ->
-            if (isFilterEmpty) {
-                binding.layoutStateCoursePopular.root.isVisible = true
-                binding.layoutStateCoursePopular.tvError.isVisible = false
-                binding.layoutStateCoursePopular.pbLoading.isVisible = false
-                binding.layoutStateCoursePopular.clDataEmpty.isVisible = true
-                binding.layoutStateCoursePopular.tvDataEmpty.isVisible = true
-                binding.layoutStateCoursePopular.ivDataEmpty.isVisible = false
-            } else {
-                binding.layoutStateCoursePopular.root.isVisible = false
-            }
         }
     }
 

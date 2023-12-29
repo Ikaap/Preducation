@@ -57,7 +57,7 @@
 
         <include
             android:id="@+id/layout_state_category"
-            layout="@layout/layout_search_bar"
+            layout="@layout/layout_no_search_bar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             tools:layout_editor_absoluteX="0dp"
