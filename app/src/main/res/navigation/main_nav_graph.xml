@@ -35,6 +35,9 @@
         <action
             android:id="@+id/navigate_to_filter"
             app:destination="@id/filterFragment" />
+        <action
+            android:id="@+id/course_navigate_to_home"
+            app:destination="@id/navigation_home" />
     </fragment>
     <fragment
         android:id="@+id/navigation_profile"

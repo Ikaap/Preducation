@@ -1,6 +1,5 @@
 package com.kelompoksatuandsatu.preducation.presentation.feature.course
 
-import android.app.Activity
 import android.app.AlertDialog
 import android.content.Intent
 import android.graphics.Color
@@ -9,16 +8,14 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import androidx.appcompat.widget.SearchView
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.kelompoksatuandsatu.preducation.R
-import com.kelompoksatuandsatu.preducation.databinding.DialogNonLoginBinding
 import com.kelompoksatuandsatu.preducation.databinding.FragmentCourseBinding
-import com.kelompoksatuandsatu.preducation.model.category.categoryclass.CategoryClass
 import com.kelompoksatuandsatu.preducation.databinding.LayoutDialogAccessFeatureBinding
+import com.kelompoksatuandsatu.preducation.model.category.categoryclass.CategoryClass
 import com.kelompoksatuandsatu.preducation.model.course.courseall.CourseViewParam
 import com.kelompoksatuandsatu.preducation.presentation.common.adapter.category.CategoryRoundedCourseListAdapter
 import com.kelompoksatuandsatu.preducation.presentation.common.adapter.course.AdapterLayoutMenu
@@ -26,8 +23,6 @@ import com.kelompoksatuandsatu.preducation.presentation.common.adapter.course.Co
 import com.kelompoksatuandsatu.preducation.presentation.feature.detailclass.DetailClassActivity
 import com.kelompoksatuandsatu.preducation.presentation.feature.filter.FilterFragment
 import com.kelompoksatuandsatu.preducation.presentation.feature.register.RegisterActivity
-import com.kelompoksatuandsatu.preducation.presentation.feature.filter.FilterActivity
-import com.kelompoksatuandsatu.preducation.presentation.feature.login.LoginActivity
 import com.kelompoksatuandsatu.preducation.presentation.feature.search.SearchActivity
 import com.kelompoksatuandsatu.preducation.utils.proceedWhen
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -60,28 +55,9 @@ class CourseFragment : Fragment(), FilterFragment.OnFilterListener {
         }
     }
 
-    private val searchView: SearchView by lazy {
-        binding.clSearchBar.findViewById(R.id.sv_search)
-    }
-
-    private val searchQueryListener = object : SearchView.OnQueryTextListener {
-        override fun onQueryTextSubmit(query: String?): Boolean {
-            query?.let {
-                typeCourseAdapter.filter(it)
-                observeIsFilterEmpty()
-            }
-            return true
-        }
-
-        override fun onQueryTextChange(newText: String?): Boolean {
-            return false
-        }
-    }
-
     private fun navigateToDetail(course: CourseViewParam) {
         DetailClassActivity.startActivity(requireContext(), course)
     }
-
 
     private fun navigateToSearch(course: CourseViewParam) {
         SearchActivity.startActivity(requireContext(), course)
@@ -92,8 +68,20 @@ class CourseFragment : Fragment(), FilterFragment.OnFilterListener {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        viewModel.checkLogin()
+
+        viewModel.isUserLogin.observe(viewLifecycleOwner) { isLogin ->
+            if (!isLogin) {
+                showDialogNotification()
+                navigateToMain()
+            }
+        }
         binding = FragmentCourseBinding.inflate(inflater, container, false)
         return binding.root
+    }
+
+    private fun navigateToMain() {
+        findNavController().navigate(R.id.course_navigate_to_home)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -107,7 +95,8 @@ class CourseFragment : Fragment(), FilterFragment.OnFilterListener {
 
     private fun setOnClickListener() {
         binding.tvFilter.setOnClickListener {
-            navigateToFilter()
+            filterFragment.setFilterListener(this)
+            filterFragment.show(childFragmentManager, "Filter")
         }
 
         binding.clSearchBar.setOnClickListener {
@@ -243,12 +232,6 @@ class CourseFragment : Fragment(), FilterFragment.OnFilterListener {
                 }
             )
         }
-
-        viewModel.isUserLogin.observe(viewLifecycleOwner) { isLogin ->
-            if (!isLogin) {
-                showDialog()
-            }
-        }
     }
 
     private fun showDialogNotification() {
@@ -260,7 +243,7 @@ class CourseFragment : Fragment(), FilterFragment.OnFilterListener {
             window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         }.show()
 
-        binding.clSignUp.setOnClickListener {
+        binding.clSignIn.setOnClickListener {
             val intent = Intent(requireContext(), RegisterActivity::class.java)
             startActivity(intent)
         }

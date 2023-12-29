@@ -41,33 +41,32 @@ class CategoryCheckBoxListAdapter(
     override fun getItemCount(): Int = dataDiffer.currentList.size
 
     override fun onBindViewHolder(holder: CheckBoxFilterItemViewHolder, position: Int) {
-
         holder.bind(dataDiffer.currentList[position])
     }
 
     fun setData(data: List<CategoryClass>) {
         dataDiffer.submitList(data)
     }
-}
 
-class CheckBoxFilterItemViewHolder(
-    val binding: ItemCheckboxFilterBinding,
-    val listener: CheckboxCategoryListener
-) : RecyclerView.ViewHolder(binding.root), ViewHolderBinder<CategoryClass> {
+    class CheckBoxFilterItemViewHolder(
+        val binding: ItemCheckboxFilterBinding,
+        private val itemListener: CheckboxCategoryListener
+    ) : RecyclerView.ViewHolder(binding.root), ViewHolderBinder<CategoryClass> {
 
-    override fun bind(item: CategoryClass) {
-        binding.cbCategory.text = item.name
-        binding.cbCategory.setOnCheckedChangeListener { _, isChecked ->
-            if (isChecked) {
-                listener.onCategoryChecked(item)
-            } else {
-                listener.onCategoryUnchecked(item)
+        override fun bind(item: CategoryClass) {
+            binding.cbCategory.text = item.name
+            binding.cbCategory.setOnCheckedChangeListener { _, isChecked ->
+                if (isChecked) {
+                    itemListener.onCategoryChecked(item)
+                } else {
+                    itemListener.onCategoryUnChecked(item)
+                }
             }
         }
     }
-}
 
-interface CheckboxCategoryListener {
-    fun onCategoryChecked(category: CategoryClass)
-    fun onCategoryUnchecked(category: CategoryClass)
+    interface CheckboxCategoryListener {
+        fun onCategoryChecked(category: CategoryClass)
+        fun onCategoryUnChecked(category: CategoryClass)
+    }
 }
