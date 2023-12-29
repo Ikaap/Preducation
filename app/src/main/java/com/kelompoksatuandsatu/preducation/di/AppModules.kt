@@ -23,7 +23,6 @@ import com.kelompoksatuandsatu.preducation.presentation.feature.classProgress.Pr
 import com.kelompoksatuandsatu.preducation.presentation.feature.course.CourseViewModel
 import com.kelompoksatuandsatu.preducation.presentation.feature.detailclass.DetailClassViewModel
 import com.kelompoksatuandsatu.preducation.presentation.feature.editprofile.EditProfileViewModel
-import com.kelompoksatuandsatu.preducation.presentation.feature.filter.FilterViewModel
 import com.kelompoksatuandsatu.preducation.presentation.feature.forgotpasswordnew.ForgotPasswordNewViewModel
 import com.kelompoksatuandsatu.preducation.presentation.feature.historypayment.HistoryPaymentViewModel
 import com.kelompoksatuandsatu.preducation.presentation.feature.home.HomeViewModel
@@ -86,7 +85,6 @@ object AppModules {
         viewModelOf(::ForgotPasswordNewViewModel)
         viewModelOf(::SplashScreenViewModel)
         viewModelOf(::HistoryPaymentViewModel)
-        viewModel { FilterViewModel(get()) }
         viewModelOf(::SearchViewModel)
     }
 

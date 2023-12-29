@@ -1,6 +1,5 @@
 package com.kelompoksatuandsatu.preducation.presentation.feature.course
 
-import android.app.Activity
 import android.app.AlertDialog
 import android.content.Intent
 import android.graphics.Color
@@ -12,25 +11,32 @@ import android.view.ViewGroup
 import androidx.appcompat.widget.SearchView
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.kelompoksatuandsatu.preducation.R
+import com.kelompoksatuandsatu.preducation.databinding.DialogNonLoginBinding
 import com.kelompoksatuandsatu.preducation.databinding.FragmentCourseBinding
+import com.kelompoksatuandsatu.preducation.model.category.categoryclass.CategoryClass
 import com.kelompoksatuandsatu.preducation.databinding.LayoutDialogAccessFeatureBinding
 import com.kelompoksatuandsatu.preducation.model.course.courseall.CourseViewParam
 import com.kelompoksatuandsatu.preducation.presentation.common.adapter.category.CategoryRoundedCourseListAdapter
 import com.kelompoksatuandsatu.preducation.presentation.common.adapter.course.AdapterLayoutMenu
 import com.kelompoksatuandsatu.preducation.presentation.common.adapter.course.CourseLinearListAdapter
 import com.kelompoksatuandsatu.preducation.presentation.feature.detailclass.DetailClassActivity
+import com.kelompoksatuandsatu.preducation.presentation.feature.filter.FilterFragment
+import com.kelompoksatuandsatu.preducation.presentation.feature.register.RegisterActivity
 import com.kelompoksatuandsatu.preducation.presentation.feature.filter.FilterActivity
 import com.kelompoksatuandsatu.preducation.presentation.feature.login.LoginActivity
 import com.kelompoksatuandsatu.preducation.presentation.feature.search.SearchActivity
 import com.kelompoksatuandsatu.preducation.utils.proceedWhen
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class CourseFragment : Fragment() {
+class CourseFragment : Fragment(), FilterFragment.OnFilterListener {
 
     private lateinit var binding: FragmentCourseBinding
+
+    private val filterFragment: FilterFragment by lazy {
+        FilterFragment()
+    }
 
     private val viewModel: CourseViewModel by viewModel()
 
@@ -60,7 +66,7 @@ class CourseFragment : Fragment() {
         override fun onQueryTextSubmit(query: String?): Boolean {
             query?.let {
                 typeCourseAdapter.filter(it)
-//                observeIsFilterEmpty()
+                observeIsFilterEmpty()
             }
             return true
         }
@@ -68,33 +74,15 @@ class CourseFragment : Fragment() {
         override fun onQueryTextChange(newText: String?): Boolean {
             return false
         }
-
-//        override fun onFilterApplied(
-//            search: String?,
-//            type: String?,
-//            category: List<Int>?,
-//        ) {
-//            searchQuery = search
-//            selectedType = type
-//            selectedCategories = category
-//            viewModel.getCourseTopic(searchQuery, selectedType, category)
-//        }
     }
 
     private fun navigateToDetail(course: CourseViewParam) {
         DetailClassActivity.startActivity(requireContext(), course)
     }
 
+
     private fun navigateToSearch(course: CourseViewParam) {
         SearchActivity.startActivity(requireContext(), course)
-    }
-
-    fun updateViewBasedOnCategory(selectedCategory: String?) {
-        viewModel.getCourse(selectedCategory, null)
-    }
-
-    private fun navigateToMain() {
-        findNavController().navigate(R.id.course_navigate_to_home)
     }
 
     override fun onCreateView(
@@ -102,15 +90,6 @@ class CourseFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        viewModel.checkLogin()
-
-        viewModel.isUserLogin.observe(viewLifecycleOwner) { isLogin ->
-            if (!isLogin) {
-                showDialogNotification()
-                navigateToMain()
-            }
-        }
-
         binding = FragmentCourseBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -127,16 +106,20 @@ class CourseFragment : Fragment() {
 
     private fun setOnClickListener() {
         binding.tvFilter.setOnClickListener {
-            val intent = Intent(requireContext(), FilterActivity::class.java)
-            startActivityForResult(intent, FILTER_REQUEST_CODE)
+            navigateToFilter()
         }
 
         binding.clSearchBar.setOnClickListener {
-            // navigateToSearch()
             val query = searchView.query.toString()
             typeCourseAdapter.filter(query)
             observeIsFilterEmpty()
         }
+    }
+
+    private fun navigateToFilter() {
+        val filterFragment = FilterFragment()
+        filterFragment.setFilterListener(this)
+        filterFragment.show(requireActivity().supportFragmentManager, "filter")
     }
 
     private fun observeIsFilterEmpty() {
@@ -156,14 +139,6 @@ class CourseFragment : Fragment() {
 
     companion object {
         const val FILTER_REQUEST_CODE = 123
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == FILTER_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
-            val selectedCategory = data?.getStringExtra("selectedCategory")
-            updateViewBasedOnCategory(selectedCategory)
-        }
     }
 
     private fun showCategoryType() {
@@ -310,5 +285,16 @@ class CourseFragment : Fragment() {
         viewModel.getCourse()
         viewModel.getCategoriesTypeClass()
         viewModel.checkLogin()
+    }
+
+    private var selectedType: String? = null
+    private var selectedCategories: List<CategoryClass>? = null
+    override fun onFilterApplied(type: String?, category: List<CategoryClass>?) {
+        selectedType = type
+        selectedCategories = category
+        val categoryId = category?.map {
+            it.name
+        }
+        viewModel.getCourse(categoryId, selectedType)
     }
 }
