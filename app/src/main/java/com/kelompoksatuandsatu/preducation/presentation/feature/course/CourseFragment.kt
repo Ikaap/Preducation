@@ -1,6 +1,5 @@
 package com.kelompoksatuandsatu.preducation.presentation.feature.course
 
-import android.app.Activity
 import android.app.AlertDialog
 import android.content.Intent
 import android.graphics.Color
@@ -14,22 +13,30 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.kelompoksatuandsatu.preducation.databinding.DialogNonLoginBinding
 import com.kelompoksatuandsatu.preducation.databinding.FragmentCourseBinding
+import com.kelompoksatuandsatu.preducation.model.category.categoryclass.CategoryClass
 import com.kelompoksatuandsatu.preducation.model.course.courseall.CourseViewParam
 import com.kelompoksatuandsatu.preducation.presentation.common.adapter.category.CategoryRoundedCourseListAdapter
 import com.kelompoksatuandsatu.preducation.presentation.common.adapter.course.AdapterLayoutMenu
 import com.kelompoksatuandsatu.preducation.presentation.common.adapter.course.CourseLinearListAdapter
 import com.kelompoksatuandsatu.preducation.presentation.feature.detailclass.DetailClassActivity
-import com.kelompoksatuandsatu.preducation.presentation.feature.filter.FilterActivity
+import com.kelompoksatuandsatu.preducation.presentation.feature.filter.FilterFragment
 import com.kelompoksatuandsatu.preducation.presentation.feature.register.RegisterActivity
 import com.kelompoksatuandsatu.preducation.presentation.feature.search.SearchActivity
 import com.kelompoksatuandsatu.preducation.utils.proceedWhen
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class CourseFragment : Fragment() {
+class CourseFragment : Fragment(), FilterFragment.OnFilterListener {
 
     private lateinit var binding: FragmentCourseBinding
 
+    private val filterFragment: FilterFragment by lazy {
+        FilterFragment()
+    }
+
     private val viewModel: CourseViewModel by viewModel()
+
+    private var selectedCategory: List<CategoryClass>? = null
+    private var selectedType: String? = null
 
     private val typeCourseAdapter: CourseLinearListAdapter by lazy {
         CourseLinearListAdapter(AdapterLayoutMenu.COURSE) {
@@ -53,10 +60,6 @@ class CourseFragment : Fragment() {
         DetailClassActivity.startActivity(requireContext(), course)
     }
 
-    fun updateViewBasedOnCategory(selectedCategory: String?) {
-        viewModel.getCourse(selectedCategory, null)
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -77,8 +80,8 @@ class CourseFragment : Fragment() {
 
     private fun setOnClickListener() {
         binding.tvFilter.setOnClickListener {
-            val intent = Intent(requireContext(), FilterActivity::class.java)
-            startActivityForResult(intent, FILTER_REQUEST_CODE)
+            filterFragment.setFilterListener(this)
+            filterFragment.show(childFragmentManager, "Filter")
         }
 
         binding.clSearchBar.setOnClickListener {
@@ -89,14 +92,6 @@ class CourseFragment : Fragment() {
 
     companion object {
         const val FILTER_REQUEST_CODE = 123
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == FILTER_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
-            val selectedCategory = data?.getStringExtra("selectedCategory")
-            updateViewBasedOnCategory(selectedCategory)
-        }
     }
 
     private fun showCategoryType() {
@@ -249,5 +244,14 @@ class CourseFragment : Fragment() {
         viewModel.getCourse()
         viewModel.getCategoriesTypeClass()
         viewModel.checkLogin()
+    }
+
+    override fun onFilterApplied(type: String?, category: List<CategoryClass>?) {
+        selectedCategory = category
+        selectedType = type
+        val nameCategory = category?.map {
+            it.name
+        }
+        viewModel.getCourse(typeClass = type, category = nameCategory)
     }
 }

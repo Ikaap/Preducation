@@ -114,6 +114,12 @@
 
                 <include layout="@layout/item_category_shimmer_checkbox" />
 
+                <include layout="@layout/item_category_shimmer_checkbox" />
+
+                <include layout="@layout/item_category_shimmer_checkbox" />
+
+                <include layout="@layout/item_category_shimmer_checkbox" />
+
             </LinearLayout>
 
         </com.facebook.shimmer.ShimmerFrameLayout>
