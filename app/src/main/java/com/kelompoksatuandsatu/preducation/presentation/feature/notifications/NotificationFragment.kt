@@ -14,7 +14,6 @@ import android.widget.Toast.makeText
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.kelompoksatuandsatu.preducation.R
 import com.kelompoksatuandsatu.preducation.databinding.FragmentNotificationBinding
@@ -29,7 +28,6 @@ import io.github.muddz.styleabletoast.StyleableToast
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import org.koin.dsl.module
 
 class NotificationFragment : Fragment() {
 
@@ -38,10 +36,6 @@ class NotificationFragment : Fragment() {
     private val viewModel: NotificationViewModel by viewModel()
 
     private val assetWrapper: AssetWrapper by inject()
-
-    private val viewModelModule = module {
-        viewModel { NotificationViewModel(get()) }
-    }
 
     private val notificationAdapter: NotificationAdapter by lazy {
         NotificationAdapter()

@@ -11,9 +11,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.kelompoksatuandsatu.preducation.R
 import com.kelompoksatuandsatu.preducation.databinding.ActivityTransactionBinding
 import com.kelompoksatuandsatu.preducation.presentation.common.adapter.history.HistoryPaymentListAdapter
+import com.kelompoksatuandsatu.preducation.presentation.feature.login.LoginActivity
 import com.kelompoksatuandsatu.preducation.utils.exceptions.ApiException
 import com.kelompoksatuandsatu.preducation.utils.exceptions.NoInternetException
-import com.kelompoksatuandsatu.preducation.presentation.feature.login.LoginActivity
 import com.kelompoksatuandsatu.preducation.utils.proceedWhen
 import io.github.muddz.styleabletoast.StyleableToast
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -75,7 +75,7 @@ class HistoryPaymentActivity : AppCompatActivity() {
                     binding.layoutCommonState.ivServerError.isGone = true
                     binding.layoutCommonState.clNoConnection.isGone = true
                     binding.layoutCommonState.ivNoConnection.isGone = true
-                    
+
                     binding.rvHistory.apply {
                         isVisible = true
                         adapter = historyAdapter
