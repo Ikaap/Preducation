@@ -103,7 +103,6 @@ class CourseFragment : Fragment(), FilterFragment.OnFilterListener {
         showCategoryType()
         fetchData()
         setOnClickListener()
-        searchView.setOnQueryTextListener(searchQueryListener)
     }
 
     private fun setOnClickListener() {
@@ -261,8 +260,8 @@ class CourseFragment : Fragment(), FilterFragment.OnFilterListener {
             window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         }.show()
 
-        binding.clSignIn.setOnClickListener {
-            val intent = Intent(requireContext(), LoginActivity::class.java)
+        binding.clSignUp.setOnClickListener {
+            val intent = Intent(requireContext(), RegisterActivity::class.java)
             startActivity(intent)
         }
     }

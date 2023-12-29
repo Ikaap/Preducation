@@ -10,8 +10,8 @@ import com.kelompoksatuandsatu.preducation.databinding.ItemCheckboxFilterBinding
 import com.kelompoksatuandsatu.preducation.model.category.categoryclass.CategoryClass
 
 class CategoryCheckBoxListAdapter(
-    val listener: CheckboxCategoryListener
-) : RecyclerView.Adapter<CheckBoxFilterItemViewHolder>() {
+    private val itemListener: CheckboxCategoryListener
+) : RecyclerView.Adapter<CategoryCheckBoxListAdapter.CheckBoxFilterItemViewHolder>() {
 
     private val dataDiffer = AsyncListDiffer(
         this,
@@ -35,14 +35,14 @@ class CategoryCheckBoxListAdapter(
             parent,
             false
         )
-        return CheckBoxFilterItemViewHolder(binding, listener)
+        return CheckBoxFilterItemViewHolder(binding, itemListener)
     }
 
     override fun getItemCount(): Int = dataDiffer.currentList.size
 
     override fun onBindViewHolder(holder: CheckBoxFilterItemViewHolder, position: Int) {
-        val categoryCheckBox = dataDiffer.currentList[position]
-        holder.bind(categoryCheckBox)
+
+        holder.bind(dataDiffer.currentList[position])
     }
 
     fun setData(data: List<CategoryClass>) {
