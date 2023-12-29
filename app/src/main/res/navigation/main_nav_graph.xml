@@ -44,4 +44,13 @@
             android:id="@+id/profile_navigate_to_home"
             app:destination="@id/navigation_home" />
     </fragment>
+    <fragment
+        android:id="@+id/filterFragment"
+        android:name="com.kelompoksatuandsatu.preducation.presentation.feature.filter.FilterFragment"
+        android:label="fragment_filter"
+        tools:layout="@layout/fragment_filter" >
+        <action
+            android:id="@+id/navigate_to_course"
+            app:destination="@id/navigation_course" />
+    </fragment>
 </navigation>

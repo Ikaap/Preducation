@@ -194,7 +194,7 @@
     <string name="you_need_to_login">You need to login</string>
     <string name="empty_class_progress">You haven\'t taken any classes yet</string>
     <string name="empty_progress_category">Empty progress category</string>
-   <string name="text_data_empty">Data Empty</string>
+    <string name="text_data_empty">Data Empty</string>
 
     <string name="text_paid">Paid</string>
     <string name="text_on_progress">On Progress</string>
