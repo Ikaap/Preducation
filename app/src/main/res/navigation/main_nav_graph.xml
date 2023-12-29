@@ -22,9 +22,22 @@
         android:id="@+id/navigation_course"
         android:name="com.kelompoksatuandsatu.preducation.presentation.feature.course.CourseFragment"
         android:label="fragment_course"
-        tools:layout="@layout/fragment_course" />
+        tools:layout="@layout/fragment_course" >
+        <action
+            android:id="@+id/navigate_to_filter"
+            app:destination="@id/filterFragment" />
+    </fragment>
     <fragment
         android:id="@+id/navigation_profile"
         android:name="com.kelompoksatuandsatu.preducation.presentation.feature.profile.ProfileFragment"
         android:label="ProfileFragment" />
+    <fragment
+        android:id="@+id/filterFragment"
+        android:name="com.kelompoksatuandsatu.preducation.presentation.feature.filter.FilterFragment"
+        android:label="fragment_filter"
+        tools:layout="@layout/fragment_filter" >
+        <action
+            android:id="@+id/navigate_to_course"
+            app:destination="@id/navigation_course" />
+    </fragment>
 </navigation>
