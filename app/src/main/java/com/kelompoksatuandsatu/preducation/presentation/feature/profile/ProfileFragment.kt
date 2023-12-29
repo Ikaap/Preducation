@@ -19,8 +19,7 @@ import com.kelompoksatuandsatu.preducation.presentation.feature.changepassword.C
 import com.kelompoksatuandsatu.preducation.presentation.feature.editprofile.EditProfileActivity
 import com.kelompoksatuandsatu.preducation.presentation.feature.historypayment.HistoryPaymentActivity
 import com.kelompoksatuandsatu.preducation.presentation.feature.login.LoginActivity
-import com.kelompoksatuandsatu.preducation.utils.exceptions.ApiException
-import com.kelompoksatuandsatu.preducation.utils.exceptions.NoInternetException
+import com.kelompoksatuandsatu.preducation.presentation.feature.register.RegisterActivity
 import com.kelompoksatuandsatu.preducation.utils.proceedWhen
 import io.github.muddz.styleabletoast.StyleableToast
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -91,32 +90,6 @@ class ProfileFragment : Fragment() {
                 doOnError = {
                     binding.root.isVisible = true
                     binding.ivUserPhoto.isVisible = false
-
-                    if (it.exception is ApiException) {
-                        if (it.exception.getParsedErrorProfile()?.success == false) {
-                            if (it.exception.httpCode == 500) {
-                                StyleableToast.makeText(
-                                    requireContext(),
-                                    "Server Error",
-                                    R.style.failedtoast
-                                ).show()
-                            } else if (it.exception.getParsedErrorProfile()?.success == false) {
-                                StyleableToast.makeText(
-                                    requireContext(),
-                                    it.exception.getParsedErrorProfile()?.message,
-                                    R.style.failedtoast
-                                ).show()
-                            }
-                        }
-                    } else if (it.exception is NoInternetException) {
-                        if (!it.exception.isNetworkAvailable(requireContext())) {
-                            StyleableToast.makeText(
-                                requireContext(),
-                                "No Internet",
-                                R.style.failedtoast
-                            ).show()
-                        }
-                    }
                 }
             )
         }
@@ -196,8 +169,7 @@ class ProfileFragment : Fragment() {
     }
 
     private fun showDialogNotification() {
-        val binding: LayoutDialogAccessFeatureBinding =
-            LayoutDialogAccessFeatureBinding.inflate(layoutInflater)
+        val binding: LayoutDialogAccessFeatureBinding = LayoutDialogAccessFeatureBinding.inflate(layoutInflater)
         val dialog = android.app.AlertDialog.Builder(requireContext(), 0).create()
 
         dialog.apply {
@@ -205,12 +177,11 @@ class ProfileFragment : Fragment() {
             window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         }.show()
 
-        binding.clSignIn.setOnClickListener {
-            val intent = Intent(requireContext(), LoginActivity::class.java)
+        binding.clSignUp.setOnClickListener {
+            val intent = Intent(requireContext(), RegisterActivity::class.java)
             startActivity(intent)
         }
     }
-
     override fun onDestroyView() {
         super.onDestroyView()
         binding

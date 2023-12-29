@@ -8,15 +8,14 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import androidx.appcompat.widget.SearchView
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.kelompoksatuandsatu.preducation.R
-import com.kelompoksatuandsatu.preducation.databinding.DialogNonLoginBinding
 import com.kelompoksatuandsatu.preducation.databinding.FragmentProgressClassBinding
+import com.kelompoksatuandsatu.preducation.databinding.LayoutDialogAccessFeatureBinding
 import com.kelompoksatuandsatu.preducation.model.category.categoryclass.CategoryClass
 import com.kelompoksatuandsatu.preducation.model.progress.CourseProgressItemClass
 import com.kelompoksatuandsatu.preducation.presentation.common.adapter.category.CategoryCourseListAdapter
@@ -31,10 +30,6 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 class ProgressClassFragment : Fragment() {
 
     private lateinit var binding: FragmentProgressClassBinding
-
-    private val searchView: SearchView by lazy {
-        binding.clSearchBar.findViewById(R.id.sv_search)
-    }
 
     private val viewModel: ProgressClassViewModel by viewModel()
 
@@ -52,7 +47,7 @@ class ProgressClassFragment : Fragment() {
 
     private val categoryProgressAdapter: CategoryRoundedListAdapter by lazy {
         CategoryRoundedListAdapter(viewModel) {
-            viewModel.getCourseProgress(it.nameCategory)
+            viewModel.getCourseProgress(it.nameCategory.lowercase())
         }
     }
 
@@ -60,7 +55,7 @@ class ProgressClassFragment : Fragment() {
         CourseProgressListAdapter {
             viewModel.isUserLogin.observe(viewLifecycleOwner) { isLogin ->
                 if (!isLogin) {
-                    showDialog()
+                    // showDialog()
                 } else {
                     navigateCourseProgressToDetail(it)
                 }
@@ -68,22 +63,12 @@ class ProgressClassFragment : Fragment() {
         }
     }
 
-    private val searchQueryListener = object : SearchView.OnQueryTextListener {
-        override fun onQueryTextSubmit(query: String?): Boolean {
-            query?.let {
-                progressCourseAdapter.filter(it)
-                observeIsFilterEmpty()
-            }
-            return true
-        }
-
-        override fun onQueryTextChange(newText: String?): Boolean {
-            return false
-        }
-    }
-
     private fun navigateCourseProgressToDetail(course: CourseProgressItemClass) {
         DetailClassActivity.startActivityProgress(requireContext(), course)
+    }
+
+    private fun navigateToMain() {
+        findNavController().navigate(R.id.class_navigate_to_home)
     }
 
     override fun onCreateView(
@@ -91,6 +76,15 @@ class ProgressClassFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        viewModel.checkLogin()
+
+        viewModel.isUserLogin.observe(viewLifecycleOwner) { isLogin ->
+            if (!isLogin) {
+                showDialogNotification()
+                navigateToMain()
+            }
+        }
+
         binding = FragmentProgressClassBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -103,8 +97,8 @@ class ProgressClassFragment : Fragment() {
         showCourse()
         showCategoryProgress()
         setOnClickListener()
-        searchView.setOnQueryTextListener(searchQueryListener)
     }
+
     private fun fetchData() {
         viewModel.getCategoriesClass()
         viewModel.getCategoriesProgress()
@@ -120,16 +114,10 @@ class ProgressClassFragment : Fragment() {
         binding.ivToSeeAll.setOnClickListener {
             SeeAllPopularCoursesActivity.startActivity(requireContext())
         }
-
-        binding.clSearchBar.findViewById<ImageView>(R.id.iv_search).setOnClickListener {
-            val query = searchView.query.toString()
-            progressCourseAdapter.filter(query)
-            observeIsFilterEmpty()
-        }
     }
 
-    private fun showDialog() {
-        val binding: DialogNonLoginBinding = DialogNonLoginBinding.inflate(layoutInflater)
+    private fun showDialogNotification() {
+        val binding: LayoutDialogAccessFeatureBinding = LayoutDialogAccessFeatureBinding.inflate(layoutInflater)
         val dialog = AlertDialog.Builder(requireContext(), 0).create()
 
         dialog.apply {
@@ -142,22 +130,6 @@ class ProgressClassFragment : Fragment() {
             startActivity(intent)
         }
     }
-
-    private fun observeIsFilterEmpty() {
-        progressCourseAdapter.isFilterEmpty.observe(viewLifecycleOwner) { isFilterEmpty ->
-            if (isFilterEmpty) {
-                binding.layoutStateCourseProgress.root.isVisible = true
-                binding.layoutStateCourseProgress.tvError.isVisible = false
-                binding.layoutStateCourseProgress.pbLoading.isVisible = false
-                binding.layoutStateCourseProgress.clDataEmpty.isVisible = true
-                binding.layoutStateCourseProgress.tvDataEmpty.isVisible = true
-                binding.layoutStateCourseProgress.ivDataEmpty.isVisible = false
-            } else {
-                binding.layoutStateCourseProgress.root.isVisible = false
-            }
-        }
-    }
-
     private fun showCategoryProgress() {
         binding.rvCategoryProgress.adapter = categoryProgressAdapter
         binding.rvCategoryProgress.layoutManager = LinearLayoutManager(
@@ -280,12 +252,6 @@ class ProgressClassFragment : Fragment() {
                     binding.layoutStateCourseProgress.ivDataEmpty.isVisible = false
                 }
             )
-        }
-
-        viewModel.isUserLogin.observe(viewLifecycleOwner) { isLogin ->
-            if (!isLogin) {
-                showDialog()
-            }
         }
     }
 
