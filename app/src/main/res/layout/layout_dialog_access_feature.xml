@@ -66,7 +66,7 @@
             app:layout_constraintTop_toBottomOf="@id/tv_dialog_message">
 
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/cl_sign_up"
+                android:id="@+id/cl_sign_in"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
