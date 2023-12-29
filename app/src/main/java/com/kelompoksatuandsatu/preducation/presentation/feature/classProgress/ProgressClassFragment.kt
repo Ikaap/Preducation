@@ -8,7 +8,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.widget.SearchView
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
@@ -26,7 +25,6 @@ import com.kelompoksatuandsatu.preducation.presentation.common.adapter.classprog
 import com.kelompoksatuandsatu.preducation.presentation.feature.detailclass.DetailClassActivity
 import com.kelompoksatuandsatu.preducation.presentation.feature.home.SeeAllPopularCoursesActivity
 import com.kelompoksatuandsatu.preducation.presentation.feature.login.LoginActivity
-import com.kelompoksatuandsatu.preducation.presentation.feature.register.RegisterActivity
 import com.kelompoksatuandsatu.preducation.utils.exceptions.ApiException
 import com.kelompoksatuandsatu.preducation.utils.exceptions.NoInternetException
 import com.kelompoksatuandsatu.preducation.utils.proceedWhen
@@ -295,7 +293,7 @@ class ProgressClassFragment : Fragment() {
 
         viewModel.isUserLogin.observe(viewLifecycleOwner) { isLogin ->
             if (!isLogin) {
-                showDialog()
+//                showDialog()
             }
         }
     }

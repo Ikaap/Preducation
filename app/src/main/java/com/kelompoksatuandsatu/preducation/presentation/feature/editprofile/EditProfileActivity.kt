@@ -240,9 +240,9 @@ class EditProfileActivity : AppCompatActivity() {
         val phoneNumber = binding.etPhoneNumber.text.toString().trim()
 
         return checkNameValidation(name) &&
-                checkPhoneNumberValidation(phoneNumber) &&
-                checkCountryValidation(country) &&
-                checkCityValidation(city)
+            checkPhoneNumberValidation(phoneNumber) &&
+            checkCountryValidation(country) &&
+            checkCityValidation(city)
     }
 
     private fun checkNameValidation(name: String): Boolean {
