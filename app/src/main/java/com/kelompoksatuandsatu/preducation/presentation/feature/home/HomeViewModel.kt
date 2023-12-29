@@ -41,10 +41,6 @@ class HomeViewModel(
     val getProfile: LiveData<ResultWrapper<UserViewParam>>
         get() = _getProfile
 
-    private val _isFilterEmpty = MutableLiveData<Boolean>()
-    val isFilterEmpty: LiveData<Boolean>
-        get() = _isFilterEmpty
-
     fun getUserById() {
         viewModelScope.launch(Dispatchers.IO) {
             val userId = userPreferenceDataSource.getUserId()
@@ -78,9 +74,9 @@ class HomeViewModel(
         }
     }
 
-    fun getCourse(category: String? = null, typeClass: String? = null) {
+    fun getCourse(category: String? = null, typeClass: String? = null, title: String? = null) {
         viewModelScope.launch(Dispatchers.IO) {
-            courseRepo.getCourseHome(if (category == "All") null else category?.toLowerCase(), typeClass)
+            courseRepo.getCourseHome(if (category == "All") null else category?.toLowerCase(), typeClass, title)
                 .collect {
                     _coursePopular.postValue(it)
                 }
