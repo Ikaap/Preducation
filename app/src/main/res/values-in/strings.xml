@@ -192,4 +192,5 @@
     <string name="text_paid">Bayar</string>
     <string name="text_on_progress">Dalam Proses</string>
     <string name="text_dialog_finish_class_message">Anda sudah berada di akhir kelas ini. Silahkan periksa email anda setelah menonton video untuk mendapatkan sertifikat anda.</string>
+    <string name="text_to_access_this_feature_please_log_in_first">Untuk mengakses fitur ini, silakan login terlebih dahulu</string>
 </resources>

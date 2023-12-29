@@ -12,10 +12,11 @@ import android.view.ViewGroup
 import androidx.appcompat.widget.SearchView
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.kelompoksatuandsatu.preducation.R
-import com.kelompoksatuandsatu.preducation.databinding.DialogNonLoginBinding
 import com.kelompoksatuandsatu.preducation.databinding.FragmentCourseBinding
+import com.kelompoksatuandsatu.preducation.databinding.LayoutDialogAccessFeatureBinding
 import com.kelompoksatuandsatu.preducation.model.course.courseall.CourseViewParam
 import com.kelompoksatuandsatu.preducation.presentation.common.adapter.category.CategoryRoundedCourseListAdapter
 import com.kelompoksatuandsatu.preducation.presentation.common.adapter.course.AdapterLayoutMenu
@@ -37,7 +38,7 @@ class CourseFragment : Fragment() {
         CourseLinearListAdapter(AdapterLayoutMenu.COURSE) {
             viewModel.isUserLogin.observe(viewLifecycleOwner) { isLogin ->
                 if (!isLogin) {
-                    showDialog()
+                    // showDialog()
                 } else {
                     navigateToDetail(it)
                 }
@@ -92,11 +93,24 @@ class CourseFragment : Fragment() {
         viewModel.getCourse(selectedCategory, null)
     }
 
+    private fun navigateToMain() {
+        findNavController().navigate(R.id.course_navigate_to_home)
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        viewModel.checkLogin()
+
+        viewModel.isUserLogin.observe(viewLifecycleOwner) { isLogin ->
+            if (!isLogin) {
+                showDialogNotification()
+                navigateToMain()
+            }
+        }
+
         binding = FragmentCourseBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -277,8 +291,8 @@ class CourseFragment : Fragment() {
         }
     }
 
-    private fun showDialog() {
-        val binding: DialogNonLoginBinding = DialogNonLoginBinding.inflate(layoutInflater)
+    private fun showDialogNotification() {
+        val binding: LayoutDialogAccessFeatureBinding = LayoutDialogAccessFeatureBinding.inflate(layoutInflater)
         val dialog = AlertDialog.Builder(requireContext(), 0).create()
 
         dialog.apply {
