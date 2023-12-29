@@ -10,10 +10,12 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.kelompoksatuandsatu.preducation.databinding.DialogNonLoginBinding
+import com.kelompoksatuandsatu.preducation.R
 import com.kelompoksatuandsatu.preducation.databinding.FragmentProgressClassBinding
+import com.kelompoksatuandsatu.preducation.databinding.LayoutDialogAccessFeatureBinding
 import com.kelompoksatuandsatu.preducation.model.category.categoryclass.CategoryClass
 import com.kelompoksatuandsatu.preducation.model.progress.CourseProgressItemClass
 import com.kelompoksatuandsatu.preducation.presentation.common.adapter.category.CategoryCourseListAdapter
@@ -53,7 +55,7 @@ class ProgressClassFragment : Fragment() {
         CourseProgressListAdapter {
             viewModel.isUserLogin.observe(viewLifecycleOwner) { isLogin ->
                 if (!isLogin) {
-                    showDialog()
+                    // showDialog()
                 } else {
                     navigateCourseProgressToDetail(it)
                 }
@@ -65,11 +67,24 @@ class ProgressClassFragment : Fragment() {
         DetailClassActivity.startActivityProgress(requireContext(), course)
     }
 
+    private fun navigateToMain() {
+        findNavController().navigate(R.id.class_navigate_to_home)
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        viewModel.checkLogin()
+
+        viewModel.isUserLogin.observe(viewLifecycleOwner) { isLogin ->
+            if (!isLogin) {
+                showDialogNotification()
+                navigateToMain()
+            }
+        }
+
         binding = FragmentProgressClassBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -83,6 +98,7 @@ class ProgressClassFragment : Fragment() {
         showCategoryProgress()
         setOnClickListener()
     }
+
     private fun fetchData() {
         viewModel.getCategoriesClass()
         viewModel.getCategoriesProgress()
@@ -100,8 +116,8 @@ class ProgressClassFragment : Fragment() {
         }
     }
 
-    private fun showDialog() {
-        val binding: DialogNonLoginBinding = DialogNonLoginBinding.inflate(layoutInflater)
+    private fun showDialogNotification() {
+        val binding: LayoutDialogAccessFeatureBinding = LayoutDialogAccessFeatureBinding.inflate(layoutInflater)
         val dialog = AlertDialog.Builder(requireContext(), 0).create()
 
         dialog.apply {
@@ -114,7 +130,6 @@ class ProgressClassFragment : Fragment() {
             startActivity(intent)
         }
     }
-
     private fun showCategoryProgress() {
         binding.rvCategoryProgress.adapter = categoryProgressAdapter
         binding.rvCategoryProgress.layoutManager = LinearLayoutManager(
@@ -237,12 +252,6 @@ class ProgressClassFragment : Fragment() {
                     binding.layoutStateCourseProgress.ivDataEmpty.isVisible = false
                 }
             )
-        }
-
-        viewModel.isUserLogin.observe(viewLifecycleOwner) { isLogin ->
-            if (!isLogin) {
-                showDialog()
-            }
         }
     }
 
