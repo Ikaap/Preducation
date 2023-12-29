@@ -86,7 +86,7 @@ class HomeFragment : Fragment() {
         setOnClickListener()
         getData()
         observeData()
-        searchView.setOnQueryTextListener(searchQueryListener)
+//        searchView.setOnQueryTextListener(searchQueryListener)
     }
 
     private fun setOnClickListener() {
