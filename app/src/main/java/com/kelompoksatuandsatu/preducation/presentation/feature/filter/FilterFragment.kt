@@ -112,6 +112,10 @@ class FilterFragment : BottomSheetDialogFragment() {
         }
     }
 
+    private fun navigateToCourse() {
+        findNavController().navigate(R.id.navigate_to_course)
+    }
+
     private fun setOnClickListener() {
         binding.ivClose.setOnClickListener {
             dismiss()
