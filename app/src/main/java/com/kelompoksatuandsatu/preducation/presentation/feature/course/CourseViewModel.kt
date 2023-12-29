@@ -74,11 +74,7 @@ class CourseViewModel(
     val selectedCategories: LiveData<List<CategoryClass>?>
         get() = _selectedCategories
 
-    fun addSelectedCategory(category: CategoryClass) {
-        _selectedCategories.value = (_selectedCategories.value.orEmpty() + category).distinct()
-    }
-
-    fun deleteSelectedCategory(category: CategoryClass) {
-        _selectedCategories.value = (_selectedCategories.value.orEmpty() - category).distinct()
+    fun setSelectedCategories(categories: List<CategoryClass>) {
+        _selectedCategories.value = categories
     }
 }
