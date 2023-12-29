@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.kelompoksatuandsatu.preducation.R
 import com.kelompoksatuandsatu.preducation.databinding.ActivityTransactionBinding
 import com.kelompoksatuandsatu.preducation.presentation.common.adapter.history.HistoryPaymentListAdapter
+import com.kelompoksatuandsatu.preducation.presentation.feature.login.LoginActivity
 import com.kelompoksatuandsatu.preducation.utils.exceptions.ApiException
 import com.kelompoksatuandsatu.preducation.utils.exceptions.NoInternetException
 import com.kelompoksatuandsatu.preducation.utils.proceedWhen
@@ -32,6 +33,16 @@ class HistoryPaymentActivity : AppCompatActivity() {
         binding = ActivityTransactionBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        viewModel.checkLogin()
+        viewModel.isUserLogin.observe(this) { isLogin ->
+            if (!isLogin) {
+                val intent = Intent(this, LoginActivity::class.java)
+                startActivity(intent)
+
+                return@observe
+            }
+        }
+
         setupRecyclerView()
         getData()
         observeData()
@@ -46,8 +57,7 @@ class HistoryPaymentActivity : AppCompatActivity() {
 
     private fun setupRecyclerView() {
         binding.rvHistory.apply {
-            layoutManager =
-                LinearLayoutManager(this@HistoryPaymentActivity, RecyclerView.VERTICAL, false)
+            layoutManager = LinearLayoutManager(this@HistoryPaymentActivity, RecyclerView.VERTICAL, false)
             adapter = historyAdapter
         }
     }
@@ -56,6 +66,15 @@ class HistoryPaymentActivity : AppCompatActivity() {
         viewModel.payment.observe(this) {
             it.proceedWhen(
                 doOnSuccess = {
+                    binding.layoutCommonState.root.isGone = true
+                    binding.layoutCommonState.tvError.isGone = true
+                    binding.layoutCommonState.tvDataEmpty.isGone = true
+                    binding.layoutCommonState.ivDataEmpty.isGone = true
+                    binding.layoutCommonState.clServerError.isGone = true
+                    binding.layoutCommonState.ivServerError.isGone = true
+                    binding.layoutCommonState.clNoConnection.isGone = true
+                    binding.layoutCommonState.ivNoConnection.isGone = true
+
                     binding.rvHistory.apply {
                         isVisible = true
                         adapter = historyAdapter
@@ -72,10 +91,37 @@ class HistoryPaymentActivity : AppCompatActivity() {
                 doOnLoading = {
                     binding.root.isVisible = true
                     binding.rvHistory.isVisible = false
+                    binding.layoutCommonState.root.isGone = true
+                    binding.layoutCommonState.clDataEmpty.isGone = true
+                    binding.layoutCommonState.tvError.isGone = true
+                    binding.layoutCommonState.tvDataEmpty.isGone = true
+                    binding.layoutCommonState.ivDataEmpty.isGone = true
+                    binding.layoutCommonState.clServerError.isGone = true
+                    binding.layoutCommonState.ivServerError.isGone = true
+                    binding.layoutCommonState.clNoConnection.isGone = true
+                    binding.layoutCommonState.ivNoConnection.isGone = true
+                },
+                doOnEmpty = {
+                    binding.layoutCommonState.root.isGone = false
+                    binding.layoutCommonState.clDataEmpty.isGone = true
+                    binding.layoutCommonState.tvError.isGone = false
+                    binding.layoutCommonState.tvError.text = "data kosong"
+                    binding.layoutCommonState.tvDataEmpty.isGone = true
+                    binding.layoutCommonState.ivDataEmpty.isGone = true
+                    binding.layoutCommonState.clServerError.isGone = true
+                    binding.layoutCommonState.ivServerError.isGone = true
+                    binding.layoutCommonState.clNoConnection.isGone = true
+                    binding.layoutCommonState.ivNoConnection.isGone = true
                 },
                 doOnError = {
                     binding.root.isVisible = true
                     binding.rvHistory.isVisible = false
+                    binding.layoutCommonState.root.isGone = false
+                    binding.layoutCommonState.clDataEmpty.isGone = true
+                    binding.layoutCommonState.tvError.isGone = false
+                    binding.layoutCommonState.tvError.text = it.exception?.message.toString()
+                    binding.layoutCommonState.tvDataEmpty.isGone = true
+                    binding.layoutCommonState.ivDataEmpty.isGone = true
 
                     if (it.exception is ApiException) {
                         if (it.exception.getParsedErrorHistoryPayment()?.success == false) {
