@@ -7,10 +7,8 @@ import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.kelompoksatuandsatu.preducation.R
 import com.kelompoksatuandsatu.preducation.databinding.ActivitySearchBinding
 import com.kelompoksatuandsatu.preducation.databinding.DialogNonLoginBinding
 import com.kelompoksatuandsatu.preducation.model.course.courseall.CourseViewParam
