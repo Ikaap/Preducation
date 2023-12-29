@@ -28,10 +28,6 @@ import com.kelompoksatuandsatu.preducation.presentation.feature.login.LoginActiv
 import com.kelompoksatuandsatu.preducation.presentation.feature.search.SearchActivity
 import com.kelompoksatuandsatu.preducation.utils.exceptions.ApiException
 import com.kelompoksatuandsatu.preducation.utils.exceptions.NoInternetException
-import com.kelompoksatuandsatu.preducation.presentation.feature.filter.FilterActivity
-import com.kelompoksatuandsatu.preducation.presentation.feature.register.RegisterActivity
-import com.kelompoksatuandsatu.preducation.utils.exceptions.ApiException
-import com.kelompoksatuandsatu.preducation.utils.exceptions.NoInternetException
 import com.kelompoksatuandsatu.preducation.utils.proceedWhen
 import io.github.muddz.styleabletoast.StyleableToast
 import org.koin.androidx.viewmodel.ext.android.viewModel

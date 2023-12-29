@@ -25,8 +25,6 @@ import com.kelompoksatuandsatu.preducation.presentation.common.adapter.course.Ad
 import com.kelompoksatuandsatu.preducation.presentation.common.adapter.course.CourseCardListAdapter
 import com.kelompoksatuandsatu.preducation.presentation.feature.detailclass.DetailClassActivity
 import com.kelompoksatuandsatu.preducation.presentation.feature.register.RegisterActivity
-import com.kelompoksatuandsatu.preducation.utils.exceptions.ApiException
-import com.kelompoksatuandsatu.preducation.utils.exceptions.NoInternetException
 import com.kelompoksatuandsatu.preducation.presentation.feature.search.SearchActivity
 import com.kelompoksatuandsatu.preducation.utils.exceptions.ApiException
 import com.kelompoksatuandsatu.preducation.utils.exceptions.NoInternetException
