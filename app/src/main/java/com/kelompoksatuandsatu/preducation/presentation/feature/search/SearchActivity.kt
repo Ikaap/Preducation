@@ -7,8 +7,10 @@ import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.SearchView
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.kelompoksatuandsatu.preducation.R
 import com.kelompoksatuandsatu.preducation.databinding.ActivitySearchBinding
 import com.kelompoksatuandsatu.preducation.databinding.DialogNonLoginBinding
 import com.kelompoksatuandsatu.preducation.model.course.courseall.CourseViewParam
@@ -22,6 +24,14 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 class SearchActivity : AppCompatActivity() {
     private val binding: ActivitySearchBinding by lazy {
         ActivitySearchBinding.inflate(layoutInflater)
+    }
+
+    private fun search(query: String) {
+        viewModel.getCourse(query)
+    }
+
+    private val searchView: SearchView by lazy {
+        binding.clSearchBar.findViewById(R.id.sv_search)
     }
 
     private val viewModel: SearchViewModel by viewModel()
@@ -52,6 +62,19 @@ class SearchActivity : AppCompatActivity() {
         fetchData()
         observeData()
         setOnClickListener()
+
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                if (!query.isNullOrBlank()) {
+                    search(query)
+                }
+                return true
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                return true
+            }
+        })
     }
 
     private fun setOnClickListener() {
@@ -76,7 +99,6 @@ class SearchActivity : AppCompatActivity() {
     }
 
     private fun fetchData() {
-        viewModel.getCourse()
         viewModel.checkLogin()
     }
 

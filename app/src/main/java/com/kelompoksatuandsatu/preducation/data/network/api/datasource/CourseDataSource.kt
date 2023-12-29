@@ -15,8 +15,8 @@ import com.kelompoksatuandsatu.preducation.data.network.api.service.PreducationS
 
 interface CourseDataSource {
     suspend fun getCategoriesClass(): CategoriesClassResponse
-    suspend fun getCourseHome(category: String? = null, typeClass: String? = null): CourseResponse
-
+    suspend fun getCourseHome(category: String? = null, typeClass: String? = null, title: String? = null): CourseResponse
+    suspend fun getCourseHome(category: List<String>? = null, typeClass: String? = null, title: String? = null): CourseResponse
     suspend fun getCourseTopic(typeClass: String? = null): CourseResponse
     suspend fun getCourseById(id: String): DetailCourseResponse
     suspend fun getCourseUserProgress(status: String? = null): CourseProgressResponse
@@ -34,8 +34,16 @@ class CourseDataSourceImpl(
         return service.getCategoriesClass()
     }
 
-    override suspend fun getCourseHome(category: String?, typeClass: String?): CourseResponse {
-        return service.getCourseHome(category, typeClass)
+    override suspend fun getCourseHome(category: String?, typeClass: String?, title: String?): CourseResponse {
+        return service.getCourseHome(category, typeClass, title)
+    }
+
+    override suspend fun getCourseHome(
+        category: List<String>?,
+        typeClass: String?,
+        title: String?
+    ): CourseResponse {
+        return service.getCourseHome(category, typeClass, title)
     }
 
     override suspend fun getCourseTopic(typeClass: String?): CourseResponse {

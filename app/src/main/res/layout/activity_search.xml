@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="16dp"
+    android:background="@color/app_color_on_primary"
     tools:context=".presentation.feature.search.SearchActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -90,8 +91,8 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:visibility="visible"
-        app:layout_constraintTop_toTopOf="@id/rv_course"
+        app:layout_constraintTop_toTopOf="@id/shimmer_course_linear"
         app:layout_constraintBottom_toBottomOf="parent"
-        tools:visibility="gone"/>
+        tools:visibility="visible"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
