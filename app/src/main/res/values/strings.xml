@@ -11,12 +11,12 @@
     <string name="text_add_user">Add User</string>
     <string name="text_long_name">Long Name</string>
     <string name="text_email">Email</string>
-    <string name="text_nomor_telepon">Nomor Telepon</string>
+    <string name="text_nomor_telepon" translatable="false">Nomor Telepon</string>
     <string name="text_62">+62</string>
-    <string name="text_negara">Negara</string>
-    <string name="text_masukkan_negara">Masukkan Negara</string>
-    <string name="text_kota">Kota</string>
-    <string name="text_masukkan_kota">Masukkan Kota</string>
+    <string name="text_negara" translatable="false">Negara</string>
+    <string name="text_masukkan_negara" translatable="false">Masukkan Negara</string>
+    <string name="text_kota" translatable="false">Kota</string>
+    <string name="text_masukkan_kota" translatable="false">Masukkan Kota</string>
     <string name="text_update">Update</string>
     <string name="text_transactions">Transactions</string>
     <string name="text_profile">Profile</string>
@@ -42,7 +42,7 @@
     <string name="android_development">Android \nDevelopment</string>
     <string name="data_science">Data Science</string>
     <string name="_4_6">4.6</string>
-    <string name="belajar_data_cleaning_dengan_nshorting_dengan_python">Belajar data cleaning dengan \nshorting dengan python</string>
+    <string name="belajar_data_cleaning_dengan_nshorting_dengan_python" translatable="false">Belajar data cleaning dengan \nshorting dengan python</string>
     <string name="_19_moduls">• 19 Moduls</string>
     <string name="_60_hours">• 60 Hours</string>
     <string name="advanced_level">• Advanced Level</string>
