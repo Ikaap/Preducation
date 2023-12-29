@@ -43,9 +43,6 @@
     <string name="_40_complete">40% selesai</string>
 
     <string name="text_password_min_8_character">Password minimal 8 karakter</string>
-    <string name="text_already_have_an_account">Sudah memiliki akun? Masuk di sini</string>
-    <string name="text_login_here">Masuk di Sini</string>
-    <string name="text_sign_up">Daftar</string>
     <string name="text_create_a_password">Buat Password</string>
     <string name="text_phone_number">Nomor Telepon</string>
     <string name="text_name">Nama</string>
@@ -55,10 +52,8 @@
     <string name="text_password">Password</string>
     <string name="text_forgot_password">Lupa Password</string>
     <string name="text_sign_in">Masuk</string>
-    <string name="text_don_t_have_an_account_yet">Belum punya akun? Daftar di sini</string>
     <string name="text_enter_without_logging_in">Masuk Tanpa Masuk</string>
     <string name="text_sorry_wrong_password">Maaf, password salah</string>
-    <string name="text_register_here">Daftar di Sini</string>
 
     <string name="text_about">Tentang</string>
     <string name="text_curriculcum">Kurikulum</string>
@@ -119,7 +114,6 @@
     <string name="iv_module_course">iv_module_course</string>
     <string name="iv_rating">iv_rating</string>
     <string name="iv_time_course">iv_time_course</string>
-    <string name="tv_sign_up">Daftar</string>
 
     <string name="desc_iv_logo_app">iv_logo_app</string>
     <string name="tv_reset_password">Reset Password</string>
