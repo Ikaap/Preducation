@@ -1,5 +1,6 @@
 package com.kelompoksatuandsatu.preducation.presentation.feature.splashscreen
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
@@ -40,5 +41,14 @@ class SplashScreenOneActivity : AppCompatActivity() {
             flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
         }
         startActivity(intent)
+
+        onOnboardingCompleted()
+    }
+
+    private fun onOnboardingCompleted() {
+        val sharedPreferences = getSharedPreferences("MyPreferences", Context.MODE_PRIVATE)
+        val editor = sharedPreferences.edit()
+        editor.putBoolean("isFirstTimeOpen", false)
+        editor.apply()
     }
 }
