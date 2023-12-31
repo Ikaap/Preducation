@@ -20,7 +20,6 @@ import com.kelompoksatuandsatu.preducation.presentation.feature.register.Registe
 import com.kelompoksatuandsatu.preducation.utils.exceptions.ApiException
 import com.kelompoksatuandsatu.preducation.utils.exceptions.NoInternetException
 import com.kelompoksatuandsatu.preducation.utils.proceedWhen
-import io.github.muddz.styleabletoast.StyleableToast
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class SeeAllPopularCoursesActivity : AppCompatActivity() {
@@ -57,8 +56,10 @@ class SeeAllPopularCoursesActivity : AppCompatActivity() {
         val categoryName = intent.getStringExtra("CATEGORY_NAME")
         getData(categoryName)
         observeData()
+        setOnClickListener()
+    }
 
-        viewModel.checkLogin()
+    private fun setOnClickListener() {
         binding.ivBack.setOnClickListener {
             onBackPressed()
         }
@@ -66,6 +67,7 @@ class SeeAllPopularCoursesActivity : AppCompatActivity() {
 
     private fun getData(categoryName: String?) {
         viewModel.getCourse(categoryName)
+        viewModel.checkLogin()
     }
 
     private fun observeData() {
@@ -77,9 +79,9 @@ class SeeAllPopularCoursesActivity : AppCompatActivity() {
                     binding.shimmerCourseCard.isVisible = false
                     binding.layoutStateCoursePopular.tvError.isVisible = false
                     binding.layoutStateCoursePopular.pbLoading.isVisible = false
-                    binding.layoutStateCoursePopular.clDataEmpty.isVisible = false
-                    binding.layoutStateCoursePopular.tvDataEmpty.isVisible = false
-                    binding.layoutStateCoursePopular.ivDataEmpty.isVisible = false
+                    binding.layoutStateCoursePopular.clErrorState.isVisible = false
+                    binding.layoutStateCoursePopular.tvErrorState.isVisible = false
+                    binding.layoutStateCoursePopular.ivErrorState.isVisible = false
                     it.payload?.let {
                         courseAdapter.setData(it)
                     }
@@ -88,11 +90,12 @@ class SeeAllPopularCoursesActivity : AppCompatActivity() {
                     binding.rvCourse.isVisible = false
                     binding.shimmerCourseCard.isVisible = true
                     binding.layoutStateCoursePopular.root.isVisible = false
+                    binding.layoutCommonState.root.isVisible = true
                     binding.layoutStateCoursePopular.tvError.isVisible = false
                     binding.layoutStateCoursePopular.pbLoading.isVisible = false
-                    binding.layoutStateCoursePopular.clDataEmpty.isVisible = false
-                    binding.layoutStateCoursePopular.tvDataEmpty.isVisible = false
-                    binding.layoutStateCoursePopular.ivDataEmpty.isVisible = false
+                    binding.layoutStateCoursePopular.clErrorState.isVisible = false
+                    binding.layoutStateCoursePopular.tvErrorState.isVisible = false
+                    binding.layoutStateCoursePopular.ivErrorState.isVisible = false
                 },
                 doOnError = {
                     binding.rvCourse.isVisible = false
@@ -101,39 +104,31 @@ class SeeAllPopularCoursesActivity : AppCompatActivity() {
                     binding.layoutStateCoursePopular.tvError.isVisible = true
                     binding.layoutStateCoursePopular.tvError.text = it.exception?.message
                     binding.layoutStateCoursePopular.pbLoading.isVisible = false
-                    binding.layoutStateCoursePopular.clDataEmpty.isVisible = false
-                    binding.layoutStateCoursePopular.tvDataEmpty.isVisible = false
-                    binding.layoutStateCoursePopular.ivDataEmpty.isVisible = false
+                    binding.layoutStateCoursePopular.clErrorState.isVisible = false
+                    binding.layoutStateCoursePopular.tvErrorState.isVisible = false
+                    binding.layoutStateCoursePopular.ivErrorState.isVisible = false
 
                     if (it.exception is ApiException) {
+                        binding.layoutCommonState.root.isVisible = true
                         if (it.exception.getParsedErrorCourse()?.success == false) {
+                            binding.layoutCommonState.tvError.text =
+                                it.exception.getParsedErrorCourse()?.message
                             if (it.exception.httpCode == 500) {
-                                binding.layoutCommonState.clServerError.isGone = false
-                                binding.layoutCommonState.ivServerError.isGone = false
-                                StyleableToast.makeText(
-                                    this,
-                                    "SERVER ERROR",
-                                    R.style.failedtoast
-                                ).show()
-                            } else if (it.exception.getParsedErrorCourse()?.success == false) {
-                                binding.layoutCommonState.tvError.text =
-                                    it.exception.getParsedErrorCourse()?.message
-                                StyleableToast.makeText(
-                                    this,
-                                    it.exception.getParsedErrorCourse()?.message,
-                                    R.style.failedtoast
-                                ).show()
+                                binding.layoutCommonState.clErrorState.isGone = false
+                                binding.layoutCommonState.ivErrorState.isGone = false
+                                binding.layoutCommonState.tvErrorState.isGone = false
+                                binding.layoutCommonState.tvErrorState.text = "Sorry, there's an error on the server"
+                                binding.layoutCommonState.ivErrorState.setImageResource(R.drawable.img_server_error)
                             }
                         }
                     } else if (it.exception is NoInternetException) {
                         if (!it.exception.isNetworkAvailable(this)) {
-                            binding.layoutCommonState.clNoConnection.isGone = false
-                            binding.layoutCommonState.ivNoConnection.isGone = false
-                            StyleableToast.makeText(
-                                this,
-                                "tidak ada internet",
-                                R.style.failedtoast
-                            ).show()
+                            binding.layoutCommonState.root.isVisible = true
+                            binding.layoutCommonState.clErrorState.isGone = false
+                            binding.layoutCommonState.ivErrorState.isGone = false
+                            binding.layoutCommonState.tvErrorState.isGone = false
+                            binding.layoutCommonState.tvErrorState.text = "Oops!\nYou're not connection"
+                            binding.layoutCommonState.ivErrorState.setImageResource(R.drawable.img_no_connection)
                         }
                     }
                 },
@@ -143,9 +138,10 @@ class SeeAllPopularCoursesActivity : AppCompatActivity() {
                     binding.layoutStateCoursePopular.root.isVisible = true
                     binding.layoutStateCoursePopular.tvError.isVisible = false
                     binding.layoutStateCoursePopular.pbLoading.isVisible = false
-                    binding.layoutStateCoursePopular.clDataEmpty.isVisible = true
-                    binding.layoutStateCoursePopular.tvDataEmpty.isVisible = true
-                    binding.layoutStateCoursePopular.ivDataEmpty.isVisible = true
+                    binding.layoutStateCoursePopular.clErrorState.isVisible = true
+                    binding.layoutStateCoursePopular.tvErrorState.isVisible = true
+                    binding.layoutStateCoursePopular.tvErrorState.text = "Class not found !"
+                    binding.layoutStateCoursePopular.ivErrorState.isVisible = true
                 }
             )
         }

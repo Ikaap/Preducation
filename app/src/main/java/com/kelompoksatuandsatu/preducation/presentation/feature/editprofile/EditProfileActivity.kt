@@ -51,13 +51,31 @@ class EditProfileActivity : AppCompatActivity() {
         viewModel.getUserById()
     }
 
+    private fun setOnClickListener() {
+        binding.ivBack.setOnClickListener {
+            onBackPressed()
+        }
+
+        binding.clButtonChange.setOnClickListener {
+            if (isFormValid()) {
+                changeProfileData()
+                observeData()
+            } else {
+                showToast(R.string.text_error_form_not_valid)
+            }
+        }
+
+        binding.ivAddPhotoUser.setOnClickListener {
+            imagePicker()
+        }
+    }
+
     private fun setDataProfile() {
         viewModel.getProfile.observe(this) {
             it.proceedWhen(
                 doOnSuccess = {
-                    binding.root.isVisible = true
-                    binding.ivAddPhotoUser.isVisible = true
                     binding.clButtonChange.isVisible = true
+                    binding.layoutCommonState.root.isVisible = false
 
                     it.payload?.let {
                         binding.etLongName.setText(it.name.orEmpty())
@@ -71,12 +89,36 @@ class EditProfileActivity : AppCompatActivity() {
                     }
                 },
                 doOnLoading = {
-                    binding.root.isVisible = true
-                    binding.ivAddPhotoUser.isVisible = false
+                    binding.layoutCommonState.root.isVisible = false
                 },
                 doOnError = {
-                    binding.root.isVisible = true
-                    binding.ivAddPhotoUser.isVisible = false
+                    binding.layoutCommonState.root.isVisible = true
+                    binding.layoutCommonState.pbLoading.isVisible = false
+                    binding.layoutCommonState.tvError.isVisible = true
+
+                    if (it.exception is ApiException) {
+                        if (it.exception.getParsedErrorProfile()?.success == false) {
+                            binding.layoutCommonState.tvError.text =
+                                it.exception.getParsedErrorProfile()?.message
+                            if (it.exception.httpCode == 500) {
+                                binding.layoutCommonState.clErrorState.isGone = false
+                                binding.layoutCommonState.ivErrorState.isGone = false
+                                binding.layoutCommonState.tvErrorState.isGone = false
+                                binding.layoutCommonState.tvErrorState.text =
+                                    "Sorry, there's an error on the server"
+                                binding.layoutCommonState.ivErrorState.setImageResource(R.drawable.img_server_error)
+                            }
+                        }
+                    } else if (it.exception is NoInternetException) {
+                        if (!it.exception.isNetworkAvailable(this)) {
+                            binding.layoutCommonState.clErrorState.isGone = false
+                            binding.layoutCommonState.ivErrorState.isGone = false
+                            binding.layoutCommonState.tvErrorState.isGone = false
+                            binding.layoutCommonState.tvErrorState.text =
+                                "Oops!\nYou're not connection"
+                            binding.layoutCommonState.ivErrorState.setImageResource(R.drawable.img_no_connection)
+                        }
+                    }
                 }
             )
         }
@@ -98,9 +140,15 @@ class EditProfileActivity : AppCompatActivity() {
         viewModel.updateProfileResult.observe(this) {
             it.proceedWhen(
                 doOnSuccess = {
-                    binding.root.isVisible = true
                     binding.ivAddPhotoUser.isVisible = true
                     binding.clButtonChange.isVisible = true
+                    binding.layoutCommonState.root.isVisible = false
+
+                    StyleableToast.makeText(
+                        this,
+                        "Update Profile Successfully",
+                        R.style.successtoast
+                    ).show()
 
                     it.payload?.let {
                         binding.etLongName.setText(it.name.orEmpty())
@@ -112,70 +160,44 @@ class EditProfileActivity : AppCompatActivity() {
                     }
                 },
                 doOnLoading = {
-                    binding.root.isVisible = true
                     binding.ivAddPhotoUser.isVisible = false
                 },
                 doOnError = {
-                    binding.root.isVisible = true
-                    binding.ivAddPhotoUser.isVisible = false
+                    binding.layoutCommonState.root.isVisible = true
+                    binding.layoutCommonState.pbLoading.isVisible = false
+                    binding.layoutCommonState.tvError.isVisible = true
+
+                    StyleableToast.makeText(
+                        this,
+                        "Update Profile Failed",
+                        R.style.failedtoast
+                    ).show()
 
                     if (it.exception is ApiException) {
                         if (it.exception.getParsedErrorProfile()?.success == false) {
+                            binding.layoutCommonState.tvError.text =
+                                it.exception.getParsedErrorProfile()?.message
                             if (it.exception.httpCode == 500) {
-                                binding.layoutCommonState.clServerError.isGone = false
-                                binding.layoutCommonState.ivServerError.isGone = false
-                                StyleableToast.makeText(
-                                    this,
-                                    "SERVER ERROR",
-                                    R.style.failedtoast
-                                ).show()
-                            } else if (it.exception.getParsedErrorProfile()?.success == false) {
-                                binding.layoutCommonState.tvError.text =
-                                    it.exception.getParsedErrorProfile()?.message
-                                StyleableToast.makeText(
-                                    this,
-                                    it.exception.getParsedErrorProfile()?.message,
-                                    R.style.failedtoast
-                                ).show()
+                                binding.layoutCommonState.clErrorState.isGone = false
+                                binding.layoutCommonState.ivErrorState.isGone = false
+                                binding.layoutCommonState.tvErrorState.isGone = false
+                                binding.layoutCommonState.tvErrorState.text =
+                                    "Sorry, there's an error on the server"
+                                binding.layoutCommonState.ivErrorState.setImageResource(R.drawable.img_server_error)
                             }
                         }
                     } else if (it.exception is NoInternetException) {
                         if (!it.exception.isNetworkAvailable(this)) {
-                            binding.layoutCommonState.clNoConnection.isGone = false
-                            binding.layoutCommonState.ivNoConnection.isGone = false
-                            StyleableToast.makeText(
-                                this,
-                                "tidak ada internet",
-                                R.style.failedtoast
-                            ).show()
+                            binding.layoutCommonState.clErrorState.isGone = false
+                            binding.layoutCommonState.ivErrorState.isGone = false
+                            binding.layoutCommonState.tvErrorState.isGone = false
+                            binding.layoutCommonState.tvErrorState.text =
+                                "Oops!\nYou're not connection"
+                            binding.layoutCommonState.ivErrorState.setImageResource(R.drawable.img_no_connection)
                         }
                     }
                 }
             )
-        }
-    }
-
-    private fun setOnClickListener() {
-        binding.ivBack.setOnClickListener {
-            onBackPressed()
-        }
-
-        binding.clButtonChange.setOnClickListener {
-            if (isFormValid()) {
-                changeProfileData()
-                StyleableToast.makeText(
-                    this,
-                    "Update Profile Successfully",
-                    R.style.successtoast
-                ).show()
-                observeData()
-            } else {
-                showToast(R.string.text_error_form_not_valid)
-            }
-        }
-
-        binding.ivAddPhotoUser.setOnClickListener {
-            imagePicker()
         }
     }
 
@@ -216,7 +238,7 @@ class EditProfileActivity : AppCompatActivity() {
                 imageFile.name,
                 imageRequestBody
             )
-            // Logika pengiriman data profil
+
             val name = binding.etLongName.text.toString().trim()
             val phone = binding.etPhoneNumber.text.toString().trim()
             val country = binding.etCountry.text.toString().trim()
