@@ -1,5 +1,6 @@
 package com.kelompoksatuandsatu.preducation.presentation.feature.splashscreen
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
@@ -32,14 +33,16 @@ class SplashScreenActivity : AppCompatActivity() {
 
     private fun observeData() {
         viewModel.isUserLogin.observe(this) { isLogin ->
-            if (!isLogin) {
-                lifecycleScope.launch {
-                    delay(1500)
-                    navigateToSplashScreenOne()
-                }
-            } else {
-                lifecycleScope.launch {
-                    delay(1500)
+            lifecycleScope.launch {
+                delay(1500)
+
+                if (!isLogin) {
+                    if (isFirstTimeOpen()) {
+                        navigateToSplashScreenOne()
+                    } else {
+                        navigateToHome()
+                    }
+                } else {
                     navigateToHome()
                 }
             }
@@ -58,5 +61,10 @@ class SplashScreenActivity : AppCompatActivity() {
             flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
         }
         startActivity(intent)
+    }
+
+    private fun isFirstTimeOpen(): Boolean {
+        val sharedPreferences = getSharedPreferences("MyPreferences", Context.MODE_PRIVATE)
+        return sharedPreferences.getBoolean("isFirstTimeOpen", true)
     }
 }
