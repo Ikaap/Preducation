@@ -95,8 +95,9 @@ class ForgotPasswordNewActivity : AppCompatActivity() {
                     if (it.exception is ApiException) {
                         if (it.exception.getParsedErrorForgetPassword()?.success == false) {
                             if (it.exception.httpCode == 500) {
-                                binding.layoutCommonState.clServerError.isGone = false
-                                binding.layoutCommonState.ivServerError.isGone = false
+                                binding.layoutCommonState.clErrorState.isGone = false
+                                binding.layoutCommonState.ivErrorState.isGone = false
+                                binding.layoutCommonState.ivErrorState.setImageResource(R.drawable.img_server_error)
                                 StyleableToast.makeText(
                                     this,
                                     getString(R.string.text_sorry_there_s_an_error_on_the_server),
@@ -114,8 +115,9 @@ class ForgotPasswordNewActivity : AppCompatActivity() {
                         }
                     } else if (it.exception is NoInternetException) {
                         if (!it.exception.isNetworkAvailable(this)) {
-                            binding.layoutCommonState.clNoConnection.isGone = false
-                            binding.layoutCommonState.ivNoConnection.isGone = false
+                            binding.layoutCommonState.clErrorState.isGone = false
+                            binding.layoutCommonState.ivErrorState.isGone = false
+                            binding.layoutCommonState.ivErrorState.setImageResource(R.drawable.img_no_connection)
                             StyleableToast.makeText(
                                 this,
                                 getString(R.string.text_no_internet_connection),

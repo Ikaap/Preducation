@@ -144,37 +144,6 @@ class PaymentActivity : AppCompatActivity() {
                             binding.layoutStatePayment.ivErrorState.setImageResource(R.drawable.img_no_connection)
                         }
                     }
-                    if (it.exception is ApiException) {
-                        if (it.exception.getParsedErrorPayment()?.success == false) {
-                            if (it.exception.httpCode == 500) {
-                                binding.layoutCommonState.clServerError.isGone = false
-                                binding.layoutCommonState.ivServerError.isGone = false
-                                StyleableToast.makeText(
-                                    this,
-                                    "SERVER ERROR",
-                                    R.style.failedtoast
-                                ).show()
-                            } else if (it.exception.getParsedErrorPayment()?.success == false) {
-                                binding.layoutCommonState.tvError.text =
-                                    it.exception.getParsedErrorPayment()?.message
-                                StyleableToast.makeText(
-                                    this,
-                                    it.exception.getParsedErrorPayment()?.message,
-                                    R.style.failedtoast
-                                ).show()
-                            }
-                        }
-                    } else if (it.exception is NoInternetException) {
-                        if (!it.exception.isNetworkAvailable(this)) {
-                            binding.layoutCommonState.clNoConnection.isGone = false
-                            binding.layoutCommonState.ivNoConnection.isGone = false
-                            StyleableToast.makeText(
-                                this,
-                                "tidak ada internet",
-                                R.style.failedtoast
-                            ).show()
-                        }
-                    }
                 },
                 doOnEmpty = {
                     binding.layoutStatePayment.root.isVisible = true
