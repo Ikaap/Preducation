@@ -28,7 +28,7 @@ class CourseViewModel(
 
     fun getCourse(category: List<String>? = null, typeClass: String? = null, title: String? = null) {
         viewModelScope.launch(Dispatchers.IO) {
-            repositoryCourse.getCourseHome(category = category, typeClass = if (typeClass == "All") null else typeClass?.toLowerCase(), title = title)
+            repositoryCourse.getCourseHomeFilter(category = category, typeClass = if (typeClass == "All") null else typeClass?.toLowerCase(), title = title)
                 .collect {
                     _course.postValue(it)
                 }

@@ -16,7 +16,7 @@ import com.kelompoksatuandsatu.preducation.data.network.api.service.PreducationS
 interface CourseDataSource {
     suspend fun getCategoriesClass(): CategoriesClassResponse
     suspend fun getCourseHome(category: String? = null, typeClass: String? = null, title: String? = null): CourseResponse
-    suspend fun getCourseHome(category: List<String>? = null, typeClass: String? = null, title: String? = null): CourseResponse
+    suspend fun getCourseHomeFilter(category: List<String>? = null, typeClass: String? = null, title: String? = null): CourseResponse
     suspend fun getCourseById(id: String): DetailCourseResponse
     suspend fun getCourseUserProgress(status: String? = null): CourseProgressResponse
     suspend fun getCategoriesProgress(): CategoriesProgressResponse
@@ -37,12 +37,12 @@ class CourseDataSourceImpl(
         return service.getCourseHome(category, typeClass, title)
     }
 
-    override suspend fun getCourseHome(
+    override suspend fun getCourseHomeFilter(
         category: List<String>?,
         typeClass: String?,
         title: String?
     ): CourseResponse {
-        return service.getCourseHome(category, typeClass, title)
+        return service.getCourseHomeFilter(category, typeClass, title)
     }
 
     override suspend fun paymentCourse(paymentCourseRequest: PaymentCourseRequest): PaymentCourseResponse {
