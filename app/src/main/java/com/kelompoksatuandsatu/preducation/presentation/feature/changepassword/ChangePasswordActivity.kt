@@ -10,13 +10,11 @@ import androidx.core.view.isVisible
 import com.google.android.gms.common.api.ApiException
 import com.google.android.material.textfield.TextInputLayout
 import com.kelompoksatuandsatu.preducation.R
-import com.kelompoksatuandsatu.preducation.data.network.api.model.changepassword.ChangePasswordRequest
+import com.kelompoksatuandsatu.preducation.data.network.api.model.user.changepassword.ChangePasswordRequest
 import com.kelompoksatuandsatu.preducation.databinding.ActivityChangePasswordBinding
-import com.kelompoksatuandsatu.preducation.utils.AssetWrapper
 import com.kelompoksatuandsatu.preducation.utils.exceptions.NoInternetException
 import com.kelompoksatuandsatu.preducation.utils.proceedWhen
 import io.github.muddz.styleabletoast.StyleableToast
-import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class ChangePasswordActivity : AppCompatActivity() {
@@ -28,14 +26,13 @@ class ChangePasswordActivity : AppCompatActivity() {
 
     private val MIN_PASSWORD_LENGTH = 8
 
-    private val assetWrapper: AssetWrapper by inject()
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
-        setOnClickListener()
         setForm()
+        setOnClickListener()
+        observeResultChangePassword()
     }
 
     private fun setOnClickListener() {
@@ -45,13 +42,7 @@ class ChangePasswordActivity : AppCompatActivity() {
 
         binding.clButtonContinue.setOnClickListener {
             if (isFormValid()) {
-                setUpdatePassword()
-                StyleableToast.makeText(
-                    this,
-                    "Change Password Successfully",
-                    R.style.successtoast
-                ).show()
-                navigateToProfile()
+                updatePassword()
             } else {
                 showErrorToast(R.string.text_error_form_not_valid)
             }
@@ -62,55 +53,64 @@ class ChangePasswordActivity : AppCompatActivity() {
         onBackPressed()
     }
 
-    private fun setUpdatePassword() {
-        updatePassword()
+    private fun observeResultChangePassword() {
         viewModel.updatedPassword.observe(this) {
             it.proceedWhen(
                 doOnError = {
-                    binding.root.isVisible = true
-                    if (it.exception is ApiException) {
-                        showErrorToast(R.string.text_error_update_password)
-                    }
+                    binding.pbLoading.isVisible = false
+                    binding.layoutCommonState.root.isVisible = true
+                    binding.layoutCommonState.pbLoading.isVisible = false
+                    binding.layoutCommonState.tvError.isVisible = false
+
                     if (it.exception is com.kelompoksatuandsatu.preducation.utils.exceptions.ApiException) {
                         if (it.exception.getParsedErrorChangePassword()?.success == false) {
+                            binding.layoutCommonState.tvError.text =
+                                it.exception.getParsedErrorChangePassword()?.message
                             if (it.exception.httpCode == 500) {
-                                binding.layoutCommonState.clServerError.isGone = false
-                                binding.layoutCommonState.ivServerError.isGone = false
-                                StyleableToast.makeText(
-                                    this,
-                                    "SERVER ERROR",
-                                    R.style.failedtoast
-                                ).show()
-                            } else if (it.exception.getParsedErrorChangePassword()?.success == false) {
-                                binding.layoutCommonState.tvError.text =
-                                    it.exception.getParsedErrorChangePassword()?.message
-                                StyleableToast.makeText(
-                                    this,
-                                    it.exception.getParsedErrorChangePassword()?.message,
-                                    R.style.failedtoast
-                                ).show()
+                                binding.layoutCommonState.clErrorState.isGone = false
+                                binding.layoutCommonState.ivErrorState.isGone = false
+                                binding.layoutCommonState.tvErrorState.isGone = false
+                                binding.layoutCommonState.tvErrorState.text =
+                                    "Sorry, there's an error on the server"
+                                binding.layoutCommonState.ivErrorState.setImageResource(R.drawable.img_server_error)
                             }
                         }
                     } else if (it.exception is NoInternetException) {
                         if (!it.exception.isNetworkAvailable(this)) {
-                            binding.layoutCommonState.clNoConnection.isGone = false
-                            binding.layoutCommonState.ivNoConnection.isGone = false
-                            StyleableToast.makeText(
-                                this,
-                                "tidak ada internet",
-                                R.style.failedtoast
-                            ).show()
+                            binding.layoutCommonState.clErrorState.isGone = false
+                            binding.layoutCommonState.ivErrorState.isGone = false
+                            binding.layoutCommonState.tvErrorState.isGone = false
+                            binding.layoutCommonState.tvErrorState.text = "Oops!\nNo Internet Connection"
+                            binding.layoutCommonState.ivErrorState.setImageResource(R.drawable.img_no_connection)
                         }
                     }
                 },
                 doOnLoading = {
-                    binding.root.isVisible = true
+                    binding.pbLoading.isVisible = true
+                    binding.layoutCommonState.root.isVisible = false
+                    binding.layoutCommonState.pbLoading.isVisible = false
+                    binding.layoutCommonState.tvError.isVisible = false
+                    binding.layoutCommonState.clErrorState.isVisible = false
+                    binding.layoutCommonState.ivErrorState.isVisible = false
+                    binding.layoutCommonState.tvErrorState.isVisible = false
                 },
                 doOnSuccess = {
-                    binding.root.isVisible = true
+                    binding.pbLoading.isVisible = false
+                    binding.layoutCommonState.root.isVisible = false
+                    binding.layoutCommonState.pbLoading.isVisible = false
+                    binding.layoutCommonState.tvError.isVisible = false
+                    binding.layoutCommonState.clErrorState.isVisible = false
+                    binding.layoutCommonState.ivErrorState.isVisible = false
+                    binding.layoutCommonState.tvErrorState.isVisible = false
                     binding.etOldPassword.text?.clear()
                     binding.etNewPassword.text?.clear()
                     binding.etConfirmPassword.text?.clear()
+                    StyleableToast.makeText(
+                        this,
+                        "Change Password Successfully",
+                        R.style.successtoast
+                    ).show()
+                    navigateToProfile()
                 }
             )
         }
@@ -245,7 +245,7 @@ class ChangePasswordActivity : AppCompatActivity() {
     }
 
     private fun showToast(message: String) {
-        StyleableToast.makeText(this, message, R.style.successtoast).show()
+        StyleableToast.makeText(this, message, R.style.failedtoast).show()
     }
 
     companion object {

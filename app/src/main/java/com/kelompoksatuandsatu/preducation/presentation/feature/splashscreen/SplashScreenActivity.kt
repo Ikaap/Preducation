@@ -34,12 +34,12 @@ class SplashScreenActivity : AppCompatActivity() {
         viewModel.isUserLogin.observe(this) { isLogin ->
             if (!isLogin) {
                 lifecycleScope.launch {
-                    delay(3000)
+                    delay(1500)
                     navigateToSplashScreenOne()
                 }
             } else {
                 lifecycleScope.launch {
-                    delay(3000)
+                    delay(1500)
                     navigateToHome()
                 }
             }

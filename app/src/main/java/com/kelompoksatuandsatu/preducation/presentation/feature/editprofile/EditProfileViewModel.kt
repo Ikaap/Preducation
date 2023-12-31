@@ -1,6 +1,5 @@
 package com.kelompoksatuandsatu.preducation.presentation.feature.editprofile
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -30,7 +29,6 @@ class EditProfileViewModel(
     fun getUserById() {
         viewModelScope.launch(Dispatchers.IO) {
             val userId = userPreferenceDataSource.getUserId()
-            Log.d("USER ID EDIT PROFILE", "getUserById: $userId")
             userRepo.getUserById(userId).collect {
                 _getProfile.postValue(it)
             }
@@ -47,7 +45,6 @@ class EditProfileViewModel(
     ) {
         viewModelScope.launch(Dispatchers.IO) {
             val userId = userPreferenceDataSource.getUserId()
-            Log.d("USER ID EDIT PROFILE", "getUserById: $userId")
             userRepo.updateUserById(
                 userId,
                 name,

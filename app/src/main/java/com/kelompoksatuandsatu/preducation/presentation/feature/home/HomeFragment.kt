@@ -8,8 +8,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import androidx.appcompat.widget.SearchView
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
@@ -27,7 +25,6 @@ import com.kelompoksatuandsatu.preducation.presentation.feature.detailclass.Deta
 import com.kelompoksatuandsatu.preducation.presentation.feature.register.RegisterActivity
 import com.kelompoksatuandsatu.preducation.presentation.feature.search.SearchActivity
 import com.kelompoksatuandsatu.preducation.utils.proceedWhen
-import io.github.muddz.styleabletoast.StyleableToast
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class HomeFragment : Fragment() {
@@ -84,7 +81,6 @@ class HomeFragment : Fragment() {
         setOnClickListener()
         getData()
         observeData()
-//        searchView.setOnQueryTextListener(searchQueryListener)
     }
 
     private fun setOnClickListener() {
@@ -142,9 +138,9 @@ class HomeFragment : Fragment() {
                     binding.shimmerCategoryCircle.isVisible = false
                     binding.layoutStateCoursePopular.tvError.isVisible = false
                     binding.layoutStateCoursePopular.pbLoading.isVisible = false
-                    binding.layoutStateCoursePopular.clDataEmpty.isVisible = false
-                    binding.layoutStateCoursePopular.tvDataEmpty.isVisible = false
-                    binding.layoutStateCoursePopular.ivDataEmpty.isVisible = false
+                    binding.layoutStateCoursePopular.clErrorState.isVisible = false
+                    binding.layoutStateCoursePopular.tvErrorState.isVisible = false
+                    binding.layoutStateCoursePopular.ivErrorState.isVisible = false
                     it.payload?.let { data ->
                         categoryCourseAdapter.setData(data)
                     }
@@ -155,9 +151,9 @@ class HomeFragment : Fragment() {
                     binding.layoutStateCategoryCircle.root.isVisible = false
                     binding.layoutStateCategoryCircle.tvError.isVisible = false
                     binding.layoutStateCategoryCircle.pbLoading.isVisible = false
-                    binding.layoutStateCategoryCircle.clDataEmpty.isVisible = false
-                    binding.layoutStateCategoryCircle.tvDataEmpty.isVisible = false
-                    binding.layoutStateCategoryCircle.ivDataEmpty.isVisible = false
+                    binding.layoutStateCategoryCircle.clErrorState.isVisible = false
+                    binding.layoutStateCategoryCircle.tvErrorState.isVisible = false
+                    binding.layoutStateCategoryCircle.ivErrorState.isVisible = false
                 },
                 doOnError = {
                     binding.rvCategoryCourse.isVisible = false
@@ -166,39 +162,14 @@ class HomeFragment : Fragment() {
                     binding.layoutStateCategoryCircle.tvError.isVisible = true
                     binding.layoutStateCategoryCircle.tvError.text = it.exception?.message
                     binding.layoutStateCategoryCircle.pbLoading.isVisible = false
-                    binding.layoutStateCategoryCircle.clDataEmpty.isVisible = false
-                    binding.layoutStateCategoryCircle.tvDataEmpty.isVisible = false
-                    binding.layoutStateCategoryCircle.ivDataEmpty.isVisible = false
+                    binding.layoutStateCategoryCircle.clErrorState.isVisible = false
+                    binding.layoutStateCategoryCircle.tvErrorState.isVisible = false
+                    binding.layoutStateCategoryCircle.ivErrorState.isVisible = false
 
                     if (it.exception is ApiException) {
                         if (it.exception.getParsedErrorCategories()?.success == false) {
-                            if (it.exception.httpCode == 500) {
-                                binding.layoutCommonState.clServerError.isGone = false
-                                binding.layoutCommonState.ivServerError.isGone = false
-                                StyleableToast.makeText(
-                                    requireContext(),
-                                    "SERVER ERROR",
-                                    R.style.failedtoast
-                                ).show()
-                            } else if (it.exception.getParsedErrorCategories()?.success == false) {
-                                binding.layoutCommonState.tvError.text =
-                                    it.exception.getParsedErrorCategories()?.message
-                                StyleableToast.makeText(
-                                    requireContext(),
-                                    it.exception.getParsedErrorCategories()?.message,
-                                    R.style.failedtoast
-                                ).show()
-                            }
-                        }
-                    } else if (it.exception is NoInternetException) {
-                        if (!it.exception.isNetworkAvailable(requireContext())) {
-                            binding.layoutCommonState.clNoConnection.isGone = false
-                            binding.layoutCommonState.ivNoConnection.isGone = false
-                            StyleableToast.makeText(
-                                requireContext(),
-                                "tidak ada internet",
-                                R.style.failedtoast
-                            ).show()
+                            binding.layoutStateCategoryCircle.tvError.text =
+                                it.exception.getParsedErrorCategories()?.message
                         }
                     }
                 },
@@ -208,9 +179,9 @@ class HomeFragment : Fragment() {
                     binding.layoutStateCategoryCircle.root.isVisible = true
                     binding.layoutStateCategoryCircle.tvError.isVisible = false
                     binding.layoutStateCategoryCircle.pbLoading.isVisible = false
-                    binding.layoutStateCategoryCircle.clDataEmpty.isVisible = true
-                    binding.layoutStateCategoryCircle.tvDataEmpty.isVisible = true
-                    binding.layoutStateCategoryCircle.ivDataEmpty.isVisible = false
+                    binding.layoutStateCategoryCircle.clErrorState.isVisible = true
+                    binding.layoutStateCategoryCircle.tvErrorState.isVisible = true
+                    binding.layoutStateCategoryCircle.ivErrorState.isVisible = false
                 }
             )
         }
@@ -219,19 +190,15 @@ class HomeFragment : Fragment() {
             it.proceedWhen(
                 doOnSuccess = {
                     binding.rvCategoryPopular.isVisible = true
-                    binding.rvCategoryPopular.adapter = categoryCoursePopularAdapter
                     binding.shimmerCategoryRounded.isVisible = false
                     binding.layoutStateCategoryRounded.root.isVisible = false
                     binding.layoutStateCategoryRounded.tvError.isVisible = false
                     binding.layoutStateCategoryRounded.pbLoading.isVisible = false
-                    binding.layoutStateCategoryRounded.clDataEmpty.isVisible = false
-                    binding.layoutStateCategoryRounded.tvDataEmpty.isVisible = false
-                    binding.layoutStateCategoryRounded.ivDataEmpty.isVisible = false
-                    it.payload?.let { data ->
-                        categoryCoursePopularAdapter.setData(data)
-                    }
+                    binding.layoutStateCategoryRounded.clErrorState.isVisible = false
+                    binding.layoutStateCategoryRounded.tvErrorState.isVisible = false
+                    binding.layoutStateCategoryRounded.ivErrorState.isVisible = false
                     binding.rvCategoryPopular.apply {
-                        binding.rvCategoryPopular.layoutManager = LinearLayoutManager(
+                        layoutManager = LinearLayoutManager(
                             requireContext(),
                             LinearLayoutManager.HORIZONTAL,
                             false
@@ -247,10 +214,9 @@ class HomeFragment : Fragment() {
                     binding.shimmerCategoryRounded.isVisible = true
                     binding.layoutStateCategoryRounded.root.isVisible = false
                     binding.layoutStateCategoryRounded.tvError.isVisible = false
-                    binding.layoutStateCategoryRounded.pbLoading.isVisible = false
-                    binding.layoutStateCategoryRounded.clDataEmpty.isVisible = false
-                    binding.layoutStateCategoryRounded.tvDataEmpty.isVisible = false
-                    binding.layoutStateCategoryRounded.ivDataEmpty.isVisible = false
+                    binding.layoutStateCategoryRounded.clErrorState.isVisible = false
+                    binding.layoutStateCategoryRounded.tvErrorState.isVisible = false
+                    binding.layoutStateCategoryRounded.ivErrorState.isVisible = false
                 },
                 doOnError = {
                     binding.rvCategoryPopular.isVisible = false
@@ -259,39 +225,14 @@ class HomeFragment : Fragment() {
                     binding.layoutStateCategoryRounded.tvError.isVisible = true
                     binding.layoutStateCategoryRounded.tvError.text = it.exception?.message
                     binding.layoutStateCategoryRounded.pbLoading.isVisible = false
-                    binding.layoutStateCategoryRounded.clDataEmpty.isVisible = false
-                    binding.layoutStateCategoryRounded.tvDataEmpty.isVisible = false
-                    binding.layoutStateCategoryRounded.ivDataEmpty.isVisible = false
+                    binding.layoutStateCategoryRounded.clErrorState.isVisible = false
+                    binding.layoutStateCategoryRounded.tvErrorState.isVisible = false
+                    binding.layoutStateCategoryRounded.ivErrorState.isVisible = false
 
                     if (it.exception is ApiException) {
                         if (it.exception.getParsedErrorCategories()?.success == false) {
-                            if (it.exception.httpCode == 500) {
-                                binding.layoutCommonState.clServerError.isGone = false
-                                binding.layoutCommonState.ivServerError.isGone = false
-                                StyleableToast.makeText(
-                                    requireContext(),
-                                    "SERVER ERROR",
-                                    R.style.failedtoast
-                                ).show()
-                            } else if (it.exception.getParsedErrorCategories()?.success == false) {
-                                binding.layoutCommonState.tvError.text =
-                                    it.exception.getParsedErrorCategories()?.message
-                                StyleableToast.makeText(
-                                    requireContext(),
-                                    it.exception.getParsedErrorCategories()?.message,
-                                    R.style.failedtoast
-                                ).show()
-                            }
-                        }
-                    } else if (it.exception is NoInternetException) {
-                        if (!it.exception.isNetworkAvailable(requireContext())) {
-                            binding.layoutCommonState.clNoConnection.isGone = false
-                            binding.layoutCommonState.ivNoConnection.isGone = false
-                            StyleableToast.makeText(
-                                requireContext(),
-                                "tidak ada internet",
-                                R.style.failedtoast
-                            ).show()
+                            binding.layoutStateCategoryRounded.tvError.text =
+                                it.exception.getParsedErrorCategories()?.message
                         }
                     }
                 },
@@ -301,9 +242,9 @@ class HomeFragment : Fragment() {
                     binding.layoutStateCategoryRounded.root.isVisible = false
                     binding.layoutStateCategoryRounded.tvError.isVisible = false
                     binding.layoutStateCategoryRounded.pbLoading.isVisible = false
-                    binding.layoutStateCategoryRounded.clDataEmpty.isVisible = true
-                    binding.layoutStateCategoryRounded.tvDataEmpty.isVisible = true
-                    binding.layoutStateCategoryRounded.ivDataEmpty.isVisible = false
+                    binding.layoutStateCategoryRounded.clErrorState.isVisible = true
+                    binding.layoutStateCategoryRounded.tvErrorState.isVisible = true
+                    binding.layoutStateCategoryRounded.ivErrorState.isVisible = false
                 }
             )
         }
@@ -312,26 +253,37 @@ class HomeFragment : Fragment() {
             it.proceedWhen(
                 doOnSuccess = {
                     binding.rvPopularCourse.isVisible = true
-                    binding.rvPopularCourse.adapter = popularCourseAdapter
                     binding.shimmerCourseCard.isVisible = false
                     binding.layoutStateCoursePopular.tvError.isVisible = false
                     binding.layoutStateCoursePopular.pbLoading.isVisible = false
-                    binding.layoutStateCoursePopular.clDataEmpty.isVisible = false
-                    binding.layoutStateCoursePopular.tvDataEmpty.isVisible = false
-                    binding.layoutStateCoursePopular.ivDataEmpty.isVisible = false
+                    binding.layoutStateCoursePopular.clErrorState.isVisible = false
+                    binding.layoutStateCoursePopular.tvErrorState.isVisible = false
+                    binding.layoutStateCoursePopular.ivErrorState.isVisible = false
+                    binding.rvPopularCourse.apply {
+                        layoutManager = LinearLayoutManager(
+                            requireContext(),
+                            LinearLayoutManager.HORIZONTAL,
+                            false
+                        )
+                        adapter = popularCourseAdapter
+                        popularCourseAdapter.refreshList()
+                    }
+
                     it.payload?.let {
                         popularCourseAdapter.setData(it)
+                        binding.rvPopularCourse.smoothScrollToPosition(0)
                     }
                 },
                 doOnLoading = {
                     binding.rvPopularCourse.isVisible = false
                     binding.shimmerCourseCard.isVisible = true
                     binding.layoutStateCoursePopular.root.isVisible = false
+                    binding.layoutCommonState.root.isVisible = false
                     binding.layoutStateCoursePopular.tvError.isVisible = false
                     binding.layoutStateCoursePopular.pbLoading.isVisible = false
-                    binding.layoutStateCoursePopular.clDataEmpty.isVisible = false
-                    binding.layoutStateCoursePopular.tvDataEmpty.isVisible = false
-                    binding.layoutStateCoursePopular.ivDataEmpty.isVisible = false
+                    binding.layoutStateCoursePopular.clErrorState.isVisible = false
+                    binding.layoutStateCoursePopular.tvErrorState.isVisible = false
+                    binding.layoutStateCoursePopular.ivErrorState.isVisible = false
                 },
                 doOnError = {
                     binding.rvPopularCourse.isVisible = false
@@ -340,39 +292,34 @@ class HomeFragment : Fragment() {
                     binding.layoutStateCoursePopular.tvError.isVisible = true
                     binding.layoutStateCoursePopular.tvError.text = it.exception?.message
                     binding.layoutStateCoursePopular.pbLoading.isVisible = false
-                    binding.layoutStateCoursePopular.clDataEmpty.isVisible = false
-                    binding.layoutStateCoursePopular.tvDataEmpty.isVisible = false
-                    binding.layoutStateCoursePopular.ivDataEmpty.isVisible = false
+                    binding.layoutStateCoursePopular.clErrorState.isVisible = false
+                    binding.layoutStateCoursePopular.tvErrorState.isVisible = false
+                    binding.layoutStateCoursePopular.ivErrorState.isVisible = false
 
                     if (it.exception is ApiException) {
+                        binding.layoutCommonState.root.isVisible = true
                         if (it.exception.getParsedErrorCourse()?.success == false) {
+                            binding.layoutCommonState.tvError.text =
+                                it.exception.getParsedErrorCourse()?.message
+
                             if (it.exception.httpCode == 500) {
-                                binding.layoutCommonState.clServerError.isGone = false
-                                binding.layoutCommonState.ivServerError.isGone = false
-                                StyleableToast.makeText(
-                                    requireContext(),
-                                    "SERVER ERROR",
-                                    R.style.failedtoast
-                                ).show()
-                            } else if (it.exception.getParsedErrorCourse()?.success == false) {
-                                binding.layoutCommonState.tvError.text =
-                                    it.exception.getParsedErrorCourse()?.message
-                                StyleableToast.makeText(
-                                    requireContext(),
-                                    it.exception.getParsedErrorCourse()?.message,
-                                    R.style.failedtoast
-                                ).show()
+                                binding.layoutCommonState.clErrorState.isGone = false
+                                binding.layoutCommonState.ivErrorState.isGone = false
+                                binding.layoutCommonState.tvErrorState.isGone = false
+                                binding.layoutCommonState.tvErrorState.text =
+                                    "Sorry, there's an error on the server"
+                                binding.layoutCommonState.ivErrorState.setImageResource(R.drawable.img_server_error)
                             }
                         }
                     } else if (it.exception is NoInternetException) {
                         if (!it.exception.isNetworkAvailable(requireContext())) {
-                            binding.layoutCommonState.clNoConnection.isGone = false
-                            binding.layoutCommonState.ivNoConnection.isGone = false
-                            StyleableToast.makeText(
-                                requireContext(),
-                                "tidak ada internet",
-                                R.style.failedtoast
-                            ).show()
+                            binding.layoutCommonState.root.isVisible = true
+                            binding.layoutCommonState.clErrorState.isGone = false
+                            binding.layoutCommonState.ivErrorState.isGone = false
+                            binding.layoutCommonState.tvErrorState.isGone = false
+                            binding.layoutCommonState.tvErrorState.text =
+                                "Oops!\nYou're not connection"
+                            binding.layoutCommonState.ivErrorState.setImageResource(R.drawable.img_no_connection)
                         }
                     }
                 },
@@ -382,9 +329,10 @@ class HomeFragment : Fragment() {
                     binding.layoutStateCoursePopular.root.isVisible = true
                     binding.layoutStateCoursePopular.tvError.isVisible = false
                     binding.layoutStateCoursePopular.pbLoading.isVisible = false
-                    binding.layoutStateCoursePopular.clDataEmpty.isVisible = true
-                    binding.layoutStateCoursePopular.tvDataEmpty.isVisible = true
-                    binding.layoutStateCoursePopular.ivDataEmpty.isVisible = false
+                    binding.layoutStateCoursePopular.clErrorState.isVisible = true
+                    binding.layoutStateCoursePopular.tvErrorState.isVisible = true
+                    binding.layoutStateCoursePopular.tvErrorState.text = "Class not found !"
+                    binding.layoutStateCoursePopular.ivErrorState.isVisible = true
                 }
             )
         }

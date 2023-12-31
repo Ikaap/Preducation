@@ -8,7 +8,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
@@ -16,20 +15,16 @@ import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import coil.load
 import com.google.android.material.bottomsheet.BottomSheetDialog
-import com.kelompoksatuandsatu.preducation.R
 import com.kelompoksatuandsatu.preducation.databinding.FragmentCurriculcumBinding
 import com.kelompoksatuandsatu.preducation.databinding.LayoutDialogBuyClassBinding
 import com.kelompoksatuandsatu.preducation.databinding.LayoutDialogFinishClassBinding
 import com.kelompoksatuandsatu.preducation.presentation.feature.detailclass.viewitems.DataItem
 import com.kelompoksatuandsatu.preducation.presentation.feature.detailclass.viewitems.HeaderItem
 import com.kelompoksatuandsatu.preducation.presentation.feature.payment.PaymentActivity
-import com.kelompoksatuandsatu.preducation.utils.exceptions.ApiException
-import com.kelompoksatuandsatu.preducation.utils.exceptions.NoInternetException
 import com.kelompoksatuandsatu.preducation.utils.proceedWhen
 import com.kelompoksatuandsatu.preducation.utils.toCurrencyFormat
 import com.xwray.groupie.GroupieAdapter
 import com.xwray.groupie.Section
-import io.github.muddz.styleabletoast.StyleableToast
 
 class CurriculcumFragment : Fragment() {
 
@@ -48,7 +43,6 @@ class CurriculcumFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        // Inflate the layout for this fragment
         binding = FragmentCurriculcumBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -56,7 +50,6 @@ class CurriculcumFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-//        getData()
         observeData()
         setOnClickListener()
     }
@@ -73,10 +66,6 @@ class CurriculcumFragment : Fragment() {
             it.proceedWhen(
                 doOnSuccess = {
                     binding.shimmerAboutRvChapter.isGone = true
-                    binding.layoutCommonState.root.isGone = true
-                    binding.layoutCommonState.tvError.isGone = true
-                    binding.layoutCommonState.tvDataEmpty.isGone = true
-                    binding.layoutCommonState.ivDataEmpty.isGone = true
                     binding.rvDataCurriculcum.apply {
                         layoutManager = LinearLayoutManager(requireContext())
                         adapter = adapterGroupie
@@ -91,31 +80,19 @@ class CurriculcumFragment : Fragment() {
                         it.chapters?.forEach {
                             totalVid += it.videos?.size ?: 0
                         }
-                        Toast.makeText(requireContext(), "total vid : $totalVid", Toast.LENGTH_SHORT).show()
 
                         val section = it.chapters?.map {
                             val section = Section()
                             section.setHeader(
-                                HeaderItem(it) { data ->
-                                    Toast.makeText(
-                                        requireContext(),
-                                        "Header Clicked : ${data.title}",
-                                        Toast.LENGTH_SHORT
-                                    ).show()
-                                }
+                                HeaderItem(it) { }
                             )
                             val dataSection = it.videos?.map { data ->
                                 DataItem(data) {
-                                    // klik video
                                     viewModel.onVideoItemClick(data.videoUrl.orEmpty())
                                     viewModel.postIndexVideo(data)
 
-                                    Toast.makeText(requireContext(), "index yang di klik = ${data.index}", Toast.LENGTH_SHORT).show()
-
-                                    // Check if the clicked video is the last one
                                     if (data.index == totalVid) {
                                         showLastVideoDialog()
-                                        Toast.makeText(requireContext(), "SELAMAT", Toast.LENGTH_SHORT).show()
                                     }
 
                                     getData()
@@ -138,69 +115,20 @@ class CurriculcumFragment : Fragment() {
                 },
                 doOnLoading = {
                     binding.shimmerAboutRvChapter.isGone = false
-                    binding.layoutCommonState.root.isGone = true
-                    binding.layoutCommonState.clDataEmpty.isGone = true
-                    binding.layoutCommonState.tvError.isGone = true
-                    binding.layoutCommonState.tvDataEmpty.isGone = true
-                    binding.layoutCommonState.ivDataEmpty.isGone = true
                 },
                 doOnEmpty = {
                     binding.shimmerAboutRvChapter.isGone = true
-                    binding.layoutCommonState.root.isGone = false
-                    binding.layoutCommonState.clDataEmpty.isGone = true
-                    binding.layoutCommonState.tvError.isGone = false
-                    binding.layoutCommonState.tvError.text = "data kosong"
-                    binding.layoutCommonState.tvDataEmpty.isGone = true
-                    binding.layoutCommonState.ivDataEmpty.isGone = true
                 },
                 doOnError = {
                     binding.shimmerAboutRvChapter.isGone = true
-                    binding.layoutCommonState.root.isGone = false
-                    binding.layoutCommonState.clDataEmpty.isGone = true
-                    binding.layoutCommonState.tvError.isGone = false
-                    binding.layoutCommonState.tvError.text =
-                        it.exception?.message + "${it.payload?.id}"
-                    binding.layoutCommonState.tvDataEmpty.isGone = true
-                    binding.layoutCommonState.ivDataEmpty.isGone = true
-
-                    if (it.exception is ApiException) {
-                        if (it.exception.getParsedErrorCourse()?.success == false) {
-                            if (it.exception.httpCode == 500) {
-                                binding.layoutCommonState.clServerError.isGone = false
-                                binding.layoutCommonState.ivServerError.isGone = false
-                                StyleableToast.makeText(
-                                    requireContext(),
-                                    "SERVER ERROR",
-                                    R.style.failedtoast
-                                ).show()
-                            } else if (it.exception.getParsedErrorCourse()?.success == false) {
-                                binding.layoutCommonState.tvError.text =
-                                    it.exception.getParsedErrorCourse()?.message
-                                StyleableToast.makeText(
-                                    requireContext(),
-                                    it.exception.getParsedErrorCourse()?.message,
-                                    R.style.failedtoast
-                                ).show()
-                            }
-                        }
-                    } else if (it.exception is NoInternetException) {
-                        if (!it.exception.isNetworkAvailable(requireContext())) {
-                            binding.layoutCommonState.clNoConnection.isGone = false
-                            binding.layoutCommonState.ivNoConnection.isGone = false
-                            StyleableToast.makeText(
-                                requireContext(),
-                                "tidak ada internet",
-                                R.style.failedtoast
-                            ).show()
-                        }
-                    }
                 }
             )
         }
     }
 
     private fun showLastVideoDialog() {
-        val binding: LayoutDialogFinishClassBinding = LayoutDialogFinishClassBinding.inflate(layoutInflater)
+        val binding: LayoutDialogFinishClassBinding =
+            LayoutDialogFinishClassBinding.inflate(layoutInflater)
         val dialog = AlertDialog.Builder(requireContext(), 0).create()
 
         dialog.apply {
@@ -223,7 +151,6 @@ class CurriculcumFragment : Fragment() {
         val bottomDialog = BottomSheetDialog(requireContext())
         val binding = LayoutDialogBuyClassBinding.inflate(layoutInflater)
 
-        // set data item course
         viewModel.detailCourse.observe(viewLifecycleOwner) {
             it.proceedWhen(
                 doOnSuccess = {

@@ -16,19 +16,18 @@ import com.kelompoksatuandsatu.preducation.data.network.api.model.auth.register.
 import com.kelompoksatuandsatu.preducation.data.network.api.model.category.categoriesprogress.CategoriesProgressResponse
 import com.kelompoksatuandsatu.preducation.data.network.api.model.category.categoryclass.CategoriesClassResponse
 import com.kelompoksatuandsatu.preducation.data.network.api.model.category.categorytypeclass.CategoriesTypeClassResponse
-import com.kelompoksatuandsatu.preducation.data.network.api.model.changepassword.ChangePasswordRequest
-import com.kelompoksatuandsatu.preducation.data.network.api.model.changepassword.ChangePasswordResponse
 import com.kelompoksatuandsatu.preducation.data.network.api.model.course.courseall.CourseResponse
 import com.kelompoksatuandsatu.preducation.data.network.api.model.course.detailcourse.DetailCourseResponse
 import com.kelompoksatuandsatu.preducation.data.network.api.model.course.detailcourse.progress.ProgressCourseRequest
 import com.kelompoksatuandsatu.preducation.data.network.api.model.course.detailcourse.progress.ProgressCourseResponse
-import com.kelompoksatuandsatu.preducation.data.network.api.model.logout.UserLogoutResponse
 import com.kelompoksatuandsatu.preducation.data.network.api.model.notification.NotificationResponse
 import com.kelompoksatuandsatu.preducation.data.network.api.model.payment.PaymentCourseRequest
 import com.kelompoksatuandsatu.preducation.data.network.api.model.payment.PaymentCourseResponse
 import com.kelompoksatuandsatu.preducation.data.network.api.model.payment.history.HistoryItemResponse
 import com.kelompoksatuandsatu.preducation.data.network.api.model.progress.courseprogress.CourseProgressResponse
 import com.kelompoksatuandsatu.preducation.data.network.api.model.user.UserResponse
+import com.kelompoksatuandsatu.preducation.data.network.api.model.user.changepassword.ChangePasswordRequest
+import com.kelompoksatuandsatu.preducation.data.network.api.model.user.changepassword.ChangePasswordResponse
 import okhttp3.MultipartBody
 import okhttp3.OkHttpClient
 import okhttp3.RequestBody
@@ -65,18 +64,13 @@ interface PreducationService {
     @GET("api/v1/notifications")
     suspend fun getUserNotification(): NotificationResponse
 
-    // class
-    // get all categories class
+    // clas
     @GET("api/v1/categories/progress")
     suspend fun getCategoriesProgress(): CategoriesProgressResponse
 
     // get all categories progress class
     @GET("api/v1/progress")
     suspend fun getCourseUserProgress(@Query("status") status: String? = null): CourseProgressResponse
-
-    // course
-    @GET("api/v1/courses")
-    suspend fun getCourseTopic(@Query("typeClass") typeClass: String? = null): CourseResponse
 
     // get all categories type class
     @GET("api/v1/categories/type-class")
@@ -108,9 +102,6 @@ interface PreducationService {
     @PATCH("api/v1/users/update-password/{id}")
     suspend fun updateUserPassword(@Path("id") id: String? = null, @Body changePasswordRequest: ChangePasswordRequest): ChangePasswordResponse
 
-    // @GET("api/v1/payments")
-    // suspend fun getHistoryPayment()//: HistoryPaymentResponse
-
     //     auth
     @POST("api/v1/auths/register")
     suspend fun userRegister(@Body userRegisterRequest: RegisterRequest): RegisterResponse
@@ -125,9 +116,6 @@ interface PreducationService {
     @POST("api/v1/auths/login")
     suspend fun userLogin(@Body userLoginRequest: LoginRequest): LoginResponse
 
-    @DELETE("api/v1/auths/logout")
-    suspend fun logout(): UserLogoutResponse
-
     @POST("api/v1/auths/forgot-password")
     suspend fun userForgotPassword(@Body userForgotPassword: ForgotPasswordRequest): ForgotPasswordResponse
 
@@ -136,9 +124,6 @@ interface PreducationService {
 
     @DELETE("api/v1/auths/logout")
     suspend fun userLogout(): Response<LogoutResponse>
-
-    // @POST("api/v1/auths/email-otp")
-    // suspend fun userPostOtp(@Body userForgotPassword: UserForgotPasswordRequest)//:UserForgotPasswordResponse
 
     // payment
     @POST("api/v1/payments")

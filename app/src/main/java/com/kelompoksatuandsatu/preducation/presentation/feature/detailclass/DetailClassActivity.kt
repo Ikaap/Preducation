@@ -7,14 +7,15 @@ import android.content.pm.ActivityInfo
 import android.content.res.Configuration
 import android.os.Bundle
 import android.view.View
-import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintSet
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
 import androidx.core.view.isGone
+import androidx.core.view.isVisible
 import androidx.viewpager2.widget.ViewPager2
+import coil.load
 import com.google.android.material.tabs.TabLayout
 import com.kelompoksatuandsatu.preducation.R
 import com.kelompoksatuandsatu.preducation.databinding.ActivityDetailClassBinding
@@ -89,16 +90,16 @@ class DetailClassActivity : AppCompatActivity() {
             it.proceedWhen(
                 doOnSuccess = {
                     binding.shimmerDataCourse.isGone = true
-                    binding.layoutCommonState.root.isGone = true
-                    binding.layoutCommonState.tvError.isGone = true
-                    binding.layoutCommonState.tvDataEmpty.isGone = true
-                    binding.layoutCommonState.ivDataEmpty.isGone = true
-                    binding.layoutCommonState.clServerError.isGone = true
-                    binding.layoutCommonState.ivServerError.isGone = true
-                    binding.layoutCommonState.clNoConnection.isGone = true
-                    binding.layoutCommonState.ivNoConnection.isGone = true
                     it.payload?.let { data ->
-
+                        var backgroundVideo = data.thumbnail
+                        data.chapters?.map { chapter ->
+                            chapter.videos?.map {
+                                if (it.videoUrl.isNullOrEmpty()) {
+                                    binding.ivThumbnailVideo.isVisible = true
+                                    binding.ivThumbnailVideo.load(backgroundVideo)
+                                }
+                            }
+                        }
                         binding.tvCategoryCourse.text = data.category?.name
                         binding.tvNameCourse.text = data.title
                         binding.tvTotalModulCourse.text =
@@ -110,67 +111,48 @@ class DetailClassActivity : AppCompatActivity() {
                 },
                 doOnLoading = {
                     binding.shimmerDataCourse.isGone = false
-                    binding.layoutCommonState.root.isGone = true
-                    binding.layoutCommonState.clDataEmpty.isGone = true
-                    binding.layoutCommonState.tvError.isGone = true
-                    binding.layoutCommonState.tvDataEmpty.isGone = true
-                    binding.layoutCommonState.ivDataEmpty.isGone = true
-                    binding.layoutCommonState.clServerError.isGone = true
-                    binding.layoutCommonState.ivServerError.isGone = true
-                    binding.layoutCommonState.clNoConnection.isGone = true
-                    binding.layoutCommonState.ivNoConnection.isGone = true
                 },
                 doOnEmpty = {
                     binding.shimmerDataCourse.isGone = true
                     binding.layoutCommonState.root.isGone = false
-                    binding.layoutCommonState.clDataEmpty.isGone = true
                     binding.layoutCommonState.tvError.isGone = false
-                    binding.layoutCommonState.tvError.text = "data kosong"
-                    binding.layoutCommonState.tvDataEmpty.isGone = true
-                    binding.layoutCommonState.ivDataEmpty.isGone = true
-                    binding.layoutCommonState.clServerError.isGone = true
-                    binding.layoutCommonState.ivServerError.isGone = true
-                    binding.layoutCommonState.clNoConnection.isGone = true
-                    binding.layoutCommonState.ivNoConnection.isGone = true
+                    binding.layoutCommonState.clErrorState.isGone = false
+                    binding.layoutCommonState.ivErrorState.isGone = false
+                    binding.layoutCommonState.tvErrorState.isGone = false
+                    binding.layoutCommonState.tvErrorState.text = "Data not found"
                 },
                 doOnError = {
                     binding.shimmerDataCourse.isGone = true
                     binding.layoutCommonState.root.isGone = false
-                    binding.layoutCommonState.clDataEmpty.isGone = true
                     binding.layoutCommonState.tvError.isGone = false
-                    binding.layoutCommonState.tvError.text = it.exception?.message.toString()
-                    binding.layoutCommonState.tvDataEmpty.isGone = true
-                    binding.layoutCommonState.ivDataEmpty.isGone = true
+                    binding.layoutCommonState.tvError.text =
+                        it.exception?.message
 
                     if (it.exception is ApiException) {
                         if (it.exception.getParsedErrorDetailClass()?.success == false) {
+                            StyleableToast.makeText(
+                                this,
+                                it.exception.getParsedErrorDetailClass()?.message,
+                                R.style.failedtoast
+                            ).show()
                             if (it.exception.httpCode == 500) {
-                                binding.layoutCommonState.clServerError.isGone = false
-                                binding.layoutCommonState.ivServerError.isGone = false
-                                StyleableToast.makeText(
-                                    this,
-                                    "SERVER ERROR",
-                                    R.style.failedtoast
-                                ).show()
-                            } else if (it.exception.getParsedErrorDetailClass()?.success == false) {
-                                binding.layoutCommonState.tvError.text =
-                                    it.exception.getParsedErrorDetailClass()?.message
-                                StyleableToast.makeText(
-                                    this,
-                                    it.exception.getParsedErrorDetailClass()?.message,
-                                    R.style.failedtoast
-                                ).show()
+                                binding.layoutCommonState.clErrorState.isGone = false
+                                binding.layoutCommonState.ivErrorState.isGone = false
+                                binding.layoutCommonState.tvErrorState.isGone = false
+                                binding.layoutCommonState.tvErrorState.text =
+                                    "Sorry, there's an error on the server"
+                                binding.layoutCommonState.ivErrorState.setImageResource(R.drawable.img_server_error)
                             }
                         }
                     } else if (it.exception is NoInternetException) {
                         if (!it.exception.isNetworkAvailable(this)) {
-                            binding.layoutCommonState.clNoConnection.isGone = false
-                            binding.layoutCommonState.ivNoConnection.isGone = false
-                            StyleableToast.makeText(
-                                this,
-                                "tidak ada internet",
-                                R.style.failedtoast
-                            ).show()
+                            binding.layoutCommonState.root.isVisible = true
+                            binding.layoutCommonState.clErrorState.isGone = false
+                            binding.layoutCommonState.ivErrorState.isGone = false
+                            binding.layoutCommonState.tvErrorState.isGone = false
+                            binding.layoutCommonState.tvErrorState.text =
+                                "Oops!\nYou're not connection"
+                            binding.layoutCommonState.ivErrorState.setImageResource(R.drawable.img_no_connection)
                         }
                     }
                 }
@@ -188,7 +170,6 @@ class DetailClassActivity : AppCompatActivity() {
         viewModel.selectedVideoId.observe(this) { id ->
             id.let {
                 videoId = extractYouTubeVideoId(it.orEmpty()).orEmpty()
-                Toast.makeText(this, videoId, Toast.LENGTH_SHORT).show()
                 youTubePlayer.cueVideo(videoId, 0.0F)
             }
         }
@@ -371,7 +352,7 @@ class DetailClassActivity : AppCompatActivity() {
 
     companion object {
         const val EXTRA_COURSE_ID = "EXTRA_COURSE_ID"
-        const val EXTRA_DETAIL_COURSE_ID = "EXTRA_DETAIL_COURSE_ID"
+
         fun startActivity(context: Context, course: CourseViewParam) {
             val id = course.id
             val intent = Intent(context, DetailClassActivity::class.java)

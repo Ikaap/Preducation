@@ -58,7 +58,7 @@
                     android:textColor="@color/app_color_secondary"
                     android:textSize="12sp"
                     android:textStyle="bold"
-                    android:gravity="right"
+                    android:gravity="end"
                     tools:text="12 Desember 2023"
                     />
 

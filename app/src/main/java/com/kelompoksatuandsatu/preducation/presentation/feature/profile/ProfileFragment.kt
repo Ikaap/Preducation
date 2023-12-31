@@ -8,7 +8,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
-import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
@@ -96,16 +95,12 @@ class ProfileFragment : Fragment() {
                     if (it.exception is ApiException) {
                         if (it.exception.getParsedErrorProfile()?.success == false) {
                             if (it.exception.httpCode == 500) {
-                                binding.layoutCommonState.clServerError.isGone = false
-                                binding.layoutCommonState.ivServerError.isGone = false
                                 StyleableToast.makeText(
                                     requireContext(),
-                                    "SERVER ERROR",
+                                    "Server Error",
                                     R.style.failedtoast
                                 ).show()
                             } else if (it.exception.getParsedErrorProfile()?.success == false) {
-                                binding.layoutCommonState.tvError.text =
-                                    it.exception.getParsedErrorProfile()?.message
                                 StyleableToast.makeText(
                                     requireContext(),
                                     it.exception.getParsedErrorProfile()?.message,
@@ -115,11 +110,9 @@ class ProfileFragment : Fragment() {
                         }
                     } else if (it.exception is NoInternetException) {
                         if (!it.exception.isNetworkAvailable(requireContext())) {
-                            binding.layoutCommonState.clNoConnection.isGone = false
-                            binding.layoutCommonState.ivNoConnection.isGone = false
                             StyleableToast.makeText(
                                 requireContext(),
-                                "tidak ada internet",
+                                "No Internet",
                                 R.style.failedtoast
                             ).show()
                         }
@@ -203,7 +196,8 @@ class ProfileFragment : Fragment() {
     }
 
     private fun showDialogNotification() {
-        val binding: LayoutDialogAccessFeatureBinding = LayoutDialogAccessFeatureBinding.inflate(layoutInflater)
+        val binding: LayoutDialogAccessFeatureBinding =
+            LayoutDialogAccessFeatureBinding.inflate(layoutInflater)
         val dialog = android.app.AlertDialog.Builder(requireContext(), 0).create()
 
         dialog.apply {
@@ -216,6 +210,7 @@ class ProfileFragment : Fragment() {
             startActivity(intent)
         }
     }
+
     override fun onDestroyView() {
         super.onDestroyView()
         binding

@@ -58,7 +58,7 @@
             <TextView
                 android:id="@+id/tv_title_course"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="0dp"
                 android:layout_weight="2"
                 android:fontFamily="@font/montserrat_bold"
                 android:maxLines="2"
@@ -102,7 +102,8 @@
                     android:fontFamily="@font/montserrat"
                     android:textColor="@color/app_color_on_primary_container"
                     android:textSize="10sp"
-                    tools:text="@string/tv_module_course" />
+                    tools:text="@string/tv_module_course"
+                    tools:ignore="SmallSp" />
 
                 <ImageView
                     android:id="@+id/iv_time_course"
@@ -120,7 +121,8 @@
                     android:fontFamily="@font/montserrat"
                     android:textColor="@color/app_color_on_primary_container"
                     android:textSize="10sp"
-                    tools:text="@string/tv_duration_course" />
+                    tools:text="@string/tv_duration_course"
+                    tools:ignore="SmallSp" />
 
             </LinearLayout>
 
@@ -148,7 +150,8 @@
                     android:fontFamily="@font/montserrat"
                     android:textColor="@color/app_color_on_primary_container"
                     android:textSize="10sp"
-                    tools:text="@string/tv_level_course" />
+                    tools:text="@string/tv_level_course"
+                    tools:ignore="SmallSp" />
             </LinearLayout>
 
 
@@ -179,7 +182,8 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="@+id/cl_type_paid"
                 app:layout_constraintStart_toStartOf="@+id/cl_type_paid"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                tools:ignore="SmallSp" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -207,7 +211,8 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="@+id/cl_type_waiting"
                 app:layout_constraintStart_toStartOf="@+id/cl_type_waiting"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                tools:ignore="SmallSp" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>

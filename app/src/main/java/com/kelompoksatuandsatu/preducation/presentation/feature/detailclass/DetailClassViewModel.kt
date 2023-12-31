@@ -20,9 +20,6 @@ class DetailClassViewModel(
 
     private val _progressVideo = MutableLiveData<ResultWrapper<Boolean>>()
 
-//    val progressVideo: LiveData<ResultWrapper<Boolean>>
-//        get() = _progressVideo
-
     private val _selectedVideoId = MutableLiveData<String>()
     val selectedVideoId: LiveData<String> get() = _selectedVideoId
 

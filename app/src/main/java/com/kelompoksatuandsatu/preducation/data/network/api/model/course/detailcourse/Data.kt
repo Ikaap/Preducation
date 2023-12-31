@@ -51,7 +51,6 @@ fun Data.toDetailCourse() = DetailCourseViewParam(
     chapters = this.chapters?.toChapterList(),
     classCode = this.classCode.orEmpty(),
     createdAt = this.createdAt.orEmpty(),
-//    createdBy = this.createdBy,
     description = this.description.orEmpty(),
     id = this.id.orEmpty(),
     isActive = this.isActive ?: false,

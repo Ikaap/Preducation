@@ -28,6 +28,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/ic_ellipse_desc"
         app:layout_constraintTop_toTopOf="parent"
-        tools:text="Anda yang ingin memahami poin penting design system" />
+        tools:text="Anda yang ingin memahami poin penting design system"
+        tools:ignore="UnusedAttribute" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

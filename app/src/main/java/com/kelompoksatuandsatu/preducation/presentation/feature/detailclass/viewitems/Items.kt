@@ -8,9 +8,6 @@ import com.kelompoksatuandsatu.preducation.databinding.ItemSectionHeaderCurricul
 import com.kelompoksatuandsatu.preducation.model.course.detailcourse.ChapterViewParam
 import com.kelompoksatuandsatu.preducation.model.course.detailcourse.VideoViewParam
 import com.xwray.groupie.viewbinding.BindableItem
-
-const val TAG = "ItemsVideos"
-
 class HeaderItem(
     private val data: ChapterViewParam,
     private val onHeaderClick: (ChapterViewParam) -> Unit

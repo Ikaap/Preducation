@@ -3,11 +3,9 @@ package com.kelompoksatuandsatu.preducation.utils.exceptions
 import com.google.gson.Gson
 import com.kelompoksatuandsatu.preducation.data.network.api.model.auth.forgotpassword.ForgotPasswordResponse
 import com.kelompoksatuandsatu.preducation.data.network.api.model.auth.login.LoginResponse
-import com.kelompoksatuandsatu.preducation.data.network.api.model.auth.otp.verifyotp.OtpResponse
 import com.kelompoksatuandsatu.preducation.data.network.api.model.auth.register.RegisterResponse
 import com.kelompoksatuandsatu.preducation.data.network.api.model.category.categoryclass.CategoriesClassResponse
 import com.kelompoksatuandsatu.preducation.data.network.api.model.category.categorytypeclass.CategoriesTypeClassResponse
-import com.kelompoksatuandsatu.preducation.data.network.api.model.changepassword.ChangePasswordResponse
 import com.kelompoksatuandsatu.preducation.data.network.api.model.common.BaseResponse
 import com.kelompoksatuandsatu.preducation.data.network.api.model.course.courseall.CourseResponse
 import com.kelompoksatuandsatu.preducation.data.network.api.model.course.detailcourse.DetailCourseResponse
@@ -16,6 +14,7 @@ import com.kelompoksatuandsatu.preducation.data.network.api.model.notification.N
 import com.kelompoksatuandsatu.preducation.data.network.api.model.payment.PaymentCourseResponse
 import com.kelompoksatuandsatu.preducation.data.network.api.model.payment.history.HistoryItemResponse
 import com.kelompoksatuandsatu.preducation.data.network.api.model.user.UserResponse
+import com.kelompoksatuandsatu.preducation.data.network.api.model.user.changepassword.ChangePasswordResponse
 import retrofit2.Response
 
 class ApiException(
@@ -161,16 +160,6 @@ class ApiException(
         val body = errorResponse?.errorBody()?.string().orEmpty()
         return try {
             val bodyObj = Gson().fromJson(body, NotificationResponse::class.java)
-            bodyObj
-        } catch (e: Exception) {
-            e.printStackTrace()
-            null
-        }
-    }
-    fun getParsedErrorOtp(): OtpResponse? {
-        val body = errorResponse?.errorBody()?.string().orEmpty()
-        return try {
-            val bodyObj = Gson().fromJson(body, OtpResponse::class.java)
             bodyObj
         } catch (e: Exception) {
             e.printStackTrace()

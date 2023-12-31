@@ -8,13 +8,9 @@ import androidx.core.view.isGone
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.kelompoksatuandsatu.preducation.R
 import com.kelompoksatuandsatu.preducation.databinding.FragmentAboutBinding
 import com.kelompoksatuandsatu.preducation.presentation.feature.detailclass.adapter.DescriptionItemAdapter
-import com.kelompoksatuandsatu.preducation.utils.exceptions.ApiException
-import com.kelompoksatuandsatu.preducation.utils.exceptions.NoInternetException
 import com.kelompoksatuandsatu.preducation.utils.proceedWhen
-import io.github.muddz.styleabletoast.StyleableToast
 
 class AboutFragment : Fragment() {
 
@@ -31,7 +27,6 @@ class AboutFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
         binding = FragmentAboutBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -45,7 +40,8 @@ class AboutFragment : Fragment() {
 
     private fun setupRv() {
         binding.rvDescRecommendedStudents.apply {
-            layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+            layoutManager =
+                LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
             adapter = adapterDesc
         }
     }
@@ -58,12 +54,12 @@ class AboutFragment : Fragment() {
                     binding.shimmerAboutRecommendedStudents.isGone = true
                     binding.layoutCommonStateAbout.root.isGone = true
                     binding.layoutCommonStateAbout.tvError.isGone = true
-                    binding.layoutCommonStateAbout.tvDataEmpty.isGone = true
-                    binding.layoutCommonStateAbout.ivDataEmpty.isGone = true
+                    binding.layoutCommonStateAbout.tvErrorState.isGone = true
+                    binding.layoutCommonStateAbout.ivErrorState.isGone = true
                     binding.layoutCommonStateRecommended.root.isGone = true
                     binding.layoutCommonStateRecommended.tvError.isGone = true
-                    binding.layoutCommonStateRecommended.tvDataEmpty.isGone = true
-                    binding.layoutCommonStateRecommended.ivDataEmpty.isGone = true
+                    binding.layoutCommonStateRecommended.tvErrorState.isGone = true
+                    binding.layoutCommonStateRecommended.ivErrorState.isGone = true
                     binding.rvDescRecommendedStudents.apply {
                         binding.rvDescRecommendedStudents.layoutManager = LinearLayoutManager(
                             requireContext(),
@@ -73,8 +69,8 @@ class AboutFragment : Fragment() {
                         adapter = adapterDesc
                     }
                     it.payload?.let {
-                        val targetAudienceList: List<String> = it.targetAudience ?: emptyList()
                         binding.tvDescAboutClass.text = it.description
+                        val targetAudienceList: List<String> = it.targetAudience ?: emptyList()
                         adapterDesc.setData(targetAudienceList)
                     }
                 },
@@ -83,12 +79,12 @@ class AboutFragment : Fragment() {
                     binding.shimmerAboutRecommendedStudents.isGone = false
                     binding.layoutCommonStateAbout.root.isGone = true
                     binding.layoutCommonStateAbout.tvError.isGone = true
-                    binding.layoutCommonStateAbout.tvDataEmpty.isGone = true
-                    binding.layoutCommonStateAbout.ivDataEmpty.isGone = true
+                    binding.layoutCommonStateAbout.tvErrorState.isGone = true
+                    binding.layoutCommonStateAbout.ivErrorState.isGone = true
                     binding.layoutCommonStateRecommended.root.isGone = true
                     binding.layoutCommonStateRecommended.tvError.isGone = true
-                    binding.layoutCommonStateRecommended.tvDataEmpty.isGone = true
-                    binding.layoutCommonStateRecommended.ivDataEmpty.isGone = true
+                    binding.layoutCommonStateRecommended.tvErrorState.isGone = true
+                    binding.layoutCommonStateRecommended.ivErrorState.isGone = true
                 },
                 doOnError = {
                     binding.shimmerAboutDesc.isGone = true
@@ -96,47 +92,15 @@ class AboutFragment : Fragment() {
                     binding.layoutCommonStateAbout.root.isGone = false
                     binding.layoutCommonStateAbout.tvError.isGone = false
                     binding.layoutCommonStateAbout.tvError.text =
-                        it.exception?.message + "${it.payload?.id}"
-                    binding.layoutCommonStateAbout.tvDataEmpty.isGone = true
-                    binding.layoutCommonStateAbout.ivDataEmpty.isGone = true
+                        it.exception?.message
+                    binding.layoutCommonStateAbout.tvErrorState.isGone = true
+                    binding.layoutCommonStateAbout.ivErrorState.isGone = true
                     binding.layoutCommonStateRecommended.root.isGone = false
                     binding.layoutCommonStateRecommended.tvError.isGone = false
                     binding.layoutCommonStateRecommended.tvError.text =
-                        it.exception?.message + "${it.payload?.id}"
-                    binding.layoutCommonStateRecommended.tvDataEmpty.isGone = true
-                    binding.layoutCommonStateRecommended.ivDataEmpty.isGone = true
-
-                    if (it.exception is ApiException) {
-                        if (it.exception.getParsedErrorCourse()?.success == false) {
-                            if (it.exception.httpCode == 500) {
-                                binding.layoutCommonState.clServerError.isGone = false
-                                binding.layoutCommonState.ivServerError.isGone = false
-                                StyleableToast.makeText(
-                                    requireContext(),
-                                    "SERVER ERROR",
-                                    R.style.failedtoast
-                                ).show()
-                            } else if (it.exception.getParsedErrorCourse()?.success == false) {
-                                binding.layoutCommonState.tvError.text =
-                                    it.exception.getParsedErrorCourse()?.message
-                                StyleableToast.makeText(
-                                    requireContext(),
-                                    it.exception.getParsedErrorCourse()?.message,
-                                    R.style.failedtoast
-                                ).show()
-                            }
-                        }
-                    } else if (it.exception is NoInternetException) {
-                        if (!it.exception.isNetworkAvailable(requireContext())) {
-                            binding.layoutCommonState.clNoConnection.isGone = false
-                            binding.layoutCommonState.ivNoConnection.isGone = false
-                            StyleableToast.makeText(
-                                requireContext(),
-                                "tidak ada internet",
-                                R.style.failedtoast
-                            ).show()
-                        }
-                    }
+                        it.exception?.message
+                    binding.layoutCommonStateRecommended.tvErrorState.isGone = true
+                    binding.layoutCommonStateRecommended.ivErrorState.isGone = true
                 },
                 doOnEmpty = {
                     binding.shimmerAboutDesc.isGone = true
@@ -144,13 +108,13 @@ class AboutFragment : Fragment() {
                     binding.layoutCommonStateAbout.root.isGone = false
                     binding.layoutCommonStateAbout.tvError.isGone = false
                     binding.layoutCommonStateAbout.tvError.text = "data ksoong"
-                    binding.layoutCommonStateAbout.tvDataEmpty.isGone = true
-                    binding.layoutCommonStateAbout.ivDataEmpty.isGone = true
+                    binding.layoutCommonStateAbout.tvErrorState.isGone = true
+                    binding.layoutCommonStateAbout.ivErrorState.isGone = true
                     binding.layoutCommonStateRecommended.root.isGone = false
                     binding.layoutCommonStateRecommended.tvError.isGone = false
                     binding.layoutCommonStateRecommended.tvError.text = "data ksoong"
-                    binding.layoutCommonStateRecommended.tvDataEmpty.isGone = true
-                    binding.layoutCommonStateRecommended.ivDataEmpty.isGone = true
+                    binding.layoutCommonStateRecommended.tvErrorState.isGone = true
+                    binding.layoutCommonStateRecommended.ivErrorState.isGone = true
                 }
             )
         }

@@ -54,7 +54,7 @@ data class CourseId(
     val description: String?,
 
     @SerializedName("totalRating")
-    val totalRating: Int?,
+    val totalRating: Double?,
 
     @SerializedName("title")
     val title: String?,
@@ -95,21 +95,6 @@ data class Category(
     @SerializedName("imageCategory")
     val imageCategory: String?
 )
-
-// fun CourseProgressItemResponse.toCourseProgress() = CourseProgressItemClass(
-//    id = this.id.orEmpty(),
-//    titleCourse = this.courseId?.title.orEmpty(),
-//    nameCategoryPopular = this.courseId?.category?.name.orEmpty(),
-//    thumbnail = this.courseId?.thumbnail.orEmpty(),
-//    ratingCourse = this.courseId?.totalRating ?: 0,
-//    levelCourse = this.courseId?.level.orEmpty(),
-//    moduleCourse = this.courseId?.totalModule,
-//    durationCourse = this.courseId?.totalDuration,
-//    progress = this.indexProgress ?: 0,
-//    statusPayment = this.status.orEmpty(),
-//    type = this.courseId?.typeClass.orEmpty(),
-//    priceCourse = this.courseId?.price ?: 0
-// )
 
 fun CourseProgressItemResponse.toCourseProgress() = CourseProgressItemClass(
     createdAt = this.createdAt.orEmpty(),

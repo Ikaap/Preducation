@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Preducation</string>
     <string name="text_create_new_password">Buat Password Baru</string>
     <string name="iv_back">kembali</string>
     <string name="text_create_your_new_password">Buat Password Baru Anda</string>
@@ -10,7 +9,6 @@
     <string name="text_edit_profile">Edit Profil</string>
     <string name="text_add_user">Tambahkan User</string>
     <string name="text_long_name">Nama Panjang</string>
-    <string name="text_email">Email</string>
     <string name="text_62">+62</string>
     <string name="text_update">Perbarui</string>
     <string name="text_transactions">Transaksi</string>
@@ -33,28 +31,28 @@
     <string name="progress">Progres</string>
     <string name="done">Selesai</string>
     <string name="categories">Kategori</string>
-    <string name="android_development">Pengembangan Android</string>
-    <string name="data_science">Ilmu Data</string>
-    <string name="_4_6">4.6</string>
-    <string name="belajar_data_cleaning_dengan_nshorting_dengan_python" translatable="false">Belajar membersihkan data dengan \nmenyortir dengan Python</string>
     <string name="_19_moduls">• 19 Modul</string>
     <string name="_60_hours">• 60 Jam</string>
     <string name="advanced_level">• Tingkat Lanjut</string>
     <string name="_40_complete">40% selesai</string>
 
     <string name="text_password_min_8_character">Password minimal 8 karakter</string>
-    <string name="text_create_a_password">Buat Password</string>
+    <string name="text_already_have_an_account">Sudah punya akun? Masuk</string>
+    <string name="text_login_here">Masuk</string>
+    <string name="text_sign_up">Daftar</string>
+    <string name="text_create_password">Buat Password</string>
     <string name="text_phone_number">Nomor Telepon</string>
     <string name="text_name">Nama</string>
     <string name="text_getting_started">Mulai.!</string>
 
     <string name="text_login">Masuk</string>
-    <string name="text_password">Password</string>
     <string name="text_forgot_password">Lupa Password</string>
     <string name="text_sign_in">Masuk</string>
-    <string name="text_enter_without_logging_in">Masuk Tanpa Masuk</string>
+    <string name="text_don_t_have_an_account_yet">Belum punya akun? Daftar</string>
+    <string name="text_enter_without_logging_in">Masuk Sebagai Tamu</string>
     <string name="text_sorry_wrong_password">Maaf, password salah</string>
 
+    <string name="text_register_here">Daftar</string>
     <string name="text_about">Tentang</string>
     <string name="text_curriculcum">Kurikulum</string>
     <!-- TODO: Hapus atau ubah teks pengganti ini -->
@@ -71,7 +69,6 @@
 
     <string name="text_payment_details">Detail Pembayaran</string>
     <string name="text_price">Harga</string>
-    <string name="text_ppn_11">PPN 11%</string>
     <string name="text_total_payment">Total Pembayaran</string>
     <string name="text_bank_transfer">Transfer Bank</string>
     <string name="text_credit_card">Kartu Kredit</string>
@@ -92,8 +89,6 @@
     <string name="desc_iv_category_course">deskripsi gambar kategori kursus</string>
     <string name="text_popular_course">Kursus Populer</string>
     <string name="desc_iv_popular_course">iv_popular_course</string>
-    <string name="tv_category_popular">Ilmu Data</string>
-    <string name="tv_rating_popular_course">4.7</string>
     <string name="desc_ic_arrow_left">ic_arrow_left</string>
     <string name="tv_header_see_all_popular_course">Kursus Populer</string>
     <string name="text_header_name">Hai, %s</string>
@@ -106,7 +101,7 @@
     <string name="tv_price_course">Rp 249.000</string>
     <string name="desc_dialog_icon">iv_dialog_non_login</string>
     <string name="dialog_title">Maaf</string>
-    <string name="dialog_message">Anda harus membuat akun untuk mengakses\nfitur ini</string>
+    <string name="dialog_message">Anda harus membuat akun untuk mengakses\nkelas ini</string>
     <string name="dialog_sign_up_button">Daftar</string>
     <string name="iv_arrow_right">iv_arrow_right</string>
     <string name="popular_course_not_found">Kursus populer tidak ditemukan!</string>
@@ -115,6 +110,7 @@
     <string name="iv_rating">iv_rating</string>
     <string name="iv_time_course">iv_time_course</string>
 
+    <string name="tv_sign_up">Daftar</string>
     <string name="desc_iv_logo_app">iv_logo_app</string>
     <string name="tv_reset_password">Reset Password</string>
     <string name="tv_title_email">Surel</string>
@@ -128,8 +124,6 @@
     <string name="text_notification">Pemberitahuan</string>
     <string name="text_class">Kelas</string>
     <string name="text_course">Kursus</string>
-    <string name="text_preducation">Preducation</string>
-    <string name="text_online_learning">Pembelajaran Online</string>
     <string name="text_notifications">Pemberitahuan</string>
     <string name="text_premium">Premium</string>
     <string name="text_freemium">Freemium</string>
@@ -187,4 +181,6 @@
     <string name="text_on_progress">Dalam Proses</string>
     <string name="text_dialog_finish_class_message">Anda sudah berada di akhir kelas ini. Silahkan periksa email anda setelah menonton video untuk mendapatkan sertifikat anda.</string>
     <string name="text_to_access_this_feature_please_log_in_first">Untuk mengakses fitur ini, silakan login terlebih dahulu</string>
+    <string name="text_full_name">Nama Panjang</string>
+    <string name="text_skip">Lanjut</string>
 </resources>

@@ -14,7 +14,6 @@
         android:fontFamily="@font/montserrat"
         android:textColor="@color/app_color_on_tertiary"
         android:textSize="12sp"
-        android:lineHeight="18dp"
         android:background="@color/color_shimmer"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

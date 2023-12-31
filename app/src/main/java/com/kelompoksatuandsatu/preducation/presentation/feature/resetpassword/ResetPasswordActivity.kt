@@ -2,8 +2,6 @@ package com.kelompoksatuandsatu.preducation.presentation.feature.resetpassword
 
 import android.os.Bundle
 import android.util.Patterns
-import android.widget.EditText
-import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.kelompoksatuandsatu.preducation.R
 import com.kelompoksatuandsatu.preducation.databinding.ActivityResetPasswordBinding
@@ -19,10 +17,12 @@ class ResetPasswordActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
-        val resetPasswordTextView = findViewById<TextView>(R.id.tv_send_email)
-        val emailEditText = findViewById<EditText>(R.id.et_email)
-        resetPasswordTextView.setOnClickListener {
-            val email = emailEditText.text.toString()
+        setOnClickListener()
+    }
+
+    private fun setOnClickListener() {
+        binding.tvSendEmail.setOnClickListener {
+            val email = binding.etEmail.text.toString()
             validateEmail(email)
         }
     }
