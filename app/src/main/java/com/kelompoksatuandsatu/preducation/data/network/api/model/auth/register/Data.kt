@@ -16,11 +16,3 @@ data class Data(
     @SerializedName("accessToken")
     val accessToken: String
 )
-
-// fun Data.toRegisterResponse() = UserRegisterResponse(
-//    id = this.id.orEmpty(),
-//    name = this.name.orEmpty(),
-//    phone = this.phone.orEmpty(),
-//    role = this.role.orEmpty(),
-//    accessToken = this.accessToken.orEmpty()
-// )

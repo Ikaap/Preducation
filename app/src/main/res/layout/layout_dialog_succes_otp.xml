@@ -31,12 +31,12 @@
             android:id="@+id/congratulations"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Congratulation"
+            android:text="@string/congratulation"
             android:layout_marginTop="24dp"
             android:textAlignment="center"
             android:textColor="@color/app_color_secondary"
             android:fontFamily="@font/poppins_medium"
-            android:textSize="20dp"
+            android:textSize="20sp"
             app:layout_constraintTop_toBottomOf="@id/iv_dialog_otp_success"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"/>
@@ -70,7 +70,5 @@
             app:layout_constraintEnd_toEndOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-
-
 
 </androidx.cardview.widget.CardView>

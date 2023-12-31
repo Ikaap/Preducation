@@ -26,7 +26,11 @@ class HomeCourseItemViewHolder(
             binding.tvLevelCourse.text = item.level
             binding.tvDurationCourse.text = item.totalDuration.toString() + "Mins"
             binding.tvModuleCourse.text = item.totalModule.toString() + "Module"
-            binding.tvPriceCourse.text = item.price?.toCurrencyFormat()
+            if (item.price == 0) {
+                binding.tvPriceCourse.text = "Free"
+            } else {
+                binding.tvPriceCourse.text = item.price?.toCurrencyFormat()
+            }
             binding.tvPriceCourse.isGone = false
             binding.clProgressBar.isGone = true
             itemView.setOnClickListener { itemClick(this) }
@@ -51,7 +55,11 @@ class HomeCourseLinearItemViewHolder(
             binding.tvLevelCourse.text = item.level
             binding.tvDurationCourse.text = item.totalDuration.toString() + "Mins"
             binding.tvModuleCourse.text = item.totalModule.toString() + "Module"
-            binding.tvPriceCourse.text = item.price?.toCurrencyFormat()
+            if (item.price == 0) {
+                binding.tvPriceCourse.text = "Free"
+            } else {
+                binding.tvPriceCourse.text = item.price?.toCurrencyFormat()
+            }
             binding.tvPriceCourse.isGone = false
             binding.clTypeClassFreemium.isGone = true
             binding.clTypeClassPremium.isGone = true

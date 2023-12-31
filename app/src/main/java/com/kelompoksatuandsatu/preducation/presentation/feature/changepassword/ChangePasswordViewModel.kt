@@ -5,9 +5,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kelompoksatuandsatu.preducation.data.local.datastore.datasource.UserPreferenceDataSource
-import com.kelompoksatuandsatu.preducation.data.network.api.model.changepassword.ChangePasswordRequest
+import com.kelompoksatuandsatu.preducation.data.network.api.model.user.changepassword.ChangePasswordRequest
 import com.kelompoksatuandsatu.preducation.data.repository.UserRepository
-import com.kelompoksatuandsatu.preducation.model.user.Password
 import com.kelompoksatuandsatu.preducation.utils.ResultWrapper
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -18,9 +17,9 @@ class ChangePasswordViewModel(
 ) : ViewModel() {
 
     private val _updatedPassword =
-        MutableLiveData<ResultWrapper<List<Password>>>()
+        MutableLiveData<ResultWrapper<Boolean>>()
 
-    val updatedPassword: LiveData<ResultWrapper<List<Password>>>
+    val updatedPassword: LiveData<ResultWrapper<Boolean>>
         get() = _updatedPassword
 
     fun updatePassword(

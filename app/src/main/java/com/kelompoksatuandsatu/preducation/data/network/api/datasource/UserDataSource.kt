@@ -10,9 +10,9 @@ import com.kelompoksatuandsatu.preducation.data.network.api.model.auth.otp.poste
 import com.kelompoksatuandsatu.preducation.data.network.api.model.auth.otp.verifyotp.OtpRequest
 import com.kelompoksatuandsatu.preducation.data.network.api.model.auth.register.RegisterRequest
 import com.kelompoksatuandsatu.preducation.data.network.api.model.auth.register.RegisterResponse
-import com.kelompoksatuandsatu.preducation.data.network.api.model.changepassword.ChangePasswordRequest
-import com.kelompoksatuandsatu.preducation.data.network.api.model.changepassword.ChangePasswordResponse
 import com.kelompoksatuandsatu.preducation.data.network.api.model.user.UserResponse
+import com.kelompoksatuandsatu.preducation.data.network.api.model.user.changepassword.ChangePasswordRequest
+import com.kelompoksatuandsatu.preducation.data.network.api.model.user.changepassword.ChangePasswordResponse
 import com.kelompoksatuandsatu.preducation.data.network.api.service.PreducationService
 import okhttp3.MultipartBody
 import okhttp3.RequestBody

@@ -113,13 +113,13 @@ class FilterFragment : BottomSheetDialogFragment() {
     }
 
     private fun setOnClickListener() {
-        binding.ivArrowLeft.setOnClickListener {
+        binding.ivClose.setOnClickListener {
             dismiss()
         }
 
-        binding.tvClear.setOnClickListener {
-            tempSelectedCategories.clear()
-        }
+//        binding.tvClear.setOnClickListener {
+//            tempSelectedCategories.clear()
+//        }
 
         binding.clButtonEnrollClass.setOnClickListener {
             applyFilter()

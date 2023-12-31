@@ -18,6 +18,7 @@
         android:padding="6dp"
         android:textColor="@color/app_color_primary"
         android:textSize="10sp"
-        tools:text="@tools:sample/lorem" />
+        tools:text="@tools:sample/lorem"
+        tools:ignore="SmallSp" />
 
 </LinearLayout>

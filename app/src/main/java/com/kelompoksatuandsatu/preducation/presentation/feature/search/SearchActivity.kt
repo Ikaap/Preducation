@@ -8,6 +8,7 @@ import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
+import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.kelompoksatuandsatu.preducation.R
@@ -18,6 +19,8 @@ import com.kelompoksatuandsatu.preducation.presentation.common.adapter.course.Ad
 import com.kelompoksatuandsatu.preducation.presentation.common.adapter.course.CourseLinearListAdapter
 import com.kelompoksatuandsatu.preducation.presentation.feature.detailclass.DetailClassActivity
 import com.kelompoksatuandsatu.preducation.presentation.feature.register.RegisterActivity
+import com.kelompoksatuandsatu.preducation.utils.exceptions.ApiException
+import com.kelompoksatuandsatu.preducation.utils.exceptions.NoInternetException
 import com.kelompoksatuandsatu.preducation.utils.proceedWhen
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -27,7 +30,7 @@ class SearchActivity : AppCompatActivity() {
     }
 
     private fun search(query: String) {
-        viewModel.getCourse(query)
+        viewModel.getCourse(null, null, query)
     }
 
     private val searchView: SearchView by lazy {
@@ -118,9 +121,9 @@ class SearchActivity : AppCompatActivity() {
                     binding.shimmerCourseLinear.isVisible = false
                     binding.layoutStateCourse.tvError.isVisible = false
                     binding.layoutStateCourse.pbLoading.isVisible = false
-                    binding.layoutStateCourse.clDataEmpty.isVisible = false
-                    binding.layoutStateCourse.tvDataEmpty.isVisible = false
-                    binding.layoutStateCourse.ivDataEmpty.isVisible = false
+                    binding.layoutStateCourse.clErrorState.isVisible = false
+                    binding.layoutStateCourse.tvErrorState.isVisible = false
+                    binding.layoutStateCourse.ivErrorState.isVisible = false
                     it.payload?.let {
                         courseAdapter.setData(it)
                     }
@@ -131,9 +134,9 @@ class SearchActivity : AppCompatActivity() {
                     binding.layoutStateCourse.root.isVisible = false
                     binding.layoutStateCourse.tvError.isVisible = false
                     binding.layoutStateCourse.pbLoading.isVisible = false
-                    binding.layoutStateCourse.clDataEmpty.isVisible = false
-                    binding.layoutStateCourse.tvDataEmpty.isVisible = false
-                    binding.layoutStateCourse.ivDataEmpty.isVisible = false
+                    binding.layoutStateCourse.clErrorState.isVisible = false
+                    binding.layoutStateCourse.tvErrorState.isVisible = false
+                    binding.layoutStateCourse.ivErrorState.isVisible = false
                 },
                 doOnError = {
                     binding.rvCourse.isVisible = false
@@ -142,9 +145,30 @@ class SearchActivity : AppCompatActivity() {
                     binding.layoutStateCourse.tvError.isVisible = true
                     binding.layoutStateCourse.tvError.text = it.exception?.message
                     binding.layoutStateCourse.pbLoading.isVisible = false
-                    binding.layoutStateCourse.clDataEmpty.isVisible = false
-                    binding.layoutStateCourse.tvDataEmpty.isVisible = false
-                    binding.layoutStateCourse.ivDataEmpty.isVisible = false
+
+                    if (it.exception is ApiException) {
+                        if (it.exception.getParsedErrorCourse()?.success == false) {
+                            binding.layoutStateCourse.tvError.text =
+                                it.exception.getParsedErrorCourse()?.message
+                            if (it.exception.httpCode == 500) {
+                                binding.layoutStateCourse.clErrorState.isGone = false
+                                binding.layoutStateCourse.ivErrorState.isGone = false
+                                binding.layoutStateCourse.tvErrorState.isGone = false
+                                binding.layoutStateCourse.tvErrorState.text =
+                                    "Sorry, there's an error on the server"
+                                binding.layoutStateCourse.ivErrorState.setImageResource(R.drawable.img_server_error)
+                            }
+                        }
+                    } else if (it.exception is NoInternetException) {
+                        if (!it.exception.isNetworkAvailable(this)) {
+                            binding.layoutStateCourse.clErrorState.isGone = false
+                            binding.layoutStateCourse.ivErrorState.isGone = false
+                            binding.layoutStateCourse.tvErrorState.isGone = false
+                            binding.layoutStateCourse.tvErrorState.text =
+                                "Oops!\nYou're not connection"
+                            binding.layoutStateCourse.ivErrorState.setImageResource(R.drawable.img_no_connection)
+                        }
+                    }
                 },
                 doOnEmpty = {
                     binding.rvCourse.isVisible = false
@@ -152,9 +176,10 @@ class SearchActivity : AppCompatActivity() {
                     binding.layoutStateCourse.root.isVisible = true
                     binding.layoutStateCourse.tvError.isVisible = false
                     binding.layoutStateCourse.pbLoading.isVisible = false
-                    binding.layoutStateCourse.clDataEmpty.isVisible = true
-                    binding.layoutStateCourse.tvDataEmpty.isVisible = true
-                    binding.layoutStateCourse.ivDataEmpty.isVisible = true
+                    binding.layoutStateCourse.clErrorState.isVisible = true
+                    binding.layoutStateCourse.tvErrorState.isVisible = true
+                    binding.layoutStateCourse.tvErrorState.text = "Class not found"
+                    binding.layoutStateCourse.ivErrorState.isVisible = true
                 }
             )
         }

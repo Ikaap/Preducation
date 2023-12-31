@@ -10,8 +10,3 @@ data class Data(
     @SerializedName("token")
     val token: String?
 )
-
-// fun Data.toPaymentResponse() = PaymentResponseViewParam(
-//    redirectUrl = this.redirectUrl.orEmpty(),
-//    token = this.token.orEmpty()
-// )

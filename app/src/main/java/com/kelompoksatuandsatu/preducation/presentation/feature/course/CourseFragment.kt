@@ -8,7 +8,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.widget.SearchView
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
@@ -29,7 +28,6 @@ import com.kelompoksatuandsatu.preducation.presentation.feature.search.SearchAct
 import com.kelompoksatuandsatu.preducation.utils.exceptions.ApiException
 import com.kelompoksatuandsatu.preducation.utils.exceptions.NoInternetException
 import com.kelompoksatuandsatu.preducation.utils.proceedWhen
-import io.github.muddz.styleabletoast.StyleableToast
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class CourseFragment : Fragment(), FilterFragment.OnFilterListener {
@@ -44,13 +42,7 @@ class CourseFragment : Fragment(), FilterFragment.OnFilterListener {
 
     private val typeCourseAdapter: CourseLinearListAdapter by lazy {
         CourseLinearListAdapter(AdapterLayoutMenu.COURSE) {
-            viewModel.isUserLogin.observe(viewLifecycleOwner) { isLogin ->
-                if (!isLogin) {
-                    // showDialog()
-                } else {
-                    navigateToDetail(it)
-                }
-            }
+            navigateToDetail(it)
         }
     }
 
@@ -60,30 +52,8 @@ class CourseFragment : Fragment(), FilterFragment.OnFilterListener {
         }
     }
 
-    private val searchView: SearchView by lazy {
-        binding.clSearchBar.findViewById(R.id.sv_search)
-    }
-
-    private val searchQueryListener = object : SearchView.OnQueryTextListener {
-        override fun onQueryTextSubmit(query: String?): Boolean {
-            query?.let {
-//                typeCourseAdapter.filter(it)
-//                observeIsFilterEmpty()
-            }
-            return true
-        }
-
-        override fun onQueryTextChange(newText: String?): Boolean {
-            return false
-        }
-    }
-
     private fun navigateToDetail(course: CourseViewParam) {
         DetailClassActivity.startActivity(requireContext(), course)
-    }
-
-    private fun navigateToSearch(course: CourseViewParam) {
-        SearchActivity.startActivity(requireContext(), course)
     }
 
     override fun onCreateView(
@@ -128,10 +98,6 @@ class CourseFragment : Fragment(), FilterFragment.OnFilterListener {
         }
     }
 
-    companion object {
-        const val FILTER_REQUEST_CODE = 123
-    }
-
     private fun showCategoryType() {
         binding.rvCategoryType.adapter = categoryTypeClassAdapter
         binding.rvCategoryType.layoutManager = LinearLayoutManager(
@@ -144,16 +110,15 @@ class CourseFragment : Fragment(), FilterFragment.OnFilterListener {
             it.proceedWhen(
                 doOnSuccess = { result ->
                     binding.rvCategoryType.isVisible = true
-                    binding.rvCategoryType.adapter = categoryTypeClassAdapter
                     binding.shimmerCategoryRounded.isVisible = false
                     binding.layoutStateCategoryType.root.isVisible = false
                     binding.layoutStateCategoryType.tvError.isVisible = false
                     binding.layoutStateCategoryType.pbLoading.isVisible = false
-                    binding.layoutStateCategoryType.clDataEmpty.isVisible = false
-                    binding.layoutStateCategoryType.tvDataEmpty.isVisible = false
-                    binding.layoutStateCategoryType.ivDataEmpty.isVisible = false
+                    binding.layoutStateCategoryType.clErrorState.isVisible = false
+                    binding.layoutStateCategoryType.tvErrorState.isVisible = false
+                    binding.layoutStateCategoryType.ivErrorState.isVisible = false
                     binding.rvCategoryType.apply {
-                        binding.rvCategoryType.layoutManager = LinearLayoutManager(
+                        layoutManager = LinearLayoutManager(
                             requireContext(),
                             LinearLayoutManager.HORIZONTAL,
                             false
@@ -170,9 +135,9 @@ class CourseFragment : Fragment(), FilterFragment.OnFilterListener {
                     binding.layoutStateCategoryType.root.isVisible = false
                     binding.layoutStateCategoryType.tvError.isVisible = false
                     binding.layoutStateCategoryType.pbLoading.isVisible = false
-                    binding.layoutStateCategoryType.clDataEmpty.isVisible = false
-                    binding.layoutStateCategoryType.tvDataEmpty.isVisible = false
-                    binding.layoutStateCategoryType.ivDataEmpty.isVisible = false
+                    binding.layoutStateCategoryType.clErrorState.isVisible = false
+                    binding.layoutStateCategoryType.tvErrorState.isVisible = false
+                    binding.layoutStateCategoryType.ivErrorState.isVisible = false
                 },
                 doOnError = {
                     binding.rvCategoryType.isVisible = false
@@ -181,9 +146,16 @@ class CourseFragment : Fragment(), FilterFragment.OnFilterListener {
                     binding.layoutStateCategoryType.tvError.isVisible = true
                     binding.layoutStateCategoryType.tvError.text = it.exception?.message
                     binding.layoutStateCategoryType.pbLoading.isVisible = false
-                    binding.layoutStateCategoryType.clDataEmpty.isVisible = false
-                    binding.layoutStateCategoryType.tvDataEmpty.isVisible = false
-                    binding.layoutStateCategoryType.ivDataEmpty.isVisible = false
+                    binding.layoutStateCategoryType.clErrorState.isVisible = false
+                    binding.layoutStateCategoryType.tvErrorState.isVisible = false
+                    binding.layoutStateCategoryType.ivErrorState.isVisible = false
+
+                    if (it.exception is ApiException) {
+                        if (it.exception.getParsedErrorCategoriesType()?.success == false) {
+                            binding.layoutStateCategoryType.tvError.text =
+                                it.exception.getParsedErrorCategories()?.message
+                        }
+                    }
                 },
                 doOnEmpty = {
                     binding.rvCategoryType.isVisible = false
@@ -191,73 +163,9 @@ class CourseFragment : Fragment(), FilterFragment.OnFilterListener {
                     binding.layoutStateCategoryType.root.isVisible = false
                     binding.layoutStateCategoryType.tvError.isVisible = false
                     binding.layoutStateCategoryType.pbLoading.isVisible = false
-                    binding.layoutStateCategoryType.clDataEmpty.isVisible = true
-                    binding.layoutStateCategoryType.tvDataEmpty.isVisible = true
-                    binding.layoutStateCategoryType.ivDataEmpty.isVisible = false
-
-                    if (it.exception is ApiException) {
-                        if (it.exception.getParsedErrorCategoriesType()?.success == false) {
-                            if (it.exception.httpCode == 500) {
-                                binding.layoutCommonState.clServerError.isGone = false
-                                binding.layoutCommonState.ivServerError.isGone = false
-                                StyleableToast.makeText(
-                                    requireContext(),
-                                    "SERVER ERROR",
-                                    R.style.failedtoast
-                                ).show()
-                            } else if (it.exception.getParsedErrorCategoriesType()?.success == false) {
-                                binding.layoutCommonState.tvError.text =
-                                    it.exception.getParsedErrorCategoriesType()?.message
-                                StyleableToast.makeText(
-                                    requireContext(),
-                                    it.exception.getParsedErrorCategoriesType()?.message,
-                                    R.style.failedtoast
-                                ).show()
-                            }
-                        }
-                    } else if (it.exception is NoInternetException) {
-                        if (!it.exception.isNetworkAvailable(requireContext())) {
-                            binding.layoutCommonState.clNoConnection.isGone = false
-                            binding.layoutCommonState.ivNoConnection.isGone = false
-                            StyleableToast.makeText(
-                                requireContext(),
-                                "tidak ada internet",
-                                R.style.failedtoast
-                            ).show()
-                        }
-                    }
-
-                    if (it.exception is ApiException) {
-                        if (it.exception.getParsedErrorCategoriesType()?.success == false) {
-                            if (it.exception.httpCode == 500) {
-                                binding.layoutCommonState.clServerError.isGone = false
-                                binding.layoutCommonState.ivServerError.isGone = false
-                                StyleableToast.makeText(
-                                    requireContext(),
-                                    "SERVER ERROR",
-                                    R.style.failedtoast
-                                ).show()
-                            } else if (it.exception.getParsedErrorCategoriesType()?.success == false) {
-                                binding.layoutCommonState.tvError.text =
-                                    it.exception.getParsedErrorCategoriesType()?.message
-                                StyleableToast.makeText(
-                                    requireContext(),
-                                    it.exception.getParsedErrorCategoriesType()?.message,
-                                    R.style.failedtoast
-                                ).show()
-                            }
-                        }
-                    } else if (it.exception is NoInternetException) {
-                        if (!it.exception.isNetworkAvailable(requireContext())) {
-                            binding.layoutCommonState.clNoConnection.isGone = false
-                            binding.layoutCommonState.ivNoConnection.isGone = false
-                            StyleableToast.makeText(
-                                requireContext(),
-                                "tidak ada internet",
-                                R.style.failedtoast
-                            ).show()
-                        }
-                    }
+                    binding.layoutStateCategoryType.clErrorState.isVisible = true
+                    binding.layoutStateCategoryType.tvErrorState.isVisible = true
+                    binding.layoutStateCategoryType.ivErrorState.isVisible = false
                 }
             )
         }
@@ -277,21 +185,23 @@ class CourseFragment : Fragment(), FilterFragment.OnFilterListener {
                     binding.rvCourse.isVisible = false
                     binding.shimmerCourseLinear.isVisible = true
                     binding.layoutStateCourse.root.isVisible = false
+                    binding.layoutCommonState.root.isVisible = false
                     binding.layoutStateCourse.tvError.isVisible = false
                     binding.layoutStateCourse.pbLoading.isVisible = false
-                    binding.layoutStateCourse.clDataEmpty.isVisible = false
-                    binding.layoutStateCourse.tvDataEmpty.isVisible = false
-                    binding.layoutStateCourse.ivDataEmpty.isVisible = false
+                    binding.layoutStateCourse.clErrorState.isVisible = false
+                    binding.layoutStateCourse.tvErrorState.isVisible = false
+                    binding.layoutStateCourse.ivErrorState.isVisible = false
                 },
                 doOnSuccess = { result ->
                     binding.rvCourse.isVisible = true
                     binding.rvCourse.adapter = typeCourseAdapter
                     binding.shimmerCourseLinear.isVisible = false
                     binding.layoutStateCourse.tvError.isVisible = false
+                    binding.layoutCommonState.root.isVisible = false
                     binding.layoutStateCourse.pbLoading.isVisible = false
-                    binding.layoutStateCourse.clDataEmpty.isVisible = false
-                    binding.layoutStateCourse.tvDataEmpty.isVisible = false
-                    binding.layoutStateCourse.ivDataEmpty.isVisible = false
+                    binding.layoutStateCourse.clErrorState.isVisible = false
+                    binding.layoutStateCourse.tvErrorState.isVisible = false
+                    binding.layoutStateCourse.ivErrorState.isVisible = false
                     result.payload?.let { data ->
                         typeCourseAdapter.setData(data)
                     }
@@ -303,59 +213,55 @@ class CourseFragment : Fragment(), FilterFragment.OnFilterListener {
                     binding.layoutStateCourse.tvError.isVisible = true
                     binding.layoutStateCourse.tvError.text = it.exception?.message
                     binding.layoutStateCourse.pbLoading.isVisible = false
-                    binding.layoutStateCourse.clDataEmpty.isVisible = false
-                    binding.layoutStateCourse.tvDataEmpty.isVisible = false
-                    binding.layoutStateCourse.ivDataEmpty.isVisible = false
+                    binding.layoutStateCourse.clErrorState.isVisible = false
+                    binding.layoutStateCourse.tvErrorState.isVisible = false
+                    binding.layoutStateCourse.ivErrorState.isVisible = false
+
+                    if (it.exception is ApiException) {
+                        binding.layoutCommonState.root.isVisible = true
+                        binding.layoutStateCourse.root.isVisible = false
+                        if (it.exception.getParsedErrorCourse()?.success == false) {
+                            binding.layoutCommonState.tvError.text =
+                                it.exception.getParsedErrorCourse()?.message
+                            if (it.exception.httpCode == 500) {
+                                binding.layoutCommonState.clErrorState.isGone = false
+                                binding.layoutCommonState.ivErrorState.isGone = false
+                                binding.layoutCommonState.tvErrorState.isGone = false
+                                binding.layoutCommonState.tvErrorState.text = "Sorry, there's an error on the server"
+                                binding.layoutCommonState.ivErrorState.setImageResource(R.drawable.img_server_error)
+                            }
+                        }
+                    } else if (it.exception is NoInternetException) {
+                        if (!it.exception.isNetworkAvailable(requireContext())) {
+                            binding.layoutCommonState.root.isVisible = true
+                            binding.layoutStateCourse.root.isVisible = false
+                            binding.layoutCommonState.clErrorState.isGone = false
+                            binding.layoutCommonState.ivErrorState.isGone = false
+                            binding.layoutCommonState.tvErrorState.isGone = false
+                            binding.layoutCommonState.tvErrorState.text = "Oops!\nYou're not connection"
+                            binding.layoutCommonState.ivErrorState.setImageResource(R.drawable.img_no_connection)
+                        }
+                    }
                 },
                 doOnEmpty = {
                     binding.rvCourse.isVisible = false
                     binding.shimmerCourseLinear.isVisible = false
                     binding.layoutStateCourse.root.isVisible = true
+                    binding.layoutCommonState.root.isVisible = false
                     binding.layoutStateCourse.tvError.isVisible = false
                     binding.layoutStateCourse.pbLoading.isVisible = false
-                    binding.layoutStateCourse.clDataEmpty.isVisible = true
-                    binding.layoutStateCourse.tvDataEmpty.isVisible = true
-                    binding.layoutStateCourse.ivDataEmpty.isVisible = false
-                    binding.layoutStateCourse.tvError.isVisible = true
-
-                    if (it.exception is ApiException) {
-                        if (it.exception.getParsedErrorCourse()?.success == false) {
-                            if (it.exception.httpCode == 500) {
-                                binding.layoutCommonState.clServerError.isGone = false
-                                binding.layoutCommonState.ivServerError.isGone = false
-                                StyleableToast.makeText(
-                                    requireContext(),
-                                    "SERVER ERROR",
-                                    R.style.failedtoast
-                                ).show()
-                            } else if (it.exception.getParsedErrorCourse()?.success == false) {
-                                binding.layoutCommonState.tvError.text =
-                                    it.exception.getParsedErrorCourse()?.message
-                                StyleableToast.makeText(
-                                    requireContext(),
-                                    it.exception.getParsedErrorCourse()?.message,
-                                    R.style.failedtoast
-                                ).show()
-                            }
-                        }
-                    } else if (it.exception is NoInternetException) {
-                        if (!it.exception.isNetworkAvailable(requireContext())) {
-                            binding.layoutCommonState.clNoConnection.isGone = false
-                            binding.layoutCommonState.ivNoConnection.isGone = false
-                            StyleableToast.makeText(
-                                requireContext(),
-                                "tidak ada internet",
-                                R.style.failedtoast
-                            ).show()
-                        }
-                    }
+                    binding.layoutStateCourse.clErrorState.isVisible = true
+                    binding.layoutStateCourse.tvErrorState.isVisible = true
+                    binding.layoutStateCourse.tvErrorState.text = "Class not found !"
+                    binding.layoutStateCourse.ivErrorState.isVisible = true
                 }
             )
         }
     }
 
     private fun showDialogNotification() {
-        val binding: LayoutDialogAccessFeatureBinding = LayoutDialogAccessFeatureBinding.inflate(layoutInflater)
+        val binding: LayoutDialogAccessFeatureBinding =
+            LayoutDialogAccessFeatureBinding.inflate(layoutInflater)
         val dialog = AlertDialog.Builder(requireContext(), 0).create()
 
         dialog.apply {

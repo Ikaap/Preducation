@@ -1,4 +1,4 @@
-package com.kelompoksatuandsatu.preducation.data.network.api.model.changepassword
+package com.kelompoksatuandsatu.preducation.data.network.api.model.user.changepassword
 
 import com.google.gson.annotations.SerializedName
 import com.kelompoksatuandsatu.preducation.model.user.Password

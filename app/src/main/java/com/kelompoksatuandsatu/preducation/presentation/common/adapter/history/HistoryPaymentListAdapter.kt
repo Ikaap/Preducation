@@ -77,7 +77,7 @@ class HistoryPaymentListAdapter(
 
                 tvTitleCourse.text = courseId?.title
                 tvLevelCourse.text = courseId?.level
-                tvDurationCourse.text = "${courseId?.totalDuration} Hours"
+                tvDurationCourse.text = "${courseId?.totalDuration} Mins"
                 tvModuleCourse.text = "${courseId?.totalModule} Modules"
 
                 itemView.setOnClickListener { itemClick(item) }

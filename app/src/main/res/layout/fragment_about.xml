@@ -11,16 +11,6 @@
         android:layout_height="match_parent"
         android:layout_marginHorizontal="18dp">
 
-        <include
-            android:id="@+id/layout_common_state"
-            layout="@layout/common_layout_content_state"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:visibility="gone"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/cl_join_group"
             android:layout_width="match_parent"
@@ -91,6 +81,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tv_title_about_class"
+                tools:ignore="UnusedAttribute"
                 tools:text="\t\t\t\t\tDesign system adalah kumpulan komponen design, code, ataupun dokumentasi yang dapat digunakan sebagai panduan utama yang memunginkan designer serta developer memiliki lebih banyak kontrol atas berbagai platform. Dengan hadirnya design system, dapat menjaga konsistensi tampilan user interface dan meningkatkan user experience menjadi lebih baik. Disisi bisnis, design system sangat berguna dalam menghemat waktu dan biaya ketika mengembangkan suatu produk." />
 
             <com.facebook.shimmer.ShimmerFrameLayout
@@ -101,7 +92,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tv_title_about_class">
-              
+
                 <include layout="@layout/layout_shimmer_detail_about_desc" />
 
             </com.facebook.shimmer.ShimmerFrameLayout>

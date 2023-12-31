@@ -201,7 +201,6 @@
                 android:layout_marginStart="12dp"
                 android:text="@string/_40_complete"
                 android:textColor="@color/white"
-                android:textSize="10dp"
                 app:layout_constraintBottom_toBottomOf="@id/progress_bar"
                 app:layout_constraintStart_toStartOf="@id/progress_bar"
                 app:layout_constraintTop_toTopOf="@id/progress_bar" />

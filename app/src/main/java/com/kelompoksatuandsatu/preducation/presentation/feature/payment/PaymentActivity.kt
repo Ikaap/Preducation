@@ -13,7 +13,6 @@ import android.view.View
 import android.webkit.WebResourceRequest
 import android.webkit.WebView
 import android.webkit.WebViewClient
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.os.bundleOf
 import androidx.core.view.isGone
@@ -84,7 +83,7 @@ class PaymentActivity : AppCompatActivity() {
             binding.tvCoursePrice.text = detailCourse.price?.toCurrencyFormat()
             val ppnValue = it.price?.times(0.11)!!.toInt()
             binding.tvCoursePpn.text = ppnValue.toCurrencyFormat()
-            val totalPayment = it.price - ppnValue
+            val totalPayment = it.price + ppnValue
             binding.tvCourseTotalPayment.text = totalPayment.toCurrencyFormat()
         }
     }
@@ -106,11 +105,6 @@ class PaymentActivity : AppCompatActivity() {
                     binding.layoutStatePayment.tvError.isVisible = false
                     binding.layoutStatePayment.pbLoading.isVisible = false
                     it.payload?.let {
-                        Toast.makeText(
-                            this,
-                            "token : ${it.data?.token}, url : ${it.data?.redirectUrl}",
-                            Toast.LENGTH_SHORT
-                        ).show()
                         url = it.data?.redirectUrl.orEmpty()
                         openUrlFromWebView(url)
                     }
@@ -130,42 +124,25 @@ class PaymentActivity : AppCompatActivity() {
                                 R.style.failedtoast
                             ).show()
 
-                            // post email otp
                             viewModel.postEmailOtp(emailData)
-                            Toast.makeText(this, "email : ${emailData.email}", Toast.LENGTH_SHORT).show()
                             val intent = Intent(this, OtpActivity::class.java)
                             startActivity(intent)
-                        }
-                    }
-                    if (it.exception is ApiException) {
-                        if (it.exception.getParsedErrorPayment()?.success == false) {
-                            if (it.exception.httpCode == 500) {
-                                binding.layoutCommonState.clServerError.isGone = false
-                                binding.layoutCommonState.ivServerError.isGone = false
-                                StyleableToast.makeText(
-                                    this,
-                                    "SERVER ERROR",
-                                    R.style.failedtoast
-                                ).show()
-                            } else if (it.exception.getParsedErrorPayment()?.success == false) {
-                                binding.layoutCommonState.tvError.text =
-                                    it.exception.getParsedErrorPayment()?.message
-                                StyleableToast.makeText(
-                                    this,
-                                    it.exception.getParsedErrorPayment()?.message,
-                                    R.style.failedtoast
-                                ).show()
-                            }
+                        } else if (it.exception.httpCode == 500) {
+                            binding.layoutStatePayment.clErrorState.isGone = false
+                            binding.layoutStatePayment.ivErrorState.isGone = false
+                            binding.layoutStatePayment.tvErrorState.isGone = false
+                            binding.layoutStatePayment.tvErrorState.text =
+                                "Sorry, there's an error on the server"
+                            binding.layoutStatePayment.ivErrorState.setImageResource(R.drawable.img_server_error)
                         }
                     } else if (it.exception is NoInternetException) {
                         if (!it.exception.isNetworkAvailable(this)) {
-                            binding.layoutCommonState.clNoConnection.isGone = false
-                            binding.layoutCommonState.ivNoConnection.isGone = false
-                            StyleableToast.makeText(
-                                this,
-                                "tidak ada internet",
-                                R.style.failedtoast
-                            ).show()
+                            binding.layoutStatePayment.clErrorState.isGone = false
+                            binding.layoutStatePayment.ivErrorState.isGone = false
+                            binding.layoutStatePayment.tvErrorState.isGone = false
+                            binding.layoutStatePayment.tvErrorState.text =
+                                "Oops!\nYou're not connection"
+                            binding.layoutStatePayment.ivErrorState.setImageResource(R.drawable.img_no_connection)
                         }
                     }
                 },
@@ -255,9 +232,7 @@ class PaymentActivity : AppCompatActivity() {
             it.proceedWhen(
                 doOnSuccess = {
                     it.payload?.let {
-                        val intent = Intent(this, DetailClassActivity::class.java).apply {
-                            flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
-                        }
+                        val intent = Intent(this, DetailClassActivity::class.java)
                         intent.putExtra(EXTRA_DETAIL_COURSE_ID, it.id)
                         startActivity(intent)
                     }
