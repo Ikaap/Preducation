@@ -47,7 +47,6 @@ import java.util.concurrent.TimeUnit
 
 interface PreducationService {
 
-    // home & see all
     @GET("api/v1/categories")
     suspend fun getCategoriesClass(): CategoriesClassResponse
 
@@ -57,30 +56,24 @@ interface PreducationService {
     @GET("api/v1/courses")
     suspend fun getCourseHomeFilter(@Query("category") category: List<String>? = null, @Query("typeClass") typeClass: String? = null, @Query("title") title: String? = null): CourseResponse
 
-    // notification
     @GET("api/v1/notifications")
     suspend fun getUserNotification(): NotificationResponse
 
-    // clas
     @GET("api/v1/categories/progress")
     suspend fun getCategoriesProgress(): CategoriesProgressResponse
 
-    // get all categories progress class
     @GET("api/v1/progress")
     suspend fun getCourseUserProgress(@Query("status") status: String? = null): CourseProgressResponse
 
-    // get all categories type class
     @GET("api/v1/categories/type-class")
     suspend fun getCategoriesTypeClass(): CategoriesTypeClassResponse
 
-    // detail
     @GET("api/v1/courses/{id}")
     suspend fun getCourseById(@Path("id") id: String): DetailCourseResponse
 
     @POST("api/v1/progress")
     suspend fun postIndexCourseById(@Query("courseId") id: String, @Body progressRequest: ProgressCourseRequest): ProgressCourseResponse
 
-    // profile
     @GET("api/v1/users/{id}")
     suspend fun getUserById(@Path("id") id: String): UserResponse
 
@@ -99,11 +92,9 @@ interface PreducationService {
     @PATCH("api/v1/users/update-password/{id}")
     suspend fun updateUserPassword(@Path("id") id: String? = null, @Body changePasswordRequest: ChangePasswordRequest): ChangePasswordResponse
 
-    //     auth
     @POST("api/v1/auths/register")
     suspend fun userRegister(@Body userRegisterRequest: RegisterRequest): RegisterResponse
 
-    // post email for otp
     @POST("api/v1/auths/email-otp")
     suspend fun postEmailOtp(@Body emailOtpRequest: EmailOtpRequest): EmailOtpResponse
 
@@ -122,7 +113,6 @@ interface PreducationService {
     @DELETE("api/v1/auths/logout")
     suspend fun userLogout(): Response<LogoutResponse>
 
-    // payment
     @POST("api/v1/payments")
     suspend fun paymentCourse(@Body paymentCourseRequest: PaymentCourseRequest): PaymentCourseResponse
 
