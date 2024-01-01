@@ -27,7 +27,7 @@ class HomeCourseItemViewHolder(
             binding.tvCategoryPopular.text = item.category?.name
             binding.tvRatingPopularCourse.text = item.totalRating.toString()
             binding.tvTitleCourse.text = item.title
-            binding.tvLevelCourse.text = item.level
+            binding.tvLevelCourse.text = item.level + assetWrapper.getString(R.string.text_level)
             binding.tvDurationCourse.text = item.totalDuration.toString() + assetWrapper.getString(R.string.text_mins)
             binding.tvModuleCourse.text = item.totalModule.toString() + assetWrapper.getString(R.string.text_module)
             if (item.price == 0) {
@@ -57,7 +57,7 @@ class HomeCourseLinearItemViewHolder(
             binding.tvCategoryPopular.text = item.category?.name
             binding.tvRatingPopularCourse.text = item.totalRating.toString()
             binding.tvTitleCourse.text = item.title
-            binding.tvLevelCourse.text = item.level
+            binding.tvLevelCourse.text = item.level + assetWrapper.getString(R.string.text_level)
             binding.tvDurationCourse.text = item.totalDuration.toString() + assetWrapper.getString(R.string.text_mins)
             binding.tvModuleCourse.text = item.totalModule.toString() + assetWrapper.getString(R.string.text_module)
             if (item.price == 0) {
@@ -88,7 +88,7 @@ class CourseLinearItemViewHolder(
             binding.tvCategoryPopular.text = item.category?.name
             binding.tvRatingPopularCourse.text = item.totalRating.toString()
             binding.tvTitleCourse.text = item.title
-            binding.tvLevelCourse.text = item.level
+            binding.tvLevelCourse.text = item.level + assetWrapper.getString(R.string.text_level)
             binding.tvDurationCourse.text = item.totalDuration.toString() + assetWrapper.getString(R.string.text_mins)
             binding.tvModuleCourse.text = item.totalModule.toString() + assetWrapper.getString(R.string.text_module)
             binding.tvPriceCourse.isGone = true

@@ -82,7 +82,7 @@ class HistoryPaymentListAdapter(
                 tvStatusPaymentWaiting.text = item.status
 
                 tvTitleCourse.text = courseId?.title
-                tvLevelCourse.text = courseId?.level
+                tvLevelCourse.text = courseId?.level + assetWrapper.getString(R.string.text_level)
                 tvDurationCourse.text = courseId?.totalDuration.toString() + assetWrapper.getString(R.string.text_mins)
                 tvModuleCourse.text = courseId?.totalModule.toString() + assetWrapper.getString(R.string.text_modules)
 

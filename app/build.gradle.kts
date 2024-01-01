@@ -152,9 +152,6 @@ dependencies {
     // shimmer
     implementation("com.facebook.shimmer:shimmer:0.5.0")
 
-    // toast
-    implementation("io.github.muddz:styleabletoast:2.4.0")
-
     // image picker
     implementation("com.github.dhaval2404:imagepicker:2.1")
 
