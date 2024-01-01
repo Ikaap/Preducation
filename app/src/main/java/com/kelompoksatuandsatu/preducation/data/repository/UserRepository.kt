@@ -165,7 +165,7 @@ class UserRepositoryImpl(
             userPreferenceDataSource.deleteAllData()
             emit(ResultWrapper.Success(true))
         } else {
-            emit(ResultWrapper.Error(Exception(assetWrapper.getString(R.string.text_logout_failed_with_response_code) + "${response.code()}")))
+            emit(ResultWrapper.Error(Exception(assetWrapper.getString(R.string.text_logout_failed_with_response_code) + response.code().toString())))
         }
     }.catch { e ->
         emit(ResultWrapper.Error(e as? Exception ?: Exception(assetWrapper.getString(R.string.text_unknown_error))))
