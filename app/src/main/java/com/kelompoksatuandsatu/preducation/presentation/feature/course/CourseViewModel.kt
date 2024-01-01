@@ -25,9 +25,25 @@ class CourseViewModel(
     val course: LiveData<ResultWrapper<List<CourseViewParam>>>
         get() = _course
 
+    private val _categoriesTypeClass = MutableLiveData<ResultWrapper<List<CategoryType>>>()
+    val categoriesTypeClass: LiveData<ResultWrapper<List<CategoryType>>>
+        get() = _categoriesTypeClass
+
     private val _categories = MutableLiveData<ResultWrapper<List<CategoryClass>>>()
     val categories: LiveData<ResultWrapper<List<CategoryClass>>>
         get() = _categories
+
+    private val _isUserLogin = MutableLiveData<Boolean>()
+    val isUserLogin: LiveData<Boolean>
+        get() = _isUserLogin
+
+    private val _selectedType = MutableLiveData<String>()
+    val selectedType: LiveData<String>
+        get() = _selectedType
+
+    private val _selectedCategories = MutableLiveData<List<CategoryClass>>()
+    val selectedCategories: LiveData<List<CategoryClass>?>
+        get() = _selectedCategories
 
     fun getCourse(category: List<String>? = null, typeClass: String? = null, title: String? = null) {
         viewModelScope.launch(Dispatchers.IO) {
@@ -49,10 +65,6 @@ class CourseViewModel(
         }
     }
 
-    private val _categoriesTypeClass = MutableLiveData<ResultWrapper<List<CategoryType>>>()
-    val categoriesTypeClass: LiveData<ResultWrapper<List<CategoryType>>>
-        get() = _categoriesTypeClass
-
     fun getCategoriesTypeClass() {
         viewModelScope.launch(Dispatchers.IO) {
             repositoryCourse.getCategoriesTypeClass().collect {
@@ -69,24 +81,12 @@ class CourseViewModel(
         }
     }
 
-    private val _isUserLogin = MutableLiveData<Boolean>()
-    val isUserLogin: LiveData<Boolean>
-        get() = _isUserLogin
-
     fun checkLogin() {
         viewModelScope.launch(Dispatchers.IO) {
             val userStatus = userPreferenceDataSource.getUserToken().firstOrNull() != null
             _isUserLogin.postValue(userStatus)
         }
     }
-
-    private val _selectedType = MutableLiveData<String>()
-    val selectedType: LiveData<String>
-        get() = _selectedType
-
-    private val _selectedCategories = MutableLiveData<List<CategoryClass>>()
-    val selectedCategories: LiveData<List<CategoryClass>?>
-        get() = _selectedCategories
 
     fun setSelectedCategories(categories: List<CategoryClass>) {
         _selectedCategories.value = categories

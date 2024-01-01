@@ -43,22 +43,6 @@ class HomeViewModel(
     val getProfile: LiveData<ResultWrapper<UserViewParam>>
         get() = _getProfile
 
-    fun getUserById() {
-        viewModelScope.launch(Dispatchers.IO) {
-            val userId = userPreferenceDataSource.getUserId()
-            userRepo.getUserById(userId).collect {
-                _getProfile.postValue(it)
-            }
-        }
-    }
-
-    fun checkLogin() {
-        viewModelScope.launch(Dispatchers.IO) {
-            val userStatus = userPreferenceDataSource.getUserToken().firstOrNull() != null
-            _isUserLogin.postValue(userStatus)
-        }
-    }
-
     fun getCategoriesClass() {
         viewModelScope.launch(Dispatchers.IO) {
             courseRepo.getCategoriesClass().collect {
@@ -81,6 +65,21 @@ class HomeViewModel(
                 .collect {
                     _coursePopular.postValue(it)
                 }
+        }
+    }
+
+    fun checkLogin() {
+        viewModelScope.launch(Dispatchers.IO) {
+            val userStatus = userPreferenceDataSource.getUserToken().firstOrNull() != null
+            _isUserLogin.postValue(userStatus)
+        }
+    }
+    fun getUserById() {
+        viewModelScope.launch(Dispatchers.IO) {
+            val userId = userPreferenceDataSource.getUserId()
+            userRepo.getUserById(userId).collect {
+                _getProfile.postValue(it)
+            }
         }
     }
 }

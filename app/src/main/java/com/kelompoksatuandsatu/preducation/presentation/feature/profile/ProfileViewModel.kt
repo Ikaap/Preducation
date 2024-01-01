@@ -22,6 +22,14 @@ class ProfileViewModel(
     val getProfile: LiveData<ResultWrapper<UserViewParam>>
         get() = _getProfile
 
+    private val _logoutResults = MutableLiveData<ResultWrapper<Boolean>>()
+    val logoutResults: LiveData<ResultWrapper<Boolean>>
+        get() = _logoutResults
+
+    private val _isUserLogin = MutableLiveData<Boolean>()
+    val isUserLogin: LiveData<Boolean>
+        get() = _isUserLogin
+
     fun getUserById() {
         viewModelScope.launch(Dispatchers.IO) {
             val userId = userPreferenceDataSource.getUserId()
@@ -31,19 +39,11 @@ class ProfileViewModel(
         }
     }
 
-    private val _logoutResults = MutableLiveData<ResultWrapper<Boolean>>()
-    val logoutResults: LiveData<ResultWrapper<Boolean>>
-        get() = _logoutResults
-
     fun userLogout() {
         viewModelScope.launch {
             _logoutResults.value = userRepo.userLogout().first()
         }
     }
-
-    private val _isUserLogin = MutableLiveData<Boolean>()
-    val isUserLogin: LiveData<Boolean>
-        get() = _isUserLogin
 
     fun checkLogin() {
         viewModelScope.launch(Dispatchers.IO) {
