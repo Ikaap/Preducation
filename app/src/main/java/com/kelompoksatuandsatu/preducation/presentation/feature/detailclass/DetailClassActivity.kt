@@ -89,13 +89,14 @@ class DetailClassActivity : AppCompatActivity() {
         selectedId?.let { viewModel.getCourseById(it) }
     }
 
+    @SuppressLint("SetTextI18n")
     private fun observeData() {
         viewModel.detailCourse.observe(this) {
             it.proceedWhen(
                 doOnSuccess = {
                     binding.shimmerDataCourse.isGone = true
                     it.payload?.let { data ->
-                        var backgroundVideo = data.thumbnail
+                        val backgroundVideo = data.thumbnail
                         data.chapters?.map { chapter ->
                             chapter.videos?.map {
                                 if (it.videoUrl.isNullOrEmpty()) {

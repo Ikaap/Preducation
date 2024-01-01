@@ -1,5 +1,6 @@
 package com.kelompoksatuandsatu.preducation.presentation.feature.detailclass.viewitems
 
+import android.annotation.SuppressLint
 import android.view.View
 import androidx.core.view.isGone
 import com.kelompoksatuandsatu.preducation.R
@@ -15,6 +16,7 @@ class HeaderItem(
     private val onHeaderClick: (ChapterViewParam) -> Unit
 ) :
     BindableItem<ItemSectionHeaderCurriculcumBinding>() {
+    @SuppressLint("SetTextI18n")
     override fun bind(viewBinding: ItemSectionHeaderCurriculcumBinding, position: Int) {
         viewBinding.tvTitleChapter.text = data.title
         viewBinding.tvChapterTotalDuration.text = data.totalDuration.toString() + assetWrapper.getString(R.string.text_mins)
@@ -33,6 +35,7 @@ class DataItem(
     private val onItemClick: (item: VideoViewParam) -> Unit
 ) :
     BindableItem<ItemSectionDataCurriculcumBinding>() {
+    @SuppressLint("SetTextI18n")
     override fun bind(viewBinding: ItemSectionDataCurriculcumBinding, position: Int) {
         viewBinding.tvVideoNumber.text = itemData.index.toString()
         viewBinding.tvTitleVideo.text = itemData.title
