@@ -8,9 +8,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.kelompoksatuandsatu.preducation.core.ViewHolderBinder
 import com.kelompoksatuandsatu.preducation.databinding.ItemLinearCourseBinding
 import com.kelompoksatuandsatu.preducation.model.course.courseall.CourseViewParam
+import com.kelompoksatuandsatu.preducation.utils.AssetWrapper
 
 class CourseLinearListAdapter(
     var adapterLayoutMenu: AdapterLayoutMenu,
+    private val assetWrapper: AssetWrapper,
     private val itemClick: (CourseViewParam) -> Unit
 ) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
@@ -51,6 +53,7 @@ class CourseLinearListAdapter(
                         parent,
                         false
                     ),
+                    assetWrapper,
                     itemClick
                 )
             }
@@ -61,6 +64,7 @@ class CourseLinearListAdapter(
                         parent,
                         false
                     ),
+                    assetWrapper,
                     itemClick
                 )
             }

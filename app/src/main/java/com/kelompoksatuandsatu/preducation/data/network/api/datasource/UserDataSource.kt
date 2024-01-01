@@ -28,6 +28,7 @@ interface UserDataSource {
     suspend fun verifyOtp(otpRequest: OtpRequest): com.kelompoksatuandsatu.preducation.data.network.api.model.auth.otp.verifyotp.OtpResponse
 
     suspend fun getUserById(id: String): UserResponse
+
     suspend fun updateUserById(
         id: String,
         name: RequestBody?,

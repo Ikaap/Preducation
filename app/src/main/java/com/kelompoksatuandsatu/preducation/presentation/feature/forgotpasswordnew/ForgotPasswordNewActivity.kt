@@ -100,7 +100,7 @@ class ForgotPasswordNewActivity : AppCompatActivity() {
                                 binding.layoutCommonState.ivErrorState.setImageResource(R.drawable.img_server_error)
                                 StyleableToast.makeText(
                                     this,
-                                    "SERVER ERROR",
+                                    getString(R.string.text_sorry_there_s_an_error_on_the_server),
                                     R.style.failedtoast
                                 ).show()
                             } else if (it.exception.getParsedErrorForgetPassword()?.success == false) {
@@ -120,7 +120,7 @@ class ForgotPasswordNewActivity : AppCompatActivity() {
                             binding.layoutCommonState.ivErrorState.setImageResource(R.drawable.img_no_connection)
                             StyleableToast.makeText(
                                 this,
-                                "tidak ada internet",
+                                getString(R.string.text_no_internet_connection),
                                 R.style.failedtoast
                             ).show()
                         }

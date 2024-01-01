@@ -65,7 +65,7 @@ object AppModules {
 
     private val repositoryModule = module {
         single<CourseRepository> { CourseRepositoryImpl(get()) }
-        single<UserRepository> { UserRepositoryImpl(get(), get()) }
+        single<UserRepository> { UserRepositoryImpl(get(), get(), get()) }
         single<NotificationRepository> { NotificationRepositoryImpl(get()) }
     }
 

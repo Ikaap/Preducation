@@ -13,14 +13,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="12dp"
+        android:backgroundTint="@color/color_shimmer"
         android:fontFamily="@font/montserrat_bold"
         android:gravity="center"
-        android:backgroundTint="@color/color_shimmer"
         android:padding="6dp"
         android:paddingHorizontal="24dp"
         android:textColor="@color/color_shimmer"
         android:textSize="10sp"
-        tools:text="@tools:sample/lorem"
-        tools:ignore="SmallSp" />
+        tools:ignore="SmallSp"
+        tools:text="@tools:sample/lorem" />
 
 </LinearLayout>

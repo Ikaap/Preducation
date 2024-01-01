@@ -4,8 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingHorizontal="10dp"
-    android:background="@color/app_color_on_primary">
+    android:background="@color/app_color_on_primary"
+    android:paddingHorizontal="10dp">
 
     <com.google.android.material.progressindicator.CircularProgressIndicator
         android:id="@+id/pb_loading"
@@ -31,7 +31,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:text="Data is Empty"
+        tools:text="@string/text_data_is_empty"
         tools:visibility="visible" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -52,8 +52,7 @@
             android:src="@drawable/img_data_empty"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/tv_error_state"
@@ -61,61 +60,13 @@
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="16dp"
             android:fontFamily="@font/montserrat_bold"
-            android:text="Data is Empty !!"
+            android:text="@string/text_data_is_empty"
             android:textAlignment="center"
             android:textSize="20sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/iv_error_state"/>
+            app:layout_constraintTop_toBottomOf="@id/iv_error_state" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-
-<!--    <androidx.constraintlayout.widget.ConstraintLayout-->
-<!--        android:id="@+id/cl_server_error"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="match_parent"-->
-<!--        android:visibility="gone"-->
-<!--        android:paddingHorizontal="8dp"-->
-<!--        app:layout_constraintBottom_toBottomOf="parent"-->
-<!--        app:layout_constraintEnd_toEndOf="parent"-->
-<!--        app:layout_constraintStart_toStartOf="parent"-->
-<!--        app:layout_constraintTop_toTopOf="parent">-->
-
-<!--        <ImageView-->
-<!--            android:id="@+id/iv_server_error"-->
-<!--            android:layout_width="0dp"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:src="@drawable/img_server_error"-->
-<!--            app:layout_constraintEnd_toEndOf="parent"-->
-<!--            app:layout_constraintStart_toStartOf="parent"-->
-<!--            app:layout_constraintTop_toTopOf="parent"-->
-<!--            app:layout_constraintBottom_toBottomOf="parent"/>-->
-
-<!--    </androidx.constraintlayout.widget.ConstraintLayout>-->
-
-
-<!--    <androidx.constraintlayout.widget.ConstraintLayout-->
-<!--        android:id="@+id/cl_no_connection"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="match_parent"-->
-<!--        android:visibility="gone"-->
-<!--        android:paddingHorizontal="8dp"-->
-<!--        app:layout_constraintBottom_toBottomOf="parent"-->
-<!--        app:layout_constraintEnd_toEndOf="parent"-->
-<!--        app:layout_constraintStart_toStartOf="parent"-->
-<!--        app:layout_constraintTop_toTopOf="parent">-->
-
-<!--        <ImageView-->
-<!--            android:id="@+id/iv_no_connection"-->
-<!--            android:layout_width="0dp"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:src="@drawable/img_no_connection"-->
-<!--            app:layout_constraintBottom_toBottomOf="parent"-->
-<!--            app:layout_constraintEnd_toEndOf="parent"-->
-<!--            app:layout_constraintStart_toStartOf="parent"-->
-<!--            app:layout_constraintTop_toTopOf="parent"-->
-<!--            app:layout_constraintVertical_bias="0.0" />-->
-
-<!--    </androidx.constraintlayout.widget.ConstraintLayout>-->
 
 </androidx.constraintlayout.widget.ConstraintLayout>

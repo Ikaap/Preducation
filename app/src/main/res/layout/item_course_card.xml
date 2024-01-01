@@ -132,8 +132,8 @@
                     android:fontFamily="@font/montserrat"
                     android:textColor="@color/app_color_on_primary_container"
                     android:textSize="10sp"
-                    tools:text="@string/tv_module_course"
-                    tools:ignore="SmallSp" />
+                    tools:ignore="SmallSp"
+                    tools:text="@string/tv_module_course" />
 
                 <ImageView
                     android:id="@+id/iv_time_course"
@@ -151,8 +151,8 @@
                     android:fontFamily="@font/montserrat"
                     android:textColor="@color/app_color_on_primary_container"
                     android:textSize="10sp"
-                    tools:text="@string/tv_duration_course"
-                    tools:ignore="SmallSp" />
+                    tools:ignore="SmallSp"
+                    tools:text="@string/tv_duration_course" />
 
                 <ImageView
                     android:id="@+id/iv_level_course"
@@ -170,8 +170,8 @@
                     android:fontFamily="@font/montserrat"
                     android:textColor="@color/app_color_on_primary_container"
                     android:textSize="10sp"
-                    tools:text="@string/tv_level_course"
-                    tools:ignore="SmallSp" />
+                    tools:ignore="SmallSp"
+                    tools:text="@string/tv_level_course" />
 
             </LinearLayout>
 

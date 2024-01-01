@@ -1,6 +1,5 @@
 package com.kelompoksatuandsatu.preducation.presentation.feature.profile
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -26,7 +25,6 @@ class ProfileViewModel(
     fun getUserById() {
         viewModelScope.launch(Dispatchers.IO) {
             val userId = userPreferenceDataSource.getUserId()
-            Log.d("USER ID PROFILE", "getUserById: $userId")
             userRepo.getUserById(userId).collect {
                 _getProfile.postValue(it)
             }
