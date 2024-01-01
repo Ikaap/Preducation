@@ -89,7 +89,7 @@ class ForgotPasswordNewActivity : AppCompatActivity() {
                     binding.clButtonSendEmail.isEnabled = true
                     StyleableToast.makeText(
                         this,
-                        getString(R.string.invalid_or_expired_link) + "${it.exception?.message.orEmpty()}",
+                        getString(R.string.invalid_or_expired_link) + it.exception?.message.orEmpty().toString(),
                         R.style.failedtoast
                     ).show()
                     if (it.exception is ApiException) {
