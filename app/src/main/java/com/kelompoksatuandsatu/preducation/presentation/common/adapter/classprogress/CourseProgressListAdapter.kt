@@ -1,5 +1,6 @@
 package com.kelompoksatuandsatu.preducation.presentation.common.adapter.classprogress
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.appcompat.content.res.AppCompatResources.getDrawable
@@ -68,6 +69,7 @@ class CourseProgressListAdapter(
         private val itemClick: (CourseProgressItemClass) -> Unit
     ) : RecyclerView.ViewHolder(binding.root), ViewHolderBinder<CourseProgressItemClass> {
 
+        @SuppressLint("SetTextI18n")
         override fun bind(item: CourseProgressItemClass) {
             with(item) {
                 binding.ivPopularCourse.load(item.courseId?.thumbnail) {

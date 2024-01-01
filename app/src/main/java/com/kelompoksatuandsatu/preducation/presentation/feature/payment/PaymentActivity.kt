@@ -70,6 +70,7 @@ class PaymentActivity : AppCompatActivity() {
         }
     }
 
+    @SuppressLint("SetTextI18n")
     private fun getDataCourse(detailCourse: DetailCourseViewParam?) {
         detailCourse?.let {
             binding.ivBannerCourse.load(detailCourse.thumbnail)

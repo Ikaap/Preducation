@@ -1,5 +1,6 @@
 package com.kelompoksatuandsatu.preducation.presentation.common.adapter.course
 
+import android.annotation.SuppressLint
 import androidx.core.view.isGone
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
@@ -17,6 +18,7 @@ class HomeCourseItemViewHolder(
     private val itemClick: (CourseViewParam) -> Unit
 ) : RecyclerView.ViewHolder(binding.root), ViewHolderBinder<CourseViewParam> {
 
+    @SuppressLint("SetTextI18n")
     override fun bind(item: CourseViewParam) {
         with(item) {
             binding.ivPopularCourse.load(item.thumbnail) {
@@ -46,6 +48,7 @@ class HomeCourseLinearItemViewHolder(
     private val itemClick: (CourseViewParam) -> Unit
 ) : RecyclerView.ViewHolder(binding.root), ViewHolderBinder<CourseViewParam> {
 
+    @SuppressLint("SetTextI18n")
     override fun bind(item: CourseViewParam) {
         with(item) {
             binding.ivPopularCourse.load(item.thumbnail) {
@@ -76,6 +79,7 @@ class CourseLinearItemViewHolder(
     private val itemClick: (CourseViewParam) -> Unit
 ) : RecyclerView.ViewHolder(binding.root), ViewHolderBinder<CourseViewParam> {
 
+    @SuppressLint("SetTextI18n")
     override fun bind(item: CourseViewParam) {
         with(item) {
             binding.ivPopularCourse.load(item.thumbnail) {

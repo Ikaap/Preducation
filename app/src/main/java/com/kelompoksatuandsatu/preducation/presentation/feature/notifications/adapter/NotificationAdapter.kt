@@ -42,10 +42,6 @@ class NotificationAdapter() : RecyclerView.Adapter<NotificationItemViewHolder>()
     fun setData(data: List<NotificationItem>) {
         dataDiffer.submitList(data)
     }
-
-    fun refreshList() {
-        notifyItemRangeChanged(0, dataDiffer.currentList.size)
-    }
 }
 class NotificationItemViewHolder(private val binding: ItemListNotificationBinding) :
     RecyclerView.ViewHolder(binding.root) {
