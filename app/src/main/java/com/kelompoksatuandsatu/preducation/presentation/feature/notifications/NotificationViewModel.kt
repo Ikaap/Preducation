@@ -20,6 +20,9 @@ class NotificationViewModel(
     val notifications: LiveData<ResultWrapper<List<NotificationItem>>>
         get() = _notifications
 
+    private val _isUserLogin = MutableLiveData<Boolean>()
+    val isUserLogin: LiveData<Boolean>
+        get() = _isUserLogin
     fun getData() {
         viewModelScope.launch(Dispatchers.IO) {
             repository.getUserNotifications().collect {
@@ -27,10 +30,6 @@ class NotificationViewModel(
             }
         }
     }
-
-    private val _isUserLogin = MutableLiveData<Boolean>()
-    val isUserLogin: LiveData<Boolean>
-        get() = _isUserLogin
 
     fun checkLogin() {
         viewModelScope.launch(Dispatchers.IO) {

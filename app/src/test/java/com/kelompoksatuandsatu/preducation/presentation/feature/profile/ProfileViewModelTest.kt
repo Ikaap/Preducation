@@ -52,8 +52,8 @@ class ProfileViewModelTest {
         }
         coEvery { userPreferenceDataSource.getUserId() } returns ""
         coEvery { userRepo.getUserById(any()) } returns resultUser
-        coEvery { userPreferenceDataSource.getUserToken() } returns ""
         coEvery { userRepo.userLogout() } returns resultMock
+        coEvery { userPreferenceDataSource.getUserToken() } returns ""
     }
 
     @Test

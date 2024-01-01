@@ -8,6 +8,7 @@ import com.kelompoksatuandsatu.preducation.data.repository.CourseRepository
 import com.kelompoksatuandsatu.preducation.model.category.categoryclass.CategoryClass
 import com.kelompoksatuandsatu.preducation.model.category.categoryprogress.CategoryType
 import com.kelompoksatuandsatu.preducation.model.course.courseall.CourseViewParam
+import com.kelompoksatuandsatu.preducation.utils.AssetWrapper
 import com.kelompoksatuandsatu.preducation.utils.ResultWrapper
 import com.tools.MainCoroutineRule
 import io.mockk.MockKAnnotations
@@ -32,6 +33,9 @@ class CourseViewModelTest {
     @MockK
     private lateinit var userPreferenceDataSource: UserPreferenceDataSource
 
+    @MockK
+    private lateinit var assetWrapper: AssetWrapper
+
     private lateinit var viewModel: CourseViewModel
 
     @get:Rule
@@ -45,7 +49,7 @@ class CourseViewModelTest {
     fun setUp() {
         MockKAnnotations.init(this)
 
-        viewModel = spyk(CourseViewModel(courseRepo, userPreferenceDataSource))
+        viewModel = spyk(CourseViewModel(courseRepo, assetWrapper, userPreferenceDataSource))
 
         val resultListCourse = flow {
             emit(ResultWrapper.Success(listOf(CourseViewParam(Category("id", "name"), "CA", "Cilacap", CreatedBy("id", "name"), "desc", "id", true, "beginner", 100000, 1, listOf("mahasiswa"), "url", "title", 60.0, 10, 5.0, "free"))))
@@ -59,6 +63,7 @@ class CourseViewModelTest {
             emit(ResultWrapper.Success(listOf(CategoryClass("Cilacap", "id", "image", true, "name", 1))))
         }
 
+        coEvery { assetWrapper.getString(any()) } returns ""
         coEvery { courseRepo.getCourseHomeFilter(any(), any(), any()) } returns resultListCourse
         coEvery { courseRepo.getCategoriesTypeClass() } returns resultListCategoriesType
         coEvery { courseRepo.getCategoriesClass() } returns resultListCategories

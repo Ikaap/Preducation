@@ -9,6 +9,7 @@ import com.kelompoksatuandsatu.preducation.data.repository.UserRepository
 import com.kelompoksatuandsatu.preducation.model.category.categoryclass.CategoryClass
 import com.kelompoksatuandsatu.preducation.model.course.courseall.CourseViewParam
 import com.kelompoksatuandsatu.preducation.model.user.UserViewParam
+import com.kelompoksatuandsatu.preducation.utils.AssetWrapper
 import com.kelompoksatuandsatu.preducation.utils.ResultWrapper
 import com.tools.MainCoroutineRule
 import io.mockk.MockKAnnotations
@@ -34,6 +35,9 @@ class HomeViewModelTest {
     private lateinit var userPreferenceDataSource: UserPreferenceDataSource
 
     @MockK
+    private lateinit var assetWrapper: AssetWrapper
+
+    @MockK
     private lateinit var userRepo: UserRepository
 
     private lateinit var viewModel: HomeViewModel
@@ -49,23 +53,7 @@ class HomeViewModelTest {
     fun setUp() {
         MockKAnnotations.init(this)
 
-        viewModel = spyk(HomeViewModel(courseRepo, userPreferenceDataSource, userRepo))
-
-        val resultUser = flow {
-            emit(
-                ResultWrapper.Success(
-                    UserViewParam(
-                        "id",
-                        "email",
-                        "089",
-                        "name",
-                        "image",
-                        "country",
-                        "city"
-                    )
-                )
-            )
-        }
+        viewModel = spyk(HomeViewModel(courseRepo, userPreferenceDataSource, assetWrapper, userRepo))
 
         val resultListCategories = flow {
             emit(
@@ -112,12 +100,29 @@ class HomeViewModelTest {
             )
         }
 
+        val resultUser = flow {
+            emit(
+                ResultWrapper.Success(
+                    UserViewParam(
+                        "id",
+                        "email",
+                        "089",
+                        "name",
+                        "image",
+                        "country",
+                        "city"
+                    )
+                )
+            )
+        }
+
         coEvery { courseRepo.getCategoriesClass() } returns resultListCategories
         coEvery { courseRepo.getCategoriesClass() } returns resultListCategories
+        coEvery { assetWrapper.getString(any()) } returns ""
         coEvery { courseRepo.getCourseHome(any(), any(), any()) } returns resultListCourse
         coEvery { userPreferenceDataSource.getUserToken() } returns ""
-        coEvery { userRepo.getUserById(any()) } returns resultUser
         coEvery { userPreferenceDataSource.getUserId() } returns ""
+        coEvery { userRepo.getUserById(any()) } returns resultUser
     }
 
     @Test

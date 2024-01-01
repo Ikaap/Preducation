@@ -20,6 +20,7 @@ import com.kelompoksatuandsatu.preducation.model.auth.UserLogin
 import com.kelompoksatuandsatu.preducation.model.auth.forgotpassword.UserForgotPassword
 import com.kelompoksatuandsatu.preducation.model.auth.otp.postemailotp.EmailOtp
 import com.kelompoksatuandsatu.preducation.model.auth.otp.verifyotp.OtpData
+import com.kelompoksatuandsatu.preducation.utils.AssetWrapper
 import com.kelompoksatuandsatu.preducation.utils.ResultWrapper
 import io.mockk.MockKAnnotations
 import io.mockk.coEvery
@@ -47,12 +48,15 @@ class UserRepositoryImplTest {
     @MockK
     lateinit var userPreferenceDataSource: UserPreferenceDataSource
 
+    @MockK
+    lateinit var assetWrapper: AssetWrapper
+
     private lateinit var userRepo: UserRepository
 
     @Before
     fun setUp() {
         MockKAnnotations.init(this)
-        userRepo = UserRepositoryImpl(userDataSource, userPreferenceDataSource)
+        userRepo = UserRepositoryImpl(userDataSource, assetWrapper, userPreferenceDataSource)
     }
 
     @Test

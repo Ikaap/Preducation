@@ -262,12 +262,6 @@ class CourseFragment : Fragment(), FilterFragment.OnFilterListener {
                 }
             )
         }
-
-        viewModel.isUserLogin.observe(viewLifecycleOwner) { isLogin ->
-            if (!isLogin) {
-                showDialog()
-            }
-        }
     }
 
     private fun showDialogNotification() {
@@ -280,8 +274,8 @@ class CourseFragment : Fragment(), FilterFragment.OnFilterListener {
             window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         }.show()
 
-        binding.clSignUp.setOnClickListener {
-            val intent = Intent(requireContext(), RegisterActivity::class.java)
+        binding.clSignIn.setOnClickListener {
+            val intent = Intent(requireContext(), LoginActivity::class.java)
             startActivity(intent)
         }
     }

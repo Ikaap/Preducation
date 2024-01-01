@@ -20,7 +20,8 @@ class NotificationRepositoryImpl(private val notificationDataSource: Notificatio
 
     override suspend fun getUserNotifications(): Flow<ResultWrapper<List<NotificationItem>>> {
         return proceedFlow {
-            notificationDataSource.getUserNotifications().data?.toNotificationItemList() ?: emptyList()
+            notificationDataSource.getUserNotifications().data?.toNotificationItemList()
+                ?: emptyList()
         }.map {
             if (it.payload?.isEmpty() == true) {
                 ResultWrapper.Empty(it.payload)

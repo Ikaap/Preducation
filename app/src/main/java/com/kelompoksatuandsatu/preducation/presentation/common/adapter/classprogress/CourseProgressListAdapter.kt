@@ -5,8 +5,6 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.appcompat.content.res.AppCompatResources.getDrawable
 import androidx.core.view.isGone
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
@@ -15,9 +13,10 @@ import com.kelompoksatuandsatu.preducation.R
 import com.kelompoksatuandsatu.preducation.core.ViewHolderBinder
 import com.kelompoksatuandsatu.preducation.databinding.ItemCourseCardBinding
 import com.kelompoksatuandsatu.preducation.model.progress.CourseProgressItemClass
-import java.util.Locale
+import com.kelompoksatuandsatu.preducation.utils.AssetWrapper
 
 class CourseProgressListAdapter(
+    private val assetWrapper: AssetWrapper,
     private val itemClick: (CourseProgressItemClass) -> Unit
 ) :
     RecyclerView.Adapter<CourseProgressListAdapter.ClassCourseItemViewHolder>() {
@@ -37,16 +36,7 @@ class CourseProgressListAdapter(
         }
     )
 
-    private var originalList: List<CourseProgressItemClass> = emptyList()
-    private val _isFilterEmpty = MutableLiveData<Boolean>()
-    val isFilterEmpty: LiveData<Boolean> get() = _isFilterEmpty
-
-    init {
-        _isFilterEmpty.value = false
-    }
-
     fun setData(data: List<CourseProgressItemClass>) {
-        originalList = data
         dataDiffer.submitList(data)
         notifyItemChanged(0, data.size)
     }
@@ -62,6 +52,7 @@ class CourseProgressListAdapter(
         )
         return ClassCourseItemViewHolder(
             binding,
+            assetWrapper,
             itemClick
         )
     }
@@ -72,22 +63,9 @@ class CourseProgressListAdapter(
         (holder as ViewHolderBinder<CourseProgressItemClass>).bind(dataDiffer.currentList[position])
     }
 
-    fun filter(query: CharSequence?) {
-        val filteredList = if (query.isNullOrBlank()) {
-            originalList
-        } else {
-            val lowercaseQuery = query.toString().replace("\\s+".toRegex(), "").toLowerCase(Locale.getDefault())
-            originalList.filter { course ->
-                course.courseId?.title?.replace("\\s+".toRegex(), "")?.toLowerCase(Locale.getDefault())?.contains(lowercaseQuery) == true
-            }
-        }
-        _isFilterEmpty.value = filteredList.isEmpty()
-
-        dataDiffer.submitList(filteredList)
-    }
-
     class ClassCourseItemViewHolder(
         private val binding: ItemCourseCardBinding,
+        private val assetWrapper: AssetWrapper,
         private val itemClick: (CourseProgressItemClass) -> Unit
     ) : RecyclerView.ViewHolder(binding.root), ViewHolderBinder<CourseProgressItemClass> {
 
@@ -100,11 +78,11 @@ class CourseProgressListAdapter(
                 binding.tvCategoryPopular.text = item.courseId?.category?.name
                 binding.tvRatingPopularCourse.text = item.courseId?.totalRating.toString()
                 binding.tvTitleCourse.text = item.courseId?.title
-                binding.tvLevelCourse.text = item.courseId?.level + " Level"
-                binding.tvDurationCourse.text = item.courseId?.totalDuration.toString() + " Mins"
-                binding.tvModuleCourse.text = item.courseId?.totalModule.toString() + " Module"
+                binding.tvLevelCourse.text = item.courseId?.level + assetWrapper.getString(R.string.text_level)
+                binding.tvDurationCourse.text = item.courseId?.totalDuration.toString() + assetWrapper.getString(R.string.text_mins)
+                binding.tvModuleCourse.text = item.courseId?.totalModule.toString() + assetWrapper.getString(R.string.text_module)
                 binding.tvPriceCourse.isGone = true
-                binding.tvProgress.text = item.percentage.toString() + " % complete"
+                binding.tvProgress.text = item.percentage.toString() + assetWrapper.getString(R.string.text_complete)
                 binding.progressBar.progress = item.percentage!!
                 if (item.percentage == 100) {
                     val backgroundDrawable = getDrawable(itemView.context, R.drawable.bg_progress_bar_complete)
