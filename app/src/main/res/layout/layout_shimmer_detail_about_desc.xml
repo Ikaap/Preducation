@@ -14,12 +14,12 @@
         android:fontFamily="@font/montserrat"
         android:lineHeight="24dp"
         android:textAlignment="gravity"
-        android:textColor="@color/app_color_on_tertiary"
+        android:textColor="@color/color_shimmer"
         android:textSize="12sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:text="\t\t\t\t\tDesign system adalah kumpulan komponen design, code, ataupun dokumentasi yang dapat digunakan sebagai panduan utama yang memunginkan designer serta developer memiliki lebih banyak kontrol atas berbagai platform. Dengan hadirnya design system, dapat menjaga konsistensi tampilan user interface dan meningkatkan user experience menjadi lebih baik. Disisi bisnis, design system sangat berguna dalam menghemat waktu dan biaya ketika mengembangkan suatu produk."
-        tools:ignore="UnusedAttribute" />
+        tools:ignore="UnusedAttribute"
+        tools:text="@string/text_desc_about_class" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

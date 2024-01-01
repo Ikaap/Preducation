@@ -25,9 +25,11 @@ import com.kelompoksatuandsatu.preducation.presentation.common.adapter.classprog
 import com.kelompoksatuandsatu.preducation.presentation.feature.detailclass.DetailClassActivity
 import com.kelompoksatuandsatu.preducation.presentation.feature.home.SeeAllPopularCoursesActivity
 import com.kelompoksatuandsatu.preducation.presentation.feature.login.LoginActivity
+import com.kelompoksatuandsatu.preducation.utils.AssetWrapper
 import com.kelompoksatuandsatu.preducation.utils.exceptions.ApiException
 import com.kelompoksatuandsatu.preducation.utils.exceptions.NoInternetException
 import com.kelompoksatuandsatu.preducation.utils.proceedWhen
+import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class ProgressClassFragment : Fragment() {
@@ -35,6 +37,8 @@ class ProgressClassFragment : Fragment() {
     private lateinit var binding: FragmentProgressClassBinding
 
     private val viewModel: ProgressClassViewModel by viewModel()
+
+    private val assetWrapper: AssetWrapper by inject()
 
     private val categoryCourseAdapter: CategoryCourseListAdapter by lazy {
         CategoryCourseListAdapter { selectedCategory ->
@@ -55,7 +59,7 @@ class ProgressClassFragment : Fragment() {
     }
 
     private val progressCourseAdapter: CourseProgressListAdapter by lazy {
-        CourseProgressListAdapter {
+        CourseProgressListAdapter(assetWrapper) {
             navigateCourseProgressToDetail(it)
         }
     }
@@ -249,8 +253,7 @@ class ProgressClassFragment : Fragment() {
                                 binding.layoutCommonState.clErrorState.isGone = false
                                 binding.layoutCommonState.ivErrorState.isGone = false
                                 binding.layoutCommonState.tvErrorState.isGone = false
-                                binding.layoutCommonState.tvErrorState.text =
-                                    "Sorry, there's an error on the server"
+                                binding.layoutCommonState.tvErrorState.text = getString(R.string.text_sorry_there_s_an_error_on_the_server)
                                 binding.layoutCommonState.ivErrorState.setImageResource(R.drawable.img_server_error)
                             } else if (it.exception.getParsedErrorProgressClass()?.success == false) {
                                 binding.layoutCommonState.tvError.text =
@@ -263,7 +266,7 @@ class ProgressClassFragment : Fragment() {
                             binding.layoutCommonState.clErrorState.isGone = false
                             binding.layoutCommonState.ivErrorState.isGone = false
                             binding.layoutCommonState.tvErrorState.isGone = false
-                            binding.layoutCommonState.tvErrorState.text = "Oops!\nNo Internet Connection"
+                            binding.layoutCommonState.tvErrorState.text = getString(R.string.text_no_internet_connection)
                             binding.layoutCommonState.ivErrorState.setImageResource(R.drawable.img_no_connection)
                         }
                     }
@@ -276,8 +279,7 @@ class ProgressClassFragment : Fragment() {
                     binding.layoutStateCourseProgress.pbLoading.isVisible = false
                     binding.layoutStateCourseProgress.clErrorState.isVisible = true
                     binding.layoutStateCourseProgress.tvErrorState.isVisible = true
-                    binding.layoutStateCourseProgress.tvErrorState.text =
-                        "You don't have any classes yet"
+                    binding.layoutStateCourseProgress.tvErrorState.text = getString(R.string.text_you_don_t_have_any_classes_yet)
                     binding.layoutStateCourseProgress.ivErrorState.isVisible = true
                 }
             )

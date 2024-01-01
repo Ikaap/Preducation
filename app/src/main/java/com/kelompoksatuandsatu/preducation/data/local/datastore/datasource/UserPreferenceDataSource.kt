@@ -7,9 +7,7 @@ interface UserPreferenceDataSource {
 
     suspend fun getUserToken(): String
     suspend fun saveUserToken(token: String)
-
     suspend fun deleteAllData()
-
     suspend fun saveUserId(id: String)
     suspend fun getUserId(): String
 }

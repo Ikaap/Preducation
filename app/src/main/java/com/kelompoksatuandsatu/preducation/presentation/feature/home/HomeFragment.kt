@@ -24,13 +24,17 @@ import com.kelompoksatuandsatu.preducation.presentation.common.adapter.course.Co
 import com.kelompoksatuandsatu.preducation.presentation.feature.detailclass.DetailClassActivity
 import com.kelompoksatuandsatu.preducation.presentation.feature.register.RegisterActivity
 import com.kelompoksatuandsatu.preducation.presentation.feature.search.SearchActivity
+import com.kelompoksatuandsatu.preducation.utils.AssetWrapper
 import com.kelompoksatuandsatu.preducation.utils.exceptions.ApiException
 import com.kelompoksatuandsatu.preducation.utils.exceptions.NoInternetException
 import com.kelompoksatuandsatu.preducation.utils.proceedWhen
+import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class HomeFragment : Fragment() {
     private lateinit var binding: FragmentHomeBinding
+
+    private val assetWrapper: AssetWrapper by inject()
 
     private val categoryCourseAdapter: CategoryCourseListAdapter by lazy {
         CategoryCourseListAdapter { selectedCategory ->
@@ -51,7 +55,7 @@ class HomeFragment : Fragment() {
     }
 
     private val popularCourseAdapter: CourseCardListAdapter by lazy {
-        CourseCardListAdapter(AdapterLayoutMenu.HOME) {
+        CourseCardListAdapter(AdapterLayoutMenu.HOME, assetWrapper) {
             viewModel.isUserLogin.observe(viewLifecycleOwner) { isLogin ->
                 if (!isLogin) {
                     showDialog()
@@ -309,7 +313,7 @@ class HomeFragment : Fragment() {
                                 binding.layoutCommonState.ivErrorState.isGone = false
                                 binding.layoutCommonState.tvErrorState.isGone = false
                                 binding.layoutCommonState.tvErrorState.text =
-                                    "Sorry, there's an error on the server"
+                                    getString(R.string.text_sorry_there_s_an_error_on_the_server)
                                 binding.layoutCommonState.ivErrorState.setImageResource(R.drawable.img_server_error)
                             }
                         }
@@ -320,7 +324,7 @@ class HomeFragment : Fragment() {
                             binding.layoutCommonState.ivErrorState.isGone = false
                             binding.layoutCommonState.tvErrorState.isGone = false
                             binding.layoutCommonState.tvErrorState.text =
-                                "Oops!\nYou're not connection"
+                                getString(R.string.text_no_internet_connection)
                             binding.layoutCommonState.ivErrorState.setImageResource(R.drawable.img_no_connection)
                         }
                     }
@@ -333,7 +337,7 @@ class HomeFragment : Fragment() {
                     binding.layoutStateCoursePopular.pbLoading.isVisible = false
                     binding.layoutStateCoursePopular.clErrorState.isVisible = true
                     binding.layoutStateCoursePopular.tvErrorState.isVisible = true
-                    binding.layoutStateCoursePopular.tvErrorState.text = "Class not found !"
+                    binding.layoutStateCoursePopular.tvErrorState.text = getString(R.string.text_class_not_found)
                     binding.layoutStateCoursePopular.ivErrorState.isVisible = true
                 }
             )

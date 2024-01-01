@@ -12,8 +12,10 @@ import com.kelompoksatuandsatu.preducation.R
 import com.kelompoksatuandsatu.preducation.core.ViewHolderBinder
 import com.kelompoksatuandsatu.preducation.databinding.ItemCourseCardBinding
 import com.kelompoksatuandsatu.preducation.model.progress.CourseProgressItemClass
+import com.kelompoksatuandsatu.preducation.utils.AssetWrapper
 
 class CourseProgressListAdapter(
+    private val assetWrapper: AssetWrapper,
     private val itemClick: (CourseProgressItemClass) -> Unit
 ) :
     RecyclerView.Adapter<CourseProgressListAdapter.ClassCourseItemViewHolder>() {
@@ -49,6 +51,7 @@ class CourseProgressListAdapter(
         )
         return ClassCourseItemViewHolder(
             binding,
+            assetWrapper,
             itemClick
         )
     }
@@ -61,6 +64,7 @@ class CourseProgressListAdapter(
 
     class ClassCourseItemViewHolder(
         private val binding: ItemCourseCardBinding,
+        private val assetWrapper: AssetWrapper,
         private val itemClick: (CourseProgressItemClass) -> Unit
     ) : RecyclerView.ViewHolder(binding.root), ViewHolderBinder<CourseProgressItemClass> {
 
@@ -72,11 +76,11 @@ class CourseProgressListAdapter(
                 binding.tvCategoryPopular.text = item.courseId?.category?.name
                 binding.tvRatingPopularCourse.text = item.courseId?.totalRating.toString()
                 binding.tvTitleCourse.text = item.courseId?.title
-                binding.tvLevelCourse.text = item.courseId?.level + " Level"
-                binding.tvDurationCourse.text = item.courseId?.totalDuration.toString() + " Mins"
-                binding.tvModuleCourse.text = item.courseId?.totalModule.toString() + " Module"
+                binding.tvLevelCourse.text = item.courseId?.level + assetWrapper.getString(R.string.text_level)
+                binding.tvDurationCourse.text = item.courseId?.totalDuration.toString() + assetWrapper.getString(R.string.text_mins)
+                binding.tvModuleCourse.text = item.courseId?.totalModule.toString() + assetWrapper.getString(R.string.text_module)
                 binding.tvPriceCourse.isGone = true
-                binding.tvProgress.text = item.percentage.toString() + " % complete"
+                binding.tvProgress.text = item.percentage.toString() + assetWrapper.getString(R.string.text_complete)
                 binding.progressBar.progress = item.percentage!!
                 if (item.percentage == 100) {
                     val backgroundDrawable = getDrawable(itemView.context, R.drawable.bg_progress_bar_complete)

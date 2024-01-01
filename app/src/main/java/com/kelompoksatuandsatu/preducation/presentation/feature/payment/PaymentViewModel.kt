@@ -1,7 +1,6 @@
 package com.kelompoksatuandsatu.preducation.presentation.feature.payment
 
 import android.os.Bundle
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -36,7 +35,6 @@ class PaymentViewModel(
     fun payment() {
         viewModelScope.launch(Dispatchers.IO) {
             val request = course
-            Log.d("DATA PAYMENT", "Request: ${request?.id}, ${request?.title}, ${request?.price}, ")
             if (request != null) {
                 courseRepo.paymentCourse(request).collect {
                     _paymentResult.postValue(it)
@@ -51,7 +49,6 @@ class PaymentViewModel(
     fun getUserById() {
         viewModelScope.launch(Dispatchers.IO) {
             val userId = userPreferenceDataSource.getUserId()
-            Log.d("USER ID PAYMENT", "getUserById: $userId")
             userRepo.getUserById(userId).collect {
                 _getUserData.postValue(it)
             }

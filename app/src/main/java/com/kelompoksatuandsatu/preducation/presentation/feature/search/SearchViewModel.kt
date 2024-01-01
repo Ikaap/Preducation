@@ -4,15 +4,18 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.kelompoksatuandsatu.preducation.R
 import com.kelompoksatuandsatu.preducation.data.local.datastore.datasource.UserPreferenceDataSource
 import com.kelompoksatuandsatu.preducation.data.repository.CourseRepository
 import com.kelompoksatuandsatu.preducation.model.course.courseall.CourseViewParam
+import com.kelompoksatuandsatu.preducation.utils.AssetWrapper
 import com.kelompoksatuandsatu.preducation.utils.ResultWrapper
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class SearchViewModel(
     private val repositoryCourse: CourseRepository,
+    private val assetWrapper: AssetWrapper,
     private val userPreferenceDataSource: UserPreferenceDataSource
 ) : ViewModel() {
     private val _isUserLogin = MutableLiveData<Boolean>()
@@ -25,7 +28,7 @@ class SearchViewModel(
 
     fun getCourse(category: String? = null, typeClass: String? = null, title: String? = null) {
         viewModelScope.launch(Dispatchers.IO) {
-            repositoryCourse.getCourseHome(category, if (typeClass == "All") null else typeClass?.toLowerCase(), title)
+            repositoryCourse.getCourseHome(category, if (typeClass == assetWrapper.getString(R.string.text_all)) null else typeClass?.toLowerCase(), title)
                 .collect {
                     _course.postValue(it)
                 }

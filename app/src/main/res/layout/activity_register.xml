@@ -22,8 +22,6 @@
             android:orientation="vertical"
             android:paddingHorizontal="16dp">
 
-
-            <!-- Logo -->
             <ImageView
                 android:id="@+id/logo"
                 android:layout_width="210dp"
@@ -32,7 +30,6 @@
                 android:layout_marginBottom="24dp"
                 android:src="@drawable/img_logo" />
 
-            <!-- Register Text -->
             <TextView
                 android:id="@+id/registerText"
                 android:layout_width="wrap_content"
@@ -42,7 +39,6 @@
                 android:text="@string/text_getting_started"
                 android:textSize="24sp" />
 
-            <!-- Name Input -->
             <LinearLayout
                 android:id="@+id/formNameLayout"
                 android:layout_width="match_parent"
@@ -81,7 +77,6 @@
 
             </LinearLayout>
 
-            <!-- Email Input -->
             <LinearLayout
                 android:id="@+id/formEmailLayout"
                 android:layout_width="match_parent"
@@ -120,7 +115,6 @@
 
             </LinearLayout>
 
-            <!-- Phone Number Input -->
             <LinearLayout
                 android:id="@+id/formPhoneNumberLayout"
                 android:layout_width="match_parent"
@@ -160,7 +154,6 @@
 
             </LinearLayout>
 
-            <!-- Password Input -->
             <LinearLayout
                 android:id="@+id/formPasswordLayout"
                 android:layout_width="match_parent"
@@ -200,7 +193,6 @@
 
             </LinearLayout>
 
-            <!-- Register Button -->
             <FrameLayout
                 android:id="@+id/fl_btn_loading_state"
                 android:layout_width="match_parent"

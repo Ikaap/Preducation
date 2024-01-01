@@ -1,5 +1,6 @@
 package com.kelompoksatuandsatu.preducation.presentation.feature.detailclass
 
+import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.content.Intent
 import android.graphics.Color
@@ -15,16 +16,19 @@ import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import coil.load
 import com.google.android.material.bottomsheet.BottomSheetDialog
+import com.kelompoksatuandsatu.preducation.R
 import com.kelompoksatuandsatu.preducation.databinding.FragmentCurriculcumBinding
 import com.kelompoksatuandsatu.preducation.databinding.LayoutDialogBuyClassBinding
 import com.kelompoksatuandsatu.preducation.databinding.LayoutDialogFinishClassBinding
 import com.kelompoksatuandsatu.preducation.presentation.feature.detailclass.viewitems.DataItem
 import com.kelompoksatuandsatu.preducation.presentation.feature.detailclass.viewitems.HeaderItem
 import com.kelompoksatuandsatu.preducation.presentation.feature.payment.PaymentActivity
+import com.kelompoksatuandsatu.preducation.utils.AssetWrapper
 import com.kelompoksatuandsatu.preducation.utils.proceedWhen
 import com.kelompoksatuandsatu.preducation.utils.toCurrencyFormat
 import com.xwray.groupie.GroupieAdapter
 import com.xwray.groupie.Section
+import org.koin.android.ext.android.inject
 
 class CurriculcumFragment : Fragment() {
 
@@ -35,6 +39,8 @@ class CurriculcumFragment : Fragment() {
     }
 
     private val viewModel: DetailClassViewModel by activityViewModels()
+
+    private val assetWrapper: AssetWrapper by inject()
 
     private var itemVideoId: String = ""
 
@@ -71,7 +77,7 @@ class CurriculcumFragment : Fragment() {
                         adapter = adapterGroupie
                     }
                     it.payload?.let {
-                        binding.clButtonEnrollClass.isVisible = it.typeClass != "FREE"
+                        binding.clButtonEnrollClass.isVisible = it.typeClass != getString(R.string.text_free_cl)
                         if (it.chapters?.get(0)?.videos?.get(0)?.videoUrl?.isNotEmpty() == true) {
                             binding.clButtonEnrollClass.isVisible = false
                         }
@@ -84,10 +90,10 @@ class CurriculcumFragment : Fragment() {
                         val section = it.chapters?.map {
                             val section = Section()
                             section.setHeader(
-                                HeaderItem(it) { }
+                                HeaderItem(it, assetWrapper) { }
                             )
                             val dataSection = it.videos?.map { data ->
-                                DataItem(data) {
+                                DataItem(data, assetWrapper) {
                                     viewModel.onVideoItemClick(data.videoUrl.orEmpty())
                                     viewModel.postIndexVideo(data)
 
@@ -147,6 +153,7 @@ class CurriculcumFragment : Fragment() {
         }
     }
 
+    @SuppressLint("SetTextI18n")
     private fun setBottomSheet() {
         val bottomDialog = BottomSheetDialog(requireContext())
         val binding = LayoutDialogBuyClassBinding.inflate(layoutInflater)
@@ -158,9 +165,9 @@ class CurriculcumFragment : Fragment() {
                         binding.ivBannerCourse.load(it.thumbnail)
                         binding.tvCategoryCourse.text = it.category?.name
                         binding.tvNameCourse.text = it.title
-                        binding.tvTotalModulCourse.text = it.totalModule.toString() + " Module"
-                        binding.tvTotalHourCourse.text = it.totalDuration.toString() + " Mins"
-                        binding.tvLevelCourse.text = it.level + " Level"
+                        binding.tvTotalModulCourse.text = it.totalModule.toString() + assetWrapper.getString(R.string.text_module)
+                        binding.tvTotalHourCourse.text = it.totalDuration.toString() + assetWrapper.getString(R.string.text_mins)
+                        binding.tvLevelCourse.text = it.level + assetWrapper.getString(R.string.text_level)
                         binding.tvCourseRating.text = it.totalRating.toString()
                         binding.tvPriceCourse.text = it.price?.toCurrencyFormat()
                     }

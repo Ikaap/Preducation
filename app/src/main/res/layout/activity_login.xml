@@ -22,7 +22,6 @@
             android:orientation="vertical"
             android:paddingHorizontal="16dp">
 
-            <!-- Logo -->
             <ImageView
                 android:id="@+id/logo"
                 android:layout_width="210dp"
@@ -31,7 +30,6 @@
                 android:layout_marginBottom="24dp"
                 android:src="@drawable/img_logo" />
 
-            <!-- Login Text -->
             <TextView
                 android:id="@+id/loginText"
                 android:layout_width="wrap_content"
@@ -41,7 +39,6 @@
                 android:text="@string/text_login"
                 android:textSize="24sp" />
 
-            <!-- Email Input -->
             <LinearLayout
                 android:id="@+id/formEmailLayout"
                 android:layout_width="match_parent"
@@ -79,7 +76,6 @@
 
             </LinearLayout>
 
-            <!-- Password Input -->
             <LinearLayout
                 android:id="@+id/formPasswordLayout"
                 android:layout_width="match_parent"
@@ -142,7 +138,6 @@
 
             </LinearLayout>
 
-            <!-- Login Button -->
             <FrameLayout
                 android:id="@+id/fl_btn_loading_state"
                 android:layout_width="match_parent"
@@ -196,8 +191,6 @@
                     android:visibility="gone" />
             </FrameLayout>
 
-            <!-- Register Text -->
-
             <TextView
                 android:id="@+id/registerText"
                 android:layout_width="wrap_content"
@@ -208,7 +201,6 @@
                 android:text="@string/text_don_t_have_an_account_yet"
                 android:textSize="16sp" />
 
-            <!-- Without Login Text -->
             <TextView
                 android:id="@+id/tv_without_login"
                 android:layout_width="wrap_content"

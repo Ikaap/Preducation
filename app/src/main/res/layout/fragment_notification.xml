@@ -45,11 +45,10 @@
             android:layout_marginTop="24dp"
             android:visibility="visible"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-        <!-- RecyclerView -->
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_notification"
             android:layout_width="match_parent"
@@ -64,18 +63,17 @@
             app:layout_constraintTop_toTopOf="parent"
             tools:listitem="@layout/item_list_notification" />
 
-        <!-- ShimmerFrameLayout -->
         <com.facebook.shimmer.ShimmerFrameLayout
             android:id="@+id/shimmer_notification"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:visibility="visible"
+            app:layout_constraintStart_toStartOf="@id/rv_notification"
+            app:layout_constraintTop_toTopOf="parent"
             app:shimmer_base_color="@color/color_shimmer"
             app:shimmer_direction="top_to_bottom"
             app:shimmer_repeat_mode="restart"
-            app:shimmer_shape="linear"
-            app:layout_constraintStart_toStartOf="@id/rv_notification"
-            app:layout_constraintTop_toTopOf="parent">
+            app:shimmer_shape="linear">
 
             <LinearLayout
                 android:id="@+id/shimmer_category_circle"

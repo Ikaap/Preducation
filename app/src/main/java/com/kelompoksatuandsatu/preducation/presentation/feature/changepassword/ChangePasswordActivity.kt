@@ -22,6 +22,7 @@ class ChangePasswordActivity : AppCompatActivity() {
     private val binding: ActivityChangePasswordBinding by lazy {
         ActivityChangePasswordBinding.inflate(layoutInflater)
     }
+
     private val viewModel: ChangePasswordViewModel by viewModel()
 
     private val MIN_PASSWORD_LENGTH = 8
@@ -70,8 +71,7 @@ class ChangePasswordActivity : AppCompatActivity() {
                                 binding.layoutCommonState.clErrorState.isGone = false
                                 binding.layoutCommonState.ivErrorState.isGone = false
                                 binding.layoutCommonState.tvErrorState.isGone = false
-                                binding.layoutCommonState.tvErrorState.text =
-                                    "Sorry, there's an error on the server"
+                                binding.layoutCommonState.tvErrorState.text = getString(R.string.text_sorry_there_s_an_error_on_the_server)
                                 binding.layoutCommonState.ivErrorState.setImageResource(R.drawable.img_server_error)
                             }
                         }
@@ -80,7 +80,7 @@ class ChangePasswordActivity : AppCompatActivity() {
                             binding.layoutCommonState.clErrorState.isGone = false
                             binding.layoutCommonState.ivErrorState.isGone = false
                             binding.layoutCommonState.tvErrorState.isGone = false
-                            binding.layoutCommonState.tvErrorState.text = "Oops!\nNo Internet Connection"
+                            binding.layoutCommonState.tvErrorState.text = getString(R.string.text_no_internet_connection)
                             binding.layoutCommonState.ivErrorState.setImageResource(R.drawable.img_no_connection)
                         }
                     }
@@ -107,7 +107,7 @@ class ChangePasswordActivity : AppCompatActivity() {
                     binding.etConfirmPassword.text?.clear()
                     StyleableToast.makeText(
                         this,
-                        "Change Password Successfully",
+                        getString(R.string.text_change_password_successfully),
                         R.style.successtoast
                     ).show()
                     navigateToProfile()
