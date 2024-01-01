@@ -13,9 +13,11 @@ import com.kelompoksatuandsatu.preducation.data.network.api.model.payment.histor
 import com.kelompoksatuandsatu.preducation.databinding.ActivityTransactionBinding
 import com.kelompoksatuandsatu.preducation.presentation.common.adapter.history.HistoryPaymentListAdapter
 import com.kelompoksatuandsatu.preducation.presentation.feature.detailclass.DetailClassActivity
+import com.kelompoksatuandsatu.preducation.utils.AssetWrapper
 import com.kelompoksatuandsatu.preducation.utils.exceptions.ApiException
 import com.kelompoksatuandsatu.preducation.utils.exceptions.NoInternetException
 import com.kelompoksatuandsatu.preducation.utils.proceedWhen
+import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class HistoryPaymentActivity : AppCompatActivity() {
@@ -24,10 +26,13 @@ class HistoryPaymentActivity : AppCompatActivity() {
 
     private val viewModel: HistoryPaymentViewModel by viewModel()
 
+    private val assetWrapper: AssetWrapper by inject()
+
     private val historyAdapter: HistoryPaymentListAdapter by lazy {
-        HistoryPaymentListAdapter {
-            navigateToDetail(it)
-        }
+        HistoryPaymentListAdapter(
+            itemClick = { courseItem -> navigateToDetail(courseItem) },
+            assetWrapper = assetWrapper
+        )
     }
 
     private fun navigateToDetail(it: CourseItem) {
@@ -101,7 +106,8 @@ class HistoryPaymentActivity : AppCompatActivity() {
                     binding.layoutStateHistory.tvError.isGone = true
                     binding.layoutStateHistory.clErrorState.isGone = false
                     binding.layoutStateHistory.tvErrorState.isGone = false
-                    binding.layoutStateHistory.tvErrorState.text = "Data empty"
+                    binding.layoutStateHistory.tvErrorState.text =
+                        getString(R.string.text_data_empty)
                     binding.layoutStateHistory.ivErrorState.isGone = false
                 },
                 doOnError = {
@@ -120,7 +126,7 @@ class HistoryPaymentActivity : AppCompatActivity() {
                                 binding.layoutStateHistory.ivErrorState.isGone = false
                                 binding.layoutStateHistory.tvErrorState.isGone = false
                                 binding.layoutStateHistory.tvErrorState.text =
-                                    "Sorry, there's an error on the server"
+                                    getString(R.string.text_sorry_there_s_an_error_on_the_server)
                                 binding.layoutStateHistory.ivErrorState.setImageResource(R.drawable.img_server_error)
                             }
                         }
@@ -130,7 +136,7 @@ class HistoryPaymentActivity : AppCompatActivity() {
                             binding.layoutStateHistory.ivErrorState.isGone = false
                             binding.layoutStateHistory.tvErrorState.isGone = false
                             binding.layoutStateHistory.tvErrorState.text =
-                                "Oops!\nYou're not connection"
+                                getString(R.string.text_no_internet_connection)
                             binding.layoutStateHistory.ivErrorState.setImageResource(R.drawable.img_no_connection)
                         }
                     }

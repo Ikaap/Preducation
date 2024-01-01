@@ -22,6 +22,7 @@ import com.kelompoksatuandsatu.preducation.databinding.ActivityDetailClassBindin
 import com.kelompoksatuandsatu.preducation.model.course.courseall.CourseViewParam
 import com.kelompoksatuandsatu.preducation.model.progress.CourseProgressItemClass
 import com.kelompoksatuandsatu.preducation.presentation.feature.detailclass.adapter.ViewPagerAdapter
+import com.kelompoksatuandsatu.preducation.utils.AssetWrapper
 import com.kelompoksatuandsatu.preducation.utils.exceptions.ApiException
 import com.kelompoksatuandsatu.preducation.utils.exceptions.NoInternetException
 import com.kelompoksatuandsatu.preducation.utils.proceedWhen
@@ -31,6 +32,7 @@ import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.Abs
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.FullscreenListener
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.options.IFramePlayerOptions
 import io.github.muddz.styleabletoast.StyleableToast
+import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class DetailClassActivity : AppCompatActivity() {
@@ -57,6 +59,8 @@ class DetailClassActivity : AppCompatActivity() {
     }
 
     private val viewModel: DetailClassViewModel by viewModel()
+
+    private val assetWrapper: AssetWrapper by inject()
 
     private var videoId: String = ""
 
@@ -85,13 +89,14 @@ class DetailClassActivity : AppCompatActivity() {
         selectedId?.let { viewModel.getCourseById(it) }
     }
 
+    @SuppressLint("SetTextI18n")
     private fun observeData() {
         viewModel.detailCourse.observe(this) {
             it.proceedWhen(
                 doOnSuccess = {
                     binding.shimmerDataCourse.isGone = true
                     it.payload?.let { data ->
-                        var backgroundVideo = data.thumbnail
+                        val backgroundVideo = data.thumbnail
                         data.chapters?.map { chapter ->
                             chapter.videos?.map {
                                 if (it.videoUrl.isNullOrEmpty()) {
@@ -103,9 +108,9 @@ class DetailClassActivity : AppCompatActivity() {
                         binding.tvCategoryCourse.text = data.category?.name
                         binding.tvNameCourse.text = data.title
                         binding.tvTotalModulCourse.text =
-                            data.totalModule.toString() + " Module"
-                        binding.tvTotalHourCourse.text = data.totalDuration.toString() + " Mins"
-                        binding.tvLevelCourse.text = data.level + " Level"
+                            data.totalModule.toString() + assetWrapper.getString(R.string.text_module)
+                        binding.tvTotalHourCourse.text = data.totalDuration.toString() + assetWrapper.getString(R.string.text_mins)
+                        binding.tvLevelCourse.text = data.level + assetWrapper.getString(R.string.text_level)
                         binding.tvCourseRating.text = data.totalRating.toString()
                     }
                 },
@@ -119,7 +124,7 @@ class DetailClassActivity : AppCompatActivity() {
                     binding.layoutCommonState.clErrorState.isGone = false
                     binding.layoutCommonState.ivErrorState.isGone = false
                     binding.layoutCommonState.tvErrorState.isGone = false
-                    binding.layoutCommonState.tvErrorState.text = "Data not found"
+                    binding.layoutCommonState.tvErrorState.text = getString(R.string.text_data_not_found)
                 },
                 doOnError = {
                     binding.shimmerDataCourse.isGone = true
@@ -140,7 +145,7 @@ class DetailClassActivity : AppCompatActivity() {
                                 binding.layoutCommonState.ivErrorState.isGone = false
                                 binding.layoutCommonState.tvErrorState.isGone = false
                                 binding.layoutCommonState.tvErrorState.text =
-                                    "Sorry, there's an error on the server"
+                                    assetWrapper.getString(R.string.text_sorry_there_s_an_error_on_the_server)
                                 binding.layoutCommonState.ivErrorState.setImageResource(R.drawable.img_server_error)
                             }
                         }
@@ -151,7 +156,7 @@ class DetailClassActivity : AppCompatActivity() {
                             binding.layoutCommonState.ivErrorState.isGone = false
                             binding.layoutCommonState.tvErrorState.isGone = false
                             binding.layoutCommonState.tvErrorState.text =
-                                "Oops!\nYou're not connection"
+                                assetWrapper.getString(R.string.text_no_internet_connection)
                             binding.layoutCommonState.ivErrorState.setImageResource(R.drawable.img_no_connection)
                         }
                     }
@@ -318,8 +323,8 @@ class DetailClassActivity : AppCompatActivity() {
 
     private fun setLayoutViewPager() {
         with(binding) {
-            tabLayout.addTab(tabLayout.newTab().setText("About"))
-            tabLayout.addTab(tabLayout.newTab().setText("Curriculcum"))
+            tabLayout.addTab(tabLayout.newTab().setText(getString(R.string.text_about)))
+            tabLayout.addTab(tabLayout.newTab().setText(getString(R.string.text_curriculcum)))
 
             viewPager.adapter = adapterViewPager
 

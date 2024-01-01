@@ -31,14 +31,13 @@
             android:id="@+id/iv_thumbnail_video"
             android:layout_width="match_parent"
             android:layout_height="200dp"
-            android:scaleType="centerCrop"
-            tools:src="@tools:sample/avatars"
-            android:visibility="gone"
             android:elevation="2dp"
+            android:scaleType="centerCrop"
+            android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            />
+            tools:src="@tools:sample/avatars" />
 
         <com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView
             android:id="@+id/youtube_player_view"
@@ -118,7 +117,7 @@
                     android:textSize="12sp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    tools:text="UI/UX Design" />
+                    tools:text="@string/text_category_course" />
 
                 <TextView
                     android:id="@+id/tv_course_rating"
@@ -129,7 +128,7 @@
                     android:textSize="12sp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    tools:text="4.2" />
+                    tools:text="@string/text_course_rating" />
 
                 <ImageView
                     android:layout_width="14dp"
@@ -151,7 +150,7 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/tv_category_course"
-                    tools:text="Intro Basic of User Interaction Design" />
+                    tools:text="@string/text_name_course" />
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
@@ -181,7 +180,7 @@
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toEndOf="@id/iv_ellipse_modul"
                         app:layout_constraintTop_toTopOf="parent"
-                        tools:text="19 Modul" />
+                        tools:text="@string/text_total_modul_course" />
 
                     <ImageView
                         android:id="@+id/iv_ellipse_hour"
@@ -204,7 +203,7 @@
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toEndOf="@id/iv_ellipse_hour"
                         app:layout_constraintTop_toTopOf="parent"
-                        tools:text="60 Hour" />
+                        tools:text="@string/text_total_hour_course" />
 
                     <ImageView
                         android:id="@+id/iv_ellipse_level"
@@ -227,7 +226,7 @@
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toEndOf="@id/iv_ellipse_level"
                         app:layout_constraintTop_toTopOf="parent"
-                        tools:text="Advanced Level" />
+                        tools:text="@string/text_level_course" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -239,12 +238,21 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="16dp"
                 android:layout_marginTop="38dp"
-                android:visibility="gone"
-                app:layout_constraintEnd_toEndOf="parent"
+                android:visibility="visible"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
+                app:layout_constraintTop_toTopOf="parent"
+                app:shimmer_base_color="@color/color_shimmer"
+                app:shimmer_direction="left_to_right"
+                app:shimmer_repeat_mode="restart"
+                app:shimmer_shape="linear">
 
-                <include layout="@layout/layout_shimmer_data_detail_course" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <include layout="@layout/layout_shimmer_data_detail_course" />
+
+                </LinearLayout>
 
             </com.facebook.shimmer.ShimmerFrameLayout>
 

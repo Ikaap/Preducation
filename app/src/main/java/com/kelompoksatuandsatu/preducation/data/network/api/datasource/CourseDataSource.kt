@@ -22,7 +22,6 @@ interface CourseDataSource {
     suspend fun getCategoriesProgress(): CategoriesProgressResponse
     suspend fun getCategoriesTypeClass(): CategoriesTypeClassResponse
     suspend fun postIndexCourseById(id: String, progressRequest: ProgressCourseRequest): ProgressCourseResponse
-
     suspend fun paymentCourse(paymentCourseRequest: PaymentCourseRequest): PaymentCourseResponse
     suspend fun getHistoryPayment(): HistoryItemResponse
 }

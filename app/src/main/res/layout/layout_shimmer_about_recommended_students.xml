@@ -11,14 +11,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:fontFamily="@font/montserrat"
-        android:textColor="@color/app_color_on_tertiary"
-        android:textSize="12sp"
         android:background="@color/color_shimmer"
+        android:fontFamily="@font/montserrat"
+        android:textColor="@color/color_shimmer"
+        android:textSize="12sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:text="Anda yang ingin memahami poin penting design system" />
+        tools:text="@string/text_desc_recommended_students" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

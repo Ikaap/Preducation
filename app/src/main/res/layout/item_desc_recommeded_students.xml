@@ -21,14 +21,14 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:fontFamily="@font/montserrat"
+        android:lineHeight="18dp"
         android:textColor="@color/app_color_on_tertiary"
         android:textSize="12sp"
-        android:lineHeight="18dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/ic_ellipse_desc"
         app:layout_constraintTop_toTopOf="parent"
-        tools:text="Anda yang ingin memahami poin penting design system"
-        tools:ignore="UnusedAttribute" />
+        tools:ignore="UnusedAttribute"
+        tools:text="@string/text_desc_recommended_students" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

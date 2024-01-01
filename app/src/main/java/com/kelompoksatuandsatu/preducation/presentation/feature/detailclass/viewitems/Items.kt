@@ -1,5 +1,6 @@
 package com.kelompoksatuandsatu.preducation.presentation.feature.detailclass.viewitems
 
+import android.annotation.SuppressLint
 import android.view.View
 import androidx.core.view.isGone
 import com.kelompoksatuandsatu.preducation.R
@@ -7,15 +8,18 @@ import com.kelompoksatuandsatu.preducation.databinding.ItemSectionDataCurriculcu
 import com.kelompoksatuandsatu.preducation.databinding.ItemSectionHeaderCurriculcumBinding
 import com.kelompoksatuandsatu.preducation.model.course.detailcourse.ChapterViewParam
 import com.kelompoksatuandsatu.preducation.model.course.detailcourse.VideoViewParam
+import com.kelompoksatuandsatu.preducation.utils.AssetWrapper
 import com.xwray.groupie.viewbinding.BindableItem
 class HeaderItem(
     private val data: ChapterViewParam,
+    private val assetWrapper: AssetWrapper,
     private val onHeaderClick: (ChapterViewParam) -> Unit
 ) :
     BindableItem<ItemSectionHeaderCurriculcumBinding>() {
+    @SuppressLint("SetTextI18n")
     override fun bind(viewBinding: ItemSectionHeaderCurriculcumBinding, position: Int) {
         viewBinding.tvTitleChapter.text = data.title
-        viewBinding.tvChapterTotalDuration.text = data.totalDuration.toString() + " Mins"
+        viewBinding.tvChapterTotalDuration.text = data.totalDuration.toString() + assetWrapper.getString(R.string.text_mins)
         viewBinding.root.setOnClickListener { onHeaderClick.invoke(data) }
     }
 
@@ -27,13 +31,15 @@ class HeaderItem(
 
 class DataItem(
     private val itemData: VideoViewParam,
+    private val assetWrapper: AssetWrapper,
     private val onItemClick: (item: VideoViewParam) -> Unit
 ) :
     BindableItem<ItemSectionDataCurriculcumBinding>() {
+    @SuppressLint("SetTextI18n")
     override fun bind(viewBinding: ItemSectionDataCurriculcumBinding, position: Int) {
         viewBinding.tvVideoNumber.text = itemData.index.toString()
         viewBinding.tvTitleVideo.text = itemData.title
-        viewBinding.tvDurationVideo.text = itemData.duration.toString() + " Mins"
+        viewBinding.tvDurationVideo.text = itemData.duration.toString() + assetWrapper.getString(R.string.text_mins)
         viewBinding.tvVideoUrl.text = itemData.videoUrl
         if (itemData.videoUrl.isNullOrEmpty()) {
             viewBinding.ivPlayGreen.isGone = true

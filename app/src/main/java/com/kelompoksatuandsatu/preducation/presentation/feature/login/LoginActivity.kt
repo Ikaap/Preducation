@@ -130,7 +130,7 @@ class LoginActivity : AppCompatActivity() {
                 doOnSuccess = {
                     StyleableToast.makeText(
                         this,
-                        "Login Successful",
+                        getString(R.string.text_login_successful),
                         R.style.successtoast
                     ).show()
                     it.payload?.let {
@@ -163,7 +163,7 @@ class LoginActivity : AppCompatActivity() {
                         } else if (it.exception.httpCode == 500) {
                             StyleableToast.makeText(
                                 this,
-                                "Server Error",
+                                getString(R.string.text_sorry_there_s_an_error_on_the_server),
                                 R.style.failedtoast
                             ).show()
                         }
@@ -171,7 +171,7 @@ class LoginActivity : AppCompatActivity() {
                         if (!it.exception.isNetworkAvailable(this)) {
                             StyleableToast.makeText(
                                 this,
-                                "No Internet",
+                                getString(R.string.text_no_internet_connection),
                                 R.style.failedtoast
                             ).show()
                         }

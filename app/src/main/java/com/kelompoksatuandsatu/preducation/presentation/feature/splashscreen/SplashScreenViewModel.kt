@@ -22,10 +22,4 @@ class SplashScreenViewModel(
             _isUserLogin.postValue(userStatus)
         }
     }
-
-    fun deleteDataUser() {
-        viewModelScope.launch(Dispatchers.IO) {
-            userPreferenceDataSource.deleteAllData()
-        }
-    }
 }

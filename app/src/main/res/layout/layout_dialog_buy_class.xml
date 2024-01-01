@@ -50,10 +50,10 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/cl_data_detail_course"
                 android:layout_width="0dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                android:paddingVertical="10dp"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="10dp"
+                android:paddingVertical="10dp"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@id/iv_banner_course"
                 app:layout_constraintTop_toTopOf="parent">
@@ -67,19 +67,19 @@
                     android:textSize="12sp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    tools:text="UI/UX Design" />
+                    tools:text="@string/text_category_course" />
 
                 <TextView
                     android:id="@+id/tv_course_rating"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/montserrat_bold"
-                    app:layout_constraintBottom_toBottomOf="@id/tv_category_course"
                     android:textColor="@color/app_color_secondary"
                     android:textSize="12sp"
+                    app:layout_constraintBottom_toBottomOf="@id/tv_category_course"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    tools:text="4.2" />
+                    tools:text="@string/text_course_rating" />
 
                 <ImageView
                     android:layout_width="12dp"
@@ -101,7 +101,7 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/tv_category_course"
-                    tools:text="Intro Basic of User Interaction Design" />
+                    tools:text="@string/text_name_course" />
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/cl_sub_data_detail_course"
@@ -132,7 +132,7 @@
                         app:layout_constraintBottom_toTopOf="@id/tv_level_course"
                         app:layout_constraintStart_toEndOf="@id/iv_ellipse_modul"
                         app:layout_constraintTop_toTopOf="parent"
-                        tools:text="19 Modul" />
+                        tools:text="@string/text_total_modul_course" />
 
                     <ImageView
                         android:id="@+id/iv_ellipse_hour"
@@ -155,7 +155,7 @@
                         app:layout_constraintBottom_toTopOf="@id/tv_level_course"
                         app:layout_constraintStart_toEndOf="@id/iv_ellipse_hour"
                         app:layout_constraintTop_toTopOf="parent"
-                        tools:text="60 Hour" />
+                        tools:text="@string/text_total_hour_course" />
 
                     <ImageView
                         android:id="@+id/iv_ellipse_level"
@@ -179,7 +179,7 @@
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toEndOf="@id/iv_ellipse_level"
                         app:layout_constraintTop_toBottomOf="@id/tv_total_modul_course"
-                        tools:text="Advanced Level" />
+                        tools:text="@string/text_level_course" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -194,7 +194,7 @@
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/cl_sub_data_detail_course"
-                    tools:text="Rp. 199.000" />
+                    tools:text="@string/tv_price_course" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 

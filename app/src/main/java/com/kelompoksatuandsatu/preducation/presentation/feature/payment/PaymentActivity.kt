@@ -8,7 +8,6 @@ import android.graphics.Bitmap
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.webkit.WebResourceRequest
 import android.webkit.WebView
@@ -71,15 +70,16 @@ class PaymentActivity : AppCompatActivity() {
         }
     }
 
+    @SuppressLint("SetTextI18n")
     private fun getDataCourse(detailCourse: DetailCourseViewParam?) {
         detailCourse?.let {
             binding.ivBannerCourse.load(detailCourse.thumbnail)
             binding.tvCategoryCourse.text = detailCourse.category?.name
             binding.tvCourseRating.text = detailCourse.totalRating.toString()
             binding.tvNameCourse.text = detailCourse.title
-            binding.tvTotalModulCourse.text = detailCourse.totalModule.toString() + " Module"
-            binding.tvTotalHourCourse.text = detailCourse.totalDuration.toString() + " Mins"
-            binding.tvLevelCourse.text = detailCourse.level + " Level"
+            binding.tvTotalModulCourse.text = detailCourse.totalModule.toString() + getString(R.string.text_module)
+            binding.tvTotalHourCourse.text = detailCourse.totalDuration.toString() + getString(R.string.text_mins)
+            binding.tvLevelCourse.text = detailCourse.level + getString(R.string.text_level)
             binding.tvCoursePrice.text = detailCourse.price?.toCurrencyFormat()
             val ppnValue = it.price?.times(0.11)!!.toInt()
             binding.tvCoursePpn.text = ppnValue.toCurrencyFormat()
@@ -115,12 +115,11 @@ class PaymentActivity : AppCompatActivity() {
                     binding.layoutStatePayment.tvError.text = e.exception?.message
                     binding.layoutStatePayment.pbLoading.isVisible = false
 
-                    // get error from api response
                     if (it.exception is ApiException) {
                         if (it.exception.httpCode == 400) {
                             StyleableToast.makeText(
                                 this,
-                                it.exception.getParsedErrorPayment()?.message + "\nPlease check your email to get the OTP code",
+                                it.exception.getParsedErrorPayment()?.message + getString(R.string.text_please_check_your_email_to_get_the_otp_code),
                                 R.style.failedtoast
                             ).show()
 
@@ -132,7 +131,7 @@ class PaymentActivity : AppCompatActivity() {
                             binding.layoutStatePayment.ivErrorState.isGone = false
                             binding.layoutStatePayment.tvErrorState.isGone = false
                             binding.layoutStatePayment.tvErrorState.text =
-                                "Sorry, there's an error on the server"
+                                getString(R.string.text_sorry_there_s_an_error_on_the_server)
                             binding.layoutStatePayment.ivErrorState.setImageResource(R.drawable.img_server_error)
                         }
                     } else if (it.exception is NoInternetException) {
@@ -141,7 +140,7 @@ class PaymentActivity : AppCompatActivity() {
                             binding.layoutStatePayment.ivErrorState.isGone = false
                             binding.layoutStatePayment.tvErrorState.isGone = false
                             binding.layoutStatePayment.tvErrorState.text =
-                                "Oops!\nYou're not connection"
+                                getString(R.string.text_no_internet_connection)
                             binding.layoutStatePayment.ivErrorState.setImageResource(R.drawable.img_no_connection)
                         }
                     }
@@ -186,15 +185,14 @@ class PaymentActivity : AppCompatActivity() {
             }
 
             override fun onPageStarted(view: WebView?, url: String?, favicon: Bitmap?) {
-                prosessDialog.setMessage("Loading...")
+                prosessDialog.setMessage(getString(R.string.text_loading))
                 prosessDialog.show()
                 super.onPageStarted(view, url, favicon)
             }
 
             override fun onPageFinished(view: WebView?, url: String?) {
                 prosessDialog.hide()
-                Log.d("PaymentActivity", "onPageFinished: $url")
-                if (url?.contains("success") == true) {
+                if (url?.contains(getString(R.string.text_success)) == true) {
                     showSuccessDialog()
                 }
                 super.onPageFinished(view, url)

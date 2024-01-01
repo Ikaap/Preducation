@@ -44,8 +44,8 @@
         android:id="@+id/rv_history"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginTop="4dp"
         android:layout_marginVertical="8dp"
+        android:layout_marginTop="4dp"
         android:orientation="vertical"
         android:scrollbarSize="0dp"
         android:scrollbars="vertical"
@@ -54,7 +54,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/cl_header"
-        tools:listitem="@layout/item_linear_history"/>
+        tools:listitem="@layout/item_linear_history" />
 
     <include
         android:id="@+id/layout_state_history"
@@ -62,8 +62,8 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:visibility="gone"
-        app:layout_constraintTop_toBottomOf="@id/cl_header"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/cl_header"
         tools:visibility="visible" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

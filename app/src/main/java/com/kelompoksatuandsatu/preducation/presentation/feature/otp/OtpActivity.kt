@@ -92,17 +92,17 @@ class OtpActivity : AppCompatActivity() {
                                 it.exception.getParsedError()?.message,
                                 R.style.failedtoast
                             ).show()
-                            if (it.exception.getParsedError()?.message?.contains("expired") == true) {
+                            if (it.exception.getParsedError()?.message?.contains(getString(R.string.text_expired)) == true) {
                                 StyleableToast.makeText(
                                     this,
-                                    it.exception.getParsedError()?.message + ", Please ask for the OTP code again",
+                                    it.exception.getParsedError()?.message + getString(R.string.text_please_ask_for_the_otp_code_again),
                                     R.style.failedtoast
                                 ).show()
                             }
                         } else if (it.exception.httpCode == 500) {
                             StyleableToast.makeText(
                                 this,
-                                "Server Error",
+                                getString(R.string.text_sorry_there_s_an_error_on_the_server),
                                 R.style.failedtoast
                             ).show()
                         }
@@ -110,7 +110,7 @@ class OtpActivity : AppCompatActivity() {
                         if (!it.exception.isNetworkAvailable(this)) {
                             StyleableToast.makeText(
                                 this,
-                                "No Internet",
+                                getString(R.string.text_no_internet_connection),
                                 R.style.failedtoast
                             ).show()
                         }

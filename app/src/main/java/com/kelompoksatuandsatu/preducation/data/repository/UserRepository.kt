@@ -1,6 +1,6 @@
 package com.kelompoksatuandsatu.preducation.data.repository
 
-import android.util.Log
+import com.kelompoksatuandsatu.preducation.R
 import com.kelompoksatuandsatu.preducation.data.local.datastore.datasource.UserPreferenceDataSource
 import com.kelompoksatuandsatu.preducation.data.network.api.datasource.UserDataSource
 import com.kelompoksatuandsatu.preducation.data.network.api.model.auth.forgotpassword.ForgotPasswordRequest
@@ -22,6 +22,7 @@ import com.kelompoksatuandsatu.preducation.model.auth.otp.postemailotp.EmailOtp
 import com.kelompoksatuandsatu.preducation.model.auth.otp.verifyotp.OtpData
 import com.kelompoksatuandsatu.preducation.model.common.BaseResponse
 import com.kelompoksatuandsatu.preducation.model.user.UserViewParam
+import com.kelompoksatuandsatu.preducation.utils.AssetWrapper
 import com.kelompoksatuandsatu.preducation.utils.ResultWrapper
 import com.kelompoksatuandsatu.preducation.utils.proceedFlow
 import kotlinx.coroutines.delay
@@ -57,6 +58,7 @@ interface UserRepository {
     suspend fun postEmailOtp(request: EmailOtp): Flow<ResultWrapper<Boolean>>
 
     suspend fun verifyOtp(request: OtpData): Flow<ResultWrapper<BaseResponse>>
+
     suspend fun userLogout(): Flow<ResultWrapper<Boolean>>
 
     suspend fun userForgotPassword(request: UserForgotPassword): Flow<ResultWrapper<Boolean>>
@@ -64,6 +66,7 @@ interface UserRepository {
 
 class UserRepositoryImpl(
     private val userDataSource: UserDataSource,
+    private val assetWrapper: AssetWrapper,
     private val userPreferenceDataSource: UserPreferenceDataSource
 ) : UserRepository {
 
@@ -162,10 +165,9 @@ class UserRepositoryImpl(
             userPreferenceDataSource.deleteAllData()
             emit(ResultWrapper.Success(true))
         } else {
-            emit(ResultWrapper.Error(Exception("Logout failed with response code ${response.code()}")))
+            emit(ResultWrapper.Error(Exception(assetWrapper.getString(R.string.text_logout_failed_with_response_code) + response.code().toString())))
         }
     }.catch { e ->
-        Log.e("UserRepository", "Error during logout", e)
-        emit(ResultWrapper.Error(e as? Exception ?: Exception("Unknown error")))
+        emit(ResultWrapper.Error(e as? Exception ?: Exception(assetWrapper.getString(R.string.text_unknown_error))))
     }
 }

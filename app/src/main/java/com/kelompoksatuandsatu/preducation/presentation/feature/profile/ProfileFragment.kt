@@ -97,7 +97,7 @@ class ProfileFragment : Fragment() {
                             if (it.exception.httpCode == 500) {
                                 StyleableToast.makeText(
                                     requireContext(),
-                                    "Server Error",
+                                    getString(R.string.text_sorry_there_s_an_error_on_the_server),
                                     R.style.failedtoast
                                 ).show()
                             } else if (it.exception.getParsedErrorProfile()?.success == false) {
@@ -112,7 +112,7 @@ class ProfileFragment : Fragment() {
                         if (!it.exception.isNetworkAvailable(requireContext())) {
                             StyleableToast.makeText(
                                 requireContext(),
-                                "No Internet",
+                                getString(R.string.text_no_internet_connection),
                                 R.style.failedtoast
                             ).show()
                         }
@@ -158,7 +158,7 @@ class ProfileFragment : Fragment() {
                 doOnSuccess = {
                     StyleableToast.makeText(
                         requireContext(),
-                        "Successfully Logout",
+                        getString(R.string.text_successfully_logout),
                         R.style.successtoast
                     ).show()
                     performLogout()
@@ -166,21 +166,21 @@ class ProfileFragment : Fragment() {
                 doOnError = {
                     StyleableToast.makeText(
                         requireContext(),
-                        "Failed to Logout",
+                        getString(R.string.text_failed_to_logout),
                         R.style.failedtoast
                     ).show()
                 },
                 doOnLoading = {
                     StyleableToast.makeText(
                         requireContext(),
-                        "Loading Logout",
+                        getString(R.string.text_loading_logout),
                         R.style.successtoast
                     ).show()
                 },
                 doOnEmpty = {
                     StyleableToast.makeText(
                         requireContext(),
-                        "Empty Logout",
+                        getString(R.string.text_empty_logout),
                         R.style.failedtoast
                     ).show()
                 }

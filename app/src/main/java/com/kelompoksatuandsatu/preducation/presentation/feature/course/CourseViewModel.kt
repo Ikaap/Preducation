@@ -4,17 +4,20 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.kelompoksatuandsatu.preducation.R
 import com.kelompoksatuandsatu.preducation.data.local.datastore.datasource.UserPreferenceDataSource
 import com.kelompoksatuandsatu.preducation.data.repository.CourseRepository
 import com.kelompoksatuandsatu.preducation.model.category.categoryclass.CategoryClass
 import com.kelompoksatuandsatu.preducation.model.category.categoryprogress.CategoryType
 import com.kelompoksatuandsatu.preducation.model.course.courseall.CourseViewParam
+import com.kelompoksatuandsatu.preducation.utils.AssetWrapper
 import com.kelompoksatuandsatu.preducation.utils.ResultWrapper
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class CourseViewModel(
     private val repositoryCourse: CourseRepository,
+    private val assetWrapper: AssetWrapper,
     private val userPreferenceDataSource: UserPreferenceDataSource
 ) : ViewModel() {
 
@@ -28,7 +31,18 @@ class CourseViewModel(
 
     fun getCourse(category: List<String>? = null, typeClass: String? = null, title: String? = null) {
         viewModelScope.launch(Dispatchers.IO) {
-            repositoryCourse.getCourseHomeFilter(category = category, typeClass = if (typeClass == "All") null else typeClass?.toLowerCase(), title = title)
+            repositoryCourse.getCourseHomeFilter(
+                category = category,
+                typeClass = if (typeClass == assetWrapper.getString(
+                        R.string.all
+                    )
+                ) {
+                    null
+                } else {
+                    typeClass?.toLowerCase()
+                },
+                title = title
+            )
                 .collect {
                     _course.postValue(it)
                 }

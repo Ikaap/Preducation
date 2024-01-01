@@ -17,9 +17,11 @@ import com.kelompoksatuandsatu.preducation.presentation.common.adapter.course.Ad
 import com.kelompoksatuandsatu.preducation.presentation.common.adapter.course.CourseLinearListAdapter
 import com.kelompoksatuandsatu.preducation.presentation.feature.detailclass.DetailClassActivity
 import com.kelompoksatuandsatu.preducation.presentation.feature.register.RegisterActivity
+import com.kelompoksatuandsatu.preducation.utils.AssetWrapper
 import com.kelompoksatuandsatu.preducation.utils.exceptions.ApiException
 import com.kelompoksatuandsatu.preducation.utils.exceptions.NoInternetException
 import com.kelompoksatuandsatu.preducation.utils.proceedWhen
+import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class SeeAllPopularCoursesActivity : AppCompatActivity() {
@@ -30,8 +32,10 @@ class SeeAllPopularCoursesActivity : AppCompatActivity() {
 
     private val viewModel: HomeViewModel by viewModel()
 
+    private val assetWrapper: AssetWrapper by inject()
+
     private val courseAdapter: CourseLinearListAdapter by lazy {
-        CourseLinearListAdapter(AdapterLayoutMenu.SEEALL) {
+        CourseLinearListAdapter(AdapterLayoutMenu.SEEALL, assetWrapper) {
             viewModel.isUserLogin.observe(this) { isLogin ->
                 if (!isLogin) {
                     showDialog()
@@ -117,7 +121,7 @@ class SeeAllPopularCoursesActivity : AppCompatActivity() {
                                 binding.layoutCommonState.clErrorState.isGone = false
                                 binding.layoutCommonState.ivErrorState.isGone = false
                                 binding.layoutCommonState.tvErrorState.isGone = false
-                                binding.layoutCommonState.tvErrorState.text = "Sorry, there's an error on the server"
+                                binding.layoutCommonState.tvErrorState.text = getString(R.string.text_sorry_there_s_an_error_on_the_server)
                                 binding.layoutCommonState.ivErrorState.setImageResource(R.drawable.img_server_error)
                             }
                         }
@@ -127,7 +131,7 @@ class SeeAllPopularCoursesActivity : AppCompatActivity() {
                             binding.layoutCommonState.clErrorState.isGone = false
                             binding.layoutCommonState.ivErrorState.isGone = false
                             binding.layoutCommonState.tvErrorState.isGone = false
-                            binding.layoutCommonState.tvErrorState.text = "Oops!\nYou're not connection"
+                            binding.layoutCommonState.tvErrorState.text = getString(R.string.text_no_internet_connection)
                             binding.layoutCommonState.ivErrorState.setImageResource(R.drawable.img_no_connection)
                         }
                     }
@@ -140,7 +144,7 @@ class SeeAllPopularCoursesActivity : AppCompatActivity() {
                     binding.layoutStateCoursePopular.pbLoading.isVisible = false
                     binding.layoutStateCoursePopular.clErrorState.isVisible = true
                     binding.layoutStateCoursePopular.tvErrorState.isVisible = true
-                    binding.layoutStateCoursePopular.tvErrorState.text = "Class not found !"
+                    binding.layoutStateCoursePopular.tvErrorState.text = getString(R.string.text_class_not_found)
                     binding.layoutStateCoursePopular.ivErrorState.isVisible = true
                 }
             )

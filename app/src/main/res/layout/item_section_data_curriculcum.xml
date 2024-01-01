@@ -2,9 +2,9 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/cl_video"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:id="@+id/cl_video"
     android:layout_marginBottom="2dp"
     android:background="@color/white"
     android:paddingHorizontal="16dp"
@@ -30,7 +30,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:text="01" />
+            tools:text="@string/text_video_number" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -46,7 +46,7 @@
         app:layout_constraintEnd_toStartOf="@id/iv_play_green"
         app:layout_constraintStart_toEndOf="@id/cl_video_number"
         app:layout_constraintTop_toTopOf="parent"
-        tools:text="Tujuan Mengikuti Kelas Design System" />
+        tools:text="@string/text_title_video" />
 
     <TextView
         android:id="@+id/tv_duration_video"
@@ -59,7 +59,7 @@
         android:textSize="12sp"
         app:layout_constraintStart_toEndOf="@id/cl_video_number"
         app:layout_constraintTop_toBottomOf="@id/tv_title_video"
-        tools:text="15 Mins" />
+        tools:text="@string/text_duration_video" />
 
     <ImageView
         android:id="@+id/iv_play_green"

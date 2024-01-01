@@ -105,7 +105,7 @@ class EditProfileActivity : AppCompatActivity() {
                                 binding.layoutCommonState.ivErrorState.isGone = false
                                 binding.layoutCommonState.tvErrorState.isGone = false
                                 binding.layoutCommonState.tvErrorState.text =
-                                    "Sorry, there's an error on the server"
+                                    getString(R.string.text_sorry_there_s_an_error_on_the_server)
                                 binding.layoutCommonState.ivErrorState.setImageResource(R.drawable.img_server_error)
                             }
                         }
@@ -115,7 +115,7 @@ class EditProfileActivity : AppCompatActivity() {
                             binding.layoutCommonState.ivErrorState.isGone = false
                             binding.layoutCommonState.tvErrorState.isGone = false
                             binding.layoutCommonState.tvErrorState.text =
-                                "Oops!\nYou're not connection"
+                                getString(R.string.text_no_internet_connection)
                             binding.layoutCommonState.ivErrorState.setImageResource(R.drawable.img_no_connection)
                         }
                     }
@@ -146,7 +146,7 @@ class EditProfileActivity : AppCompatActivity() {
 
                     StyleableToast.makeText(
                         this,
-                        "Update Profile Successfully",
+                        getString(R.string.text_update_profile_successfully),
                         R.style.successtoast
                     ).show()
 
@@ -169,7 +169,7 @@ class EditProfileActivity : AppCompatActivity() {
 
                     StyleableToast.makeText(
                         this,
-                        "Update Profile Failed",
+                        getString(R.string.text_update_profile_failed),
                         R.style.failedtoast
                     ).show()
 
@@ -182,7 +182,7 @@ class EditProfileActivity : AppCompatActivity() {
                                 binding.layoutCommonState.ivErrorState.isGone = false
                                 binding.layoutCommonState.tvErrorState.isGone = false
                                 binding.layoutCommonState.tvErrorState.text =
-                                    "Sorry, there's an error on the server"
+                                    getString(R.string.text_sorry_there_s_an_error_on_the_server)
                                 binding.layoutCommonState.ivErrorState.setImageResource(R.drawable.img_server_error)
                             }
                         }
@@ -192,7 +192,7 @@ class EditProfileActivity : AppCompatActivity() {
                             binding.layoutCommonState.ivErrorState.isGone = false
                             binding.layoutCommonState.tvErrorState.isGone = false
                             binding.layoutCommonState.tvErrorState.text =
-                                "Oops!\nYou're not connection"
+                                getString(R.string.text_no_internet_connection)
                             binding.layoutCommonState.ivErrorState.setImageResource(R.drawable.img_no_connection)
                         }
                     }
@@ -224,7 +224,7 @@ class EditProfileActivity : AppCompatActivity() {
         } else if (resultCode == ImagePicker.RESULT_ERROR) {
             Toast.makeText(this, ImagePicker.getError(data), Toast.LENGTH_SHORT).show()
         } else {
-            Toast.makeText(this, "Task Cancelled", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, getString(R.string.text_task_cancelled), Toast.LENGTH_SHORT).show()
         }
     }
 

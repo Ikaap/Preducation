@@ -19,11 +19,12 @@
             android:layout_height="wrap_content"
             android:background="@color/color_shimmer"
             android:fontFamily="@font/montserrat_bold"
-            android:textColor="@color/app_color_primary_container"
+            android:textColor="@color/color_shimmer"
             android:textSize="12sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:text="UI/UX Design" />
+            tools:text="@string/text_category_course"
+            />
 
         <TextView
             android:id="@+id/tv_course_rating"
@@ -31,18 +32,17 @@
             android:layout_height="wrap_content"
             android:background="@color/color_shimmer"
             android:fontFamily="@font/montserrat_bold"
-            android:textColor="@color/app_color_secondary"
+            android:textColor="@color/color_shimmer"
             android:textSize="12sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:text="4.2" />
+            tools:text="@string/text_course_rating" />
 
         <ImageView
-            android:layout_width="14dp"
-            android:layout_height="14dp"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
             android:layout_marginEnd="6dp"
             android:background="@color/color_shimmer"
-            android:src="@drawable/ic_star"
             app:layout_constraintBottom_toBottomOf="@id/tv_course_rating"
             app:layout_constraintEnd_toStartOf="@id/tv_course_rating"
             app:layout_constraintTop_toTopOf="parent" />
@@ -54,12 +54,12 @@
             android:layout_marginTop="6dp"
             android:background="@color/color_shimmer"
             android:fontFamily="@font/montserrat_bold"
-            android:textColor="@color/app_color_secondary"
+            android:textColor="@color/color_shimmer"
             android:textSize="14sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tv_category_course"
-            tools:text="Intro Basic of User Interaction Design" />
+            tools:text="@string/text_name_course" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -74,7 +74,7 @@
                 android:id="@+id/iv_ellipse_modul"
                 android:layout_width="6dp"
                 android:layout_height="6dp"
-                android:src="@drawable/ic_ellipse"
+                android:background="@color/color_shimmer"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -86,19 +86,19 @@
                 android:layout_marginStart="4dp"
                 android:background="@color/color_shimmer"
                 android:fontFamily="@font/montserrat"
-                android:textColor="@color/app_color_on_primary_container"
+                android:textColor="@color/color_shimmer"
                 android:textSize="12sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toEndOf="@id/iv_ellipse_modul"
                 app:layout_constraintTop_toTopOf="parent"
-                tools:text="19 Modul" />
+                tools:text="@string/text_total_modul_course" />
 
             <ImageView
                 android:id="@+id/iv_ellipse_hour"
                 android:layout_width="6dp"
                 android:layout_height="6dp"
                 android:layout_marginStart="6dp"
-                android:src="@drawable/ic_ellipse"
+                android:background="@color/color_shimmer"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toEndOf="@id/tv_total_modul_course"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -110,19 +110,19 @@
                 android:layout_marginStart="4dp"
                 android:background="@color/color_shimmer"
                 android:fontFamily="@font/montserrat"
-                android:textColor="@color/app_color_on_primary_container"
+                android:textColor="@color/color_shimmer"
                 android:textSize="12sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toEndOf="@id/iv_ellipse_hour"
                 app:layout_constraintTop_toTopOf="parent"
-                tools:text="60 Hour" />
+                tools:text="@string/text_total_hour_course" />
 
             <ImageView
                 android:id="@+id/iv_ellipse_level"
                 android:layout_width="6dp"
                 android:layout_height="6dp"
                 android:layout_marginStart="6dp"
-                android:src="@drawable/ic_ellipse"
+                android:background="@color/color_shimmer"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toEndOf="@id/tv_total_hour_course"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -134,12 +134,12 @@
                 android:layout_marginStart="4dp"
                 android:background="@color/color_shimmer"
                 android:fontFamily="@font/montserrat"
-                android:textColor="@color/app_color_on_primary_container"
+                android:textColor="@color/color_shimmer"
                 android:textSize="12sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toEndOf="@id/iv_ellipse_level"
                 app:layout_constraintTop_toTopOf="parent"
-                tools:text="Advanced Level" />
+                tools:text="@string/text_level_course" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
