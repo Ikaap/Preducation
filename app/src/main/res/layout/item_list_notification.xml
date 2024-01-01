@@ -21,8 +21,8 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="16dp"
-            android:orientation="horizontal"
             android:layout_marginTop="16dp"
+            android:orientation="horizontal"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
@@ -32,12 +32,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/montserrat_bold"
+                android:maxLines="1"
                 android:textAlignment="textStart"
                 android:textColor="@color/app_color_secondary"
                 android:textSize="16sp"
                 android:textStyle="bold"
-                android:maxLines="1"
-                tools:text="New Category Course!" />
+                tools:text="@string/text_notification_name" />
 
             <LinearLayout
                 android:id="@+id/ll_date"
@@ -55,12 +55,11 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/montserrat"
+                    android:gravity="end"
                     android:textColor="@color/app_color_secondary"
                     android:textSize="12sp"
                     android:textStyle="bold"
-                    android:gravity="end"
-                    tools:text="12 Desember 2023"
-                    />
+                    tools:text="@string/text_date" />
 
             </LinearLayout>
         </LinearLayout>
@@ -81,11 +80,11 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
                 android:fontFamily="@font/montserrat_medium"
+                android:maxLines="2"
                 android:textAlignment="textStart"
                 android:textColor="@color/app_color_on_secondary"
                 android:textSize="14sp"
-                android:maxLines="2"
-                tools:text="New the 3D Design Course is Available Now!" />
+                tools:text="@string/text_notification_desc" />
 
         </LinearLayout>
 

@@ -16,12 +16,12 @@
             android:id="@+id/iv_popular_course"
             android:layout_width="230dp"
             android:layout_height="126dp"
+            android:background="@color/color_shimmer"
             android:contentDescription="@string/desc_iv_popular_course"
             android:scaleType="centerCrop"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:background="@color/color_shimmer"/>
+            app:layout_constraintTop_toTopOf="parent" />
 
         <LinearLayout
             android:id="@+id/ll_category_and_rating"
@@ -38,9 +38,8 @@
                 android:id="@+id/tv_category_popular"
                 android:layout_width="70dp"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/montserrat_bold"
                 android:background="@color/color_shimmer"
-                />
+                android:fontFamily="@font/montserrat_bold" />
 
             <LinearLayout
                 android:id="@+id/ll_rating_popular_course"
@@ -56,10 +55,9 @@
                     android:id="@+id/tv_rating_popular_course"
                     android:layout_width="36dp"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/montserrat_bold"
-                    android:gravity="center"
                     android:background="@color/color_shimmer"
-                    />
+                    android:fontFamily="@font/montserrat_bold"
+                    android:gravity="center" />
 
             </LinearLayout>
 
@@ -80,10 +78,9 @@
                 android:id="@+id/tv_title_course"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/montserrat_bold"
-                android:maxLines="2"
                 android:background="@color/color_shimmer"
-                />
+                android:fontFamily="@font/montserrat_bold"
+                android:maxLines="2" />
 
         </LinearLayout>
 
@@ -109,9 +106,8 @@
                     android:id="@+id/iv_module_course"
                     android:layout_width="6dp"
                     android:layout_height="6dp"
-                    android:contentDescription="@string/iv_module_course"
                     android:background="@color/color_shimmer"
-                    />
+                    android:contentDescription="@string/iv_module_course" />
 
                 <TextView
                     android:id="@+id/tv_module_course"
@@ -119,14 +115,14 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="4dp"
                     android:layout_marginEnd="6dp"
-                    android:background="@color/color_shimmer"/>
+                    android:background="@color/color_shimmer" />
 
                 <ImageView
                     android:id="@+id/iv_time_course"
                     android:layout_width="6dp"
                     android:layout_height="6dp"
-                    android:contentDescription="@string/iv_time_course"
-                    android:background="@color/color_shimmer" />
+                    android:background="@color/color_shimmer"
+                    android:contentDescription="@string/iv_time_course" />
 
                 <TextView
                     android:id="@+id/tv_duration_course"
@@ -134,14 +130,14 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="4dp"
                     android:layout_marginEnd="6dp"
-                    android:background="@color/color_shimmer"/>
+                    android:background="@color/color_shimmer" />
 
                 <ImageView
                     android:id="@+id/iv_level_course"
                     android:layout_width="6dp"
                     android:layout_height="6dp"
-                    android:contentDescription="@string/iv_level_course"
-                    android:background="@color/color_shimmer" />
+                    android:background="@color/color_shimmer"
+                    android:contentDescription="@string/iv_level_course" />
 
                 <TextView
                     android:id="@+id/tv_level_course"
@@ -161,11 +157,11 @@
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="16dp"
             android:layout_marginTop="4dp"
+            android:background="@color/color_shimmer"
             android:fontFamily="@font/montserrat_bold"
             android:visibility="visible"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/cl_detail_popular_course"
-            android:background="@color/color_shimmer" />
+            app:layout_constraintTop_toBottomOf="@id/cl_detail_popular_course" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/cl_progress_bar"

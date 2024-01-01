@@ -1,5 +1,6 @@
 package com.kelompoksatuandsatu.preducation.presentation.common.adapter.history
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.view.isGone
@@ -8,13 +9,16 @@ import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
+import com.kelompoksatuandsatu.preducation.R
 import com.kelompoksatuandsatu.preducation.core.ViewHolderBinder
 import com.kelompoksatuandsatu.preducation.data.network.api.model.payment.history.CourseId
 import com.kelompoksatuandsatu.preducation.data.network.api.model.payment.history.CourseItem
 import com.kelompoksatuandsatu.preducation.databinding.ItemLinearHistoryBinding
+import com.kelompoksatuandsatu.preducation.utils.AssetWrapper
 
 class HistoryPaymentListAdapter(
-    private val itemClick: (CourseItem) -> Unit
+    private val itemClick: (CourseItem) -> Unit,
+    private val assetWrapper: AssetWrapper
 ) : RecyclerView.Adapter<HistoryPaymentListAdapter.HistoryPaymentItemViewHolder>() {
 
     private val differ = AsyncListDiffer(
@@ -36,7 +40,7 @@ class HistoryPaymentListAdapter(
             parent,
             false
         )
-        return HistoryPaymentItemViewHolder(binding, itemClick)
+        return HistoryPaymentItemViewHolder(binding, itemClick, assetWrapper)
     }
 
     override fun getItemCount(): Int {
@@ -53,9 +57,11 @@ class HistoryPaymentListAdapter(
 
     class HistoryPaymentItemViewHolder(
         private val binding: ItemLinearHistoryBinding,
-        private val itemClick: (CourseItem) -> Unit
+        private val itemClick: (CourseItem) -> Unit,
+        private val assetWrapper: AssetWrapper
     ) : RecyclerView.ViewHolder(binding.root), ViewHolderBinder<CourseItem> {
 
+        @SuppressLint("SetTextI18n")
         override fun bind(item: CourseItem) {
             with(binding) {
                 val courseId: CourseId? = item.courseId
@@ -65,7 +71,7 @@ class HistoryPaymentListAdapter(
 
                 tvCategoryPopular.text = courseId?.category?.name
 
-                val isPaid = item.status == "Paid"
+                val isPaid = item.status == assetWrapper.getString(R.string.text_paid)
                 clTypePaid.isVisible = isPaid
                 clTypeWaiting.isVisible = !isPaid
 
@@ -77,8 +83,8 @@ class HistoryPaymentListAdapter(
 
                 tvTitleCourse.text = courseId?.title
                 tvLevelCourse.text = courseId?.level
-                tvDurationCourse.text = "${courseId?.totalDuration} Mins"
-                tvModuleCourse.text = "${courseId?.totalModule} Modules"
+                tvDurationCourse.text = courseId?.totalDuration.toString() + assetWrapper.getString(R.string.text_mins)
+                tvModuleCourse.text = courseId?.totalModule.toString() + assetWrapper.getString(R.string.text_modules)
 
                 itemView.setOnClickListener { itemClick(item) }
             }

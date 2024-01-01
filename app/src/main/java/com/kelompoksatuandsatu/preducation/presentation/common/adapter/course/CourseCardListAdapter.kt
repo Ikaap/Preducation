@@ -9,9 +9,11 @@ import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.kelompoksatuandsatu.preducation.core.ViewHolderBinder
 import com.kelompoksatuandsatu.preducation.databinding.ItemCourseCardBinding
 import com.kelompoksatuandsatu.preducation.model.course.courseall.CourseViewParam
+import com.kelompoksatuandsatu.preducation.utils.AssetWrapper
 
 class CourseCardListAdapter(
     var adapterLayoutMenu: AdapterLayoutMenu,
+    private val assetWrapper: AssetWrapper,
     private val itemClick: (CourseViewParam) -> Unit
 ) :
     RecyclerView.Adapter<ViewHolder>() {
@@ -54,7 +56,7 @@ class CourseCardListAdapter(
             parent,
             false
         )
-        return HomeCourseItemViewHolder(binding, itemClick)
+        return HomeCourseItemViewHolder(binding, assetWrapper, itemClick)
     }
 
     override fun getItemCount(): Int = dataDiffer.currentList.size

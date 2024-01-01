@@ -117,10 +117,6 @@ class FilterFragment : BottomSheetDialogFragment() {
             dismiss()
         }
 
-//        binding.tvClear.setOnClickListener {
-//            tempSelectedCategories.clear()
-//        }
-
         binding.clButtonEnrollClass.setOnClickListener {
             applyFilter()
             dismiss()

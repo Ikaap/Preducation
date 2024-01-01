@@ -8,6 +8,7 @@ import androidx.core.view.isGone
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.kelompoksatuandsatu.preducation.R
 import com.kelompoksatuandsatu.preducation.databinding.FragmentAboutBinding
 import com.kelompoksatuandsatu.preducation.presentation.feature.detailclass.adapter.DescriptionItemAdapter
 import com.kelompoksatuandsatu.preducation.utils.proceedWhen
@@ -107,12 +108,12 @@ class AboutFragment : Fragment() {
                     binding.shimmerAboutRecommendedStudents.isGone = true
                     binding.layoutCommonStateAbout.root.isGone = false
                     binding.layoutCommonStateAbout.tvError.isGone = false
-                    binding.layoutCommonStateAbout.tvError.text = "data ksoong"
+                    binding.layoutCommonStateAbout.tvError.text = getString(R.string.text_empty)
                     binding.layoutCommonStateAbout.tvErrorState.isGone = true
                     binding.layoutCommonStateAbout.ivErrorState.isGone = true
                     binding.layoutCommonStateRecommended.root.isGone = false
                     binding.layoutCommonStateRecommended.tvError.isGone = false
-                    binding.layoutCommonStateRecommended.tvError.text = "data ksoong"
+                    binding.layoutCommonStateRecommended.tvError.text = getString(R.string.text_empty)
                     binding.layoutCommonStateRecommended.tvErrorState.isGone = true
                     binding.layoutCommonStateRecommended.ivErrorState.isGone = true
                 }

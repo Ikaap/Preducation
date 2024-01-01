@@ -25,9 +25,11 @@ import com.kelompoksatuandsatu.preducation.presentation.feature.detailclass.Deta
 import com.kelompoksatuandsatu.preducation.presentation.feature.filter.FilterFragment
 import com.kelompoksatuandsatu.preducation.presentation.feature.login.LoginActivity
 import com.kelompoksatuandsatu.preducation.presentation.feature.search.SearchActivity
+import com.kelompoksatuandsatu.preducation.utils.AssetWrapper
 import com.kelompoksatuandsatu.preducation.utils.exceptions.ApiException
 import com.kelompoksatuandsatu.preducation.utils.exceptions.NoInternetException
 import com.kelompoksatuandsatu.preducation.utils.proceedWhen
+import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class CourseFragment : Fragment(), FilterFragment.OnFilterListener {
@@ -40,8 +42,10 @@ class CourseFragment : Fragment(), FilterFragment.OnFilterListener {
 
     private val viewModel: CourseViewModel by viewModel()
 
+    private val assetWrapper: AssetWrapper by inject()
+
     private val typeCourseAdapter: CourseLinearListAdapter by lazy {
-        CourseLinearListAdapter(AdapterLayoutMenu.COURSE) {
+        CourseLinearListAdapter(AdapterLayoutMenu.COURSE, assetWrapper) {
             navigateToDetail(it)
         }
     }
@@ -89,7 +93,7 @@ class CourseFragment : Fragment(), FilterFragment.OnFilterListener {
     private fun setOnClickListener() {
         binding.tvFilter.setOnClickListener {
             filterFragment.setFilterListener(this)
-            filterFragment.show(childFragmentManager, "Filter")
+            filterFragment.show(childFragmentManager, getString(R.string.text_filter))
         }
 
         binding.clSearchBar.setOnClickListener {
@@ -227,7 +231,8 @@ class CourseFragment : Fragment(), FilterFragment.OnFilterListener {
                                 binding.layoutCommonState.clErrorState.isGone = false
                                 binding.layoutCommonState.ivErrorState.isGone = false
                                 binding.layoutCommonState.tvErrorState.isGone = false
-                                binding.layoutCommonState.tvErrorState.text = "Sorry, there's an error on the server"
+                                binding.layoutCommonState.tvErrorState.text =
+                                    getString(R.string.text_sorry_there_s_an_error_on_the_server)
                                 binding.layoutCommonState.ivErrorState.setImageResource(R.drawable.img_server_error)
                             }
                         }
@@ -238,7 +243,7 @@ class CourseFragment : Fragment(), FilterFragment.OnFilterListener {
                             binding.layoutCommonState.clErrorState.isGone = false
                             binding.layoutCommonState.ivErrorState.isGone = false
                             binding.layoutCommonState.tvErrorState.isGone = false
-                            binding.layoutCommonState.tvErrorState.text = "Oops!\nYou're not connection"
+                            binding.layoutCommonState.tvErrorState.text = getString(R.string.text_no_internet_connection)
                             binding.layoutCommonState.ivErrorState.setImageResource(R.drawable.img_no_connection)
                         }
                     }
@@ -252,7 +257,7 @@ class CourseFragment : Fragment(), FilterFragment.OnFilterListener {
                     binding.layoutStateCourse.pbLoading.isVisible = false
                     binding.layoutStateCourse.clErrorState.isVisible = true
                     binding.layoutStateCourse.tvErrorState.isVisible = true
-                    binding.layoutStateCourse.tvErrorState.text = "Class not found !"
+                    binding.layoutStateCourse.tvErrorState.text = getString(R.string.text_class_not_found)
                     binding.layoutStateCourse.ivErrorState.isVisible = true
                 }
             )

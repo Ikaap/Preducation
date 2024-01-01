@@ -123,10 +123,13 @@ class NotificationFragment : Fragment() {
                                 binding.layoutStateNotification.tvError.text =
                                     it.exception.getParsedErrorNotifications()?.message
                                 binding.layoutStateNotification.tvError.setBackgroundResource(R.style.failedtoast)
-                                if (it.exception.getParsedErrorNotifications()?.message?.contains("Login") == true) {
+                                if (it.exception.getParsedErrorNotifications()?.message?.contains(
+                                        getString(R.string.text_login)
+                                    ) == true
+                                ) {
                                     StyleableToast.makeText(
                                         requireContext(),
-                                        "Login please",
+                                        getString(R.string.text_login_please),
                                         Toast.LENGTH_SHORT
                                     ).apply {
                                         view?.setBackgroundResource(R.style.failedtoast)
@@ -138,7 +141,7 @@ class NotificationFragment : Fragment() {
                                 binding.layoutCommonState.ivErrorState.isGone = false
                                 binding.layoutCommonState.tvErrorState.isGone = false
                                 binding.layoutCommonState.tvErrorState.text =
-                                    "Sorry, there's an error on the server"
+                                    getString(R.string.text_sorry_there_s_an_error_on_the_server)
                                 binding.layoutCommonState.ivErrorState.setImageResource(R.drawable.img_server_error)
                             }
                         }
@@ -149,7 +152,7 @@ class NotificationFragment : Fragment() {
                             binding.layoutCommonState.ivErrorState.isGone = false
                             binding.layoutCommonState.tvErrorState.isGone = false
                             binding.layoutCommonState.tvErrorState.text =
-                                "Oops!\nYou're not connection"
+                                getString(R.string.text_no_internet_connection)
                             binding.layoutCommonState.ivErrorState.setImageResource(R.drawable.img_no_connection)
                         }
                     }
@@ -194,7 +197,8 @@ class NotificationFragment : Fragment() {
                     binding.layoutStateNotification.tvError.isVisible = false
                     binding.layoutStateNotification.clErrorState.isVisible = true
                     binding.layoutStateNotification.tvErrorState.isVisible = true
-                    binding.layoutStateNotification.tvErrorState.text = "Notification Empty"
+                    binding.layoutStateNotification.tvErrorState.text =
+                        getString(R.string.text_notification_empty)
                     binding.layoutStateNotification.ivErrorState.isVisible = true
                     binding.rvNotification.isVisible = false
                 }

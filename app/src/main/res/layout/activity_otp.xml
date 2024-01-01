@@ -71,11 +71,11 @@
             android:gravity="center"
             android:textColor="@color/app_color_secondary"
             android:textSize="14sp"
-            tools:text="ika@gmail.com"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tv_The_OTP_code_number_has_been_sent"/>
+            app:layout_constraintTop_toBottomOf="@id/tv_The_OTP_code_number_has_been_sent"
+            tools:text="@string/text_email_guest" />
 
         <com.otpview.OTPTextView
             android:id="@+id/otp_view"
@@ -106,8 +106,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="38dp"
-            app:layout_constraintTop_toBottomOf="@id/otp_view"
-            app:layout_constraintBottom_toTopOf="@id/tv_Resend_OTP_Code_vie_Email">
+            app:layout_constraintBottom_toTopOf="@id/tv_Resend_OTP_Code_vie_Email"
+            app:layout_constraintTop_toBottomOf="@id/otp_view">
 
             <com.google.android.material.progressindicator.CircularProgressIndicator
                 android:id="@+id/pb_loading"
