@@ -25,6 +25,18 @@ class ProgressClassViewModel(
     val courseProgress: LiveData<ResultWrapper<List<CourseProgressItemClass>>>
         get() = _courseProgress
 
+    private val _categoriesClass = MutableLiveData<ResultWrapper<List<CategoryClass>>>()
+    val categoriesClass: LiveData<ResultWrapper<List<CategoryClass>>>
+        get() = _categoriesClass
+
+    private val _categoriesProgress = MutableLiveData<ResultWrapper<List<CategoryType>>>()
+    val categoriesProgress: LiveData<ResultWrapper<List<CategoryType>>>
+        get() = _categoriesProgress
+
+    private val _isUserLogin = MutableLiveData<Boolean>()
+    val isUserLogin: LiveData<Boolean>
+        get() = _isUserLogin
+
     fun getCourseProgress(status: String? = null) {
         viewModelScope.launch(Dispatchers.IO) {
             repositoryCourse.getCourseUserProgress(if (status == assetsWrapper.getString(R.string.all)) null else status)
@@ -34,10 +46,6 @@ class ProgressClassViewModel(
         }
     }
 
-    private val _categoriesClass = MutableLiveData<ResultWrapper<List<CategoryClass>>>()
-    val categoriesClass: LiveData<ResultWrapper<List<CategoryClass>>>
-        get() = _categoriesClass
-
     fun getCategoriesClass() {
         viewModelScope.launch(Dispatchers.IO) {
             repositoryCourse.getCategoriesClass().collect {
@@ -46,10 +54,6 @@ class ProgressClassViewModel(
         }
     }
 
-    private val _categoriesProgress = MutableLiveData<ResultWrapper<List<CategoryType>>>()
-    val categoriesProgress: LiveData<ResultWrapper<List<CategoryType>>>
-        get() = _categoriesProgress
-
     fun getCategoriesProgress() {
         viewModelScope.launch(Dispatchers.IO) {
             repositoryCourse.getCategoriesProgress().collect {
@@ -57,10 +61,6 @@ class ProgressClassViewModel(
             }
         }
     }
-
-    private val _isUserLogin = MutableLiveData<Boolean>()
-    val isUserLogin: LiveData<Boolean>
-        get() = _isUserLogin
 
     fun checkLogin() {
         viewModelScope.launch(Dispatchers.IO) {

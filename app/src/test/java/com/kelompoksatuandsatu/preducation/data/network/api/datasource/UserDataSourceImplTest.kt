@@ -4,16 +4,16 @@ import com.kelompoksatuandsatu.preducation.data.network.api.model.auth.forgotpas
 import com.kelompoksatuandsatu.preducation.data.network.api.model.auth.forgotpassword.ForgotPasswordResponse
 import com.kelompoksatuandsatu.preducation.data.network.api.model.auth.login.LoginRequest
 import com.kelompoksatuandsatu.preducation.data.network.api.model.auth.login.LoginResponse
+import com.kelompoksatuandsatu.preducation.data.network.api.model.auth.logout.LogoutResponse
 import com.kelompoksatuandsatu.preducation.data.network.api.model.auth.otp.postemail.EmailOtpRequest
 import com.kelompoksatuandsatu.preducation.data.network.api.model.auth.otp.postemail.EmailOtpResponse
 import com.kelompoksatuandsatu.preducation.data.network.api.model.auth.otp.verifyotp.OtpRequest
 import com.kelompoksatuandsatu.preducation.data.network.api.model.auth.otp.verifyotp.OtpResponse
 import com.kelompoksatuandsatu.preducation.data.network.api.model.auth.register.RegisterRequest
 import com.kelompoksatuandsatu.preducation.data.network.api.model.auth.register.RegisterResponse
-import com.kelompoksatuandsatu.preducation.data.network.api.model.changepassword.ChangePasswordRequest
-import com.kelompoksatuandsatu.preducation.data.network.api.model.changepassword.ChangePasswordResponse
-import com.kelompoksatuandsatu.preducation.data.network.api.model.user.UserRequest
 import com.kelompoksatuandsatu.preducation.data.network.api.model.user.UserResponse
+import com.kelompoksatuandsatu.preducation.data.network.api.model.user.changepassword.ChangePasswordRequest
+import com.kelompoksatuandsatu.preducation.data.network.api.model.user.changepassword.ChangePasswordResponse
 import com.kelompoksatuandsatu.preducation.data.network.api.service.PreducationService
 import io.mockk.MockKAnnotations
 import io.mockk.coEvery
@@ -21,9 +21,12 @@ import io.mockk.coVerify
 import io.mockk.impl.annotations.MockK
 import io.mockk.mockk
 import kotlinx.coroutines.test.runTest
-import org.junit.Assert.*
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
+import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
+import retrofit2.Response
 
 class UserDataSourceImplTest {
 
@@ -101,10 +104,11 @@ class UserDataSourceImplTest {
     fun updateUserById() {
         runTest {
             val mockResponse = mockk<UserResponse>(relaxed = true)
-            val mockRequest = mockk<UserRequest>(relaxed = true)
-            coEvery { service.updateUserById(any(), any()) } returns mockResponse
-            val response = userDataSource.updateUserById("1", mockRequest)
-            coVerify { service.updateUserById(any(), any()) }
+            val mockRequest = mockk<RequestBody>(relaxed = true)
+            val mockRequestMultiPart = mockk<MultipartBody.Part>(relaxed = true)
+            coEvery { service.updateUserById(any(), any(), any(), any(), any(), any(), any()) } returns mockResponse
+            val response = userDataSource.updateUserById("1", mockRequest, mockRequest, mockRequest, mockRequest, mockRequest, mockRequestMultiPart)
+            coVerify { service.updateUserById(any(), any(), any(), any(), any(), any(), any()) }
             assertEquals(response, mockResponse)
         }
     }
@@ -121,16 +125,17 @@ class UserDataSourceImplTest {
         }
     }
 
-//    @Test
-//    fun userLogout() {
-//        runTest {
-//            val mockResponse = mockk<LogoutResponse>()
-//            coEvery { service.userLogout() } returns mockResponse
-//            val response = userDataSource.userLogout()
-//            coVerify { service.userLogout() }
-//            assertEquals(response, mockResponse)
-//        }
-//    }
+    @Test
+    fun userLogout() {
+        runTest {
+            val mockLogoutResponse = mockk<LogoutResponse>()
+            val mockLogoutResponseSuccess = Response.success(mockLogoutResponse)
+            coEvery { service.userLogout() } returns mockLogoutResponseSuccess
+            val response = userDataSource.userLogout()
+            coVerify { service.userLogout() }
+            assertEquals(response.body(), mockLogoutResponse)
+        }
+    }
 
     @Test
     fun userForgotPassword() {

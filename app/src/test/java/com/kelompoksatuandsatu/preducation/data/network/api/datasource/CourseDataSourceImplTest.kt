@@ -50,20 +50,20 @@ class CourseDataSourceImplTest {
     fun getCourseHome() {
         runTest {
             val mockResponse = mockk<CourseResponse>(relaxed = true)
-            coEvery { service.getCourseHome(any()) } returns mockResponse
-            val response = courseDataSource.getCourseHome("Android Development")
-            coVerify { service.getCourseHome(any()) }
+            coEvery { service.getCourseHome(any(), any(), any()) } returns mockResponse
+            val response = courseDataSource.getCourseHome("Android Development", "Free", "Belajar")
+            coVerify { service.getCourseHome(any(), any(), any()) }
             assertEquals(response, mockResponse)
         }
     }
 
     @Test
-    fun getCourseTopic() {
+    fun getCourseHomeFilter() {
         runTest {
             val mockResponse = mockk<CourseResponse>(relaxed = true)
-            coEvery { service.getCourseTopic(any()) } returns mockResponse
-            val response = courseDataSource.getCourseTopic("Free")
-            coVerify { service.getCourseTopic(any()) }
+            coEvery { service.getCourseHomeFilter(any(), any(), any()) } returns mockResponse
+            val response = courseDataSource.getCourseHomeFilter(listOf("Android", "Web"), "Free", "Belajar")
+            coVerify { service.getCourseHomeFilter(any(), any(), any()) }
             assertEquals(response, mockResponse)
         }
     }

@@ -14,11 +14,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:visibility="gone"
-        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:visibility="visible"/>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/cl_search_bar"
@@ -131,8 +131,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:visibility="gone"
-                app:layout_constraintTop_toTopOf="@id/rv_category_type"
-                app:layout_constraintBottom_toBottomOf="@id/rv_category_type" />
+                app:layout_constraintBottom_toBottomOf="@id/rv_category_type"
+                app:layout_constraintTop_toTopOf="@id/rv_category_type" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -185,9 +185,12 @@
         android:id="@+id/layout_state_course"
         layout="@layout/common_layout_content_state"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        android:visibility="visible"
-        app:layout_constraintTop_toTopOf="@id/rv_course"/>
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/cl_class_progress"
+        tools:visibility="visible" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

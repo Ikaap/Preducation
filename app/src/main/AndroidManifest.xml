@@ -19,6 +19,9 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
+            android:name=".presentation.feature.search.SearchActivity"
+            android:exported="false" />
+        <activity
             android:name=".presentation.feature.forgotpasswordnew.ForgotPasswordNewActivity"
             android:exported="false" />
         <activity
@@ -85,7 +88,8 @@
             android:exported="false" />
         <activity
             android:name=".presentation.feature.main.MainActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:windowSoftInputMode="adjustPan"/>
     </application>
 
 </manifest>

@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Preducation</string>
+    <string name="app_name" translatable="false">Preducation</string>
 
     <string name="text_create_new_password">Create New Password</string>
     <string name="iv_back">back</string>
@@ -10,7 +10,7 @@
     <string name="text_edit_profile">Edit Profile</string>
     <string name="text_add_user">Add User</string>
     <string name="text_long_name">Long Name</string>
-    <string name="text_email">Email</string>
+    <string name="text_email" translatable="false">Email</string>
     <string name="text_nomor_telepon" translatable="false">Nomor Telepon</string>
     <string name="text_62">+62</string>
     <string name="text_negara" translatable="false">Negara</string>
@@ -39,9 +39,9 @@
     <string name="progress">Progress</string>
     <string name="done">Done</string>
     <string name="categories">Categories</string>
-    <string name="android_development">Android \nDevelopment</string>
-    <string name="data_science">Data Science</string>
-    <string name="_4_6">4.6</string>
+    <string name="android_development" translatable="false">Android \nDevelopment</string>
+    <string name="data_science" translatable="false">Data Science</string>
+    <string name="_4_6" translatable="false">4.6</string>
     <string name="belajar_data_cleaning_dengan_nshorting_dengan_python" translatable="false">Belajar data cleaning dengan \nshorting dengan python</string>
     <string name="_19_moduls">• 19 Moduls</string>
     <string name="_60_hours">• 60 Hours</string>
@@ -52,13 +52,13 @@
     <string name="text_already_have_an_account">Already have an Account ? Login Here</string>
     <string name="text_login_here">Login Here</string>
     <string name="text_sign_up">Sign Up</string>
-    <string name="text_create_a_password">Create a Password</string>
+    <string name="text_create_password">Create Password</string>
     <string name="text_phone_number">Phone Number</string>
     <string name="text_name">Name</string>
     <string name="text_getting_started">Getting Started.!</string>
 
     <string name="text_login">Login</string>
-    <string name="text_password">Password</string>
+    <string name="text_password" translatable="false">Password</string>
     <string name="text_forgot_password">Forgot Password</string>
     <string name="text_sign_in">Sign In</string>
     <string name="text_don_t_have_an_account_yet">Don\'t have an account yet ? Register Here</string>
@@ -82,7 +82,7 @@
 
     <string name="text_payment_details">Payment Details</string>
     <string name="text_price">Price</string>
-    <string name="text_ppn_11">PPN 11%</string>
+    <string name="text_ppn_11" translatable="false">PPN 11%</string>
     <string name="text_total_payment">Total Payment</string>
     <string name="text_bank_transfer">Bank Transfer</string>
     <string name="text_credit_card">Credit Card</string>
@@ -103,8 +103,8 @@
     <string name="desc_iv_category_course">desc image view category course</string>
     <string name="text_popular_course">Popular Courses</string>
     <string name="desc_iv_popular_course">iv_popular_course</string>
-    <string name="tv_category_popular">Data Science</string>
-    <string name="tv_rating_popular_course">4.7</string>
+    <string name="tv_category_popular" translatable="false">Data Science</string>
+    <string name="tv_rating_popular_course" translatable="false">4.7</string>
     <string name="desc_ic_arrow_left">ic_arrow_left</string>
     <string name="tv_header_see_all_popular_course">Popular Course</string>
     <string name="text_header_name">Hi, %s</string>
@@ -117,7 +117,7 @@
     <string name="tv_price_course">Rp 249.000</string>
     <string name="desc_dialog_icon">iv_dialog_non_login</string>
     <string name="dialog_title">Sorry</string>
-    <string name="dialog_message">You have to make an account for access\nthis feature</string>
+    <string name="dialog_message">You have to make an account for access\nthis class</string>
     <string name="dialog_sign_up_button">Sign Up</string>
     <string name="iv_arrow_right">iv_arrow_right</string>
     <string name="popular_course_not_found">Popular course not found!</string>
@@ -126,8 +126,6 @@
     <string name="iv_rating">iv_rating</string>
     <string name="iv_time_course">iv_time_course</string>
     <string name="tv_sign_up">Sign Up</string>
-    <string name="course_is_empty">Course is Empty</string>
-    <string name="category_is_empty">Category is Empty</string>
 
     <string name="desc_iv_logo_app">iv_logo_app</string>
     <string name="tv_reset_password">Reset Password</string>
@@ -142,8 +140,8 @@
     <string name="text_notification">Notification</string>
     <string name="text_class">Class</string>
     <string name="text_course">Course</string>
-    <string name="text_preducation">Preducation</string>
-    <string name="text_online_learning">Online Learning</string>
+    <string name="text_preducation" translatable="false">Preducation</string>
+    <string name="text_online_learning" translatable="false">Online Learning</string>
     <string name="text_notifications">Notifications</string>
     <string name="text_premium">Premium</string>
     <string name="text_freemium">Freemium</string>
@@ -192,30 +190,26 @@
     <string name="news">News</string>
     <string name="hot">Hot</string>
     <string name="web_development">Web Development</string>
+
     <string name="you_need_to_login">You need to login</string>
     <string name="empty_class_progress">You haven\'t taken any classes yet</string>
     <string name="empty_progress_category">Empty progress category</string>
-    <string name="course">Course</string>
-    <string name="news">News</string>
-    <string name="hot">Hot</string>
-    <string name="web_development">Web Development</string>
-    <string name="you_need_to_login">You need to login</string>
-    <string name="empty_class_progress">You haven\'t taken any classes yet</string>
-    <string name="empty_progress_category">Empty progress category</string>
-    <string name="course">Course</string>
-    <string name="news">News</string>
-    <string name="hot">Hot</string>
-    <string name="web_development">Web Development</string>
-    <string name="you_need_to_login">You need to login</string>
-    <string name="empty_class_progress">You haven\'t taken any classes yet</string>
-    <string name="empty_progress_category">Empty progress category</string>
-    <string name="course">Course</string>
-    <string name="news">News</string>
-    <string name="hot">Hot</string>
-    <string name="web_development">Web Development</string>
     <string name="text_data_empty">Data Empty</string>
+
     <string name="text_paid">Paid</string>
     <string name="text_on_progress">On Progress</string>
     <string name="text_dialog_finish_class_message">You are at the end of this class.\nPlease check your email after watching the video to get your certificate.</string>
-
+    <string name="text_to_access_this_feature_please_log_in_first">To access this feature, please log in first.</string>
+    <string name="text_email_gmail_com" translatable="false">email@gmail.com</string>
+    <string name="text_hint_password" translatable="false">*****</string>
+    <string name="text_full_name">Full Name</string>
+    <string name="text_hint_phone_number" translatable="false">08xxxxx</string>
+    <string name="text_skip">Skip</string>
+    <string name="text_message_splash_screen_one">We Provide Clamasuksses Online Classes and Pre Recorded Leactures.!</string>
+    <string name="text_get_online_certificate">Get Online Certificate</string>
+    <string name="text_message_splash_screen_three">Analyse your scores and Track your results</string>
+    <string name="text_get_started">Get Started</string>
+    <string name="text_learn_from_anytime">Learn from Anytime</string>
+    <string name="text_message_splash_screen_two">Booked or Same the Lectures for Future</string>
+    <string name="text_apply">Apply</string>
 </resources>

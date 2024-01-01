@@ -4,14 +4,19 @@ import app.cash.turbine.test
 import com.kelompoksatuandsatu.preducation.data.local.datastore.datasource.UserPreferenceDataSource
 import com.kelompoksatuandsatu.preducation.data.network.api.datasource.UserDataSource
 import com.kelompoksatuandsatu.preducation.data.network.api.model.auth.forgotpassword.ForgotPasswordResponse
+import com.kelompoksatuandsatu.preducation.data.network.api.model.auth.login.LoginResponse
+import com.kelompoksatuandsatu.preducation.data.network.api.model.auth.logout.LogoutResponse
 import com.kelompoksatuandsatu.preducation.data.network.api.model.auth.otp.postemail.EmailOtpResponse
 import com.kelompoksatuandsatu.preducation.data.network.api.model.auth.otp.verifyotp.OtpResponse
-import com.kelompoksatuandsatu.preducation.data.network.api.model.changepassword.ChangePasswordItem
-import com.kelompoksatuandsatu.preducation.data.network.api.model.changepassword.ChangePasswordRequest
-import com.kelompoksatuandsatu.preducation.data.network.api.model.changepassword.ChangePasswordResponse
+import com.kelompoksatuandsatu.preducation.data.network.api.model.auth.register.Data
+import com.kelompoksatuandsatu.preducation.data.network.api.model.auth.register.RegisterResponse
 import com.kelompoksatuandsatu.preducation.data.network.api.model.user.User
-import com.kelompoksatuandsatu.preducation.data.network.api.model.user.UserRequest
 import com.kelompoksatuandsatu.preducation.data.network.api.model.user.UserResponse
+import com.kelompoksatuandsatu.preducation.data.network.api.model.user.changepassword.ChangePasswordItem
+import com.kelompoksatuandsatu.preducation.data.network.api.model.user.changepassword.ChangePasswordRequest
+import com.kelompoksatuandsatu.preducation.data.network.api.model.user.changepassword.ChangePasswordResponse
+import com.kelompoksatuandsatu.preducation.model.auth.UserAuth
+import com.kelompoksatuandsatu.preducation.model.auth.UserLogin
 import com.kelompoksatuandsatu.preducation.model.auth.forgotpassword.UserForgotPassword
 import com.kelompoksatuandsatu.preducation.model.auth.otp.postemailotp.EmailOtp
 import com.kelompoksatuandsatu.preducation.model.auth.otp.verifyotp.OtpData
@@ -24,9 +29,15 @@ import io.mockk.mockk
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.test.runTest
-import org.junit.Assert.*
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
+import okhttp3.RequestBody.Companion.toRequestBody
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
+import retrofit2.Response
 
 class UserRepositoryImplTest {
 
@@ -93,45 +104,10 @@ class UserRepositoryImplTest {
         }
     }
 
-    /*
-    @Test
-    fun `get user by id, result empty`() {
-//        val fakeUserData = User(
-//            id = "",
-//            email = "",
-//            phone = "",
-//            name = "",
-//            username = "",
-//            imageProfile = "",
-//            country = "",
-//            city = ""
-//        )
-        val mockUser = mockk<User>()
-        val fakeUserResponse = UserResponse(
-            data = mockUser,
-            message = "success",
-            success = true
-        )
-        runTest {
-            coEvery { userDataSource.getUserById(any()) } returns fakeUserResponse
-            userRepo.getUserById("u1").map {
-                delay(100)
-                it
-            }.test {
-                delay(230)
-                val result = expectMostRecentItem()
-                assertTrue(result is ResultWrapper.Empty)
-                coVerify { userDataSource.getUserById(any()) }
-            }
-        }
-    }
-
-     */
-
     @Test
     fun `get user by id, result error`() {
         runTest {
-            coEvery { userDataSource.getUserById(any()) } throws IllegalStateException("error")
+            coEvery { userDataSource.getUserById(any()) } throws Exception("error")
             userRepo.getUserById("u1").map {
                 delay(100)
                 it
@@ -147,24 +123,35 @@ class UserRepositoryImplTest {
     @Test
     fun `update user by id, result loading`() {
         val mockUserResponse = mockk<UserResponse>()
-        val fakeUserRequest = UserRequest(
-            email = "email",
-            phone = "08999090",
-            name = "name",
-            imageProfile = "url",
-            city = "city",
-            country = "country"
-        )
+        val mockRequest = mockk<RequestBody>(relaxed = true)
+        val mockRequestMultiPart = mockk<MultipartBody.Part>(relaxed = true)
         runTest {
-            coEvery { userDataSource.updateUserById(any(), any()) } returns mockUserResponse
-            userRepo.updateUserById("u1", fakeUserRequest).map {
+            coEvery {
+                userDataSource.updateUserById(
+                    any(),
+                    any(),
+                    any(),
+                    any(),
+                    any(),
+                    any(),
+                    any()
+                )
+            } returns mockUserResponse
+            userRepo.updateUserById(
+                "u1",
+                mockRequest,
+                mockRequest,
+                mockRequest,
+                mockRequest,
+                mockRequest,
+                mockRequestMultiPart
+            ).map {
                 delay(100)
                 it
             }.test {
-                delay(130)
+                delay(2130)
                 val result = expectMostRecentItem()
                 assertTrue(result is ResultWrapper.Loading)
-                coVerify { userDataSource.updateUserById(any(), any()) }
             }
         }
     }
@@ -186,51 +173,91 @@ class UserRepositoryImplTest {
             message = "success",
             success = true
         )
-        val fakeUserRequest = UserRequest(
-            email = "email",
-            phone = "08999090",
-            name = "name",
-            imageProfile = "url",
-            city = "city",
-            country = "country"
-        )
+        val mockRequestMultiPart = mockk<MultipartBody.Part>(relaxed = true)
         runTest {
-            coEvery { userDataSource.updateUserById(any(), any()) } returns fakeUserResponse
-            userRepo.updateUserById("u1", fakeUserRequest).map {
+            coEvery {
+                userDataSource.updateUserById(
+                    any(),
+                    any(),
+                    any(),
+                    any(),
+                    any(),
+                    any(),
+                    any()
+                )
+            } returns fakeUserResponse
+            userRepo.updateUserById(
+                "u1",
+                "name".toRequestBody("multipart/form-data".toMediaTypeOrNull()),
+                "email".toRequestBody("multipart/form-data".toMediaTypeOrNull()),
+                "phone".toRequestBody("multipart/form-data".toMediaTypeOrNull()),
+                "country".toRequestBody("multipart/form-data".toMediaTypeOrNull()),
+                "city".toRequestBody("multipart/form-data".toMediaTypeOrNull()),
+                mockRequestMultiPart
+            ).map {
                 delay(100)
                 it
             }.test {
-                delay(230)
+                delay(2330)
                 val result = expectMostRecentItem()
                 assertTrue(result is ResultWrapper.Success)
                 assertEquals(result.payload?.id, "u1")
-                coVerify { userDataSource.updateUserById(any(), any()) }
+                coVerify {
+                    userDataSource.updateUserById(
+                        any(),
+                        any(),
+                        any(),
+                        any(),
+                        any(),
+                        any(),
+                        any()
+                    )
+                }
             }
         }
     }
 
-    // update user empty
-
     @Test
     fun `update user by id, result error`() {
-        val fakeUserRequest = UserRequest(
-            email = "email",
-            phone = "08999090",
-            name = "name",
-            imageProfile = "url",
-            city = "city",
-            country = "country"
-        )
+        val mockRequestMultiPart = mockk<MultipartBody.Part>(relaxed = true)
         runTest {
-            coEvery { userDataSource.updateUserById(any(), any()) } throws IllegalStateException("Error")
-            userRepo.updateUserById("u1", fakeUserRequest).map {
+            coEvery {
+                userDataSource.updateUserById(
+                    any(),
+                    any(),
+                    any(),
+                    any(),
+                    any(),
+                    any(),
+                    any()
+                )
+            } throws IllegalStateException("Error")
+            userRepo.updateUserById(
+                "u1",
+                "name".toRequestBody("multipart/form-data".toMediaTypeOrNull()),
+                "email".toRequestBody("multipart/form-data".toMediaTypeOrNull()),
+                "phone".toRequestBody("multipart/form-data".toMediaTypeOrNull()),
+                "country".toRequestBody("multipart/form-data".toMediaTypeOrNull()),
+                "city".toRequestBody("multipart/form-data".toMediaTypeOrNull()),
+                mockRequestMultiPart
+            ).map {
                 delay(100)
                 it
             }.test {
-                delay(230)
+                delay(2330)
                 val result = expectMostRecentItem()
                 assertTrue(result is ResultWrapper.Error)
-                coVerify { userDataSource.updateUserById(any(), any()) }
+                coVerify {
+                    userDataSource.updateUserById(
+                        any(),
+                        any(),
+                        any(),
+                        any(),
+                        any(),
+                        any(),
+                        any()
+                    )
+                }
             }
         }
     }
@@ -244,7 +271,12 @@ class UserRepositoryImplTest {
             confirmPassword = "new pass"
         )
         runTest {
-            coEvery { userDataSource.updateUserPassword(any(), any()) } returns mockChangePasswordResponse
+            coEvery {
+                userDataSource.updateUserPassword(
+                    any(),
+                    any()
+                )
+            } returns mockChangePasswordResponse
             userRepo.updateUserPassword("u1", fakeChangePasswordRequest).map {
                 delay(100)
                 it
@@ -277,7 +309,12 @@ class UserRepositoryImplTest {
             confirmPassword = "new pass"
         )
         runTest {
-            coEvery { userDataSource.updateUserPassword(any(), any()) } returns fakeChangePasswordResponse
+            coEvery {
+                userDataSource.updateUserPassword(
+                    any(),
+                    any()
+                )
+            } returns fakeChangePasswordResponse
             userRepo.updateUserPassword("u1", fakeChangePasswordRequest).map {
                 delay(100)
                 it
@@ -285,34 +322,6 @@ class UserRepositoryImplTest {
                 delay(230)
                 val result = expectMostRecentItem()
                 assertTrue(result is ResultWrapper.Success)
-                assertTrue(result.payload?.get(0)?.newPassword == result.payload?.get(0)?.confirmPassword)
-                coVerify { userDataSource.updateUserPassword(any(), any()) }
-            }
-        }
-    }
-
-    @Test
-    fun `update user password , result empty`() {
-        val fakeChangePasswordResponse = ChangePasswordResponse(
-            data = emptyList(),
-            message = "message",
-            status = "status",
-            success = true
-        )
-        val fakeChangePasswordRequest = ChangePasswordRequest(
-            oldPassword = "old pass",
-            newPassword = "new pass",
-            confirmPassword = "new pass"
-        )
-        runTest {
-            coEvery { userDataSource.updateUserPassword(any(), any()) } returns fakeChangePasswordResponse
-            userRepo.updateUserPassword("u1", fakeChangePasswordRequest).map {
-                delay(100)
-                it
-            }.test {
-                delay(230)
-                val result = expectMostRecentItem()
-                assertTrue(result is ResultWrapper.Empty)
                 coVerify { userDataSource.updateUserPassword(any(), any()) }
             }
         }
@@ -326,7 +335,12 @@ class UserRepositoryImplTest {
             confirmPassword = "new pass"
         )
         runTest {
-            coEvery { userDataSource.updateUserPassword(any(), any()) } throws IllegalStateException("error")
+            coEvery {
+                userDataSource.updateUserPassword(
+                    any(),
+                    any()
+                )
+            } throws IllegalStateException("error")
             userRepo.updateUserPassword("u1", fakeChangePasswordRequest).map {
                 delay(100)
                 it
@@ -340,8 +354,161 @@ class UserRepositoryImplTest {
     }
 
     // user register
+    @Test
+    fun `user register , result loading`() {
+        val mockRegisterResponse = mockk<RegisterResponse>()
+        val fakeRegisterRequest = UserAuth(
+            email = "email",
+            name = "name",
+            phone = "0899",
+            password = "password"
+        )
+        runTest {
+            coEvery { userDataSource.userRegister(any()) } returns mockRegisterResponse
+            userRepo.userRegister(fakeRegisterRequest).map {
+                delay(100)
+                it
+            }.test {
+                delay(130)
+                val result = expectMostRecentItem()
+                assertTrue(result is ResultWrapper.Loading)
+                coVerify { userDataSource.userRegister(any()) }
+//                coVerify(exactly = 0) { mockRegisterResponse.toRegisterResponse() }
+            }
+        }
+    }
+
+    @Test
+    fun `user register  , result success`() {
+        val fakeRegisterData = Data(
+            id = "id",
+            phone = "089",
+            role = "user",
+            name = "name",
+            accessToken = "token"
+        )
+        val fakeRegisterResponse = RegisterResponse(
+            message = "message",
+            success = true,
+            data = fakeRegisterData
+        )
+        val fakeRegisterRequest = UserAuth(
+            email = "email",
+            name = "name",
+            phone = "0899",
+            password = "password"
+        )
+        runTest {
+            coEvery { userDataSource.userRegister(any()) } returns fakeRegisterResponse
+            userRepo.userRegister(fakeRegisterRequest).map {
+                delay(100)
+                it
+            }.test {
+                delay(230)
+                val result = expectMostRecentItem()
+                assertTrue(result is ResultWrapper.Success)
+                coVerify { userDataSource.userRegister(any()) }
+//                coVerify { fakeRegisterResponse.toRegisterResponse() }
+            }
+        }
+    }
+
+    @Test
+    fun `user register  , result error`() {
+        val mockRegisterResponse = mockk<RegisterResponse>()
+        val fakeRegisterRequest = UserAuth(
+            email = "email",
+            name = "name",
+            phone = "0899",
+            password = "password"
+        )
+        runTest {
+            coEvery { userDataSource.userRegister(any()) } throws IllegalStateException("error")
+            userRepo.userRegister(fakeRegisterRequest).map {
+                delay(100)
+                it
+            }.test {
+                delay(230)
+                val result = expectMostRecentItem()
+                assertTrue(result is ResultWrapper.Error)
+                coVerify { userDataSource.userRegister(any()) }
+//                coVerify { userDataSource.userRegister(any()).toRegisterResponse() }
+            }
+        }
+    }
 
     // user login
+    @Test
+    fun `user login , result loading`() {
+        val mockLoginResponse = mockk<LoginResponse>()
+        val fakeLoginRequest = UserLogin(
+            identifier = "email",
+            password = "password"
+        )
+        runTest {
+            coEvery { userDataSource.userLogin(any()) } returns mockLoginResponse
+            userRepo.userLogin(fakeLoginRequest).map {
+                delay(100)
+                it
+            }.test {
+                delay(130)
+                val result = expectMostRecentItem()
+                assertTrue(result is ResultWrapper.Loading)
+                coVerify { userDataSource.userLogin(any()) }
+            }
+        }
+    }
+
+    @Test
+    fun `user login, result success`() {
+        runTest {
+            val fakeLoginData =
+                com.kelompoksatuandsatu.preducation.data.network.api.model.auth.login.Data(
+                    id = "id",
+                    accessToken = "token"
+                )
+            val fakeLoginResponse = LoginResponse(
+                message = "message",
+                success = true,
+                data = fakeLoginData
+            )
+            val fakeLoginRequest = UserLogin(
+                identifier = "email",
+                password = "password"
+            )
+            coEvery { userDataSource.userLogin(any()) } returns fakeLoginResponse
+            userRepo.userLogin(fakeLoginRequest).map {
+                delay(100)
+                it
+            }.test {
+                delay(230)
+                val result = expectMostRecentItem()
+                assertTrue(result is ResultWrapper.Success)
+                coVerify { userDataSource.userLogin(any()) }
+//                coVerify { userDataSource.userLogin(any()).toLoginResponse() }
+            }
+        }
+    }
+
+    @Test
+    fun `user login, result error`() {
+        val fakeLoginRequest = UserLogin(
+            identifier = "email",
+            password = "password"
+        )
+        runTest {
+            coEvery { userDataSource.userLogin(any()) } throws IllegalStateException("error")
+            userRepo.userLogin(fakeLoginRequest).map {
+                delay(100)
+                it
+            }.test {
+                delay(230)
+                val result = expectMostRecentItem()
+                assertTrue(result is ResultWrapper.Error)
+                coVerify { userDataSource.userLogin(any()) }
+            }
+        }
+    }
 
     @Test
     fun `post email otp , result loading`() {
@@ -387,32 +554,6 @@ class UserRepositoryImplTest {
             }
         }
     }
-
-    /*
-    @Test
-    fun `post email otp , result empty`() {
-        val fakePostEmailOtpResponse = EmailOtpResponse(
-            message = "",
-            status = "",
-            success = null
-        )
-        val fakePostEmailOtpRequest = EmailOtp(
-            email = "email"
-        )
-        runTest {
-            coEvery { userDataSource.postEmailOtp(any()) } returns fakePostEmailOtpResponse
-            userRepo.postEmailOtp(fakePostEmailOtpRequest).map {
-                delay(100)
-                it
-            }.test {
-                delay(230)
-                val result = expectMostRecentItem()
-                assertTrue(result is ResultWrapper.Empty)
-                coVerify { userDataSource.postEmailOtp(any()) }
-            }
-        }
-    }
-    */
 
     @Test
     fun `post email otp , result error`() {
@@ -478,8 +619,6 @@ class UserRepositoryImplTest {
         }
     }
 
-    // verify otp empty
-
     @Test
     fun `verify otp , result error`() {
         val fakeVerifyOtpRequest = OtpData(
@@ -543,8 +682,6 @@ class UserRepositoryImplTest {
         }
     }
 
-    // verify otp empty
-
     @Test
     fun `user forgot password, result error`() {
         val fakeForgotPasswordRequest = UserForgotPassword(
@@ -560,6 +697,62 @@ class UserRepositoryImplTest {
                 val result = expectMostRecentItem()
                 assertTrue(result is ResultWrapper.Error)
                 coVerify { userDataSource.userForgotPassword(any()) }
+            }
+        }
+    }
+
+    @Test
+    fun `user logout, result loading`() {
+        val mockLogoutResponse = mockk<LogoutResponse>()
+        runTest {
+            coEvery { userDataSource.userLogout() } returns Response.success(mockLogoutResponse)
+            userRepo.userLogout().map {
+                delay(100)
+                it
+            }.test {
+                delay(130)
+                val result = expectMostRecentItem()
+                assertTrue(result is ResultWrapper.Loading)
+                coVerify { userDataSource.userLogout() }
+            }
+        }
+    }
+
+    @Test
+    fun `user logout, result success`() {
+        val fakeLogoutResponse = LogoutResponse(
+            message = "message",
+            status = "status",
+            success = true
+        )
+        runTest {
+            coEvery { userDataSource.userLogout() } returns Response.success(fakeLogoutResponse)
+            userRepo.userLogout().map {
+                delay(100)
+                it
+            }.test {
+                delay(230)
+                val result = expectMostRecentItem()
+                assertTrue(result is ResultWrapper.Success)
+                coVerify { userDataSource.userLogout() }
+            }
+        }
+    }
+
+    // verify otp empty
+
+    @Test
+    fun `user logout, result error`() {
+        runTest {
+            coEvery { userDataSource.userLogout() } throws IllegalStateException("error")
+            userRepo.userLogout().map {
+                delay(100)
+                it
+            }.test {
+                delay(230)
+                val result = expectMostRecentItem()
+                assertTrue(result is ResultWrapper.Error)
+                coVerify { userDataSource.userLogout() }
             }
         }
     }

@@ -21,6 +21,8 @@ class FilterFragment : BottomSheetDialogFragment() {
 
     private var filterListener: OnFilterListener? = null
 
+    private val tempSelectedCategories = mutableListOf<CategoryClass>()
+
     interface OnFilterListener {
         fun onFilterApplied(
             type: String?,
@@ -33,19 +35,21 @@ class FilterFragment : BottomSheetDialogFragment() {
     }
 
     private fun applyFilter() {
-        val selectedType = viewModel.selectedType.value
-        val selectedCategories = viewModel.selectedCategories.value
+        viewModel.setSelectedCategories(tempSelectedCategories.toList())
 
-        filterListener?.onFilterApplied(selectedType, selectedCategories)
+        filterListener?.onFilterApplied(viewModel.selectedType.value, viewModel.selectedCategories.value)
+
+        tempSelectedCategories.clear()
     }
 
     private val categoryCourseAdapter: CategoryCheckBoxListAdapter by lazy {
         CategoryCheckBoxListAdapter(object : CategoryCheckBoxListAdapter.CheckboxCategoryListener {
             override fun onCategoryChecked(category: CategoryClass) {
-                viewModel.addSelectedCategory(category)
+                tempSelectedCategories.add(category)
             }
+
             override fun onCategoryUnChecked(category: CategoryClass) {
-                viewModel.deleteSelectedCategory(category)
+                tempSelectedCategories.remove(category)
             }
         })
     }
@@ -109,12 +113,13 @@ class FilterFragment : BottomSheetDialogFragment() {
     }
 
     private fun setOnClickListener() {
-        binding.ivArrowLeft.setOnClickListener {
+        binding.ivClose.setOnClickListener {
             dismiss()
         }
 
-        binding.tvClear.setOnClickListener {
-        }
+//        binding.tvClear.setOnClickListener {
+//            tempSelectedCategories.clear()
+//        }
 
         binding.clButtonEnrollClass.setOnClickListener {
             applyFilter()

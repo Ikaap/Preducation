@@ -1,6 +1,5 @@
 package com.kelompoksatuandsatu.preducation.data.repository
 
-import android.util.Log
 import com.kelompoksatuandsatu.preducation.data.local.datastore.datasource.UserPreferenceDataSource
 import com.kelompoksatuandsatu.preducation.data.network.api.datasource.UserDataSource
 import com.kelompoksatuandsatu.preducation.data.network.api.model.auth.forgotpassword.ForgotPasswordRequest
@@ -165,7 +164,6 @@ class UserRepositoryImpl(
             emit(ResultWrapper.Error(Exception("Logout failed with response code ${response.code()}")))
         }
     }.catch { e ->
-        Log.e("UserRepository", "Error during logout", e)
         emit(ResultWrapper.Error(e as? Exception ?: Exception("Unknown error")))
     }
 }
