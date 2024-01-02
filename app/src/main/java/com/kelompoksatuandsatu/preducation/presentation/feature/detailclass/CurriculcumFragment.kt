@@ -119,9 +119,6 @@ class CurriculcumFragment : Fragment() {
                         }
                     }
                 },
-                doOnLoading = {
-                    binding.shimmerAboutRvChapter.isGone = false
-                },
                 doOnEmpty = {
                     binding.shimmerAboutRvChapter.isGone = true
                 },

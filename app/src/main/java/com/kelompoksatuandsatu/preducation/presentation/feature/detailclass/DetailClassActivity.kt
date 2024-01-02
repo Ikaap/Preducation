@@ -114,9 +114,6 @@ class DetailClassActivity : AppCompatActivity() {
                         binding.tvCourseRating.text = data.totalRating.toString()
                     }
                 },
-                doOnLoading = {
-                    binding.shimmerDataCourse.isGone = false
-                },
                 doOnEmpty = {
                     binding.shimmerDataCourse.isGone = true
                     binding.layoutCommonState.root.isGone = false
