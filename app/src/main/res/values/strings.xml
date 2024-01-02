@@ -185,7 +185,7 @@
     <string name="text_update_profile_successfully">Update Profile Successfully</string>
     <string name="text_update_profile_failed">Update Profile Failed</string>
     <string name="text_task_cancelled">Task Cancelled</string>
-    <string name="text_all">All</string>
+    <string name="text_all" translatable="false">All</string>
     <string name="text_login_successful">Login Successful</string>
     <string name="text_login_please">Login please</string>
     <string name="text_please_ask_for_the_otp_code_again">, Please ask for the OTP code again</string>

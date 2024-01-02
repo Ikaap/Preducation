@@ -149,7 +149,6 @@
     <string name="text_update_profile_successfully">Update Profile Berhasil</string>
     <string name="text_update_profile_failed">Update Profil Gagal</string>
     <string name="text_task_cancelled">Tugas Dibatalkan</string>
-    <string name="text_all">Semua</string>
     <string name="text_login_successful">Login Berhasil</string>
     <string name="text_login_please">Silakan Login</string>
     <string name="text_please_ask_for_the_otp_code_again">Silakan minta kode OTP lagi</string>
