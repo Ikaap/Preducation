@@ -25,9 +25,6 @@
             android:name=".presentation.feature.forgotpasswordnew.ForgotPasswordNewActivity"
             android:exported="false" />
         <activity
-            android:name=".presentation.feature.filter.FilterActivity"
-            android:exported="false" />
-        <activity
             android:name=".presentation.feature.resetpassword.ResetPasswordActivity"
             android:exported="false" />
         <activity

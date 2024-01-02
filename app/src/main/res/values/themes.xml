@@ -42,7 +42,6 @@
         <item name="stStrokeWidth">25dp</item>
     </style>
 
-
     <style name="failedtoast">
         <item name="stTextBold">true</item>
         <item name="stColorBackground">@color/app_color_error</item>
@@ -52,27 +51,6 @@
         <item name="stTextColor">@color/app_color_on_error</item>
         <item name="stStrokeWidth">25dp</item>
     </style>
-
-    <style name="successinputotp">
-        <item name="stTextBold">true</item>
-        <item name="stColorBackground">@color/app_color_on_secondary_container</item>
-        <item name="stTextSize">14sp</item>
-        <item name="stRadius">10dp</item>
-        <item name="stLength">LONG</item>
-        <item name="stTextColor">@color/app_color_on_error</item>
-        <item name="stStrokeWidth">25dp</item>
-    </style>
-
-    <style name="failedinputotp">
-        <item name="stTextBold">true</item>
-        <item name="stColorBackground">@color/app_color_error</item>
-        <item name="stTextSize">14sp</item>
-        <item name="stRadius">10dp</item>
-        <item name="stLength">LONG</item>
-        <item name="stTextColor">@color/app_color_on_error</item>
-        <item name="stStrokeWidth">25dp</item>
-    </style>
-
 
     <style name="Theme.Preducation" parent="Base.Theme.Preducation" />
 </resources>

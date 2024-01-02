@@ -12,7 +12,7 @@
     <string name="text_long_name">Long Name</string>
     <string name="text_email" translatable="false">Email</string>
     <string name="text_nomor_telepon" translatable="false">Nomor Telepon</string>
-    <string name="text_62">+62</string>
+    <string name="text_62" translatable="false">+62</string>
     <string name="text_negara" translatable="false">Negara</string>
     <string name="text_masukkan_negara" translatable="false">Masukkan Negara</string>
     <string name="text_kota" translatable="false">Kota</string>
@@ -34,19 +34,7 @@
 
     <string name="search">Search</string>
     <string name="class_in_progress">Class in Progress</string>
-    <string name="see_all">SEE ALL</string>
     <string name="all">All</string>
-    <string name="progress">Progress</string>
-    <string name="done">Done</string>
-    <string name="categories">Categories</string>
-    <string name="android_development" translatable="false">Android \nDevelopment</string>
-    <string name="data_science" translatable="false">Data Science</string>
-    <string name="_4_6" translatable="false">4.6</string>
-    <string name="belajar_data_cleaning_dengan_nshorting_dengan_python" translatable="false">Belajar data cleaning dengan \nshorting dengan python</string>
-    <string name="_19_moduls">• 19 Moduls</string>
-    <string name="_60_hours">• 60 Hours</string>
-    <string name="advanced_level">• Advanced Level</string>
-    <string name="_40_complete">40% complete</string>
 
     <string name="text_password_min_8_character">Password min 8 character</string>
     <string name="text_already_have_an_account">Already have an Account ? Login Here</string>
@@ -68,8 +56,6 @@
 
     <string name="text_about">About</string>
     <string name="text_curriculcum">Curriculcum</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="text_join_group_telegram">Join Group Telegram</string>
     <string name="text_about_class">About Class</string>
     <string name="text_this_class_is_intended_for">This Class Is Intended For</string>
@@ -77,27 +63,17 @@
     <string name="text_enroll_this_course">Enroll this Course ?</string>
     <string name="text_yes_enroll">Yes, enroll</string>
     <string name="text_cancel">Cancel</string>
-    <string name="text_next">Next</string>
-    <string name="text_other_classes">Other Classes</string>
 
     <string name="text_payment_details">Payment Details</string>
     <string name="text_price">Price</string>
     <string name="text_ppn_11" translatable="false">PPN 11%</string>
     <string name="text_total_payment">Total Payment</string>
-    <string name="text_bank_transfer">Bank Transfer</string>
-    <string name="text_credit_card">Credit Card</string>
-    <string name="text_card_number">Card Number</string>
-    <string name="text_card_holder_name">Card Holder Name</string>
-    <string name="text_cvv">CVV</string>
-    <string name="text_expiry_date">Expiry Date</string>
     <string name="text_congratulations">Congratulations</string>
     <string name="text_your_payment_is_successfully_purchase_a_new_course">Your Payment is Successfully. Purchase a New Course</string>
     <string name="text_start_study">Start Study</string>
     <string name="text_back_to_home">Back to Home</string>
 
     <string name="desc_search">image view search</string>
-    <string name="text_search">text view search</string>
-    <string name="tv_search">Search for...</string>
     <string name="text_title_category">Categories</string>
     <string name="text_to_see_all">See All</string>
     <string name="desc_iv_category_course">desc image view category course</string>
@@ -105,7 +81,7 @@
     <string name="desc_iv_popular_course">iv_popular_course</string>
     <string name="tv_category_popular" translatable="false">Data Science</string>
     <string name="tv_rating_popular_course" translatable="false">4.7</string>
-    <string name="desc_ic_arrow_left">ic_arrow_left</string>
+    <string name="desc_ic_arrow_left" translatable="false">ic_arrow_left</string>
     <string name="tv_header_see_all_popular_course">Popular Course</string>
     <string name="text_header_name">Hi, %s</string>
     <string name="text_header_name_non_login">Hi, Guest</string>
@@ -115,25 +91,20 @@
     <string name="tv_module_course">19 Module</string>
     <string name="tv_duration_course">60 Hours</string>
     <string name="tv_price_course">Rp 249.000</string>
-    <string name="desc_dialog_icon">iv_dialog_non_login</string>
+    <string name="desc_dialog_icon" translatable="false">iv_dialog_non_login</string>
     <string name="dialog_title">Sorry</string>
     <string name="dialog_message">You have to make an account for access\nthis class</string>
     <string name="dialog_sign_up_button">Sign Up</string>
-    <string name="iv_arrow_right">iv_arrow_right</string>
-    <string name="popular_course_not_found">Popular course not found!</string>
-    <string name="iv_level_course">iv_level_course</string>
-    <string name="iv_module_course">iv_module_course</string>
-    <string name="iv_rating">iv_rating</string>
-    <string name="iv_time_course">iv_time_course</string>
-    <string name="tv_sign_up">Sign Up</string>
-    <string name="course_is_empty">Course is Empty</string>
-    <string name="category_is_empty">Category is Empty</string>
+    <string name="iv_arrow_right" translatable="false">iv_arrow_right</string>
+    <string name="iv_level_course" translatable="false">iv_level_course</string>
+    <string name="iv_module_course" translatable="false">iv_module_course</string>
+    <string name="iv_rating" translatable="false">iv_rating</string>
+    <string name="iv_time_course" translatable="false">iv_time_course</string>
 
-    <string name="desc_iv_logo_app">iv_logo_app</string>
     <string name="tv_reset_password">Reset Password</string>
-    <string name="tv_title_email">Email</string>
+    <string name="tv_title_email" translatable="false">Email</string>
     <string name="tv_send_email">Send</string>
-    <string name="desc_arrow_right">arrow_right</string>
+    <string name="desc_arrow_right" translatable="false">arrow_right</string>
     <string name="text_error_email_empty">Email should not be empty</string>
     <string name="text_error_email_invalid">Enter a valid format email</string>
     <string name="reset_password_successful">Reset Password Successful</string>
@@ -145,24 +116,16 @@
     <string name="text_preducation" translatable="false">Preducation</string>
     <string name="text_online_learning" translatable="false">Online Learning</string>
     <string name="text_notifications">Notifications</string>
-    <string name="text_premium">Premium</string>
-    <string name="text_freemium">Freemium</string>
-    <string name="text_filter">Filter</string>
-    <string name="text_today">Today</string>
-    <string name="text_clear">Clear</string>
-    <string name="text_sort">Sort</string>
+    <string name="text_premium" translatable="false">Premium</string>
+    <string name="text_freemium" translatable="false">Freemium</string>
+    <string name="text_filter" translatable="false">Filter</string>
     <string name="text_class_topic">Class Topic</string>
-
-    <string name="text_profile_update_success">Profile updated successfully</string>
-    <string name="text_change_profile_failed">Change Profile Failed</string>
 
     <string name="text_logout_dialog">Do you want to logout ?</string>
     <string name="text_yes">Yes</string>
     <string name="text_no">No</string>
     <string name="text_error_password_empty">Password should not be empty</string>
-    <string name="text_error_password_length">Password should be at least 8 characters long</string>
 
-    <string name="edit_profile_successful">Edit Profile Successful</string>
     <string name="text_confirm_password">Confirm Password</string>
     <string name="text_error_long_name_empty">Name should not be empty</string>
     <string name="text_error_long_name_invalid_characters">Name Invalid Characters</string>
@@ -175,7 +138,6 @@
     <string name="text_error_form_not_valid">Form is not valid</string>
 
     <string name="text_error_old_new_password_match">Old and new passwords cannot be the same.</string>
-    <string name="text_error_update_password">Failed to update password. Please try again.</string>
     <string name="text_error_password_invalid">Password must be at least 8 characters long.</string>
     <string name="text_error_confirm_password_mismatch">Confirm password does not match the new password.</string>
 
@@ -183,18 +145,8 @@
     <string name="text_error_name_cannot_empy">Name should not be empty</string>
     <string name="text_number_phone_empty">Phone number should not be empty</string>
     <string name="text_number_phone_invalid">Enter a valid format phone number</string>
-    <string name="register_successfull">Register Successfull</string>
-    <string name="register_failed">Register Failed</string>
-    <string name="login_success">Login Successfull</string>
-    <string name="login_failed">Login Failed</string>
-    <string name="text_version">Versi 1.0.1</string>
-    <string name="you_need_to_login">You need to login</string>
-    <string name="empty_class_progress">You haven\'t taken any classes yet</string>
-    <string name="empty_progress_category">Empty progress category</string>
 
     <string name="course">Course</string>
-    <string name="news">News</string>
-    <string name="hot">Hot</string>
     <string name="web_development">Web Development</string>
     <string name="text_data_empty">Data Empty</string>
 
@@ -214,62 +166,57 @@
     <string name="text_learn_from_anytime">Learn from Anytime</string>
     <string name="text_message_splash_screen_two">Booked or Same the Lectures for Future</string>
     <string name="text_apply">Apply</string>
-    <string name="text_authorization">Authorization</string>
-    <string name="text_bearer">"Bearer "</string>
     <string name="text_logout_failed_with_response_code">"Logout failed with response code "</string>
     <string name="text_unknown_error">Unknown error</string>
-    <string name="text_level">" Level"</string>
+    <string name="text_level" translatable="false">" Level"</string>
     <string name="text_mins">" Mins"</string>
     <string name="text_module">" Module"</string>
-    <string name="text_complete">" % complete"</string>
+    <string name="text_complete" translatable="false">"%completed"</string>
     <string name="text_free">Free</string>
-    <string name="text_premium_cl">PREMIUM</string>
-    <string name="text_free_cl">FREE</string>
-    <string name="text_modules">Modules</string>
+    <string name="text_premium_cl" translatable="false">PREMIUM</string>
+    <string name="text_free_cl" translatable="false">FREE</string>
     <string name="text_sorry_there_s_an_error_on_the_server">Sorry, there\'s an error on the server</string>
     <string name="text_no_internet_connection">Oops!\nNo Internet Connection</string>
     <string name="text_change_password_successfully">Change Password Successfully</string>
     <string name="text_you_don_t_have_any_classes_yet">You don\'t have any classes yet</string>
     <string name="text_class_not_found">Class not found !</string>
-    <string name="text_empty">data kosong</string>
+    <string name="text_empty" translatable="false">data kosong</string>
     <string name="text_data_not_found">Data not found</string>
     <string name="text_update_profile_successfully">Update Profile Successfully</string>
     <string name="text_update_profile_failed">Update Profile Failed</string>
     <string name="text_task_cancelled">Task Cancelled</string>
-    <string name="text_multipart_form_data">multipart/form-data</string>
-    <string name="text_imageprofile">imageProfile</string>
     <string name="text_all">All</string>
     <string name="text_login_successful">Login Successful</string>
     <string name="text_login_please">Login please</string>
     <string name="text_please_ask_for_the_otp_code_again">, Please ask for the OTP code again</string>
     <string name="text_please_check_your_email_to_get_the_otp_code">\nPlease check your email to get the OTP code</string>
-    <string name="text_loading">Loading...</string>
+    <string name="text_loading" translatable="false">Loading...</string>
     <string name="text_successfully_logout">Successfully Logout</string>
     <string name="text_failed_to_logout">Failed to Logout</string>
     <string name="text_loading_logout">Loading Logout</string>
     <string name="text_empty_logout">Empty Logout</string>
     <string name="text_register_successful">Register Successful</string>
-    <string name="text_category_course">UI/UX Design</string>
-    <string name="text_course_rating">4.2</string>
-    <string name="text_name_course">Intro Basic of User Interaction Design</string>
-    <string name="text_total_modul_course">19 Modul</string>
+    <string name="text_category_course" translatable="false">UI/UX Design</string>
+    <string name="text_course_rating" translatable="false">4.2</string>
+    <string name="text_name_course" translatable="false">Intro Basic of User Interaction Design</string>
+    <string name="text_total_modul_course" translatable="false">19 Modul</string>
     <string name="text_total_hour_course">60 Hour</string>
     <string name="text_level_course">Advanced Level</string>
     <string name="course_price">IDR 349,000</string>
     <string name="text_course_ppn">IDR 38,390</string>
     <string name="text_course_total_payment">IDR 387,290</string>
     <string name="text_data_is_empty">Data is Empty !!</string>
-    <string name="text_desc_about_class">\t\t\t\t\tDesign system adalah kumpulan komponen design, code, ataupun dokumentasi yang dapat digunakan sebagai panduan utama yang memunginkan designer serta developer memiliki lebih banyak kontrol atas berbagai platform. Dengan hadirnya design system, dapat menjaga konsistensi tampilan user interface dan meningkatkan user experience menjadi lebih baik. Disisi bisnis, design system sangat berguna dalam menghemat waktu dan biaya ketika mengembangkan suatu produk.</string>
-    <string name="text_desc_recommended_students">Anda yang ingin memahami poin penting design system</string>
+    <string name="text_desc_about_class" translatable="false">\t\t\t\t\tDesign system adalah kumpulan komponen design, code, ataupun dokumentasi yang dapat digunakan sebagai panduan utama yang memunginkan designer serta developer memiliki lebih banyak kontrol atas berbagai platform. Dengan hadirnya design system, dapat menjaga konsistensi tampilan user interface dan meningkatkan user experience menjadi lebih baik. Disisi bisnis, design system sangat berguna dalam menghemat waktu dan biaya ketika mengembangkan suatu produk.</string>
+    <string name="text_desc_recommended_students" translatable="false">Anda yang ingin memahami poin penting design system</string>
     <string name="text_waiting_payment">Waiting Payment</string>
     <string name="text_notification_name">New Category Course!</string>
-    <string name="text_date">12 Desember 2023</string>
-    <string name="text_notification_desc">New the 3D Design Course is Available Now!</string>
-    <string name="text_video_number">01</string>
-    <string name="text_title_video">Tujuan Mengikuti Kelas Design System</string>
-    <string name="text_duration_video">15 Mins</string>
-    <string name="text_title_chapter">Chapter 01 - Introduction</string>
-    <string name="text_chapter_total_duration">25 Mins</string>
+    <string name="text_date" translatable="false">12 Desember 2023</string>
+    <string name="text_notification_desc" translatable="false">New the 3D Design Course is Available Now!</string>
+    <string name="text_video_number" translatable="false">01</string>
+    <string name="text_title_video" translatable="false">Tujuan Mengikuti Kelas Design System</string>
+    <string name="text_duration_video" translatable="false">15 Mins</string>
+    <string name="text_title_chapter" translatable="false">Chapter 01 - Introduction</string>
+    <string name="text_chapter_total_duration" translatable="false">25 Mins</string>
     <string name="text_notification_empty">Notification Empty</string>
     <string name="text_expired">expired</string>
     <string name="text_success">success</string>

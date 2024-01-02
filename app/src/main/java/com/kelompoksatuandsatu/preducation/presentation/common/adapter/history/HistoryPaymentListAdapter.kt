@@ -84,7 +84,7 @@ class HistoryPaymentListAdapter(
                 tvTitleCourse.text = courseId?.title
                 tvLevelCourse.text = courseId?.level + assetWrapper.getString(R.string.text_level)
                 tvDurationCourse.text = courseId?.totalDuration.toString() + assetWrapper.getString(R.string.text_mins)
-                tvModuleCourse.text = courseId?.totalModule.toString() + assetWrapper.getString(R.string.text_modules)
+                tvModuleCourse.text = courseId?.totalModule.toString() + assetWrapper.getString(R.string.text_module)
 
                 itemView.setOnClickListener { itemClick(item) }
             }
